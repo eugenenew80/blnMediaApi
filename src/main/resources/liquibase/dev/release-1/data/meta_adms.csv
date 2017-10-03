@@ -1,0 +1,7 @@
+﻿id;code;short_name;name;image_path
+1;admFunc;Бизнес-функции;Список бизнес-функций;img/list/menu_item.jpg
+2;admRole;Роли;Список ролей;img/list/menu_item.jpg
+3;admUser;Пользователи;Список пользователей;img/list/menu_item.jpg
+4;metaModule;Модули;Список модулей;img/list/menu_item.jpg
+5;metaDict;Справочники;Меню модуля Справочники;img/list/menu_item.jpg
+6;metaAdm;Администрирование;Меню модуля Администрирование;img/list/menu_item.jpg

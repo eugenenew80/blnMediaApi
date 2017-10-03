@@ -1,0 +1,21 @@
+﻿id;code;short_name;name;image_path
+1;dictMeterType;Типы счётчиков;Справочник типов счётчиков;img/list/menu_item.jpg
+2;dictCurrentTransType;Типы трансформаторов тока;Справочник типов трансформаторов тока;img/list/menu_item.jpg
+3;dictVoltageTransType;Типы трансформаторов напряжения;Справочник типов трансформаторов напряжения;img/list/menu_item.jpg
+4;dictMeteringPoint;Точки учёта;Справочник точек учёта;img/list/menu_item.jpg
+5;dictMeter;Счётчики;Справочник счётчиков;img/list/menu_item.jpg
+6;dictCurrentTrans;Трансформаторы тока;Справочник трансформаторов тока;img/list/menu_item.jpg
+7;dictVoltageTrans;Трансформаторы напряжения;Справочник трансформаторов напряжения;img/list/menu_item.jpg
+8;dictSubstationType;Типы подстанций;Справочник типов подстанций;img/list/menu_item.jpg
+9;dictEnergySourceType;Типы энергоисточников;Справочник типов энергоисточников;img/list/menu_item.jpg
+10;dictSubstation;Подстанции;Справочник подстанций;img/list/menu_item.jpg
+11;dictEnergySource;Энергоисточники;Справочник энергоисточников;img/list/menu_item.jpg
+12;dictMeteringType;Типы учёта;Справочник типов учёта электроэнергии;img/list/menu_item.jpg
+13;dictMeteringPointType;Типы точек учёта;Справочник типов точек учёта;img/list/menu_item.jpg
+14;dictAccountingType;Виды учёта;Справочник видов учёта электроэнергии;img/list/menu_item.jpg
+15;dictUnit;Единицы измерения;Справочник единиц измерения;img/list/menu_item.jpg
+16;dictCompany;Компании;Справочник компаний-владельцев средств измерений;img/list/menu_item.jpg
+17;dictRegion;Области;Справочник административных областей;img/list/menu_item.jpg
+18;dictEnergyZone;Зоны;Справочник зон энергосистемы;img/list/menu_item.jpg
+19;dictEnergyNode;Энергоузлы;Справочник энергоузлов энергосистемы;img/list/menu_item.jpg
+20;dictDataSource;Источники данных;Справочник источников данных;img/list/menu_item.jpg

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence version="2.1"
+   xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="
+        http://xmlns.jcp.org/xml/ns/persistence
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  
+  <persistence-unit name="bln">
+    <jta-data-source>blnDev</jta-data-source>
+    <mapping-file>META-INF/orm.xml</mapping-file>
+    <mapping-file>META-INF/jpa/jpql.xml</mapping-file>
+
+    <properties>
+      <!-- <property name="eclipselink.logging.level.sql" value="FINE"/>
+      <property name="eclipselink.logging.parameters" value="true"/>
+      <property name="eclipselink.cache.shared.default" value="false"/> -->
+
+      <property name="hibernate.show_sql" value="true" />
+      <property name="hibernate.enable_lazy_load_no_trans" value="true" />
+     </properties>
+  </persistence-unit>
+
+  <persistence-unit name="bln_test" transaction-type="RESOURCE_LOCAL">
+    <mapping-file>META-INF/orm.xml</mapping-file>
+    <mapping-file>META-INF/jpa/jpql.xml</mapping-file>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" 	value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.url" 		value="jdbc:postgresql://localhost:5432/bln_test"/>
+      <property name="javax.persistence.jdbc.user" 		value="postgres"/>
+      <property name="javax.persistence.jdbc.password" 	value="1"/>
+      <property name="hibernate.show_sql" value="false" />
+    </properties>
+  </persistence-unit>
+  
+</persistence>

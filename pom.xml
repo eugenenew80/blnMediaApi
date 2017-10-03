@@ -1,0 +1,278 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>kz.kegoc</groupId>
+    <artifactId>blnMediaApi</artifactId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>blnMediaApi</name>
+	<description>Web API for Billing Mediation</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+    	<skipTests>true</skipTests>
+    </properties>
+  		
+    <build>
+        <finalName>blnMediaApi</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.2</version>
+                <inherited>true</inherited>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>				    
+				    <annotationProcessorPaths>
+				        **<path>
+				            <groupId>org.projectlombok</groupId>
+				            <artifactId>lombok</artifactId>
+				            <version>1.16.8</version>				        
+				        </path>**
+				    </annotationProcessorPaths>                    
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20</version>
+                <configuration>
+                    <includes>
+                        <include>**/AllTests.class</include>
+                        <skipTests>${skipTests}</skipTests>
+                    </includes>
+                </configuration>
+            </plugin>
+                    
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.5.3</version>
+                
+                <configuration>
+                  <changeLogFile>
+                        ${basedir}/src/main/resources/liquibase/${scripts}/changelog.xml
+                  </changeLogFile>
+                  
+                  <driver>${driver}</driver>
+                  <url>${url}</url>
+                  <username>${username}</username>
+                  <password>${password}</password>              
+                </configuration>                
+            </plugin>
+
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>1.0.2.Final</version>
+
+                <configuration>
+                    <hostname>localhost</hostname>
+                    <port>9990</port>
+                    <username>admin</username>
+                    <password>1</password>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>            
+            
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>           
+
+            <properties>
+				<driver>org.postgresql.Driver</driver>
+				<url>jdbc:postgresql://localhost:5432/bln_dev</url>
+				<username>postgres</username>
+				<password>1</password>
+				<scripts>dev</scripts>
+				<skipTests>true</skipTests>
+            </properties>
+        </profile>      
+        
+        <profile>
+            <id>test</id>
+            
+            <properties>
+                <driver>org.postgresql.Driver</driver>
+                <url>jdbc:postgresql://localhost:5432/bln_test</url>
+                <username>postgres</username>
+                <password>1</password>
+                <scripts>test</scripts>
+				<skipTests>false</skipTests>                             
+            </properties>
+        </profile>
+    </profiles>
+    
+ 	<dependencies>
+    	<!-- Provided dependencies  -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.0-b01</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1-m01</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.ejb</groupId>
+            <artifactId>javax.ejb-api</artifactId>
+            <version>3.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>2.0-EDR2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+            <scope>provided</scope>
+        </dependency>	
+		    
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.8</version>
+            <scope>provided</scope>
+        </dependency>
+
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>2.9.1</version>
+		    <scope>provided</scope>
+		</dependency>
+
+	        
+        <!-- Prod dependencies  -->
+
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.10</version>
+		</dependency>	
+		        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>5.4.0</version>
+        </dependency>
+		
+		<dependency>
+		    <groupId>redis.clients</groupId>
+		    <artifactId>jedis</artifactId>
+		    <version>2.9.0</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.redisson</groupId>
+		    <artifactId>redisson</artifactId>
+		    <version>3.5.4</version>
+		</dependency>		
+		
+		<!-- Test dependencies  -->
+		
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>42.1.4</version>
+		    <scope>test</scope>
+		</dependency>
+    
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.5.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>2.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.17.0</version>
+            <scope>test</scope>
+        </dependency>
+                
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>9.2.3.v20140905</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>9.2.3.v20140905</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>4.3.7.Final</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>4.3.7.Final</version>
+            <scope>test</scope>
+        </dependency>        
+    </dependencies>
+</project>
