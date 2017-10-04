@@ -13,7 +13,7 @@ import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.entity.media.dto.DailyMeteringDataDto;
-import kz.kegoc.bln.service.media.ManualDataService;
+import kz.kegoc.bln.service.media.DailyMeteringDataService;
 
 
 @RequestScoped
@@ -51,19 +51,26 @@ public class ManualDataResource {
 			.collect(Collectors.toList());
 		
 		service.addMeteringListData(list);		
-		return Response.ok()
-				.build();
+		return Response.ok().build();
 	}	
 	
 	@POST
 	@Path("/shutdown")
 	public Response shutdown() {
 		service.shutdown();
-		return Response.ok()
-				.build();
-	}	
-	
-	@Inject 
-	private ManualDataService service;	
+		return Response.ok().build();
+	}
+
+
+	@POST
+	@Path("/start")
+	public Response start() {
+		service.start();
+		return Response.ok().build();
+	}
+
+
+	@Inject
+	private DailyMeteringDataService service;
 	private DozerBeanMapper mapper;
 }

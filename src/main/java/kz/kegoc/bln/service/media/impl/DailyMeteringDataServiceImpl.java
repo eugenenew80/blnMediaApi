@@ -8,11 +8,10 @@ import javax.inject.Inject;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
-import kz.kegoc.bln.media.producer.impl.ManualDataProducer;
-import kz.kegoc.bln.service.media.ManualDataService;
+import kz.kegoc.bln.service.media.DailyMeteringDataService;
 
 @Stateless
-public class ManualDataServiceImpl implements ManualDataService {
+public class DailyMeteringDataServiceImpl implements DailyMeteringDataService {
 
 	@PostConstruct
 	public void init() {
@@ -26,11 +25,14 @@ public class ManualDataServiceImpl implements ManualDataService {
 
 	public void addMeteringListData(List<DailyMeteringData> data) {
 		queue.addAll(data);
-	}	
-	
+	}
+
+	public void start() {
+		UserFormMeteringDataProducer.shutdownFlag.set(false);
+	}
+
 	public void shutdown() {
-		ManualDataProducer.shutdownFlag.set(true);
-		queue.offer(new DailyMeteringData());		
+		UserFormMeteringDataProducer.shutdownFlag.set(true);
 	}
 
 	
