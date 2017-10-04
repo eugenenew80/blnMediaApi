@@ -15,7 +15,7 @@ import kz.kegoc.bln.repository.media.DailyMeteringDataRepository;
 
 @Singleton
 @Startup
-public class UserFormMeteringDataProducer implements MeteringDataProducer {
+public class UserFormDailyMeteringDataProducer implements MeteringDataProducer {
 	public static final AtomicBoolean shutdownFlag = new AtomicBoolean(false);
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)

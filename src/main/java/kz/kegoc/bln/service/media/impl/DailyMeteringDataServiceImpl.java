@@ -17,8 +17,7 @@ public class DailyMeteringDataServiceImpl implements DailyMeteringDataService {
 	public void init() {
 		queue = redissonClient.getBlockingQueue("dailyMeteringData");
 	}
-	
-	
+
 	public void addMeteringData(DailyMeteringData data) {
 		queue.add(data);
 	}
@@ -28,11 +27,11 @@ public class DailyMeteringDataServiceImpl implements DailyMeteringDataService {
 	}
 
 	public void start() {
-		UserFormMeteringDataProducer.shutdownFlag.set(false);
+		UserFormDailyMeteringDataProducer.shutdownFlag.set(false);
 	}
 
 	public void shutdown() {
-		UserFormMeteringDataProducer.shutdownFlag.set(true);
+		UserFormDailyMeteringDataProducer.shutdownFlag.set(true);
 	}
 
 	

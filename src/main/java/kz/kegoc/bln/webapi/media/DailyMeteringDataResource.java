@@ -17,12 +17,12 @@ import kz.kegoc.bln.service.media.DailyMeteringDataService;
 
 
 @RequestScoped
-@Path("/media/manualData")
+@Path("/media/dailyData")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
-public class ManualDataResource {
+public class DailyMeteringDataResource {
 	
-	public ManualDataResource() {
+	public DailyMeteringDataResource() {
 		mapper = new DozerBeanMapper();
 		mapper.setMappingFiles(Arrays.asList("mapping/media/DailyMeteringDataDtoDefaultMapping.xml"));
 	}

@@ -44,5 +44,53 @@
       		</basic>       		    		      		
 		</attributes>
 	</entity>
-	
+
+	<entity class="kz.kegoc.bln.entity.media.HourlyMeteringData">
+		<table name="media_hourly_metering_data_raw" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+        		<generated-value strategy="SEQUENCE" generator="media_hourly_metering_data_raw_gen" />
+        		<sequence-generator
+        			name="media_hourly_metering_data_raw_gen"
+        			sequence-name="apps.media_hourly_metering_data_raw_s"
+					allocation-size="1"
+        		/>
+			</id>
+
+      		<basic name="meteringPointCode">
+      			<column name="metering_point_code" />
+      		</basic>
+
+      		<basic name="paramCode">
+      			<column name="param_code" />
+      		</basic>
+
+      		<basic name="meteringDate">
+      			<column name="metering_date" />
+      		</basic>
+
+			<basic name="hour">
+				<column name="hour" />
+			</basic>
+
+			<basic name="dataSourceCode">
+      			<column name="data_source_code" />
+      		</basic>
+
+      		<basic name="unitCode">
+      			<column name="unit_code" />
+      		</basic>
+
+      		<basic name="val">
+      			<column name="val" />
+      		</basic>
+
+      		<basic name="status">
+      			<column name="status" />
+      			<enumerated>ORDINAL</enumerated>
+      		</basic>
+		</attributes>
+	</entity>
+
 </entity-mappings>
