@@ -5,6 +5,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import kz.kegoc.bln.webapi.exception.mapper.*;
 import kz.kegoc.bln.webapi.media.DailyMeteringDataResource;
+import kz.kegoc.bln.webapi.media.HourlyMeteringDataResource;
 
 
 @ApplicationPath("/webapi")
@@ -15,7 +16,8 @@ public class JaxRsConfig extends Application {
 		final Set<Class<?>> resources = new HashSet<Class<?>>();
 
 		resources.add(DailyMeteringDataResource.class);
-		
+		resources.add(HourlyMeteringDataResource.class);
+
 		//resources.add(BasicAuthentificationFilter.class);
 		resources.add(RepositryNotFoundExceptionMapperImpl.class);
 		resources.add(EntityNotFoundExceptionMapperImpl.class);
