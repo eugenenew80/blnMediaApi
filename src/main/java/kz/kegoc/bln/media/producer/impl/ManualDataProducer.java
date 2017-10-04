@@ -1,34 +1,44 @@
 package kz.kegoc.bln.media.producer.impl;
 
-import javax.ejb.Schedule;
-import javax.ejb.Stateless;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.ejb.*;
 import javax.inject.Inject;
-
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.dto.DailyMeteringDataDto;
-import kz.kegoc.bln.media.producer.DataProducer;
 
-@Stateless
-public class ManualDataProducer implements DataProducer {
 
-	@Inject
-	public ManualDataProducer(RedissonClient redissonClient) {
-		this.redissonClient = redissonClient;
+@Singleton
+@LocalBean
+@Startup
+public class ManualDataProducer {
+
+	@PostConstruct
+	public void init() {
+		TimerConfig timerConfig = new TimerConfig();
+		timerConfig.setPersistent(false);
+		timerService.createSingleActionTimer(5000, timerConfig);
 	}
-	
-	@Schedule(second="*/5", minute = "*", hour="*")
-	public void produce() {		System.out.println("ManualDataProducer started!");
+
+
+	@Timeout
+	public void execute(Timer timer) {
+		System.out.println("ManualDataProducer started!");
 		
 		RBlockingQueue<DailyMeteringDataDto> queue =redissonClient.getBlockingQueue("dailyMeteringData");
-		DailyMeteringDataDto data = null;
-		do {			data = queue.poll();
-			if (data!=null)
+		DailyMeteringDataDto data;
+		while (true) {
+			try {
+				data = queue.take();
 				System.out.println(data);
-		} while (data!=null);
-		
-		System.out.println("ManualDataProducer finished!");
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-	
-	private RedissonClient redissonClient;
+
+	@Inject private RedissonClient redissonClient;
+	@Resource private TimerService timerService;
 }
