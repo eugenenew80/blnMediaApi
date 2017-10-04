@@ -3,6 +3,7 @@ package kz.kegoc.bln.webapi.media;
 import kz.kegoc.bln.entity.media.HourlyMeteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.entity.media.dto.HourlyMeteringDataDto;
+import kz.kegoc.bln.entity.media.dto.HourlyMeteringDataListDto;
 import kz.kegoc.bln.service.media.HourlyMeteringDataService;
 import org.dozer.DozerBeanMapper;
 
@@ -36,25 +37,26 @@ public class HourlyMeteringDataResource {
 		entity.setStatus(MeteringDataStatus.DRAFT);
 		
 		service.addMeteringData(mapper.map(entity, HourlyMeteringData.class));
-		return Response.ok()
-				.build();
+		return Response.ok().build();
 	}	
 
 	@POST
 	@Path("/list")
-	public Response createAll(List<HourlyMeteringDataDto> listDto) {
-		
-		List<HourlyMeteringData> list = listDto.stream()
-			.map(t-> { 
+	public Response createAll(HourlyMeteringDataListDto listDto) {
+		List<HourlyMeteringData> list = listDto.getMeteringData().stream()
+			.map(t -> {
+				t.setMeteringDate(listDto.getMeteringDate());
+				t.setMeteringPointCode(listDto.getMeteringPointCode());
 				t.setDataSourceCode("Manual");
 				t.setStatus(MeteringDataStatus.DRAFT);
 				return mapper.map(t, HourlyMeteringData.class);
 			})
 			.collect(Collectors.toList());
-		
-		service.addMeteringListData(list);		
+
+		service.addMeteringListData(list);
 		return Response.ok().build();
-	}	
+	}
+
 	
 	@POST
 	@Path("/shutdown")
