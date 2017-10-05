@@ -2,7 +2,6 @@ package kz.kegoc.bln.service.loader.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.ejb.*;
 import javax.inject.Inject;
 

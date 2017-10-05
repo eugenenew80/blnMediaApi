@@ -12,7 +12,6 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 @Singleton
