@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 
 @RequestScoped
-@Path("/queue/hourlyData")
+@Path("/media/hourlyData")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class HourlyMeteringDataResource {

@@ -17,7 +17,7 @@ import kz.kegoc.bln.service.queue.DailyMeteringDataQueueService;
 
 
 @RequestScoped
-@Path("/queue/dailyData")
+@Path("/media/dailyData")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class DailyMeteringDataResource {
