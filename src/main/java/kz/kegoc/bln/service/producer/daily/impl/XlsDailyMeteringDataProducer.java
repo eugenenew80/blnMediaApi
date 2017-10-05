@@ -6,13 +6,13 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
+import kz.kegoc.bln.service.common.AbstractFileMeteringDataProducer;
 import kz.kegoc.bln.service.producer.common.MeteringDataProducer;
-import kz.kegoc.bln.service.producer.daily.FileDailyMeteringDataProducer;
 
 
 @Singleton
 @Startup
-public class XlsDailyMeteringDataProducer  extends FileDailyMeteringDataProducer implements MeteringDataProducer {
+public class XlsDailyMeteringDataProducer extends AbstractFileMeteringDataProducer<DailyMeteringData> implements MeteringDataProducer {
     
     public XlsDailyMeteringDataProducer() {
 		super("xls");

@@ -1,10 +1,7 @@
 package kz.kegoc.bln.repository.media;
 
-import java.util.List;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
+import kz.kegoc.bln.repository.common.MeteringDataRepository;
 
-public interface DailyMeteringDataRepository {
-	DailyMeteringData insert(DailyMeteringData entity); 
-
-	void insertAll(List<DailyMeteringData> list);
+public interface DailyMeteringDataRepository extends MeteringDataRepository<DailyMeteringData> {
 }

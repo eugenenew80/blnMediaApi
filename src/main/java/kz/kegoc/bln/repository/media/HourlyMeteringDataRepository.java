@@ -1,11 +1,7 @@
 package kz.kegoc.bln.repository.media;
 
 import kz.kegoc.bln.entity.media.HourlyMeteringData;
+import kz.kegoc.bln.repository.common.MeteringDataRepository;
 
-import java.util.List;
-
-public interface HourlyMeteringDataRepository {
-	HourlyMeteringData insert(HourlyMeteringData entity);
-
-	void insertAll(List<HourlyMeteringData> list);
+public interface HourlyMeteringDataRepository extends MeteringDataRepository<HourlyMeteringData> {
 }

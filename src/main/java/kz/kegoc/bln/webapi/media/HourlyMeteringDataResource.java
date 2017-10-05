@@ -60,22 +60,6 @@ public class HourlyMeteringDataResource {
 		return Response.ok().build();
 	}
 
-	
-	@POST
-	@Path("/shutdown")
-	public Response shutdown() {
-		service.shutdown();
-		return Response.ok().build();
-	}
-
-
-	@POST
-	@Path("/start")
-	public Response start() {
-		service.start();
-		return Response.ok().build();
-	}
-
 
 	@Inject
 	private HourlyMeteringDataQueueService service;

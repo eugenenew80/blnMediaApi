@@ -1,15 +1,7 @@
 package kz.kegoc.bln.service.queue;
 
-import java.util.List;
-
 import kz.kegoc.bln.entity.media.MonthlyMeteringData;
+import kz.kegoc.bln.service.common.MeteringDataQueueService;
 
-public interface MonthlyMeteringDataQueueService {
-	void addMeteringData(MonthlyMeteringData data);
-	
-	void addMeteringListData(List<MonthlyMeteringData> data);
-
-	void start();
-
-	void shutdown();
+public interface MonthlyMeteringDataQueueService extends MeteringDataQueueService<MonthlyMeteringData> {
 }

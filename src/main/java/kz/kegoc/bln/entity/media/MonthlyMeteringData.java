@@ -1,11 +1,12 @@
 package kz.kegoc.bln.entity.media;
 
+import kz.kegoc.bln.entity.common.HasId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class MonthlyMeteringData {
+public class MonthlyMeteringData implements HasId {
 	private Long id;
 	private Short meteringYear;
 	private Short meteringMonth;

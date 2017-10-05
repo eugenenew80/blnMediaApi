@@ -1,24 +1,10 @@
 package kz.kegoc.bln.repository.media.impl;
 
-import java.util.List;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
+import kz.kegoc.bln.repository.common.AbstractMeteringDataRepository;
 import kz.kegoc.bln.repository.media.DailyMeteringDataRepository;
 
 @Stateless
-public class DailyMeteringDataRepositoryImpl implements DailyMeteringDataRepository {
-
-	public DailyMeteringData insert(DailyMeteringData entity) {
-		em.persist(entity);
-		return entity;
-	}
-
-	public void insertAll(List<DailyMeteringData> list) {
-		list.stream().forEach(this::insert);
-	}
-	
-	@PersistenceContext(unitName = "bln")
-	private EntityManager em;
+public class DailyMeteringDataRepositoryImpl extends AbstractMeteringDataRepository<DailyMeteringData> implements DailyMeteringDataRepository {
 }

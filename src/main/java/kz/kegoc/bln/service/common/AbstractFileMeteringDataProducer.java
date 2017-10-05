@@ -1,23 +1,32 @@
-package kz.kegoc.bln.service.producer.hourly;
+package kz.kegoc.bln.service.common;
 
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
+import kz.kegoc.bln.entity.common.HasId;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
+import kz.kegoc.bln.service.common.MeteringDataQueueService;
 import kz.kegoc.bln.service.producer.common.MeteringDataProducer;
 import kz.kegoc.bln.service.queue.DailyMeteringDataQueueService;
 
-public abstract class FileHourlyMeteringDataProducer implements MeteringDataProducer {
+import javax.inject.Inject;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public abstract class AbstractFileMeteringDataProducer<T extends HasId> implements MeteringDataProducer {
 	private String dir = "C:\\\\src\\\\bln\\\\meteringData";
     private String subDir;
-	
-	public FileHourlyMeteringDataProducer(String subDir) {
+
+	public AbstractFileMeteringDataProducer() {
+	}
+
+    public AbstractFileMeteringDataProducer(String subDir) {
 		this.subDir = subDir;
 	}
-	
-    public FileHourlyMeteringDataProducer(String dir, String subDir) {
+
+    public AbstractFileMeteringDataProducer(String dir, String subDir) {
 		this.dir = dir;
 		this.subDir = subDir;
 	}
@@ -43,7 +52,7 @@ public abstract class FileHourlyMeteringDataProducer implements MeteringDataProd
 	
 	protected void loadFile(Path path) {
 		try {
-			List<DailyMeteringData> list = loadFromFile(path);
+			List<T> list = loadFromFile(path);
 			service.addMeteringListData(list);
 			Files.delete(path);
 		} 
@@ -52,8 +61,8 @@ public abstract class FileHourlyMeteringDataProducer implements MeteringDataProd
 		}
 	}
 	
-	protected abstract List<DailyMeteringData> loadFromFile(Path path) throws Exception;
+	protected abstract List<T> loadFromFile(Path path) throws Exception;
 	
 	@Inject
-	private DailyMeteringDataQueueService service;
+	private MeteringDataQueueService<T> service;
 }

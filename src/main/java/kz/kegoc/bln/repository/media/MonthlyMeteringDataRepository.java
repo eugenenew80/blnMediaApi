@@ -1,10 +1,8 @@
 package kz.kegoc.bln.repository.media;
 
-import java.util.List;
 import kz.kegoc.bln.entity.media.MonthlyMeteringData;
+import kz.kegoc.bln.repository.common.MeteringDataRepository;
 
-public interface MonthlyMeteringDataRepository {
-	MonthlyMeteringData insert(MonthlyMeteringData entity); 
+public interface MonthlyMeteringDataRepository extends MeteringDataRepository<MonthlyMeteringData> {
 
-	void insertAll(List<MonthlyMeteringData> list);
 }

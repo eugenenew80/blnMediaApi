@@ -1,5 +1,6 @@
 package kz.kegoc.bln.entity.media;
 
+import kz.kegoc.bln.entity.common.HasId;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +9,7 @@ import java.util.Date;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class HourlyMeteringData {
+public class HourlyMeteringData implements HasId {
 	private Long id;
 	private Date meteringDate;
 	private Byte hour;

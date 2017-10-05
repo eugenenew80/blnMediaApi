@@ -1,15 +1,7 @@
 package kz.kegoc.bln.service.queue;
 
 import kz.kegoc.bln.entity.media.HourlyMeteringData;
+import kz.kegoc.bln.service.common.MeteringDataQueueService;
 
-import java.util.List;
-
-public interface HourlyMeteringDataQueueService {
-	void addMeteringData(HourlyMeteringData data);
-	
-	void addMeteringListData(List<HourlyMeteringData> data);
-
-	void start();
-
-	void shutdown();
+public interface HourlyMeteringDataQueueService extends MeteringDataQueueService<HourlyMeteringData> {
 }

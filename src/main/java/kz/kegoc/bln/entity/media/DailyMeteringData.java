@@ -1,12 +1,14 @@
 package kz.kegoc.bln.entity.media;
 
 import java.util.Date;
+
+import kz.kegoc.bln.entity.common.HasId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class DailyMeteringData {
+public class DailyMeteringData implements HasId {
 	private Long id;
 	private Date meteringDate;
 	private String meteringPointCode;

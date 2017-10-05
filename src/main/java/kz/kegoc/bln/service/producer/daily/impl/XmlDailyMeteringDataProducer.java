@@ -8,18 +8,18 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import kz.kegoc.bln.service.common.AbstractFileMeteringDataProducer;
 import org.w3c.dom.*;
 
 import kz.kegoc.bln.entity.media.DailyMeteringData;
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.service.producer.common.MeteringDataProducer;
-import kz.kegoc.bln.service.producer.daily.FileDailyMeteringDataProducer;
 
 
 @Singleton
 @Startup
-public class XmlDailyMeteringDataProducer  extends FileDailyMeteringDataProducer implements MeteringDataProducer {
+public class XmlDailyMeteringDataProducer  extends AbstractFileMeteringDataProducer<DailyMeteringData> implements MeteringDataProducer {
     
     public XmlDailyMeteringDataProducer() {
 		super("xml");
