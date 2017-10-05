@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.producer.daily.impl;
+package kz.kegoc.bln.service.producer.daily;
 
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
@@ -11,7 +11,7 @@ import javax.ejb.Startup;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
-import kz.kegoc.bln.service.common.AbstractFileMeteringDataProducer;
+import kz.kegoc.bln.service.producer.common.AbstractFileMeteringDataProducer;
 import kz.kegoc.bln.service.producer.common.MeteringDataProducer;
 
 

@@ -16,13 +16,9 @@ import kz.kegoc.bln.repository.media.MonthlyMeteringDataRepository;
 @Singleton
 @Startup
 public class MonthlyMeteringDataLoader implements MeteringDataLoader {
-	public static final AtomicBoolean shutdownFlag = new AtomicBoolean(false);
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
-		if (shutdownFlag.get())
-			return;
-
 		RBlockingQueue<MonthlyMeteringData> queue= redissonClient.getBlockingQueue("monthlyMeteringData");
 		List<MonthlyMeteringData> list = new ArrayList<>();
 		while (true) {

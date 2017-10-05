@@ -1,10 +1,7 @@
-package kz.kegoc.bln.service.common;
+package kz.kegoc.bln.service.producer.common;
 
 import kz.kegoc.bln.entity.common.HasId;
-import kz.kegoc.bln.entity.media.DailyMeteringData;
-import kz.kegoc.bln.service.common.MeteringDataQueueService;
-import kz.kegoc.bln.service.producer.common.MeteringDataProducer;
-import kz.kegoc.bln.service.queue.DailyMeteringDataQueueService;
+import kz.kegoc.bln.service.queue.common.MeteringDataQueueService;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class AbstractFileMeteringDataProducer<T extends HasId> implements MeteringDataProducer {
-	private String dir = "C:\\\\src\\\\bln\\\\meteringData";
+	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
     private String subDir;
 
 	public AbstractFileMeteringDataProducer() {
@@ -33,7 +30,7 @@ public abstract class AbstractFileMeteringDataProducer<T extends HasId> implemen
 
 
 	public void execute() {
-		for (Path p : getListFiles(Paths.get(dir + "\\" + subDir)))
+		for (Path p : getListFiles(Paths.get(dir + "/" + subDir)))
 			loadFile(p);
     }
     

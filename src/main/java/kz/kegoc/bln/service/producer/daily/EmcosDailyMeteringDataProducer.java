@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.producer.daily.impl;
+package kz.kegoc.bln.service.producer.daily;
 
 import kz.kegoc.bln.service.producer.common.MeteringDataProducer;
 

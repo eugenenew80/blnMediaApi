@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.common;
+package kz.kegoc.bln.service.queue.common;
 
 import kz.kegoc.bln.entity.common.HasId;
 import org.redisson.api.RBlockingQueue;

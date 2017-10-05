@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.producer.daily.impl;
+package kz.kegoc.bln.service.producer.daily;
 
 import java.nio.file.*;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import kz.kegoc.bln.service.common.AbstractFileMeteringDataProducer;
+import kz.kegoc.bln.service.producer.common.AbstractFileMeteringDataProducer;
 import org.w3c.dom.*;
 
 import kz.kegoc.bln.entity.media.DailyMeteringData;

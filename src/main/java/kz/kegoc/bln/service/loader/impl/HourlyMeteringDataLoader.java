@@ -18,13 +18,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Singleton
 @Startup
 public class HourlyMeteringDataLoader implements MeteringDataLoader {
-	public static final AtomicBoolean shutdownFlag = new AtomicBoolean(false);
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
-		if (shutdownFlag.get())
-			return;
-
 		RBlockingQueue<HourlyMeteringData> queue= redissonClient.getBlockingQueue("hourlyMeteringData");
 		List<HourlyMeteringData> list = new ArrayList<>();
 		while (true) {

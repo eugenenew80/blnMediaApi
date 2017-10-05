@@ -16,13 +16,9 @@ import kz.kegoc.bln.repository.media.DailyMeteringDataRepository;
 @Singleton
 @Startup
 public class DailyMeteringDataLoader implements MeteringDataLoader {
-	public static final AtomicBoolean shutdownFlag = new AtomicBoolean(false);
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
-		if (shutdownFlag.get())
-			return;
-
 		RBlockingQueue<DailyMeteringData> queue= redissonClient.getBlockingQueue("dailyMeteringData");
 		List<DailyMeteringData> list = new ArrayList<>();
 		while (true) {
