@@ -1,7 +1,6 @@
 package kz.kegoc.bln.entity.media.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import lombok.Data;
 
 import java.util.Date;

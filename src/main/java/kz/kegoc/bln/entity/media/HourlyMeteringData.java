@@ -15,7 +15,8 @@ public class HourlyMeteringData {
 	private String meteringPointCode;
 	private String paramCode;
 	private String unitCode;
-	private String dataSourceCode;
+	private WayEnteringData wayEntering;
 	private MeteringDataStatus status;
+	private String dataSourceCode;
 	private Double val;
 }

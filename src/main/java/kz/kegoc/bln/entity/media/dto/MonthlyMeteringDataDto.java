@@ -1,16 +1,13 @@
 package kz.kegoc.bln.entity.media.dto;
 
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import lombok.Data;
 
 @Data
-public class DailyMeteringDataDto {
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
-	private Date meteringDate;
+public class MonthlyMeteringDataDto {
+	private Short meteringYear;
+	private Short meteringMonth;
 	private String meteringPointCode;
 	private String paramCode;
 	private String unitCode;

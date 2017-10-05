@@ -9,6 +9,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 import kz.kegoc.bln.entity.media.DailyMeteringData;
+import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.service.producer.common.MeteringDataProducer;
 import kz.kegoc.bln.service.producer.daily.FileDailyMeteringDataProducer;
@@ -47,8 +48,9 @@ public class CsvDailyMeteringDataProducer  extends FileDailyMeteringDataProducer
 		d.setParamCode(data[2]);
 		d.setUnitCode(data[3]);
 		d.setVal( Double.parseDouble(data[4]) );
-		d.setDataSourceCode("Manual");
+		d.setWayEntering(WayEnteringData.CSV);
 		d.setStatus(MeteringDataStatus.DRAFT);
+		d.setDataSourceCode("MANUAL");
 		
 		SimpleDateFormat sd = new SimpleDateFormat("yyyy-mm-dd");
 		d.setMeteringDate(sd.parse(data[0]));

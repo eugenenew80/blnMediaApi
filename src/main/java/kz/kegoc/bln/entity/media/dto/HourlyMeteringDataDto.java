@@ -1,10 +1,10 @@
 package kz.kegoc.bln.entity.media.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.util.Date;
 
 @Data
@@ -15,7 +15,8 @@ public class HourlyMeteringDataDto {
 	private String meteringPointCode;
 	private String paramCode;
 	private String unitCode;
-	private String dataSourceCode;
+	private WayEnteringData wayEntering;
 	private MeteringDataStatus status;
+	private String dataSourceCode;
 	private Double val;
 }

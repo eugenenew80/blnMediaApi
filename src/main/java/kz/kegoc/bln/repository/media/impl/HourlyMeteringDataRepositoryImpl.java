@@ -16,11 +16,9 @@ public class HourlyMeteringDataRepositoryImpl implements HourlyMeteringDataRepos
 		return entity;
 	}
 
-	
 	public void insertAll(List<HourlyMeteringData> list) {
 		list.stream().forEach(this::insert);
 	}
-	
 	
 	@PersistenceContext(unitName = "bln")
 	private EntityManager em;

@@ -34,6 +34,10 @@
                 <constraints nullable="false"/>
             </column>
                                     
+            <column name="way_entering" type="varchar(15)">
+                <constraints nullable="false"/>
+            </column>
+            
             <column name="val" type="number">
                 <constraints nullable="true"/>
             </column>

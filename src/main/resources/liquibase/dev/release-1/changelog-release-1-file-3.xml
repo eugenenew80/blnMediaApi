@@ -7,9 +7,9 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
 
-    <changeSet id="media-eug-4" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <comment>Creating table: media_hourly_metering_data_raw</comment>
-        <createTable tableName="media_hourly_metering_data_raw" schemaName="apps">            
+    <changeSet id="media-eug-7" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <comment>Creating table: media_monthly_metering_data_raw</comment>
+        <createTable tableName="media_monthly_metering_data_raw" schemaName="apps">            
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
@@ -26,11 +26,11 @@
                 <constraints nullable="false"/>
             </column>
                         
-            <column name="metering_date" type="date">
+            <column name="metering_year" type="number">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="hour" type="number">
+            <column name="metering_month" type="number">
                 <constraints nullable="false"/>
             </column>
 
@@ -52,22 +52,22 @@
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-5" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating primary key for table: media_hourly_metering_data_raw</comment>
+	<changeSet id="media-eug-8" logicalFilePath="path-independent" author="eugene" context="postgres">
+	    <comment>Creating primary key for table: media_monthly_metering_data_raw</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_hourly_metering_data_raw"
+	            constraintName="pk_media_monthly_metering_data_raw"
 	            schemaName="apps"
-	            tableName="media_hourly_metering_data_raw"/>
+	            tableName="media_monthly_metering_data_raw"/>
 	</changeSet>
 	
 	
-	<changeSet id="media-eug-6" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating sequence for table: media_hourly_metering_data_raw</comment>
+	<changeSet id="media-eug-9" logicalFilePath="path-independent" author="eugene" context="postgres">
+	    <comment>Creating sequence for table: media_monthly_metering_data_raw</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_hourly_metering_data_raw_s"
+	            sequenceName="media_monthly_metering_data_raw_s"
 	            startValue="1"/>
 	</changeSet>	
 	
