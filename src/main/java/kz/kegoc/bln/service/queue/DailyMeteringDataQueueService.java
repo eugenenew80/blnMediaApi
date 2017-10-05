@@ -1,10 +1,10 @@
-package kz.kegoc.bln.service.media;
+package kz.kegoc.bln.service.queue;
 
 import java.util.List;
 
 import kz.kegoc.bln.entity.media.DailyMeteringData;
 
-public interface DailyMeteringDataService {
+public interface DailyMeteringDataQueueService {
 	void addMeteringData(DailyMeteringData data);
 	
 	void addMeteringListData(List<DailyMeteringData> data);

@@ -1,17 +1,19 @@
-package kz.kegoc.bln.service.media.impl;
+package kz.kegoc.bln.service.queue.impl;
 
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+
+import kz.kegoc.bln.service.loader.impl.DailyMeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
-import kz.kegoc.bln.service.media.DailyMeteringDataService;
+import kz.kegoc.bln.service.queue.DailyMeteringDataQueueService;
 
 @Stateless
-public class DailyMeteringDataServiceImpl implements DailyMeteringDataService {
+public class DailyMeteringDataQueueServiceImpl implements DailyMeteringDataQueueService {
 
 	@PostConstruct
 	public void init() {
@@ -27,11 +29,11 @@ public class DailyMeteringDataServiceImpl implements DailyMeteringDataService {
 	}
 
 	public void start() {
-		UserFormDailyMeteringDataProducer.shutdownFlag.set(false);
+		DailyMeteringDataLoader.shutdownFlag.set(false);
 	}
 
 	public void shutdown() {
-		UserFormDailyMeteringDataProducer.shutdownFlag.set(true);
+		DailyMeteringDataLoader.shutdownFlag.set(true);
 	}
 
 	

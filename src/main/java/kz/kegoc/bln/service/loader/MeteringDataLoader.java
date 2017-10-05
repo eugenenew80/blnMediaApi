@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.media;
+package kz.kegoc.bln.service.loader;
 
 public interface MeteringDataLoader {
 	void execute();

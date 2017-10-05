@@ -13,11 +13,11 @@ import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.entity.media.dto.DailyMeteringDataDto;
-import kz.kegoc.bln.service.media.DailyMeteringDataService;
+import kz.kegoc.bln.service.queue.DailyMeteringDataQueueService;
 
 
 @RequestScoped
-@Path("/media/dailyData")
+@Path("/queue/dailyData")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class DailyMeteringDataResource {
@@ -71,6 +71,6 @@ public class DailyMeteringDataResource {
 
 
 	@Inject
-	private DailyMeteringDataService service;
+	private DailyMeteringDataQueueService service;
 	private DozerBeanMapper mapper;
 }

@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.media.impl;
+package kz.kegoc.bln.service.loader.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.ejb.*;
 import javax.inject.Inject;
 
-import kz.kegoc.bln.service.media.MeteringDataProducer;
+import kz.kegoc.bln.service.loader.MeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.DailyMeteringData;
@@ -15,7 +15,7 @@ import kz.kegoc.bln.repository.media.DailyMeteringDataRepository;
 
 @Singleton
 @Startup
-public class UserFormDailyMeteringDataProducer implements MeteringDataProducer {
+public class DailyMeteringDataLoader implements MeteringDataLoader {
 	public static final AtomicBoolean shutdownFlag = new AtomicBoolean(false);
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)

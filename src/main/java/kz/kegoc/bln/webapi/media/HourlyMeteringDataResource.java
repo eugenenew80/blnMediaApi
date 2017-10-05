@@ -4,7 +4,7 @@ import kz.kegoc.bln.entity.media.HourlyMeteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.entity.media.dto.HourlyMeteringDataDto;
 import kz.kegoc.bln.entity.media.dto.HourlyMeteringDataListDto;
-import kz.kegoc.bln.service.media.HourlyMeteringDataService;
+import kz.kegoc.bln.service.queue.HourlyMeteringDataQueueService;
 import org.dozer.DozerBeanMapper;
 
 import javax.enterprise.context.RequestScoped;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 
 @RequestScoped
-@Path("/media/hourlyData")
+@Path("/queue/hourlyData")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class HourlyMeteringDataResource {
@@ -75,6 +75,6 @@ public class HourlyMeteringDataResource {
 
 
 	@Inject
-	private HourlyMeteringDataService service;
+	private HourlyMeteringDataQueueService service;
 	private DozerBeanMapper mapper;
 }

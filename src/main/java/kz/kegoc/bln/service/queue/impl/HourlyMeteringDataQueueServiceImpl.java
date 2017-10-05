@@ -1,7 +1,9 @@
-package kz.kegoc.bln.service.media.impl;
+package kz.kegoc.bln.service.queue.impl;
 
 import kz.kegoc.bln.entity.media.HourlyMeteringData;
-import kz.kegoc.bln.service.media.HourlyMeteringDataService;
+import kz.kegoc.bln.service.queue.HourlyMeteringDataQueueService;
+import kz.kegoc.bln.service.loader.impl.DailyMeteringDataLoader;
+import kz.kegoc.bln.service.loader.impl.HourlyMeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 
@@ -11,7 +13,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 @Stateless
-public class HourlyMeteringDataServiceImpl implements HourlyMeteringDataService {
+public class HourlyMeteringDataQueueServiceImpl implements HourlyMeteringDataQueueService {
 
 	@PostConstruct
 	public void init() {
@@ -27,11 +29,11 @@ public class HourlyMeteringDataServiceImpl implements HourlyMeteringDataService 
 	}
 
 	public void start() {
-		UserFormHourlyMeteringDataProducer.shutdownFlag.set(false);
+		HourlyMeteringDataLoader.shutdownFlag.set(false);
 	}
 
 	public void shutdown() {
-		UserFormDailyMeteringDataProducer.shutdownFlag.set(true);
+		DailyMeteringDataLoader.shutdownFlag.set(true);
 	}
 
 	
