@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_1.xsd">
 
-	<entity class="kz.kegoc.bln.entity.media.DailyMeteringData">
+	<entity class="kz.kegoc.bln.entity.media.DailyMeteringDataRaw">
 		<table name="media_daily_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -45,7 +45,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.HourlyMeteringData">
+	<entity class="kz.kegoc.bln.entity.media.HourlyMeteringDataRaw">
 		<table name="media_hourly_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -99,7 +99,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.MonthlyMeteringData">
+	<entity class="kz.kegoc.bln.entity.media.MonthlyMeteringDataRaw">
 		<table name="media_monthly_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">

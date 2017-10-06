@@ -4,9 +4,9 @@ import java.util.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import kz.kegoc.bln.webapi.exception.mapper.*;
-import kz.kegoc.bln.webapi.media.DailyMeteringDataResource;
-import kz.kegoc.bln.webapi.media.HourlyMeteringDataResource;
-import kz.kegoc.bln.webapi.media.MonthlyMeteringDataResource;
+import kz.kegoc.bln.webapi.raw.DailyMeteringDataRawResource;
+import kz.kegoc.bln.webapi.raw.HourlyMeteringDataRawResource;
+import kz.kegoc.bln.webapi.raw.MonthlyMeteringDataRawResource;
 
 
 @ApplicationPath("/webapi")
@@ -16,9 +16,9 @@ public class JaxRsConfig extends Application {
 	public Set<Class<?>> getClasses() {
 		final Set<Class<?>> resources = new HashSet<Class<?>>();
 
-		resources.add(MonthlyMeteringDataResource.class);
-		resources.add(DailyMeteringDataResource.class);
-		resources.add(HourlyMeteringDataResource.class);
+		resources.add(MonthlyMeteringDataRawResource.class);
+		resources.add(DailyMeteringDataRawResource.class);
+		resources.add(HourlyMeteringDataRawResource.class);
 
 		//resources.add(BasicAuthentificationFilter.class);
 		resources.add(RepositryNotFoundExceptionMapperImpl.class);
