@@ -41,9 +41,11 @@ public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 	
 	
 	private DailyMeteringDataRaw convert(String s) throws Exception {
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-mm-dd");
 		String[] data = s.split(";");
-		
+
 		DailyMeteringDataRaw d = new DailyMeteringDataRaw();
+		d.setMeteringDate(sd.parse(data[0]));
 		d.setMeteringPointCode(data[1]);
 		d.setParamCode(data[2]);
 		d.setUnitCode(data[3]);
@@ -51,9 +53,7 @@ public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 		d.setWayEntering(WayEnteringData.CSV);
 		d.setStatus(MeteringDataStatus.DRAFT);
 		d.setDataSourceCode("MANUAL");
-		
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy-mm-dd");
-		d.setMeteringDate(sd.parse(data[0]));
+
 		return d;
 	} 
 }
