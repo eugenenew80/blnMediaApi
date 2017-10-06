@@ -13,6 +13,7 @@ public class HourlyMeteringDataRawDto {
 	private Date meteringDate;
 	private Byte hour;
 	private String meteringPointCode;
+	private String externalMeteringPointCode;
 	private String paramCode;
 	private String unitCode;
 	private WayEnteringData wayEntering;

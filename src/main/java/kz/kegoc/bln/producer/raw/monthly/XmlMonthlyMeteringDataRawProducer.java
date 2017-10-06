@@ -22,7 +22,7 @@ import java.util.List;
 public class XmlMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<MonthlyMeteringDataRaw> implements MeteringDataProducer {
 
     public XmlMonthlyMeteringDataRawProducer() {
-		super("xml");
+		super("monthly/xml");
 	}
 
     

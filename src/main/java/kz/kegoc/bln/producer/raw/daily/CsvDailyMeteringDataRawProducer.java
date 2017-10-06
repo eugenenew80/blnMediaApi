@@ -20,7 +20,7 @@ import kz.kegoc.bln.producer.common.MeteringDataProducer;
 public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<DailyMeteringDataRaw> implements MeteringDataProducer {
     
     public CsvDailyMeteringDataRawProducer() {
-		super("csv");
+		super("daily/csv");
 	}
 
     

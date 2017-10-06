@@ -9,6 +9,7 @@ public class MonthlyMeteringDataRawDto {
 	private Short meteringYear;
 	private Short meteringMonth;
 	private String meteringPointCode;
+	private String externalMeteringPointCode;
 	private String paramCode;
 	private String unitCode;
 	private WayEnteringData wayEntering;

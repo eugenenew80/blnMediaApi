@@ -22,7 +22,7 @@ import kz.kegoc.bln.producer.common.MeteringDataProducer;
 public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<DailyMeteringDataRaw> implements MeteringDataProducer {
     
     public XmlDailyMeteringDataRawProducer() {
-		super("xml");
+		super("daily/xml");
 	}
 
     

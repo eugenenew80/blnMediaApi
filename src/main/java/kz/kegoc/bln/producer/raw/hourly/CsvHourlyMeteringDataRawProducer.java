@@ -21,7 +21,7 @@ import java.util.List;
 public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<HourlyMeteringDataRaw> implements MeteringDataProducer {
 
     public CsvHourlyMeteringDataRawProducer() {
-		super("csv");
+		super("hourly/csv");
 	}
 
     

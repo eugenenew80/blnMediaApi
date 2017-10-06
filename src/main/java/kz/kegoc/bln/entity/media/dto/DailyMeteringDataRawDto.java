@@ -12,6 +12,7 @@ public class DailyMeteringDataRawDto {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private Date meteringDate;
 	private String meteringPointCode;
+	private String externalMeteringPointCode;
 	private String paramCode;
 	private String unitCode;
 	private WayEnteringData wayEntering;

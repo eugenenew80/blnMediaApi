@@ -18,6 +18,10 @@
       			<column name="metering_point_code" />
       		</basic>
 
+      		<basic name="externalMeteringPointCode">
+      			<column name="external_metering_point_code" />
+      		</basic>
+      		
       		<basic name="paramCode">
       			<column name="param_code" />
       		</basic>
@@ -60,6 +64,10 @@
 
       		<basic name="meteringPointCode">
       			<column name="metering_point_code" />
+      		</basic>
+
+      		<basic name="externalMeteringPointCode">
+      			<column name="external_metering_point_code" />
       		</basic>
 
       		<basic name="paramCode">
@@ -114,6 +122,10 @@
 
       		<basic name="meteringPointCode">
       			<column name="metering_point_code" />
+      		</basic>
+
+      		<basic name="externalMeteringPointCode">
+      			<column name="external_metering_point_code" />
       		</basic>
 
       		<basic name="paramCode">

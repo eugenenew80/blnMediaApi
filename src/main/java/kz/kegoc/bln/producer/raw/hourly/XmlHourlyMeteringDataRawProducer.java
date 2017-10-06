@@ -23,7 +23,7 @@ import java.util.List;
 public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<HourlyMeteringDataRaw> implements MeteringDataProducer {
 
     public XmlHourlyMeteringDataRawProducer() {
-		super("xml");
+		super("hourly/xml");
 	}
 
     

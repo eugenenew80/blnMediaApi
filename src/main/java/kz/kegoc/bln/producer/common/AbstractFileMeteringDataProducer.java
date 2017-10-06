@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class AbstractFileMeteringDataProducer<T extends HasId> implements MeteringDataProducer {
-	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
+	private String dir = "C:\\src\\bln\\meteringData";
     private String subDir;
 
 	public AbstractFileMeteringDataProducer() {

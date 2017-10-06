@@ -20,7 +20,7 @@ import java.util.List;
 public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<MonthlyMeteringDataRaw> implements MeteringDataProducer {
 
     public CsvMonthlyMeteringDataRawProducer() {
-		super("csv");
+		super("monthly/csv");
 	}
 
     

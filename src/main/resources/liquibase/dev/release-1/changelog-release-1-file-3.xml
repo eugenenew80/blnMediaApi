@@ -15,7 +15,11 @@
             </column>
 
             <column name="metering_point_code" type="varchar(15)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
+            </column>
+            
+            <column name="external_metering_point_code" type="varchar(18)">
+                <constraints nullable="true"/>
             </column>
             
             <column name="param_code" type="varchar(4)">
