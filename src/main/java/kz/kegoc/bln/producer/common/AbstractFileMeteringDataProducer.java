@@ -11,9 +11,10 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class AbstractFileMeteringDataProducer<T extends HasId> implements MeteringDataProducer {
-	private String dir = "C:\\src\\bln\\meteringData";
+	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
     private String subDir;
 
 	public AbstractFileMeteringDataProducer() {
@@ -37,8 +38,8 @@ public abstract class AbstractFileMeteringDataProducer<T extends HasId> implemen
 	
 	protected List<Path> getListFiles(Path path) {
 		List<Path> list;
-		try {
-			list = Files.list(path).collect(Collectors.toList());
+		try (Stream<Path> stream = Files.list(path))  {
+			list = stream.collect(Collectors.toList());
 		} 
 		catch (IOException e) {
 			list = Collections.emptyList();

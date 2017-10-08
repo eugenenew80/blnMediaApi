@@ -164,4 +164,43 @@
 		</attributes>
 	</entity>
 
+	<entity class="kz.kegoc.bln.entity.dict.MeteringPoint">
+		<table name="dict_metering_points" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+			</id>
+
+			<basic name="code">
+				<column name="code" />
+			</basic>
+
+			<basic name="externalCode">
+				<column name="external_code" />
+			</basic>
+
+			<one-to-one name="loadInfo">
+				<join-column name="id"/>
+			</one-to-one>
+		</attributes>
+	</entity>
+
+
+	<entity class="kz.kegoc.bln.entity.media.LoadMeteringInfo">
+		<table name="media_load_metering_info" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="metering_point_id" />
+			</id>
+
+			<basic name="lastRequestedDate">
+				<column name="last_requested_date" />
+			</basic>
+
+			<basic name="lastLoadedDate">
+				<column name="last_loaded_date" />
+			</basic>
+		</attributes>
+	</entity>
+
 </entity-mappings>

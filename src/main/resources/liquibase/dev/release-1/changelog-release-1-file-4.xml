@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    
+    <changeSet id="media-eug-10" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <comment>Creating table: media_load_metering_info</comment>
+        <createTable tableName="media_load_metering_info" schemaName="apps">            
+            <column name="metering_point_id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="last_requested_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_loaded_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+	<changeSet id="media-eug-11" logicalFilePath="path-independent" author="eugene" context="postgres">
+	    <comment>Creating primary key for table: media_load_metering_info</comment>
+	    <addPrimaryKey 
+	            columnNames="metering_point_id"
+	            constraintName="pk_media_load_metering_info"
+	            schemaName="apps"
+	            tableName="media_load_metering_info"/>
+	</changeSet>
+</databaseChangeLog>
