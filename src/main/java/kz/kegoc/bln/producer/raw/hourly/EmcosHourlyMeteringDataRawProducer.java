@@ -3,7 +3,6 @@ package kz.kegoc.bln.producer.raw.hourly;
 import java.time.*;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
@@ -12,9 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import kz.kegoc.bln.entity.dict.MeteringPoint;
-import kz.kegoc.bln.producer.common.EmcosConfig;
 import kz.kegoc.bln.producer.common.EmcosDataRequester;
-
 import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
