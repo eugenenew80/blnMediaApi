@@ -17,12 +17,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 public class EmcosDataRequester {
@@ -38,11 +38,13 @@ public class EmcosDataRequester {
         return extractData(answerData);
     }
 
-    private String buildReqest(List<MeteringPoint> points, LocalDateTime endDateTile) {
+    private String buildReqest(List<MeteringPoint> points, LocalDateTime endDateTime) {
         String strPoints = points.stream()
-                .map( p-> toXmlNode(p, "1041", endDateTile))
+                .map( p-> toXmlNode(p, "1041", endDateTime))
                 .collect(Collectors.joining());
-
+        
+        System.out.println(strPoints);
+        
         String data = ""
                 + "<?xml version=\"1.0\" encoding=\"windows-1251\"?>"
                 + "<DATAPACKET Version=\"2.0\">"
@@ -135,8 +137,22 @@ public class EmcosDataRequester {
 
 
     private String toXmlNode(MeteringPoint point, String pmlId, LocalDateTime endDateTime) {
-        LocalDateTime startDateTime = LocalDateTime.ofInstant(point.getLoadInfo().getLastLoadedDate().toInstant(), ZoneId.systemDefault()).plusMinutes(15);
-
+        LocalDateTime startDateTime;
+        if (point.getLoadInfo()!=null && point.getLoadInfo().getLastLoadedDate()!=null) {
+        	LocalDateTime lastLoadTime =point.getLoadInfo().getLastLoadedDate();
+        	startDateTime = LocalDateTime.of(lastLoadTime.getYear(), lastLoadTime.getMonth(), lastLoadTime.getDayOfMonth(), lastLoadTime.getHour(), 0);
+        }	
+        else {
+        	LocalDateTime now = LocalDateTime.now();
+        	startDateTime =  LocalDateTime.of(
+					now.getYear(),
+					now.getMonth(),
+					now.getDayOfMonth(),
+					0,
+					0
+				); 
+        }
+        
         return ""
                 + "<ROW PPOINT_CODE=\"" + point.getExternalCode()
                 + "\" PML_ID=\"" + pmlId + "\" "
@@ -166,7 +182,7 @@ public class EmcosDataRequester {
 
         HourlyMeteringDataRaw d = new HourlyMeteringDataRaw();
         d.setExternalMeteringPointCode(pointCode);
-        d.setMeteringDate(Date.from(time.toInstant(ZoneOffset.UTC)));
+        d.setMeteringDate(time);
         d.setHour( (byte) time.getHour());
         d.setWayEntering(WayEnteringData.EMCOS);
         d.setDataSourceCode("EMCOS");
@@ -178,5 +194,19 @@ public class EmcosDataRequester {
         return d;
     }
 
+    
+
+	public Date calendarFor(LocalDateTime time) {
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        cal.set(Calendar.YEAR, time.getYear());
+        cal.set(Calendar.MONTH, time.getMonthValue());
+        cal.set(Calendar.DAY_OF_MONTH, time.getDayOfMonth());
+        cal.set(Calendar.HOUR_OF_DAY, time.getHour());
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }    
+    
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
 }

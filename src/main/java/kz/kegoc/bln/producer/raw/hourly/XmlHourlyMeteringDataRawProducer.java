@@ -57,7 +57,7 @@ public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 			switch (nodeAttr.getNodeName()) {
 				case "meteringDate":
 					SimpleDateFormat sd = new SimpleDateFormat("yyyy-mm-dd");
-					d.setMeteringDate(sd.parse(nodeAttr.getNodeValue()));
+					//d.setMeteringDate(sd.parse(nodeAttr.getNodeValue()));
 					break;
 				case "hour":
 					d.setHour(Byte.parseByte(nodeAttr.getNodeValue()));

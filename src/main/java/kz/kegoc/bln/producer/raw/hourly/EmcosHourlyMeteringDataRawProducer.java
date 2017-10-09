@@ -9,14 +9,14 @@ import javax.inject.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
+import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.producer.common.EmcosDataRequester;
 import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
-
 import static kz.kegoc.bln.producer.common.EmcosConfig.defaultEmcosServer;
+
 
 @Singleton
 @Startup
@@ -29,39 +29,68 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 		TypedQuery<MeteringPoint> query = em.createNamedQuery("LoadMeteringInfo.findAll", MeteringPoint.class);
 		List<MeteringPoint> points = query.getResultList();
 
-		LocalDateTime now = LocalDateTime.now();
+		
+		LocalDateTime now = LocalDateTime.now().minusMinutes(15);
 		LocalDateTime endDateTime =  LocalDateTime.of(
 											now.getYear(),
 											now.getMonth(),
 											now.getDayOfMonth(),
 											now.getHour(),
 											Math.round(now.getMinute() / 15)*15
-										);
+										).plusHours(1);
 
 		try {
-			List<HourlyMeteringDataRaw> meteringData = new EmcosDataRequester(defaultEmcosServer().build())
+			List<HourlyMeteringDataRaw> minuteData = new EmcosDataRequester(defaultEmcosServer().build())
 					.requestMeteringData(points, endDateTime);
 
-			//List<HourlyMeteringDataRaw> meteringData = new ArrayList<>();
-			service.addMeteringListData(meteringData);
+			List<HourlyMeteringDataRaw> hourData = new ArrayList<>();
+			
+			Map<Pair<String, LocalDateTime>, List<HourlyMeteringDataRaw>> mapPairs = minuteData.stream().collect( Collectors.groupingBy( m -> Pair.of(m.getExternalMeteringPointCode(), m.getMeteringDate()) ) );
+			for ( Pair<String, LocalDateTime> pair : mapPairs.keySet() ) {
+				HourlyMeteringDataRaw h = new HourlyMeteringDataRaw();
+				
+				h.setStatus(mapPairs.get(pair).get(0).getStatus());
+				h.setExternalMeteringPointCode(mapPairs.get(pair).get(0).getExternalMeteringPointCode());
+				h.setMeteringDate(mapPairs.get(pair).get(0).getMeteringDate());
+				h.setDataSourceCode(mapPairs.get(pair).get(0).getDataSourceCode());
+				h.setParamCode(mapPairs.get(pair).get(0).getParamCode());
+				h.setUnitCode(mapPairs.get(pair).get(0).getUnitCode());
+				h.setWayEntering(mapPairs.get(pair).get(0).getWayEntering());
+				h.setHour(mapPairs.get(pair).get(0).getHour());
+				
+				h.setVal(mapPairs.get(pair).stream().mapToDouble(m -> m.getVal()).sum());
+				hourData.add(h);
+			}
+			
+			service.addMeteringListData(hourData);
 
-			meteringData.stream()
-				.map(t -> t.getId())
+			hourData.stream()
+				.map(t -> t.getExternalMeteringPointCode())
 				.distinct()
 				.collect(Collectors.toList())
-				.forEach(id -> {
-					Date lastLoadedDate = meteringData.stream()
+				.forEach(externalCode -> {
+					LocalDateTime lastLoadedDate = hourData.stream()
 						.map(p -> p.getMeteringDate())
-						.max(Date::compareTo).get();
+						.max(LocalDateTime::compareTo).get();
 
-					LoadMeteringInfo l = em.find(LoadMeteringInfo.class, id);
-					if (l==null) {
-						l = new LoadMeteringInfo();
-						l.setId(id);
+					TypedQuery<MeteringPoint> q = em.createNamedQuery("MeteringPoint.findByExternalCode", MeteringPoint.class);
+					q.setParameter("externalCode", externalCode);
+					
+					MeteringPoint p = q.getResultList().stream()
+						.findFirst()
+						.orElse(null);
+										
+					if (p!=null ) {
+						LoadMeteringInfo l = em.find(LoadMeteringInfo.class, p.getId());
+						if (l==null) 
+							l = new LoadMeteringInfo();
+						
+						l.setId(p.getId());
 						l.setLastLoadedDate(lastLoadedDate);
-						l.setLastRequestedDate(Date.from(endDateTime.toInstant(ZoneOffset.UTC)));
+						l.setLastRequestedDate(endDateTime);
+						
+						em.persist(l);
 					}
-					em.persist(l);
 				});
 		}
 

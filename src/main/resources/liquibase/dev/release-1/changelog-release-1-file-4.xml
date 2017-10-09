@@ -13,11 +13,11 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="last_requested_date" type="date">
+            <column name="last_requested_date" type="TIMESTAMP WITHOUT TIME ZONE">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_loaded_date" type="date">
+            <column name="last_loaded_date" type="TIMESTAMP WITHOUT TIME ZONE">
                 <constraints nullable="true"/>
             </column>
         </createTable>

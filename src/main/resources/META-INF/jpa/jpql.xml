@@ -5,4 +5,10 @@
             select m from MeteringPoint m LEFT JOIN m.loadInfo l
         </query>
     </named-query>
+    
+    <named-query name="MeteringPoint.findByExternalCode">
+        <query>
+            select t from MeteringPoint t where t.externalCode=:externalCode
+        </query>
+    </named-query>    
 </entity-mappings>
