@@ -1,7 +1,8 @@
 package kz.kegoc.bln.producer.raw.daily;
 
 import java.nio.file.*;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -55,11 +56,10 @@ public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 			Node nodeAttr = node.getAttributes().item(i);
 			switch (nodeAttr.getNodeName()) {
 				case "meteringDate":
-					SimpleDateFormat sd = new SimpleDateFormat("yyyy-mm-dd");
-					d.setMeteringDate(sd.parse(nodeAttr.getNodeValue()));
+					d.setMeteringDate(LocalDateTime.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 					break;
-				case "meteringPointCode":
-					d.setMeteringPointCode(nodeAttr.getNodeValue());
+				case "code":
+					d.setCode(nodeAttr.getNodeValue());
 					break;
 				case "paramCode":
 					d.setParamCode(nodeAttr.getNodeValue());

@@ -1,7 +1,8 @@
 package kz.kegoc.bln.producer.raw.daily;
 
 import java.nio.file.*;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.ejb.Schedule;
@@ -23,7 +24,6 @@ public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 		super("daily/csv");
 	}
 
-    
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
 		super.execute();
@@ -41,12 +41,11 @@ public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 	
 	
 	private DailyMeteringDataRaw convert(String s) throws Exception {
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy-mm-dd");
 		String[] data = s.split(";");
 
 		DailyMeteringDataRaw d = new DailyMeteringDataRaw();
-		d.setMeteringDate(sd.parse(data[0]));
-		d.setMeteringPointCode(data[1]);
+		d.setMeteringDate(LocalDateTime.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
+		d.setCode(data[1]);
 		d.setParamCode(data[2]);
 		d.setUnitCode(data[3]);
 		d.setVal( Double.parseDouble(data[4]) );

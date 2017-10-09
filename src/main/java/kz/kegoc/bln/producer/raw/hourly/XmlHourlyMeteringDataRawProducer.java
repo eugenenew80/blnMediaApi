@@ -13,7 +13,8 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,14 +57,13 @@ public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 			Node nodeAttr = node.getAttributes().item(i);
 			switch (nodeAttr.getNodeName()) {
 				case "meteringDate":
-					SimpleDateFormat sd = new SimpleDateFormat("yyyy-mm-dd");
-					//d.setMeteringDate(sd.parse(nodeAttr.getNodeValue()));
+					d.setMeteringDate(LocalDateTime.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 					break;
 				case "hour":
 					d.setHour(Byte.parseByte(nodeAttr.getNodeValue()));
 					break;
-				case "meteringPointCode":
-					d.setMeteringPointCode(nodeAttr.getNodeValue());
+				case "code":
+					d.setCode(nodeAttr.getNodeValue());
 					break;
 				case "paramCode":
 					d.setParamCode(nodeAttr.getNodeValue());

@@ -11,7 +11,8 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +43,11 @@ public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 	
 	
 	private HourlyMeteringDataRaw convert(String s) throws Exception {
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy-mm-dd");
-
 		String[] data = s.split(";");
 		HourlyMeteringDataRaw d = new HourlyMeteringDataRaw();
-		//d.setMeteringDate(sd.parse(data[0]));
+		d.setMeteringDate(LocalDateTime.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 		d.setHour( Byte.parseByte(data[1]));
-		d.setMeteringPointCode(data[2]);
+		d.setCode(data[2]);
 		d.setParamCode(data[3]);
 		d.setUnitCode(data[4]);
 		d.setVal( Double.parseDouble(data[5]) );

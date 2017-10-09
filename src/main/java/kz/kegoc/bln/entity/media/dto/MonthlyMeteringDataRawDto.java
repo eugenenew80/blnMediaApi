@@ -6,10 +6,10 @@ import lombok.Data;
 
 @Data
 public class MonthlyMeteringDataRawDto {
-	private Short meteringYear;
-	private Short meteringMonth;
-	private String meteringPointCode;
-	private String externalMeteringPointCode;
+	private Short year;
+	private Short month;
+	private String code;
+	private String externalCode;
 	private String paramCode;
 	private String unitCode;
 	private WayEnteringData wayEntering;

@@ -14,15 +14,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 public class EmcosDataRequester {
@@ -40,8 +38,8 @@ public class EmcosDataRequester {
 
     private String buildReqest(List<MeteringPoint> points, LocalDateTime endDateTime) {
         String strPoints = points.stream()
-                .map( p-> toXmlNode(p, "1041", endDateTime))
-                .collect(Collectors.joining());
+            .map( p-> toXmlNode(p, "1041", endDateTime))
+            .collect(Collectors.joining());
         
         System.out.println(strPoints);
         
@@ -87,41 +85,46 @@ public class EmcosDataRequester {
     }
 
     private String doRequest(String requestBody) throws Exception {
-        URL obj = new URL(config.getUrl());
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        URL url = new URL(config.getUrl());
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
-
         con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(requestBody);
-        wr.flush();
-        wr.close();
+
+        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+            wr.writeBytes(requestBody);
+            wr.flush();
+        }
 
         StringBuffer response = new StringBuffer();
-        String output;
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        while ((output = in.readLine()) != null)
-            response.append(output);
-        in.close();
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+            String output;
+            while ((output = in.readLine()) != null)
+                response.append(output);
+        }
 
         String rawData = response.toString();
 
         int n1 = rawData.indexOf("<AnswerData>");
         int n2 = rawData.indexOf("</AnswerData>");
-        String data = rawData.substring(n1+12, n2);
 
-        return data;
+        if (n2>n1)
+            return rawData.substring(n1+12, n2);
+        else
+            return "";
     }
 
 
     private List<HourlyMeteringDataRaw> extractData(String answerData) throws Exception {
+        Document doc = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder()
+            .parse(new InputSource(new StringReader(new String(Base64.decodeBase64(answerData), "Cp1251"))));
+
         List<HourlyMeteringDataRaw> pointDataList = new ArrayList<>();
 
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
-                .parse(new InputSource(new java.io.StringReader(new String(Base64.decodeBase64(answerData), "Cp1251"))));
+        NodeList nodes =  doc.getDocumentElement().getParentNode()
+            .getFirstChild()
+            .getChildNodes();
 
-        NodeList nodes =  doc.getDocumentElement().getParentNode().getFirstChild().getChildNodes();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -139,7 +142,7 @@ public class EmcosDataRequester {
     private String toXmlNode(MeteringPoint point, String pmlId, LocalDateTime endDateTime) {
         LocalDateTime startDateTime;
         if (point.getLoadInfo()!=null && point.getLoadInfo().getLastLoadedDate()!=null) {
-        	LocalDateTime lastLoadTime =point.getLoadInfo().getLastLoadedDate();
+        	LocalDateTime lastLoadTime = point.getLoadInfo().getLastLoadedDate();
         	startDateTime = LocalDateTime.of(lastLoadTime.getYear(), lastLoadTime.getMonth(), lastLoadTime.getDayOfMonth(), lastLoadTime.getHour(), 0);
         }	
         else {
@@ -179,10 +182,9 @@ public class EmcosDataRequester {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-
         HourlyMeteringDataRaw d = new HourlyMeteringDataRaw();
-        d.setExternalMeteringPointCode(pointCode);
-        d.setMeteringDate(time);
+        d.setExternalCode(pointCode);
+        d.setMeteringDate(time.minusMinutes(time.getMinute()));
         d.setHour( (byte) time.getHour());
         d.setWayEntering(WayEnteringData.EMCOS);
         d.setDataSourceCode("EMCOS");
@@ -194,19 +196,5 @@ public class EmcosDataRequester {
         return d;
     }
 
-    
-
-	public Date calendarFor(LocalDateTime time) {
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        cal.set(Calendar.YEAR, time.getYear());
-        cal.set(Calendar.MONTH, time.getMonthValue());
-        cal.set(Calendar.DAY_OF_MONTH, time.getDayOfMonth());
-        cal.set(Calendar.HOUR_OF_DAY, time.getHour());
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTime();
-    }    
-    
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
 }

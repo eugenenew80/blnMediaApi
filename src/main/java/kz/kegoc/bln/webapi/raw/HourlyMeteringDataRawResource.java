@@ -48,7 +48,7 @@ public class HourlyMeteringDataRawResource {
 		List<HourlyMeteringDataRaw> list = listDto.getMeteringData().stream()
 			.map(t -> {
 				t.setMeteringDate(listDto.getMeteringDate());
-				t.setMeteringPointCode(listDto.getMeteringPointCode());
+				t.setCode(listDto.getMeteringPointCode());
 				t.setWayEntering(WayEnteringData.USER);
 				t.setStatus(MeteringDataStatus.DRAFT);
 				t.setDataSourceCode("MANUAL");

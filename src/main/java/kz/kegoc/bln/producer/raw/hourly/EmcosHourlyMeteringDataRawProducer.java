@@ -26,18 +26,17 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 	public void execute() {
 		System.out.println("EmcosHourlyMeteringDataRawProducer started");
 
-		TypedQuery<MeteringPoint> query = em.createNamedQuery("LoadMeteringInfo.findAll", MeteringPoint.class);
-		List<MeteringPoint> points = query.getResultList();
+		List<MeteringPoint> points = em.createNamedQuery("LoadMeteringInfo.findAll", MeteringPoint.class)
+				.getResultList();
 
-		
 		LocalDateTime now = LocalDateTime.now().minusMinutes(15);
 		LocalDateTime endDateTime =  LocalDateTime.of(
-											now.getYear(),
-											now.getMonth(),
-											now.getDayOfMonth(),
-											now.getHour(),
-											Math.round(now.getMinute() / 15)*15
-										).plusHours(1);
+				now.getYear(),
+				now.getMonth(),
+				now.getDayOfMonth(),
+				now.getHour(),
+				Math.round(now.getMinute() / 15)*15
+			).plusHours(1);
 
 		try {
 			List<HourlyMeteringDataRaw> minuteData = new EmcosDataRequester(defaultEmcosServer().build())
@@ -45,12 +44,14 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 
 			List<HourlyMeteringDataRaw> hourData = new ArrayList<>();
 			
-			Map<Pair<String, LocalDateTime>, List<HourlyMeteringDataRaw>> mapPairs = minuteData.stream().collect( Collectors.groupingBy( m -> Pair.of(m.getExternalMeteringPointCode(), m.getMeteringDate()) ) );
+			Map<Pair<String, LocalDateTime>, List<HourlyMeteringDataRaw>> mapPairs = minuteData.stream()
+					.collect( Collectors.groupingBy( m -> Pair.of(m.getExternalCode(), m.getMeteringDate()) ) );
+
 			for ( Pair<String, LocalDateTime> pair : mapPairs.keySet() ) {
 				HourlyMeteringDataRaw h = new HourlyMeteringDataRaw();
 				
 				h.setStatus(mapPairs.get(pair).get(0).getStatus());
-				h.setExternalMeteringPointCode(mapPairs.get(pair).get(0).getExternalMeteringPointCode());
+				h.setExternalCode(mapPairs.get(pair).get(0).getExternalCode());
 				h.setMeteringDate(mapPairs.get(pair).get(0).getMeteringDate());
 				h.setDataSourceCode(mapPairs.get(pair).get(0).getDataSourceCode());
 				h.setParamCode(mapPairs.get(pair).get(0).getParamCode());
@@ -65,21 +66,22 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 			service.addMeteringListData(hourData);
 
 			hourData.stream()
-				.map(t -> t.getExternalMeteringPointCode())
+				.map(t -> t.getExternalCode())
 				.distinct()
 				.collect(Collectors.toList())
 				.forEach(externalCode -> {
+
 					LocalDateTime lastLoadedDate = hourData.stream()
 						.map(p -> p.getMeteringDate())
 						.max(LocalDateTime::compareTo).get();
 
-					TypedQuery<MeteringPoint> q = em.createNamedQuery("MeteringPoint.findByExternalCode", MeteringPoint.class);
-					q.setParameter("externalCode", externalCode);
-					
-					MeteringPoint p = q.getResultList().stream()
+					MeteringPoint p  = em.createNamedQuery("MeteringPoint.findByExternalCode", MeteringPoint.class)
+						.setParameter("externalCode", externalCode)
+						.getResultList()
+						.stream()
 						.findFirst()
 						.orElse(null);
-										
+
 					if (p!=null ) {
 						LoadMeteringInfo l = em.find(LoadMeteringInfo.class, p.getId());
 						if (l==null) 

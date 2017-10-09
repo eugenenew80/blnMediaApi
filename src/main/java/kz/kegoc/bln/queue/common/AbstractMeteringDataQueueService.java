@@ -21,7 +21,6 @@ public abstract class AbstractMeteringDataQueueService<T extends HasId> implemen
         this.queueName = queueName;
     }
 
-
     public void addMeteringData(T entity) {
         queue.add(entity);
     }

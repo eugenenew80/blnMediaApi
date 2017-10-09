@@ -54,14 +54,14 @@ public class XmlMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
 		for (int i=0; i< node.getAttributes().getLength(); i++) {
 			Node nodeAttr = node.getAttributes().item(i);
 			switch (nodeAttr.getNodeName()) {
-				case "meteringYear":
-					d.setMeteringYear(Short.parseShort(nodeAttr.getNodeValue()));
+				case "year":
+					d.setYear(Short.parseShort(nodeAttr.getNodeValue()));
 					break;
 				case "meteringMont":
-					d.setMeteringMonth(Short.parseShort(nodeAttr.getNodeValue()));
+					d.setMonth(Short.parseShort(nodeAttr.getNodeValue()));
 					break;
-				case "meteringPointCode":
-					d.setMeteringPointCode(nodeAttr.getNodeValue());
+				case "code":
+					d.setCode(nodeAttr.getNodeValue());
 					break;
 				case "paramCode":
 					d.setParamCode(nodeAttr.getNodeValue());
