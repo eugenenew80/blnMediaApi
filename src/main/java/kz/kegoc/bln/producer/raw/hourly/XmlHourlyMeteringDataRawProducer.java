@@ -1,6 +1,6 @@
 package kz.kegoc.bln.producer.raw.hourly;
 
-import kz.kegoc.bln.entity.media.HourlyMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @Singleton
 @Startup
-public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<HourlyMeteringDataRaw> implements MeteringDataProducer {
+public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<HourMeteringDataRaw> implements MeteringDataProducer {
 
     public XmlHourlyMeteringDataRawProducer() {
 		super("hourly/xml");
@@ -34,12 +34,12 @@ public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
     }
 
 	
-	protected List<HourlyMeteringDataRaw> loadFromFile(Path path) throws Exception {
+	protected List<HourMeteringDataRaw> loadFromFile(Path path) throws Exception {
 		Document doc = DocumentBuilderFactory.newInstance()
 						.newDocumentBuilder()
 						.parse(path.toFile());
 		
-		List<HourlyMeteringDataRaw> list = new ArrayList<>();
+		List<HourMeteringDataRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
 			if (nodeRow.getNodeName().equals("row")) 
@@ -50,8 +50,8 @@ public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 	}
 	
 	
-	private HourlyMeteringDataRaw convert(Node node) throws Exception  {
-		HourlyMeteringDataRaw d = new HourlyMeteringDataRaw();
+	private HourMeteringDataRaw convert(Node node) throws Exception  {
+		HourMeteringDataRaw d = new HourMeteringDataRaw();
 
 		for (int i=0; i< node.getAttributes().getLength(); i++) {
 			Node nodeAttr = node.getAttributes().item(i);

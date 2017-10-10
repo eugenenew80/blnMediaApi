@@ -1,6 +1,6 @@
 package kz.kegoc.bln.producer.raw.monthly;
 
-import kz.kegoc.bln.entity.media.MonthlyMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Singleton
 @Startup
-public class XmlMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<MonthlyMeteringDataRaw> implements MeteringDataProducer {
+public class XmlMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<MonthMeteringDataRaw> implements MeteringDataProducer {
 
     public XmlMonthlyMeteringDataRawProducer() {
 		super("monthly/xml");
@@ -32,12 +32,12 @@ public class XmlMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
     }
 
 	
-	protected List<MonthlyMeteringDataRaw> loadFromFile(Path path) throws Exception {
+	protected List<MonthMeteringDataRaw> loadFromFile(Path path) throws Exception {
 		Document doc = DocumentBuilderFactory.newInstance()
 						.newDocumentBuilder()
 						.parse(path.toFile());
 		
-		List<MonthlyMeteringDataRaw> list = new ArrayList<>();
+		List<MonthMeteringDataRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
 			if (nodeRow.getNodeName().equals("row")) 
@@ -48,8 +48,8 @@ public class XmlMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
 	}
 	
 	
-	private MonthlyMeteringDataRaw convert(Node node) throws Exception  {
-		MonthlyMeteringDataRaw d = new MonthlyMeteringDataRaw();
+	private MonthMeteringDataRaw convert(Node node) throws Exception  {
+		MonthMeteringDataRaw d = new MonthMeteringDataRaw();
 
 		for (int i=0; i< node.getAttributes().getLength(); i++) {
 			Node nodeAttr = node.getAttributes().item(i);

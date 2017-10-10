@@ -1,6 +1,6 @@
 package kz.kegoc.bln.producer.raw.hourly;
 
-import kz.kegoc.bln.entity.media.HourlyMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Singleton
 @Startup
-public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<HourlyMeteringDataRaw> implements MeteringDataProducer {
+public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<HourMeteringDataRaw> implements MeteringDataProducer {
 
     public CsvHourlyMeteringDataRawProducer() {
 		super("hourly/csv");
@@ -32,8 +32,8 @@ public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
     }
 
 	
-	protected List<HourlyMeteringDataRaw> loadFromFile(Path path) throws Exception {
-		List<HourlyMeteringDataRaw> list = new ArrayList<>();
+	protected List<HourMeteringDataRaw> loadFromFile(Path path) throws Exception {
+		List<HourMeteringDataRaw> list = new ArrayList<>();
 		List<String> strs = Files.readAllLines(path);
 		for (int i=1; i<strs.size(); i++ ) {
 			list.add(convert(strs.get(i)));
@@ -42,9 +42,9 @@ public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 	}
 	
 	
-	private HourlyMeteringDataRaw convert(String s) throws Exception {
+	private HourMeteringDataRaw convert(String s) throws Exception {
 		String[] data = s.split(";");
-		HourlyMeteringDataRaw d = new HourlyMeteringDataRaw();
+		HourMeteringDataRaw d = new HourMeteringDataRaw();
 		d.setMeteringDate(LocalDateTime.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 		d.setHour( Byte.parseByte(data[1]));
 		d.setCode(data[2]);

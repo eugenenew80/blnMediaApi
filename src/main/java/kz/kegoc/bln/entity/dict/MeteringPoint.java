@@ -1,13 +1,13 @@
 package kz.kegoc.bln.entity.dict;
 
-import kz.kegoc.bln.entity.common.HasCode;
-import kz.kegoc.bln.entity.common.HasId;
-import kz.kegoc.bln.entity.media.LoadMeteringInfo;
+import kz.kegoc.bln.entity.common.*;
+import kz.kegoc.bln.entity.media.raw.LoadMeteringInfo;
 import lombok.Data;
 
 @Data
-public class MeteringPoint implements HasId, HasCode {
+public class MeteringPoint implements HasId, HasCode, HasName {
     private Long id;
+    private String name;
     private String code;
     private String externalCode;
     private LoadMeteringInfo loadInfo;

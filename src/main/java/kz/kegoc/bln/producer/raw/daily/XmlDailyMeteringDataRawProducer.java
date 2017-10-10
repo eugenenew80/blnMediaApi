@@ -12,7 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
 import org.w3c.dom.*;
 
-import kz.kegoc.bln.entity.media.DailyMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
@@ -20,7 +20,7 @@ import kz.kegoc.bln.producer.common.MeteringDataProducer;
 
 @Singleton
 @Startup
-public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<DailyMeteringDataRaw> implements MeteringDataProducer {
+public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<DayMeteringDataRaw> implements MeteringDataProducer {
     
     public XmlDailyMeteringDataRawProducer() {
 		super("daily/xml");
@@ -33,12 +33,12 @@ public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
     }
 
 	
-	protected List<DailyMeteringDataRaw> loadFromFile(Path path) throws Exception {
+	protected List<DayMeteringDataRaw> loadFromFile(Path path) throws Exception {
 		Document doc = DocumentBuilderFactory.newInstance()
 						.newDocumentBuilder()
 						.parse(path.toFile());
 		
-		List<DailyMeteringDataRaw> list = new ArrayList<>();
+		List<DayMeteringDataRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
 			if (nodeRow.getNodeName().equals("row")) 
@@ -49,8 +49,8 @@ public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 	}
 	
 	
-	private DailyMeteringDataRaw convert(Node node) throws Exception  {
-		DailyMeteringDataRaw d = new DailyMeteringDataRaw();
+	private DayMeteringDataRaw convert(Node node) throws Exception  {
+		DayMeteringDataRaw d = new DayMeteringDataRaw();
 
 		for (int i=0; i< node.getAttributes().getLength(); i++) {
 			Node nodeAttr = node.getAttributes().item(i);

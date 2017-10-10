@@ -1,8 +1,8 @@
 package kz.kegoc.bln.loader.raw;
 
-import kz.kegoc.bln.entity.media.HourlyMeteringDataRaw;
-import kz.kegoc.bln.repository.raw.HourlyMeteringDataRawRepository;
-import kz.kegoc.bln.loader.MeteringDataLoader;
+import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.repository.media.raw.HourMeteringDataRawRepository;
+import kz.kegoc.bln.loader.common.MeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 
@@ -20,10 +20,10 @@ public class HourlyMeteringDataRawLoader implements MeteringDataLoader {
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
-		RBlockingQueue<HourlyMeteringDataRaw> queue= redissonClient.getBlockingQueue("hourlyMeteringData");
-		List<HourlyMeteringDataRaw> list = new ArrayList<>();
+		RBlockingQueue<HourMeteringDataRaw> queue= redissonClient.getBlockingQueue("hourlyMeteringData");
+		List<HourMeteringDataRaw> list = new ArrayList<>();
 		while (true) {
-			HourlyMeteringDataRaw item = queue.poll();
+			HourMeteringDataRaw item = queue.poll();
 			if (item==null)
 				break;
 
@@ -34,7 +34,7 @@ public class HourlyMeteringDataRawLoader implements MeteringDataLoader {
 
 
 	@Inject
-	private HourlyMeteringDataRawRepository repository;
+	private HourMeteringDataRawRepository repository;
 
 	@Inject
 	private RedissonClient redissonClient;

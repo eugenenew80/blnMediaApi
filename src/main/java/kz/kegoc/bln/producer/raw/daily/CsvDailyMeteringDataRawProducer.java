@@ -9,7 +9,7 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
-import kz.kegoc.bln.entity.media.DailyMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
@@ -18,7 +18,7 @@ import kz.kegoc.bln.producer.common.MeteringDataProducer;
 
 @Singleton
 @Startup
-public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<DailyMeteringDataRaw> implements MeteringDataProducer {
+public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<DayMeteringDataRaw> implements MeteringDataProducer {
     
     public CsvDailyMeteringDataRawProducer() {
 		super("daily/csv");
@@ -30,8 +30,8 @@ public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
     }
 
 	
-	protected List<DailyMeteringDataRaw> loadFromFile(Path path) throws Exception {
-		List<DailyMeteringDataRaw> list = new ArrayList<>();
+	protected List<DayMeteringDataRaw> loadFromFile(Path path) throws Exception {
+		List<DayMeteringDataRaw> list = new ArrayList<>();
 		List<String> strs = Files.readAllLines(path);
 		for (int i=1; i<strs.size(); i++ ) {
 			list.add(convert(strs.get(i)));
@@ -40,10 +40,10 @@ public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 	}
 	
 	
-	private DailyMeteringDataRaw convert(String s) throws Exception {
+	private DayMeteringDataRaw convert(String s) throws Exception {
 		String[] data = s.split(";");
 
-		DailyMeteringDataRaw d = new DailyMeteringDataRaw();
+		DayMeteringDataRaw d = new DayMeteringDataRaw();
 		d.setMeteringDate(LocalDateTime.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 		d.setCode(data[1]);
 		d.setParamCode(data[2]);

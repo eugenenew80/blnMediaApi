@@ -5,11 +5,11 @@ import java.util.List;
 import javax.ejb.*;
 import javax.inject.Inject;
 
-import kz.kegoc.bln.loader.MeteringDataLoader;
+import kz.kegoc.bln.loader.common.MeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
-import kz.kegoc.bln.entity.media.DailyMeteringDataRaw;
-import kz.kegoc.bln.repository.raw.DailyMeteringDataRawRepository;
+import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
+import kz.kegoc.bln.repository.media.raw.DayMeteringDataRawRepository;
 
 
 @Singleton
@@ -18,10 +18,10 @@ public class DailyMeteringDataRawLoader implements MeteringDataLoader {
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
-		RBlockingQueue<DailyMeteringDataRaw> queue= redissonClient.getBlockingQueue("dailyMeteringData");
-		List<DailyMeteringDataRaw> list = new ArrayList<>();
+		RBlockingQueue<DayMeteringDataRaw> queue= redissonClient.getBlockingQueue("dailyMeteringData");
+		List<DayMeteringDataRaw> list = new ArrayList<>();
 		while (true) {
-			DailyMeteringDataRaw item = queue.poll();
+			DayMeteringDataRaw item = queue.poll();
 			if (item==null)
 				break;
 
@@ -32,7 +32,7 @@ public class DailyMeteringDataRawLoader implements MeteringDataLoader {
 
 
 	@Inject
-	private DailyMeteringDataRawRepository repository;
+	private DayMeteringDataRawRepository repository;
 
 	@Inject
 	private RedissonClient redissonClient;

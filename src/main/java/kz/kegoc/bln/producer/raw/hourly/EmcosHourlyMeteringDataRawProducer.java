@@ -2,41 +2,40 @@ package kz.kegoc.bln.producer.raw.hourly;
 
 import java.time.*;
 import java.util.*;
-import java.util.stream.Collectors;
 import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+
+import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
+import kz.kegoc.bln.service.media.raw.LoadMeteringInfoService;
 import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
-import kz.kegoc.bln.producer.common.EmcosDataRequester;
-import kz.kegoc.bln.entity.media.*;
+import kz.kegoc.bln.producer.raw.EmcosDataRequester;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
 
-import static kz.kegoc.bln.producer.common.EmcosConfig.defaultEmcosServer;
+import static java.util.stream.Collectors.groupingBy;
+import static kz.kegoc.bln.producer.raw.EmcosConfig.defaultEmcosServer;
 
 
 @Singleton
 @Startup
 public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer {
-	//private boolean starting = true;
-		
+
 	@Schedule(minute = "*/15", hour = "*", persistent = false)
 	public void execute() {
-		//if (!starting)return;
-		//starting=false;
-		
 		System.out.println("EmcosHourlyMeteringDataRawProducer started");
 
 		LocalDateTime endDateTime =  buildEndDateTime();
 		List<MeteringPoint> points = meteringPointService.findAll();
 		try {			
-			List<HourlyMeteringDataRaw> meteringData = new EmcosDataRequester(defaultEmcosServer().build()).requestMeteringData(points, endDateTime);
-			service.addMeteringListData(groupMeteringDataByDateTime(meteringData));
-			updateLoadMeteringInfo(meteringData, endDateTime);
+			List<MinuteMeteringDataRaw> meteringData = new EmcosDataRequester(defaultEmcosServer().build())
+				.requestMeteringData(points, endDateTime);
+
+			queueService.addMeteringListData(groupMeteringDataByDateTime(meteringData));
+			loadMeteringInfoService.updateLoadMeteringInfo(meteringData, endDateTime);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -46,87 +45,57 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
     }
 
 
-	private List<HourlyMeteringDataRaw> groupMeteringDataByDateTime(List<HourlyMeteringDataRaw> meteringDataRaw) {
-		Map<Pair<String, LocalDate>, List<HourlyMeteringDataRaw>> meteringDayData = meteringDataRaw.stream()
-				.collect(Collectors.groupingBy(m -> Pair.of(m.getExternalCode(), m.getMeteringDate().toLocalDate())));
+	private List<HourMeteringDataRaw> groupMeteringDataByDateTime(List<MinuteMeteringDataRaw> minuteMeteringData) {
+		Map<Pair<String, LocalDate>, List<MinuteMeteringDataRaw>> mapDayMeteringData = minuteMeteringData
+			.stream()
+			.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getMeteringDate().toLocalDate())));
 			
-		List<HourlyMeteringDataRaw> meteringData = new ArrayList<>();
-		for (Pair<String, LocalDate> pair : meteringDayData.keySet()) {
-			Map<Byte, List<HourlyMeteringDataRaw>> meteringHourData =  meteringDayData.get(pair)
+		List<HourMeteringDataRaw> hourMeteringData = new ArrayList<>();
+		for (Pair<String, LocalDate> pair : mapDayMeteringData.keySet()) {
+
+			Map<Integer, List<MinuteMeteringDataRaw>> mapHourMeteringData =  mapDayMeteringData
+				.get(pair)
 				.stream()
-				.collect(Collectors.groupingBy(m -> m.getHour()));
+				.collect(groupingBy(m -> m.getMeteringDate().getHour() ));
 			
-			for (Byte hour : meteringHourData.keySet()) {
-				HourlyMeteringDataRaw h = new HourlyMeteringDataRaw();
+			for (Integer hour : mapHourMeteringData.keySet()) {
+				HourMeteringDataRaw h = new HourMeteringDataRaw();
 				h.setExternalCode(pair.getLeft());
-				h.setMeteringDate(pair.getRight().atStartOfDay());
-				h.setHour(hour);
+				h.setMeteringDate(pair.getRight());
+				h.setHour(hour.byteValue());
 				
-				h.setStatus( meteringHourData.get(hour).get(0).getStatus() );
-				h.setDataSourceCode( meteringHourData.get(hour).get(0).getDataSourceCode() );
-				h.setParamCode( meteringHourData.get(hour).get(0).getParamCode() );
-				h.setUnitCode( meteringHourData.get(hour).get(0).getUnitCode() );
-				h.setWayEntering( meteringHourData.get(hour).get(0).getWayEntering() );
-				h.setVal(meteringHourData.get(hour).stream().mapToDouble(m -> m.getVal()).sum());
-				meteringData.add(h);
+				h.setStatus( mapHourMeteringData.get(hour).get(0).getStatus() );
+				h.setDataSourceCode( mapHourMeteringData.get(hour).get(0).getDataSourceCode() );
+				h.setParamCode( mapHourMeteringData.get(hour).get(0).getParamCode() );
+				h.setUnitCode( mapHourMeteringData.get(hour).get(0).getUnitCode() );
+				h.setWayEntering( mapHourMeteringData.get(hour).get(0).getWayEntering() );
+				h.setVal(mapHourMeteringData.get(hour).stream().mapToDouble(m -> m.getVal()).sum());
+				hourMeteringData.add(h);
 			}
 		}			
 		
-		return meteringData;
+		return hourMeteringData;
 	}
 	
 	
 	private LocalDateTime buildEndDateTime() {
-		LocalDateTime now = LocalDateTime.now().minusMinutes(15);
-		return  LocalDateTime.of(
-				now.getYear(),
-				now.getMonth(),
-				now.getDayOfMonth(),
-				now.getHour(),
-				45
-			).plusHours(1);		
+		LocalDateTime now = LocalDateTime.now();
+		return LocalDateTime.of(
+					now.getYear(),
+					now.getMonth(),
+					now.getDayOfMonth(),
+					now.getHour(),
+					45
+				).plusHours(1);
 	}
 	
-	private void updateLoadMeteringInfo(List<HourlyMeteringDataRaw> meteringData, LocalDateTime endDateTime) {
-		meteringData.stream()
-			.map(t -> t.getExternalCode())
-			.distinct()
-			.collect(Collectors.toList())
-			.forEach(externalCode -> {
-	
-				LocalDateTime lastLoadedDate = meteringData.stream()
-					.filter(p -> p.getExternalCode().equals(externalCode))	
-					.map(p -> p.getMeteringDate())
-					.max(LocalDateTime::compareTo).get();
-	
-				MeteringPoint p  = em.createNamedQuery("MeteringPoint.findByExternalCode", MeteringPoint.class)
-					.setParameter("externalCode", externalCode)
-					.getResultList()
-					.stream()
-					.findFirst()
-					.orElse(null);
-	
-				if (p!=null ) {
-					LoadMeteringInfo l = em.find(LoadMeteringInfo.class, p.getId());
-					if (l==null) 
-						l = new LoadMeteringInfo();
-					
-					l.setId(p.getId());
-					l.setLastLoadedDate(lastLoadedDate);
-					l.setLastRequestedDate(endDateTime);
-					
-					em.persist(l);
-				}
-			});		
-	}
-	
-	
+
 	@Inject
-	private MeteringDataQueueService<HourlyMeteringDataRaw> service;
+	private MeteringDataQueueService<HourMeteringDataRaw> queueService;
+
+	@Inject
+	private LoadMeteringInfoService loadMeteringInfoService;
 
 	@Inject
 	private MeteringPointService meteringPointService; 
-	
-	@PersistenceContext(unitName = "bln")
-	private EntityManager em;
 }

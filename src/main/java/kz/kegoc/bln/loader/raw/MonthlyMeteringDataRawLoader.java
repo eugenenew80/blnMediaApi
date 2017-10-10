@@ -5,11 +5,11 @@ import java.util.List;
 import javax.ejb.*;
 import javax.inject.Inject;
 
-import kz.kegoc.bln.loader.MeteringDataLoader;
+import kz.kegoc.bln.loader.common.MeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
-import kz.kegoc.bln.entity.media.MonthlyMeteringDataRaw;
-import kz.kegoc.bln.repository.raw.MonthlyMeteringDataRawRepository;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
+import kz.kegoc.bln.repository.media.raw.MonthMeteringDataRawRepository;
 
 
 @Singleton
@@ -18,10 +18,10 @@ public class MonthlyMeteringDataRawLoader implements MeteringDataLoader {
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
-		RBlockingQueue<MonthlyMeteringDataRaw> queue= redissonClient.getBlockingQueue("monthlyMeteringData");
-		List<MonthlyMeteringDataRaw> list = new ArrayList<>();
+		RBlockingQueue<MonthMeteringDataRaw> queue= redissonClient.getBlockingQueue("monthlyMeteringData");
+		List<MonthMeteringDataRaw> list = new ArrayList<>();
 		while (true) {
-			MonthlyMeteringDataRaw item = queue.poll();
+			MonthMeteringDataRaw item = queue.poll();
 			if (item==null)
 				break;
 
@@ -32,7 +32,7 @@ public class MonthlyMeteringDataRawLoader implements MeteringDataLoader {
 
 
 	@Inject
-	private MonthlyMeteringDataRawRepository repository;
+	private MonthMeteringDataRawRepository repository;
 
 	@Inject
 	private RedissonClient redissonClient;

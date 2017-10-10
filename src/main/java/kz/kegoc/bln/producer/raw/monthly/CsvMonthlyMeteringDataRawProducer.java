@@ -1,6 +1,6 @@
 package kz.kegoc.bln.producer.raw.monthly;
 
-import kz.kegoc.bln.entity.media.MonthlyMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MeteringDataStatus;
 import kz.kegoc.bln.entity.media.WayEnteringData;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Singleton
 @Startup
-public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<MonthlyMeteringDataRaw> implements MeteringDataProducer {
+public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<MonthMeteringDataRaw> implements MeteringDataProducer {
 
     public CsvMonthlyMeteringDataRawProducer() {
 		super("monthly/csv");
@@ -30,8 +30,8 @@ public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
     }
 
 	
-	protected List<MonthlyMeteringDataRaw> loadFromFile(Path path) throws Exception {
-		List<MonthlyMeteringDataRaw> list = new ArrayList<>();
+	protected List<MonthMeteringDataRaw> loadFromFile(Path path) throws Exception {
+		List<MonthMeteringDataRaw> list = new ArrayList<>();
 		List<String> strs = Files.readAllLines(path);
 		for (int i=1; i<strs.size(); i++ ) {
 			list.add(convert(strs.get(i)));
@@ -40,9 +40,9 @@ public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
 	}
 	
 	
-	private MonthlyMeteringDataRaw convert(String s) {
+	private MonthMeteringDataRaw convert(String s) {
 		String[] data = s.split(";");
-		MonthlyMeteringDataRaw d = new MonthlyMeteringDataRaw();
+		MonthMeteringDataRaw d = new MonthMeteringDataRaw();
 		d.setYear( Short.parseShort(data[0]));
 		d.setMonth( Short.parseShort(data[1]));
 		d.setCode(data[2]);
