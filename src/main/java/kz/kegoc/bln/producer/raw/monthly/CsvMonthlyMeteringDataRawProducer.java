@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.raw.monthly;
 
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
-import kz.kegoc.bln.entity.media.WayEnteringData;
+import kz.kegoc.bln.entity.media.DataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 
@@ -49,8 +49,8 @@ public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
 		d.setParamCode(data[3]);
 		d.setUnitCode(data[4]);
 		d.setVal( Double.parseDouble(data[5]) );
-		d.setWayEntering(WayEnteringData.CSV);
-		d.setStatus(MeteringDataStatus.DRAFT);
+		d.setWayEntering(WayEntering.CSV);
+		d.setStatus(DataStatus.RAW);
 		d.setDataSourceCode("MANUAL");
 
 		return d;

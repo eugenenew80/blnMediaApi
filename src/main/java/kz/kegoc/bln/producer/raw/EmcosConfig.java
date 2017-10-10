@@ -3,11 +3,11 @@ package kz.kegoc.bln.producer.raw;
 import lombok.Getter;
 
 public class EmcosConfig {
-    @Getter private String url;
-    @Getter private String user;
-    @Getter private String func;
-    @Getter private Boolean isPacked;
-    @Getter private String attType;
+    @Getter private final String url;
+    @Getter private final String user;
+    @Getter private final String func;
+    @Getter private final Boolean isPacked;
+    @Getter private final String attType;
 
     private EmcosConfig(Builder builder) {
         url = builder.url;

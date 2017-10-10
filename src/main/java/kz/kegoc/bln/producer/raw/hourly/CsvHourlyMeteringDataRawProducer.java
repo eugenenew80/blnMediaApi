@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.raw.hourly;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
-import kz.kegoc.bln.entity.media.WayEnteringData;
+import kz.kegoc.bln.entity.media.DataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 
@@ -11,7 +11,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +45,14 @@ public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 	private HourMeteringDataRaw convert(String s) throws Exception {
 		String[] data = s.split(";");
 		HourMeteringDataRaw d = new HourMeteringDataRaw();
-		d.setMeteringDate(LocalDateTime.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
+		d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 		d.setHour( Byte.parseByte(data[1]));
 		d.setCode(data[2]);
 		d.setParamCode(data[3]);
 		d.setUnitCode(data[4]);
 		d.setVal( Double.parseDouble(data[5]) );
-		d.setWayEntering(WayEnteringData.CSV);
-		d.setStatus(MeteringDataStatus.DRAFT);
+		d.setWayEntering(WayEntering.CSV);
+		d.setStatus(DataStatus.RAW);
 		d.setDataSourceCode("MANUAL");
 
 		return d;

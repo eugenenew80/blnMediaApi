@@ -1,6 +1,6 @@
 package kz.kegoc.bln.entity.media;
 
-public enum WayEnteringData {
+public enum WayEntering {
 	USER,
 	CSV,
 	XML,

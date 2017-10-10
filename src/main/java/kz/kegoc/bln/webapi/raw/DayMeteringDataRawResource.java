@@ -11,8 +11,8 @@ import javax.ws.rs.core.*;
 import org.dozer.DozerBeanMapper;
 
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.WayEnteringData;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.raw.dto.DayMeteringDataRawDto;
 import kz.kegoc.bln.queue.raw.DailyMeteringDataRawQueue;
 
@@ -25,14 +25,14 @@ public class DayMeteringDataRawResource {
 	
 	public DayMeteringDataRawResource() {
 		mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/DailyMeteringDataRawDtoDefaultMapping.xml"));
+		mapper.setMappingFiles(Arrays.asList("mapping/raw/DayMeteringDataRawDtoDefaultMapping.xml"));
 	}
 
 	
 	@POST
 	public Response create(DayMeteringDataRawDto entity) {
-		entity.setWayEntering(WayEnteringData.USER);
-		entity.setStatus(MeteringDataStatus.DRAFT);
+		entity.setWayEntering(WayEntering.USER);
+		entity.setStatus(DataStatus.RAW);
 		entity.setDataSourceCode("MANUAL");
 		
 		service.addMeteringData(mapper.map(entity, DayMeteringDataRaw.class));
@@ -46,8 +46,8 @@ public class DayMeteringDataRawResource {
 		
 		List<DayMeteringDataRaw> list = listDto.stream()
 			.map(t-> { 
-				t.setWayEntering(WayEnteringData.USER);
-				t.setStatus(MeteringDataStatus.DRAFT);
+				t.setWayEntering(WayEntering.USER);
+				t.setStatus(DataStatus.RAW);
 				t.setDataSourceCode("MANUAL");
 				return mapper.map(t, DayMeteringDataRaw.class);
 			})

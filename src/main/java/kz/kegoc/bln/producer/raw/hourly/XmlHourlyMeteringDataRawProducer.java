@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.raw.hourly;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
-import kz.kegoc.bln.entity.media.WayEnteringData;
+import kz.kegoc.bln.entity.media.DataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 import org.w3c.dom.Document;
@@ -13,7 +13,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 			Node nodeAttr = node.getAttributes().item(i);
 			switch (nodeAttr.getNodeName()) {
 				case "meteringDate":
-					d.setMeteringDate(LocalDateTime.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
+					d.setMeteringDate(LocalDate.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 					break;
 				case "hour":
 					d.setHour(Byte.parseByte(nodeAttr.getNodeValue()));
@@ -76,8 +76,8 @@ public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 					break;					
 			}
 		}
-		d.setWayEntering(WayEnteringData.XML);
-		d.setStatus(MeteringDataStatus.DRAFT);	
+		d.setWayEntering(WayEntering.XML);
+		d.setStatus(DataStatus.RAW);
 		d.setDataSourceCode("MANUAL");
 		
 		return d;

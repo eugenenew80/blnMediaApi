@@ -1,7 +1,7 @@
 package kz.kegoc.bln.producer.raw.daily;
 
 import java.nio.file.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.ejb.Schedule;
@@ -13,8 +13,8 @@ import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
 import org.w3c.dom.*;
 
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.WayEnteringData;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 
 
@@ -56,7 +56,7 @@ public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 			Node nodeAttr = node.getAttributes().item(i);
 			switch (nodeAttr.getNodeName()) {
 				case "meteringDate":
-					d.setMeteringDate(LocalDateTime.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
+					d.setMeteringDate(LocalDate.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 					break;
 				case "code":
 					d.setCode(nodeAttr.getNodeValue());
@@ -72,8 +72,8 @@ public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 					break;					
 			}
 		}
-		d.setWayEntering(WayEnteringData.XML);
-		d.setStatus(MeteringDataStatus.DRAFT);	
+		d.setWayEntering(WayEntering.XML);
+		d.setStatus(DataStatus.RAW);
 		d.setDataSourceCode("MANUAL");
 		
 		return d;

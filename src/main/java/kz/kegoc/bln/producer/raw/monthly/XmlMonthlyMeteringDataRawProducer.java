@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.raw.monthly;
 
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
-import kz.kegoc.bln.entity.media.WayEnteringData;
+import kz.kegoc.bln.entity.media.DataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 import org.w3c.dom.Document;
@@ -74,8 +74,8 @@ public class XmlMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
 					break;					
 			}
 		}
-		d.setWayEntering(WayEnteringData.XML);
-		d.setStatus(MeteringDataStatus.DRAFT);	
+		d.setWayEntering(WayEntering.XML);
+		d.setStatus(DataStatus.RAW);
 		d.setDataSourceCode("MANUAL");
 		
 		return d;

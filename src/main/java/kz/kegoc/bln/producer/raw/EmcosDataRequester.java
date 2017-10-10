@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.raw;
 
 import kz.kegoc.bln.entity.dict.MeteringPoint;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
-import kz.kegoc.bln.entity.media.WayEnteringData;
+import kz.kegoc.bln.entity.media.DataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
@@ -40,9 +40,7 @@ public class EmcosDataRequester {
         String strPoints = points.stream()
             .map( p-> toXmlNode(p, "1041", endDateTime))
             .collect(Collectors.joining());
-        
-        System.out.println(strPoints);
-        
+
         String data = ""
                 + "<?xml version=\"1.0\" encoding=\"windows-1251\"?>"
                 + "<DATAPACKET Version=\"2.0\">"
@@ -166,7 +164,7 @@ public class EmcosDataRequester {
 
     private MinuteMeteringDataRaw fromXmlNode(Node node) {
         String pointCode = node.getAttributes().getNamedItem("PPOINT_CODE").getNodeValue() ;
-        String pmlId = node.getAttributes().getNamedItem("PML_ID").getNodeValue() ;
+        //String pmlId = node.getAttributes().getNamedItem("PML_ID").getNodeValue() ;
         LocalDateTime time = null;
         Double val = null;
 
@@ -185,9 +183,9 @@ public class EmcosDataRequester {
         MinuteMeteringDataRaw d = new MinuteMeteringDataRaw();
         d.setExternalCode(pointCode);
         d.setMeteringDate(time);
-        d.setWayEntering(WayEnteringData.EMCOS);
+        d.setWayEntering(WayEntering.EMCOS);
         d.setDataSourceCode("EMCOS");
-        d.setStatus(MeteringDataStatus.DRAFT);
+        d.setStatus(DataStatus.RAW);
         d.setUnitCode("кВт.ч.");
         d.setParamCode("AE");
         d.setVal(val);

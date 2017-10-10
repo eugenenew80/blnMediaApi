@@ -19,8 +19,8 @@ public class RedissonClientProducer {
 
 	@Produces
 	public RedissonClient createRedissonClient() {
-		//if (redissonClient !=null)
-		//	return redissonClient;
+		if (redissonClient !=null)
+			return redissonClient;
 
 		ObjectMapper mapper = new ObjectMapper()
 		   .registerModule(new ParameterNamesModule())

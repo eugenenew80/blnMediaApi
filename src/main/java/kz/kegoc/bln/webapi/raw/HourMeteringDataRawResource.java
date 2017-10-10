@@ -1,8 +1,8 @@
 package kz.kegoc.bln.webapi.raw;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.WayEnteringData;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.raw.dto.HourMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.raw.dto.HourMeteringDataRawListDto;
 import kz.kegoc.bln.queue.raw.HourlyMeteringDataRawQueue;
@@ -28,14 +28,14 @@ public class HourMeteringDataRawResource {
 
 	public HourMeteringDataRawResource() {
 		mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/HourlyMeteringDataRawDtoDefaultMapping.xml"));
+		mapper.setMappingFiles(Arrays.asList("mapping/raw/HourMeteringDataRawDtoDefaultMapping.xml"));
 	}
 
 	
 	@POST
 	public Response create(HourMeteringDataRawDto entity) {
-		entity.setWayEntering(WayEnteringData.USER);
-		entity.setStatus(MeteringDataStatus.DRAFT);
+		entity.setWayEntering(WayEntering.USER);
+		entity.setStatus(DataStatus.RAW);
 		entity.setDataSourceCode("MANUAL");
 		
 		service.addMeteringData(mapper.map(entity, HourMeteringDataRaw.class));
@@ -49,8 +49,8 @@ public class HourMeteringDataRawResource {
 			.map(t -> {
 				t.setMeteringDate(listDto.getMeteringDate());
 				t.setCode(listDto.getMeteringPointCode());
-				t.setWayEntering(WayEnteringData.USER);
-				t.setStatus(MeteringDataStatus.DRAFT);
+				t.setWayEntering(WayEntering.USER);
+				t.setStatus(DataStatus.RAW);
 				t.setDataSourceCode("MANUAL");
 				return mapper.map(t, HourMeteringDataRaw.class);
 			})

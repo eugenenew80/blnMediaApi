@@ -1,7 +1,7 @@
 package kz.kegoc.bln.producer.raw.daily;
 
 import java.nio.file.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -10,8 +10,8 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.WayEnteringData;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 
@@ -44,13 +44,13 @@ public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 		String[] data = s.split(";");
 
 		DayMeteringDataRaw d = new DayMeteringDataRaw();
-		d.setMeteringDate(LocalDateTime.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
+		d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 		d.setCode(data[1]);
 		d.setParamCode(data[2]);
 		d.setUnitCode(data[3]);
 		d.setVal( Double.parseDouble(data[4]) );
-		d.setWayEntering(WayEnteringData.CSV);
-		d.setStatus(MeteringDataStatus.DRAFT);
+		d.setWayEntering(WayEntering.CSV);
+		d.setStatus(DataStatus.RAW);
 		d.setDataSourceCode("MANUAL");
 
 		return d;

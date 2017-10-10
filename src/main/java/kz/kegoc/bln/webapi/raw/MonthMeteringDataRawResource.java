@@ -11,8 +11,8 @@ import javax.ws.rs.core.*;
 import org.dozer.DozerBeanMapper;
 
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
-import kz.kegoc.bln.entity.media.WayEnteringData;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.raw.dto.MonthMeteringDataRawDto;
 import kz.kegoc.bln.queue.raw.MonthlyMeteringDataRawQueue;
 
@@ -25,14 +25,14 @@ public class MonthMeteringDataRawResource {
 	
 	public MonthMeteringDataRawResource() {
 		mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/MonthlyMeteringDataRawDtoDefaultMapping.xml"));
+		mapper.setMappingFiles(Arrays.asList("mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml"));
 	}
 
 	
 	@POST
 	public Response create(MonthMeteringDataRawDto entity) {
-		entity.setWayEntering(WayEnteringData.USER);
-		entity.setStatus(MeteringDataStatus.DRAFT);
+		entity.setWayEntering(WayEntering.USER);
+		entity.setStatus(DataStatus.RAW);
 		entity.setDataSourceCode("MANUAL");
 		
 		service.addMeteringData(mapper.map(entity, MonthMeteringDataRaw.class));
@@ -46,8 +46,8 @@ public class MonthMeteringDataRawResource {
 		
 		List<MonthMeteringDataRaw> list = listDto.stream()
 			.map(t-> { 
-				t.setWayEntering(WayEnteringData.USER);
-				t.setStatus(MeteringDataStatus.DRAFT);
+				t.setWayEntering(WayEntering.USER);
+				t.setStatus(DataStatus.RAW);
 				t.setDataSourceCode("MANUAL");
 				return mapper.map(t, MonthMeteringDataRaw.class);
 			})

@@ -1,8 +1,8 @@
 package kz.kegoc.bln.entity.media.raw.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kz.kegoc.bln.entity.media.WayEnteringData;
-import kz.kegoc.bln.entity.media.MeteringDataStatus;
+import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.DataStatus;
 import lombok.Data;
 import java.time.LocalDate;
 
@@ -15,8 +15,8 @@ public class HourMeteringDataRawDto {
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;
-	private WayEnteringData wayEntering;
-	private MeteringDataStatus status;
 	private String dataSourceCode;
+	private WayEntering wayEntering;
+	private DataStatus status;
 	private Double val;
 }
