@@ -34,7 +34,7 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 			List<MinuteMeteringDataRaw> meteringData = new EmcosDataRequester(defaultEmcosServer().build())
 				.requestMeteringData(points, endDateTime);
 
-			queueService.addMeteringListData(groupMeteringDataByDateTime(meteringData));
+			queueService.addMeteringListData(buildHourMeteringData(meteringData));
 			loadMeteringInfoService.updateLoadMeteringInfo(meteringData, endDateTime);
 		}
 		catch (Exception e) {
@@ -45,7 +45,7 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
     }
 
 
-	private List<HourMeteringDataRaw> groupMeteringDataByDateTime(List<MinuteMeteringDataRaw> minuteMeteringData) {
+	private List<HourMeteringDataRaw> buildHourMeteringData(List<MinuteMeteringDataRaw> minuteMeteringData) {
 		Map<Pair<String, LocalDate>, List<MinuteMeteringDataRaw>> mapDayMeteringData = minuteMeteringData
 			.stream()
 			.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getMeteringDate().toLocalDate())));

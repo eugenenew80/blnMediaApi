@@ -171,6 +171,10 @@
 				<column name="id" />
 			</id>
 
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
 			<basic name="code">
 				<column name="code" />
 			</basic>
