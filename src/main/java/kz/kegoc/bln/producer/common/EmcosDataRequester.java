@@ -184,7 +184,7 @@ public class EmcosDataRequester {
 
         HourlyMeteringDataRaw d = new HourlyMeteringDataRaw();
         d.setExternalCode(pointCode);
-        d.setMeteringDate(time.minusMinutes(time.getMinute()));
+        d.setMeteringDate(time);
         d.setHour( (byte) time.getHour());
         d.setWayEntering(WayEnteringData.EMCOS);
         d.setDataSourceCode("EMCOS");

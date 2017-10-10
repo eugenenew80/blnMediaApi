@@ -7,10 +7,10 @@ import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.raw.LoadMeteringInfoRepository;
 
 @Stateless
-public class LastLoadMeteringDataRepositoryImpl extends AbstractRepository<LoadMeteringInfo> implements LoadMeteringInfoRepository {
-	public LastLoadMeteringDataRepositoryImpl() { setClazz(LoadMeteringInfo.class); }
+public class LoadMeteringInfoRepositoryImpl extends AbstractRepository<LoadMeteringInfo> implements LoadMeteringInfoRepository {
+	public LoadMeteringInfoRepositoryImpl() { setClazz(LoadMeteringInfo.class); }
 
-	public LastLoadMeteringDataRepositoryImpl(EntityManager entityManager) {
+	public LoadMeteringInfoRepositoryImpl(EntityManager entityManager) {
 		this();
 		setEntityManager(entityManager);
 	}

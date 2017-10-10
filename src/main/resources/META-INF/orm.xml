@@ -14,11 +14,11 @@
         		/>				
 			</id>
 
-      		<basic name="meteringPointCode">
+      		<basic name="code">
       			<column name="metering_point_code" />
       		</basic>
 
-      		<basic name="externalMeteringPointCode">
+      		<basic name="externalCode">
       			<column name="external_metering_point_code" />
       		</basic>
       		
@@ -62,11 +62,11 @@
         		/>
 			</id>
 
-      		<basic name="meteringPointCode">
+      		<basic name="code">
       			<column name="metering_point_code" />
       		</basic>
 
-      		<basic name="externalMeteringPointCode">
+      		<basic name="externalCode">
       			<column name="external_metering_point_code" />
       		</basic>
 
@@ -120,11 +120,11 @@
         		/>
 			</id>
 
-      		<basic name="meteringPointCode">
+      		<basic name="code">
       			<column name="metering_point_code" />
       		</basic>
 
-      		<basic name="externalMeteringPointCode">
+      		<basic name="externalCode">
       			<column name="external_metering_point_code" />
       		</basic>
 
@@ -132,11 +132,11 @@
       			<column name="param_code" />
       		</basic>
 
-			<basic name="meteringYear">
+			<basic name="year">
 				<column name="metering_year" />
 			</basic>
 
-			<basic name="meteringMonth">
+			<basic name="month">
 				<column name="metering_month" />
 			</basic>
 
@@ -163,55 +163,6 @@
       		</basic> 
 		</attributes>
 	</entity>
-
-	<entity class="kz.kegoc.bln.entity.media.MinuteMeteringDataRaw">
-		<table name="media_minute_metering_data_raw" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_minute_metering_data_raw_gen" />
-        		<sequence-generator
-        			name="media_minute_metering_data_raw_gen"
-        			sequence-name="apps.media_minute_metering_data_raw_s"
-					allocation-size="1"
-        		/>				
-			</id>
-
-      		<basic name="meteringPointCode">
-      			<column name="metering_point_code" />
-      		</basic>
-
-      		<basic name="externalMeteringPointCode">
-      			<column name="external_metering_point_code" />
-      		</basic>
-      		
-      		<basic name="paramCode">
-      			<column name="param_code" />
-      		</basic>
-
-      		<basic name="meteringDate">
-      			<column name="metering_date" />
-      		</basic>
-      		
-      		<basic name="unitCode">
-      			<column name="unit_code" />
-      		</basic>
-      		      		
-      		<basic name="val">
-      			<column name="val" />
-      		</basic>   
-      		
-      		<basic name="dataSourceCode">
-      			<column name="data_source_code" />
-      		</basic>
-      		      		
-      		<basic name="wayEntering">
-      			<column name="way_entering" />
-      			<enumerated>STRING</enumerated>
-      		</basic>       		    		      		
-		</attributes>
-	</entity>
-
 
 	<entity class="kz.kegoc.bln.entity.dict.MeteringPoint">
 		<table name="dict_metering_points" schema="apps"/>
