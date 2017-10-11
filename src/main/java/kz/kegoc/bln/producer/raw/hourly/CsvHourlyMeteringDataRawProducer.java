@@ -46,7 +46,7 @@ public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 		String[] data = s.split(";");
 		HourMeteringDataRaw d = new HourMeteringDataRaw();
 		d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
-		d.setHour( Byte.parseByte(data[1]));
+		d.setHour( Integer.parseInt(data[1]));
 		d.setExternalCode(data[2]);
 		d.setParamCode(data[3]);
 		d.setUnitCode(data[4]);

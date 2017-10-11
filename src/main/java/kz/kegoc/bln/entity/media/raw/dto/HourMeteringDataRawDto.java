@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class HourMeteringDataRawDto {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private LocalDate meteringDate;
-	private Byte hour;
+	private Integer hour;
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class HourMeteringDataRaw implements HasId {
 	private Long id;
 	private LocalDate meteringDate;
-	private Byte hour;
+	private Integer hour;
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;

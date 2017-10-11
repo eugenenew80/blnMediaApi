@@ -67,7 +67,7 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 				HourMeteringDataRaw h = new HourMeteringDataRaw();
 				h.setExternalCode(pair.getLeft());
 				h.setMeteringDate(pair.getRight());
-				h.setHour(hour.byteValue());
+				h.setHour(hour);
 				
 				h.setStatus( mapHourMeteringData.get(hour).get(0).getStatus() );
 				h.setDataSourceCode( mapHourMeteringData.get(hour).get(0).getDataSourceCode() );

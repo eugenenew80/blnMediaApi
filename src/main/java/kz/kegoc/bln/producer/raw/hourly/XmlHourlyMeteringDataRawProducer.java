@@ -60,7 +60,7 @@ public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 					d.setMeteringDate(LocalDate.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 					break;
 				case "hour":
-					d.setHour(Byte.parseByte(nodeAttr.getNodeValue()));
+					d.setHour(Integer.parseInt(nodeAttr.getNodeValue()));
 					break;
 				case "code":
 					d.setExternalCode(nodeAttr.getNodeValue());
