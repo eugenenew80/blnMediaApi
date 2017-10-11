@@ -48,7 +48,7 @@ public class HourMeteringDataRawResource {
 		List<HourMeteringDataRaw> list = listDto.getMeteringData().stream()
 			.map(t -> {
 				t.setMeteringDate(listDto.getMeteringDate());
-				t.setCode(listDto.getCode());
+				t.setExternalCode(listDto.getExternalCode());
 				t.setWayEntering(WayEntering.USER);
 				t.setStatus(DataStatus.RAW);
 				t.setDataSourceCode("MANUAL");

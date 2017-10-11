@@ -45,7 +45,7 @@ public class CsvDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 
 		DayMeteringDataRaw d = new DayMeteringDataRaw();
 		d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
-		d.setCode(data[1]);
+		d.setExternalCode(data[1]);
 		d.setParamCode(data[2]);
 		d.setUnitCode(data[3]);
 		d.setVal( Double.parseDouble(data[4]) );

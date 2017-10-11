@@ -14,12 +14,8 @@
         		/>				
 			</id>
 
-      		<basic name="code">
-      			<column name="metering_point_code" />
-      		</basic>
-
       		<basic name="externalCode">
-      			<column name="external_metering_point_code" />
+      			<column name="external_code" />
       		</basic>
       		
       		<basic name="paramCode">
@@ -62,12 +58,8 @@
         		/>
 			</id>
 
-      		<basic name="code">
-      			<column name="metering_point_code" />
-      		</basic>
-
       		<basic name="externalCode">
-      			<column name="external_metering_point_code" />
+      			<column name="external_code" />
       		</basic>
 
       		<basic name="paramCode">
@@ -120,12 +112,8 @@
         		/>
 			</id>
 
-      		<basic name="code">
-      			<column name="metering_point_code" />
-      		</basic>
-
       		<basic name="externalCode">
-      			<column name="external_metering_point_code" />
+      			<column name="external_code" />
       		</basic>
 
       		<basic name="paramCode">

@@ -59,7 +59,7 @@ public class XmlDailyMeteringDataRawProducer extends AbstractFileMeteringDataPro
 					d.setMeteringDate(LocalDate.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
 					break;
 				case "code":
-					d.setCode(nodeAttr.getNodeValue());
+					d.setExternalCode(nodeAttr.getNodeValue());
 					break;
 				case "paramCode":
 					d.setParamCode(nodeAttr.getNodeValue());

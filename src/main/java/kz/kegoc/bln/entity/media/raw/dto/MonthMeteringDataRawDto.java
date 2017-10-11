@@ -8,7 +8,6 @@ import lombok.Data;
 public class MonthMeteringDataRawDto {
 	private Short year;
 	private Short month;
-	private String code;
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;

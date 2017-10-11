@@ -9,7 +9,6 @@ import java.util.List;
 public class HourMeteringDataRawListDto {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private LocalDate meteringDate;
-	private String code;
 	private String externalCode;
 	private List<HourMeteringDataRawDto> meteringData;
 }

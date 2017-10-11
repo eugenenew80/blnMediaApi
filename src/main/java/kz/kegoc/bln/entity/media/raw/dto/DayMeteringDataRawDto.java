@@ -11,7 +11,6 @@ import lombok.Data;
 public class DayMeteringDataRawDto {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private LocalDate meteringDate;
-	private String code;
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;

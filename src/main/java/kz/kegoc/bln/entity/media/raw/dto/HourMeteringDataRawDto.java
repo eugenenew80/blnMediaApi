@@ -11,7 +11,6 @@ public class HourMeteringDataRawDto {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
 	private LocalDate meteringDate;
 	private Byte hour;
-	private String code;
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;

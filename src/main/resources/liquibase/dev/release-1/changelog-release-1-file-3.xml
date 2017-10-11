@@ -14,11 +14,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="metering_point_code" type="varchar(15)">
-                <constraints nullable="true"/>
-            </column>
-            
-            <column name="external_metering_point_code" type="varchar(18)">
+            <column name="external_code" type="varchar(18)">
                 <constraints nullable="true"/>
             </column>
             

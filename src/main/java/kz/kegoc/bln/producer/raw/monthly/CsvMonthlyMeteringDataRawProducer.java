@@ -45,7 +45,7 @@ public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
 		MonthMeteringDataRaw d = new MonthMeteringDataRaw();
 		d.setYear( Short.parseShort(data[0]));
 		d.setMonth( Short.parseShort(data[1]));
-		d.setCode(data[2]);
+		d.setExternalCode(data[2]);
 		d.setParamCode(data[3]);
 		d.setUnitCode(data[4]);
 		d.setVal( Double.parseDouble(data[5]) );
