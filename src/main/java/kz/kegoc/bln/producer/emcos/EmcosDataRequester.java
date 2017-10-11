@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.raw;
+package kz.kegoc.bln.producer.emcos;
 
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.media.DataStatus;
@@ -11,11 +11,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,7 +26,7 @@ public class EmcosDataRequester {
     private final LocalDateTime reqestedDateTime;
     private final String paramCode;
     private final String emcosParamCode;
-
+    private final HttpRequest httpRequest;
 
     private EmcosDataRequester(Builder builder) {
         this.config = builder.config;
@@ -38,12 +34,13 @@ public class EmcosDataRequester {
         this.emcosParamCode = builder.emcosParamCode;
         this.points = builder.points;
         this.reqestedDateTime = builder.reqestedDateTime;
+        this.httpRequest = new HttpReqestImpl();
     }
 
 
     public List<MinuteMeteringDataRaw> requestMeteringData() throws Exception {
     	String requestBody = buildReqest();
-        String answerData = doRequest(requestBody);
+        String answerData = httpRequest.doRequest(new URL(config.getUrl()), requestBody);
         return extractData(answerData);
     }
 
@@ -93,36 +90,6 @@ public class EmcosDataRequester {
 
         return requestBody;
     }
-
-    private String doRequest(String requestBody) throws Exception {
-        URL url = new URL(config.getUrl());
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        con.setDoOutput(true);
-
-        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-            wr.writeBytes(requestBody);
-            wr.flush();
-        }
-
-        StringBuffer response = new StringBuffer();
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-            String output;
-            while ((output = in.readLine()) != null)
-                response.append(output);
-        }
-
-        String rawData = response.toString();
-
-        int n1 = rawData.indexOf("<AnswerData>");
-        int n2 = rawData.indexOf("</AnswerData>");
-
-        if (n2>n1)
-            return rawData.substring(n1+12, n2);
-        else
-            return "";
-    }
-
 
     private List<MinuteMeteringDataRaw> extractData(String answerData) throws Exception {
         Document doc = DocumentBuilderFactory.newInstance()

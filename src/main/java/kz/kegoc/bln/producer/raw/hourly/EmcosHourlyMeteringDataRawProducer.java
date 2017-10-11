@@ -8,11 +8,11 @@ import javax.inject.*;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
-import kz.kegoc.bln.producer.raw.EmcosConfig;
+import kz.kegoc.bln.producer.emcos.EmcosConfig;
 import kz.kegoc.bln.service.media.raw.LoadMeteringInfoService;
 import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
-import kz.kegoc.bln.producer.raw.EmcosDataRequester;
+import kz.kegoc.bln.producer.emcos.EmcosDataRequester;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import kz.kegoc.bln.service.dict.MeteringPointService;

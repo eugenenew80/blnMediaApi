@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.raw;
+package kz.kegoc.bln.producer.emcos;
 
 import lombok.Getter;
 
