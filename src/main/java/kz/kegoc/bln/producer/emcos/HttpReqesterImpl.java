@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HttpReqestImpl implements HttpRequest {
+public class HttpReqesterImpl implements HttpRequester {
     public String doRequest(URL url, String requestBody) throws Exception {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");

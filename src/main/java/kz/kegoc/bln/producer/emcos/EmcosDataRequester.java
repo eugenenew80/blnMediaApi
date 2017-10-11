@@ -26,7 +26,7 @@ public class EmcosDataRequester {
     private final LocalDateTime reqestedDateTime;
     private final String paramCode;
     private final String emcosParamCode;
-    private final HttpRequest httpRequest;
+    private final HttpRequester httpRequest;
 
     private EmcosDataRequester(Builder builder) {
         this.config = builder.config;
@@ -34,7 +34,7 @@ public class EmcosDataRequester {
         this.emcosParamCode = builder.emcosParamCode;
         this.points = builder.points;
         this.reqestedDateTime = builder.reqestedDateTime;
-        this.httpRequest = new HttpReqestImpl();
+        this.httpRequest = new HttpReqesterImpl();
     }
 
 
