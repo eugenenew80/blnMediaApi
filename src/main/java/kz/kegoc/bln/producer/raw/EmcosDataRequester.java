@@ -25,20 +25,39 @@ import java.util.stream.Collectors;
 
 public class EmcosDataRequester {
     private final EmcosConfig config;
+    private String paramCode;
+    private String emcosParamCode;
 
     public EmcosDataRequester(EmcosConfig config) {
         this.config = config;
     }
 
-    public List<MinuteMeteringDataRaw> requestMeteringData(List<MeteringPoint> points, LocalDateTime endDateTime) throws Exception {
-        String requestBody = buildReqest(points, endDateTime);
+    public List<MinuteMeteringDataRaw> requestMeteringData(List<MeteringPoint> points, LocalDateTime endDateTime, String paramCode) throws Exception {
+        this.paramCode = paramCode;
+    	
+        switch (paramCode) {
+        	case "A+":
+        		this.emcosParamCode = "1040";
+        		break;
+        	case "A-":
+        		this.emcosParamCode = "1041";
+        		break;
+        	case "R+":
+        		this.emcosParamCode = "1042";
+        		break;
+        	case "R-":
+        		this.emcosParamCode = "1043";
+        		break;
+        }
+    	
+    	String requestBody = buildReqest(points, endDateTime);
         String answerData = doRequest(requestBody);
         return extractData(answerData);
     }
 
     private String buildReqest(List<MeteringPoint> points, LocalDateTime endDateTime) {
         String strPoints = points.stream()
-            .map( p-> toXmlNode(p, "1041", endDateTime))
+            .map( p-> toXmlNode(p, this.emcosParamCode, endDateTime))
             .collect(Collectors.joining());
 
         String data = ""
@@ -148,7 +167,7 @@ public class EmcosDataRequester {
         	startDateTime =  LocalDateTime.of(
 					now.getYear(),
 					now.getMonth(),
-					now.getDayOfMonth(),
+					1, //now.getDayOfMonth(),
 					0,
 					0
 				); 
@@ -187,7 +206,7 @@ public class EmcosDataRequester {
         d.setDataSourceCode("EMCOS");
         d.setStatus(DataStatus.RAW);
         d.setUnitCode("кВт.ч.");
-        d.setParamCode("AE");
+        d.setParamCode(this.paramCode);
         d.setVal(val);
 
         return d;

@@ -17,7 +17,8 @@ public class HourMeteringDataRawRepositoryImpl extends AbstractRepository<HourMe
 								+ "and m.dataSourceCode=:dataSourceCode "
 								+ "and m.wayEntering=:wayEntering "
 								+ "and m.status=:status "
-								+ "and m.unitCode=:unitCode";
+								+ "and m.unitCode=:unitCode "
+								+ "and m.paramCode=:paramCode";
 		
 		TypedQuery<HourMeteringDataRaw> typedQuery = getEntityManager().createQuery(queryStr.trim(), HourMeteringDataRaw.class);
     	
@@ -27,6 +28,7 @@ public class HourMeteringDataRawRepositoryImpl extends AbstractRepository<HourMe
     		typedQuery.setParameter("hour", m.getHour());
     		typedQuery.setParameter("unitCode", m.getUnitCode());
     		typedQuery.setParameter("dataSourceCode", m.getDataSourceCode());
+    		typedQuery.setParameter("paramCode", m.getParamCode());
     		typedQuery.setParameter("wayEntering", m.getWayEntering());
     		typedQuery.setParameter("status", m.getStatus());
     		

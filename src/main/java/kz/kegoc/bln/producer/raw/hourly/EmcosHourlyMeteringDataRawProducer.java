@@ -30,17 +30,20 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 
 		LocalDateTime endDateTime =  buildEndDateTime();
 		List<MeteringPoint> points = meteringPointService.findAll();
-		try {			
-			List<MinuteMeteringDataRaw> meteringData = new EmcosDataRequester(defaultEmcosServer().build())
-				.requestMeteringData(points, endDateTime);
-
-			queueService.addMeteringListData(buildHourMeteringData(meteringData));
-			loadMeteringInfoService.updateLoadMeteringInfo(meteringData, endDateTime);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		
+		Arrays.asList("A+", "A-", "R+", "R-").forEach(paramCode -> {
+			try {			
+				List<MinuteMeteringDataRaw> meteringData = new EmcosDataRequester(defaultEmcosServer().build())
+					.requestMeteringData(points, endDateTime, paramCode);
+				
+				queueService.addMeteringListData(buildHourMeteringData(meteringData));
+				loadMeteringInfoService.updateLoadMeteringInfo(meteringData, endDateTime);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
 		System.out.println("EmcosHourlyMeteringDataRawProducer finished");	
     }
 
