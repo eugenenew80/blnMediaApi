@@ -8,6 +8,7 @@ import javax.inject.*;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
+import kz.kegoc.bln.producer.raw.EmcosConfig;
 import kz.kegoc.bln.service.media.raw.LoadMeteringInfoService;
 import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
@@ -17,7 +18,6 @@ import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
 
 import static java.util.stream.Collectors.groupingBy;
-import static kz.kegoc.bln.producer.raw.EmcosConfig.defaultEmcosServer;
 
 
 @Singleton
@@ -26,25 +26,27 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 
 	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
-		System.out.println("EmcosHourlyMeteringDataRawProducer started");
-
-		LocalDateTime endDateTime =  buildEndDateTime();
+		LocalDateTime requestedDateTime = requestedDateTime();
 		List<MeteringPoint> points = meteringPointService.findAll();
-		
+
+		EmcosDataRequester.Builder builder = new EmcosDataRequester.Builder()
+			.config(EmcosConfig.defaultEmcosServer().build())
+			.points(points)
+			.reqestedDateTime(requestedDateTime);
+
 		Arrays.asList("A+", "A-", "R+", "R-").forEach(paramCode -> {
 			try {			
-				List<MinuteMeteringDataRaw> meteringData = new EmcosDataRequester(defaultEmcosServer().build())
-					.requestMeteringData(points, endDateTime, paramCode);
+				List<MinuteMeteringDataRaw> meteringData = builder.paramCode(paramCode)
+					.build()
+					.requestMeteringData();
 				
 				queueService.addMeteringListData(buildHourMeteringData(meteringData));
-				loadMeteringInfoService.updateLoadMeteringInfo(meteringData, endDateTime);
+				loadMeteringInfoService.updateLoadMeteringInfo(meteringData, requestedDateTime);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
-		
-		System.out.println("EmcosHourlyMeteringDataRawProducer finished");	
     }
 
 
@@ -81,7 +83,7 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 	}
 	
 	
-	private LocalDateTime buildEndDateTime() {
+	private LocalDateTime requestedDateTime() {
 		LocalDateTime now = LocalDateTime.now();
 		return LocalDateTime.of(
 					now.getYear(),
