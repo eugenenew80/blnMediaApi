@@ -1,4 +1,4 @@
-package kz.kegoc.bln.webapi.raw;
+package kz.kegoc.bln.webapi.media.raw;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -48,7 +48,7 @@ public class HourMeteringDataRawResource {
 		List<HourMeteringDataRaw> list = listDto.getMeteringData().stream()
 			.map(t -> {
 				t.setMeteringDate(listDto.getMeteringDate());
-				t.setCode(listDto.getMeteringPointCode());
+				t.setCode(listDto.getCode());
 				t.setWayEntering(WayEntering.USER);
 				t.setStatus(DataStatus.RAW);
 				t.setDataSourceCode("MANUAL");

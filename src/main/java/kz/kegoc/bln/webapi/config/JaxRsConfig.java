@@ -4,9 +4,9 @@ import java.util.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import kz.kegoc.bln.webapi.exception.mapper.*;
-import kz.kegoc.bln.webapi.raw.DayMeteringDataRawResource;
-import kz.kegoc.bln.webapi.raw.HourMeteringDataRawResource;
-import kz.kegoc.bln.webapi.raw.MonthMeteringDataRawResource;
+import kz.kegoc.bln.webapi.media.raw.DayMeteringDataRawResource;
+import kz.kegoc.bln.webapi.media.raw.HourMeteringDataRawResource;
+import kz.kegoc.bln.webapi.media.raw.MonthMeteringDataRawResource;
 
 
 @ApplicationPath("/webapi")
