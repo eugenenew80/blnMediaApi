@@ -24,7 +24,7 @@ import static kz.kegoc.bln.producer.raw.EmcosConfig.defaultEmcosServer;
 @Startup
 public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer {
 
-	@Schedule(minute = "*/15", hour = "*", persistent = false)
+	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
 		System.out.println("EmcosHourlyMeteringDataRawProducer started");
 
