@@ -93,7 +93,6 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 					45
 				).plusHours(1);
 	}
-	
 
 	@Inject
 	private MeteringDataQueueService<HourMeteringDataRaw> queueService;
