@@ -3,10 +3,9 @@ package kz.kegoc.bln.producer.file.hour;
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.producer.file.MeteringDataFileReader;
+import kz.kegoc.bln.producer.file.FileMeteringDataRawReader;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 
-import javax.ejb.Stateless;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -14,9 +13,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvHourMeteringDataReader implements MeteringDataFileReader<HourMeteringDataRaw> {
+public class CsvHourMeteringDataRawReader implements FileMeteringDataRawReader<HourMeteringDataRaw> {
 
-	public CsvHourMeteringDataReader(MeteringDataQueueService<HourMeteringDataRaw> service) {
+	public CsvHourMeteringDataRawReader(MeteringDataQueueService<HourMeteringDataRaw> service) {
 		this.service=service;
 	}
 

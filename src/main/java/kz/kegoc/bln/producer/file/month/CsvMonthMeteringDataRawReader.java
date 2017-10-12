@@ -3,16 +3,16 @@ package kz.kegoc.bln.producer.file.month;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.producer.file.MeteringDataFileReader;
+import kz.kegoc.bln.producer.file.FileMeteringDataRawReader;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvMonthMeteringDataReader implements MeteringDataFileReader<MonthMeteringDataRaw> {
+public class CsvMonthMeteringDataRawReader implements FileMeteringDataRawReader<MonthMeteringDataRaw> {
 
-	public CsvMonthMeteringDataReader(MeteringDataQueueService<MonthMeteringDataRaw> service) {
+	public CsvMonthMeteringDataRawReader(MeteringDataQueueService<MonthMeteringDataRaw> service) {
 		this.service=service;
 	}
 

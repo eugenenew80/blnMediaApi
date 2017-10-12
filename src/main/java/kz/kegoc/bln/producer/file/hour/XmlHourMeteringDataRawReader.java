@@ -1,23 +1,23 @@
-package kz.kegoc.bln.producer.file.month;
+package kz.kegoc.bln.producer.file.hour;
 
-import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.producer.file.MeteringDataFileReader;
+import kz.kegoc.bln.producer.file.FileMeteringDataRawReader;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+public class XmlHourMeteringDataRawReader implements FileMeteringDataRawReader<HourMeteringDataRaw> {
 
-public class XmlMonthMeteringDataReader implements MeteringDataFileReader<MonthMeteringDataRaw> {
-
-	public XmlMonthMeteringDataReader(MeteringDataQueueService<MonthMeteringDataRaw> service) {
-		this.service=service;
+	public XmlHourMeteringDataRawReader(MeteringDataQueueService<HourMeteringDataRaw> service) {
+		this.service = service;
 	}
 
 	public void loadFromFile(Path path) throws Exception {
@@ -25,7 +25,7 @@ public class XmlMonthMeteringDataReader implements MeteringDataFileReader<MonthM
 						.newDocumentBuilder()
 						.parse(path.toFile());
 		
-		List<MonthMeteringDataRaw> list = new ArrayList<>();
+		List<HourMeteringDataRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
 			if (nodeRow.getNodeName().equals("row")) 
@@ -36,17 +36,17 @@ public class XmlMonthMeteringDataReader implements MeteringDataFileReader<MonthM
 	}
 	
 	
-	private MonthMeteringDataRaw convert(Node node) throws Exception  {
-		MonthMeteringDataRaw d = new MonthMeteringDataRaw();
+	private HourMeteringDataRaw convert(Node node) throws Exception  {
+		HourMeteringDataRaw d = new HourMeteringDataRaw();
 
 		for (int i=0; i< node.getAttributes().getLength(); i++) {
 			Node nodeAttr = node.getAttributes().item(i);
 			switch (nodeAttr.getNodeName()) {
-				case "year":
-					d.setYear(Short.parseShort(nodeAttr.getNodeValue()));
+				case "meteringDate":
+					d.setMeteringDate(LocalDate.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 					break;
-				case "meteringMont":
-					d.setMonth(Short.parseShort(nodeAttr.getNodeValue()));
+				case "hour":
+					d.setHour(Integer.parseInt(nodeAttr.getNodeValue()));
 					break;
 				case "code":
 					d.setExternalCode(nodeAttr.getNodeValue());
@@ -69,5 +69,5 @@ public class XmlMonthMeteringDataReader implements MeteringDataFileReader<MonthM
 		return d;
 	}
 
-	private MeteringDataQueueService<MonthMeteringDataRaw> service;
+	private MeteringDataQueueService<HourMeteringDataRaw> service;
 }

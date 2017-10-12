@@ -3,7 +3,7 @@ package kz.kegoc.bln.producer.file.day;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.producer.file.MeteringDataFileReader;
+import kz.kegoc.bln.producer.file.FileMeteringDataRawReader;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,9 +12,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CsvDayMeteringDataReader implements MeteringDataFileReader<DayMeteringDataRaw> {
+public class CsvDayMeteringDataRawReader implements FileMeteringDataRawReader<DayMeteringDataRaw> {
 
-    public CsvDayMeteringDataReader(MeteringDataQueueService<DayMeteringDataRaw> service) {
+    public CsvDayMeteringDataRawReader(MeteringDataQueueService<DayMeteringDataRaw> service) {
         this.service=service;
     }
 

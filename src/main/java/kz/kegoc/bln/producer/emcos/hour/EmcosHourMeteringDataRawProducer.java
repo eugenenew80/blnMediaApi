@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.raw.hourly;
+package kz.kegoc.bln.producer.emcos.hour;
 
 import java.time.*;
 import java.util.*;
@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.groupingBy;
 
 @Singleton
 @Startup
-public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer {
+public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 
 	@Schedule(minute = "*/15", hour = "*", persistent = false)
 	public void execute() {
