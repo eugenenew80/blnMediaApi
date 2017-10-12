@@ -1,5 +1,6 @@
 package kz.kegoc.bln.service.media.raw.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -23,12 +24,15 @@ public class HourMeteringDataRawServiceImpl extends AbstractEntityService<HourMe
 		
     	list.stream().forEach(m -> {
     		HourMeteringDataRaw h = hourRepository.selectByEntity(m);
-    		if (h==null) 
-    			create(m);
+    		if (h==null) {
+				m.setCreateDate(LocalDateTime.now());
+				hourRepository.insert(m);
+			}
     		else {
     			m.setId(h.getId());
     			m.setCreateDate(h.getCreateDate());
-    			update(m);
+				m.setLastUpdateDate(LocalDateTime.now());
+				hourRepository.update(m);
     		}
         });		
 	}	

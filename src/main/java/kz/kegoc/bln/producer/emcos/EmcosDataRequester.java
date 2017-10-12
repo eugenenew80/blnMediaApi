@@ -13,6 +13,7 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -39,12 +40,14 @@ public class EmcosDataRequester {
 
 
     public List<MinuteMeteringDataRaw> requestMeteringData() throws Exception {
-    	HttpRequester httpRequester = new HttpReqesterImpl.Builder()
+        List<MinuteMeteringDataRaw> meteringData = new ArrayList<>();
+
+        HttpRequester httpRequester = new HttpReqesterImpl.Builder()
     		.url(new URL(config.getUrl()))
     		.method("POST")
     		.body(buildBody())
     		.build();
-    	
+
         String answerData = httpRequester.doRequest();
         return extractData(answerData);
     }
@@ -73,6 +76,8 @@ public class EmcosDataRequester {
     
 
     private List<MinuteMeteringDataRaw> extractData(String answerData) throws Exception {
+        List<MinuteMeteringDataRaw> meteringData = new ArrayList<>();
+
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
             .parse(new InputSource(new StringReader(new String(Base64.decodeBase64(answerData), "Cp1251"))));
@@ -81,7 +86,6 @@ public class EmcosDataRequester {
             .getFirstChild()
             .getChildNodes();
 
-        List<MinuteMeteringDataRaw> meteringData = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();

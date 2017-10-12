@@ -1,42 +1,29 @@
-package kz.kegoc.bln.producer.raw.monthly;
+package kz.kegoc.bln.producer.file.month;
 
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
-import kz.kegoc.bln.producer.common.MeteringDataProducer;
-
-import javax.ejb.Schedule;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import kz.kegoc.bln.producer.file.MeteringDataFileReader;
+import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+public class CsvMonthMeteringDataReader implements MeteringDataFileReader<MonthMeteringDataRaw> {
 
-@Singleton
-@Startup
-public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<MonthMeteringDataRaw> implements MeteringDataProducer {
-
-    public CsvMonthlyMeteringDataRawProducer() {
-		super("monthly/csv");
+	public CsvMonthMeteringDataReader(MeteringDataQueueService<MonthMeteringDataRaw> service) {
+		this.service=service;
 	}
 
-    
-	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
-	public void execute() {
-		super.execute();
-    }
-
-	
-	protected List<MonthMeteringDataRaw> loadFromFile(Path path) throws Exception {
+	public void loadFromFile(Path path) throws Exception {
 		List<MonthMeteringDataRaw> list = new ArrayList<>();
 		List<String> strs = Files.readAllLines(path);
 		for (int i=1; i<strs.size(); i++ ) {
 			list.add(convert(strs.get(i)));
 		}
-		return list;
+
+		service.addMeteringListData(list);
 	}
 	
 	
@@ -54,5 +41,7 @@ public class CsvMonthlyMeteringDataRawProducer extends AbstractFileMeteringDataP
 		d.setDataSourceCode("MANUAL");
 
 		return d;
-	} 
+	}
+
+	private MeteringDataQueueService<MonthMeteringDataRaw> service;
 }

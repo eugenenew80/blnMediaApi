@@ -1,66 +1,52 @@
-package kz.kegoc.bln.producer.raw.hourly;
+package kz.kegoc.bln.producer.file.month;
 
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
-import kz.kegoc.bln.producer.common.MeteringDataProducer;
+import kz.kegoc.bln.producer.file.MeteringDataFileReader;
+import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.ejb.Schedule;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Path;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Singleton
-@Startup
-public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<HourMeteringDataRaw> implements MeteringDataProducer {
+public class XmlMonthMeteringDataReader implements MeteringDataFileReader<MonthMeteringDataRaw> {
 
-    public XmlHourlyMeteringDataRawProducer() {
-		super("hourly/xml");
+	public XmlMonthMeteringDataReader(MeteringDataQueueService<MonthMeteringDataRaw> service) {
+		this.service=service;
 	}
 
-    
-	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
-	public void execute() {
-		super.execute();
-    }
-
-	
-	protected List<HourMeteringDataRaw> loadFromFile(Path path) throws Exception {
+	public void loadFromFile(Path path) throws Exception {
 		Document doc = DocumentBuilderFactory.newInstance()
 						.newDocumentBuilder()
 						.parse(path.toFile());
 		
-		List<HourMeteringDataRaw> list = new ArrayList<>();
+		List<MonthMeteringDataRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
 			if (nodeRow.getNodeName().equals("row")) 
 				list.add(convert(nodeRow));
 		}
-		
-		return list;
+
+		service.addMeteringListData(list);
 	}
 	
 	
-	private HourMeteringDataRaw convert(Node node) throws Exception  {
-		HourMeteringDataRaw d = new HourMeteringDataRaw();
+	private MonthMeteringDataRaw convert(Node node) throws Exception  {
+		MonthMeteringDataRaw d = new MonthMeteringDataRaw();
 
 		for (int i=0; i< node.getAttributes().getLength(); i++) {
 			Node nodeAttr = node.getAttributes().item(i);
 			switch (nodeAttr.getNodeName()) {
-				case "meteringDate":
-					d.setMeteringDate(LocalDate.parse(nodeAttr.getNodeValue(), DateTimeFormatter.ofPattern("yyyy-mm-dd")));
+				case "year":
+					d.setYear(Short.parseShort(nodeAttr.getNodeValue()));
 					break;
-				case "hour":
-					d.setHour(Integer.parseInt(nodeAttr.getNodeValue()));
+				case "meteringMont":
+					d.setMonth(Short.parseShort(nodeAttr.getNodeValue()));
 					break;
 				case "code":
 					d.setExternalCode(nodeAttr.getNodeValue());
@@ -81,5 +67,7 @@ public class XmlHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 		d.setDataSourceCode("MANUAL");
 		
 		return d;
-	} 	
+	}
+
+	private MeteringDataQueueService<MonthMeteringDataRaw> service;
 }

@@ -1,14 +1,12 @@
-package kz.kegoc.bln.producer.raw.hourly;
+package kz.kegoc.bln.producer.file.hour;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.producer.common.AbstractFileMeteringDataProducer;
-import kz.kegoc.bln.producer.common.MeteringDataProducer;
+import kz.kegoc.bln.producer.file.MeteringDataFileReader;
+import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 
-import javax.ejb.Schedule;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.Stateless;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -16,36 +14,26 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+public class CsvHourMeteringDataReader implements MeteringDataFileReader<HourMeteringDataRaw> {
 
-@Singleton
-@Startup
-public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataProducer<HourMeteringDataRaw> implements MeteringDataProducer {
-
-    public CsvHourlyMeteringDataRawProducer() {
-		super("hourly/csv");
+	public CsvHourMeteringDataReader(MeteringDataQueueService<HourMeteringDataRaw> service) {
+		this.service=service;
 	}
 
-    
-	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
-	public void execute() {
-		super.execute();
-    }
-
-	
-	protected List<HourMeteringDataRaw> loadFromFile(Path path) throws Exception {
+	public void loadFromFile(Path path) throws Exception {
 		List<HourMeteringDataRaw> list = new ArrayList<>();
 		List<String> strs = Files.readAllLines(path);
-		for (int i=1; i<strs.size(); i++ ) {
+		for (int i=1; i<strs.size(); i++ )
 			list.add(convert(strs.get(i)));
-		}
-		return list;
+
+		service.addMeteringListData(list);
 	}
 	
 	
 	private HourMeteringDataRaw convert(String s) throws Exception {
 		String[] data = s.split(";");
 		HourMeteringDataRaw d = new HourMeteringDataRaw();
-		d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-mm-dd")));
+		d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		d.setHour( Integer.parseInt(data[1]));
 		d.setExternalCode(data[2]);
 		d.setParamCode(data[3]);
@@ -56,5 +44,7 @@ public class CsvHourlyMeteringDataRawProducer extends AbstractFileMeteringDataPr
 		d.setDataSourceCode("MANUAL");
 
 		return d;
-	} 
+	}
+
+	private MeteringDataQueueService<HourMeteringDataRaw> service;
 }
