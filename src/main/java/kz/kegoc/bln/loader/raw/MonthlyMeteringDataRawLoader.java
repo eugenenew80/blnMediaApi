@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.*;
 import javax.inject.Inject;
-
 import kz.kegoc.bln.loader.common.MeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
-import kz.kegoc.bln.repository.media.raw.MonthMeteringDataRawRepository;
 import kz.kegoc.bln.service.media.raw.MonthMeteringDataRawService;
 
 

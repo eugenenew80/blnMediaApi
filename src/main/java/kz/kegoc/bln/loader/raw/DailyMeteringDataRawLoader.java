@@ -9,7 +9,6 @@ import kz.kegoc.bln.loader.common.MeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.repository.media.raw.DayMeteringDataRawRepository;
 import kz.kegoc.bln.service.media.raw.DayMeteringDataRawService;
 
 
