@@ -10,6 +10,7 @@ import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.repository.media.raw.DayMeteringDataRawRepository;
+import kz.kegoc.bln.service.media.raw.DayMeteringDataRawService;
 
 
 @Singleton
@@ -27,12 +28,12 @@ public class DailyMeteringDataRawLoader implements MeteringDataLoader {
 
 			list.add(item);
 		}
-		repository.insertAll(list);
+		service.saveAll(list);
 	}
 
 
 	@Inject
-	private DayMeteringDataRawRepository repository;
+	private DayMeteringDataRawService service;
 
 	@Inject
 	private RedissonClient redissonClient;

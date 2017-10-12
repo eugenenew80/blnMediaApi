@@ -1,7 +1,7 @@
 package kz.kegoc.bln.loader.raw;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.repository.media.raw.HourMeteringDataRawRepository;
+import kz.kegoc.bln.service.media.raw.HourMeteringDataRawService;
 import kz.kegoc.bln.loader.common.MeteringDataLoader;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
@@ -12,7 +12,6 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Singleton
 @Startup
@@ -29,12 +28,12 @@ public class HourlyMeteringDataRawLoader implements MeteringDataLoader {
 
 			list.add(item);
 		}
-		repository.insertAll(list);
+		service.saveAll(list);
 	}
 
 
 	@Inject
-	private HourMeteringDataRawRepository repository;
+	private HourMeteringDataRawService service;
 
 	@Inject
 	private RedissonClient redissonClient;

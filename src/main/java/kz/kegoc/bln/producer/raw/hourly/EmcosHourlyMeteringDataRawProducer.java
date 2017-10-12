@@ -13,6 +13,7 @@ import kz.kegoc.bln.service.media.raw.LoadMeteringInfoService;
 import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.producer.emcos.EmcosDataRequester;
+import kz.kegoc.bln.producer.emcos.RegistryTemplate;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
 import kz.kegoc.bln.queue.common.MeteringDataQueueService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
@@ -32,11 +33,13 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 		EmcosDataRequester.Builder builder = new EmcosDataRequester.Builder()
 			.config(EmcosConfig.defaultEmcosServer().build())
 			.points(points)
-			.reqestedDateTime(requestedDateTime);
+			.reqestedDateTime(requestedDateTime)
+			.registryTemplate(registryTemplate);
 
 		Arrays.asList("A+", "A-", "R+", "R-").forEach(paramCode -> {
 			try {			
-				List<MinuteMeteringDataRaw> meteringData = builder.paramCode(paramCode)
+				List<MinuteMeteringDataRaw> meteringData = builder
+					.paramCode(paramCode)
 					.build()
 					.requestMeteringData();
 				
@@ -101,5 +104,8 @@ public class EmcosHourlyMeteringDataRawProducer implements MeteringDataProducer 
 	private LoadMeteringInfoService loadMeteringInfoService;
 
 	@Inject
-	private MeteringPointService meteringPointService; 
+	private MeteringPointService meteringPointService;
+	
+	@Inject
+	private RegistryTemplate registryTemplate;
 }

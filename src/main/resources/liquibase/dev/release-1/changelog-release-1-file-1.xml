@@ -43,7 +43,15 @@
             
             <column name="status" type="number">
                 <constraints nullable="false"/>
-            </column>            
+            </column>  
+            
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+            
+            <column name="last_update_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>                                   
         </createTable>
     </changeSet>
 

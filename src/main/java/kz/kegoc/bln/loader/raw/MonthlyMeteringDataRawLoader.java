@@ -10,6 +10,7 @@ import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.repository.media.raw.MonthMeteringDataRawRepository;
+import kz.kegoc.bln.service.media.raw.MonthMeteringDataRawService;
 
 
 @Singleton
@@ -27,12 +28,12 @@ public class MonthlyMeteringDataRawLoader implements MeteringDataLoader {
 
 			list.add(item);
 		}
-		repository.insertAll(list);
+		service.saveAll(list);
 	}
 
 
 	@Inject
-	private MonthMeteringDataRawRepository repository;
+	private MonthMeteringDataRawService service;
 
 	@Inject
 	private RedissonClient redissonClient;

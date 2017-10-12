@@ -1,6 +1,6 @@
 package kz.kegoc.bln.service.common;
 
-import java.time.LocalDate;
+import java.time.*;
 import java.util.*;
 import javax.inject.Inject;
 import javax.validation.*;
@@ -98,7 +98,7 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 			throw new InvalidArgumentException(entity);
 			
 		if (entity instanceof HasDates)
-			((HasDates) entity).setCreateDate(LocalDate.now());
+			((HasDates) entity).setCreateDate(LocalDateTime.now());
 
 		Set<ConstraintViolation<T>> violations =  validator.validate(entity);
 		if (violations.size()>0) {			
@@ -123,7 +123,7 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 		T currentEntity = findById(entity.getId());
 		if (entity instanceof HasDates) {
 			((HasDates) entity).setCreateDate( ((HasDates)currentEntity).getCreateDate() );
-			((HasDates) entity).setUpdateDate(LocalDate.now());
+			((HasDates) entity).setLastUpdateDate(LocalDateTime.now());
 		}
 
 		Set<ConstraintViolation<T>> violations =  validator.validate(entity);

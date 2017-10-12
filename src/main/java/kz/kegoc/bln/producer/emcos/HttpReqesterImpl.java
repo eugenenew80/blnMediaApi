@@ -7,13 +7,23 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpReqesterImpl implements HttpRequester {
-    public String doRequest(URL url, String requestBody) throws Exception {
+	private final URL url;
+	private final String method;
+	private final String body;
+	
+	private HttpReqesterImpl(Builder builder) {
+		this.url = builder.url;
+		this.method = builder.method;
+		this.body = builder.body;
+	}
+	
+    public String doRequest() throws Exception {
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
+        con.setRequestMethod(method);
         con.setDoOutput(true);
 
         try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-            wr.writeBytes(requestBody);
+            wr.writeBytes(body);
             wr.flush();
         }
 
@@ -33,5 +43,31 @@ public class HttpReqesterImpl implements HttpRequester {
             return rawData.substring(n1+12, n2);
         else
             return "";
+    }
+    
+    
+    public static class Builder {
+    	private URL url;
+    	private String method;
+    	private String body;
+    	
+    	public Builder url(URL url) {
+    		this.url = url;
+    		return this;
+    	}
+    	    	
+    	public Builder method(String method) {
+    		this.method = method;
+    		return this;
+    	}    	
+
+    	public Builder body(String body) {
+    		this.body = body;
+    		return this;
+    	}        
+    	
+    	public HttpRequester build() {
+    		return new HttpReqesterImpl(this); 
+    	}
     }
 }

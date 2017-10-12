@@ -41,7 +41,15 @@
       		<basic name="wayEntering">
       			<column name="way_entering" />
       			<enumerated>STRING</enumerated>
-      		</basic>       		    		      		
+      		</basic>
+      		
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>      		       		    		      		
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>      		       		    		      		
 		</attributes>
 	</entity>
 
@@ -95,6 +103,14 @@
       			<column name="way_entering" />
       			<enumerated>STRING</enumerated>
       		</basic> 
+      		
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>      		       		    		      		
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>          		
 		</attributes>
 	</entity>
 
@@ -149,9 +165,18 @@
       			<column name="way_entering" />
       			<enumerated>STRING</enumerated>
       		</basic> 
+      		
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>      		       		    		      		
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>          		
 		</attributes>
 	</entity>
 
+	
 	<entity class="kz.kegoc.bln.entity.dict.MeteringPoint">
 		<table name="dict_metering_points" schema="apps"/>
 		<attributes>

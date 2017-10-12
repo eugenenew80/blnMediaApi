@@ -11,5 +11,23 @@
         <query>
             select t from MeteringPoint t where t.externalCode=:externalCode
         </query>
-    </named-query>    
+    </named-query>
+    
+    <named-query name="HourMeteringDataRaw.findByEntity">
+        <query>
+            select 
+            	m 
+            from 
+            	HourMeteringDataRaw m 
+            where 
+            	    m.externalCode=:externalCode
+            	and m.meteringDate=:meteringDate
+            	and m.hour=:hour
+            	and m.dataSourceCode=:dataSourceCode
+            	and m.wayEntering=:wayEntering
+            	and m.status=:status
+            	and m.unitCode=:unitCode
+            	and m.paramCode=:paramCode
+        </query>
+    </named-query>          
 </entity-mappings>

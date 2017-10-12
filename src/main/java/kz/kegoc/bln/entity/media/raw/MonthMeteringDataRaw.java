@@ -1,5 +1,8 @@
 package kz.kegoc.bln.entity.media.raw;
 
+import java.time.LocalDateTime;
+
+import kz.kegoc.bln.entity.common.HasDates;
 import kz.kegoc.bln.entity.common.HasId;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -8,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class MonthMeteringDataRaw implements HasId {
+public class MonthMeteringDataRaw  implements HasId, HasDates  {
 	private Long id;
 	private Short year;
 	private Short month;
@@ -19,4 +22,6 @@ public class MonthMeteringDataRaw implements HasId {
 	private WayEntering wayEntering;
 	private DataStatus status;
 	private Double val;
+	private LocalDateTime createDate;
+	private LocalDateTime lastUpdateDate;
 }

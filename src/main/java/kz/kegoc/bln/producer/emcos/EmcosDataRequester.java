@@ -26,7 +26,7 @@ public class EmcosDataRequester {
     private final LocalDateTime reqestedDateTime;
     private final String paramCode;
     private final String emcosParamCode;
-    private final HttpRequester httpRequest;
+    private final RegistryTemplate registryTemplate;
 
     private EmcosDataRequester(Builder builder) {
         this.config = builder.config;
@@ -34,62 +34,43 @@ public class EmcosDataRequester {
         this.emcosParamCode = builder.emcosParamCode;
         this.points = builder.points;
         this.reqestedDateTime = builder.reqestedDateTime;
-        this.httpRequest = new HttpReqesterImpl();
+        this.registryTemplate = builder.registryTemplate;
     }
 
 
     public List<MinuteMeteringDataRaw> requestMeteringData() throws Exception {
-    	String requestBody = buildReqest();
-        String answerData = httpRequest.doRequest(new URL(config.getUrl()), requestBody);
+    	HttpRequester httpRequester = new HttpReqesterImpl.Builder()
+    		.url(new URL(config.getUrl()))
+    		.method("POST")
+    		.body(buildBody())
+    		.build();
+    	
+        String answerData = httpRequester.doRequest();
         return extractData(answerData);
     }
 
 
-    private String buildReqest() {
+    private String buildBody() {
         String strPoints = points.stream()
             .map( p-> toXmlNode(p))
             .collect(Collectors.joining());
 
-        String data = ""
-                + "<?xml version=\"1.0\" encoding=\"windows-1251\"?>"
-                + "<DATAPACKET Version=\"2.0\">"
-                + "<METADATA>"
-                + "<FIELDS>"
-                + "<FIELD attrname=\"PPOINT_CODE\" fieldtype=\"string\" required=\"true\" WIDTH=\"50\" />"
-                + "<FIELD attrname=\"PML_ID\" fieldtype=\"fixed\" required=\"true\" WIDTH=\"6\" />"
-                + "<FIELD attrname=\"PBT\" fieldtype=\"SQLdateTime\" />"
-                + "<FIELD attrname=\"PET\" fieldtype=\"SQLdateTime\" />"
-                + "</FIELDS>"
-                + "<PARAMS LCID=\"0\" />"
-                + "</METADATA>"
-                + "<ROWDATA>"
-                + strPoints
-                + "</ROWDATA>"
-                + "</DATAPACKET>";
+        String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
+        	.replace("#points#", strPoints);
 
-        String requestBody = ""
-                + "<?xml version=\"1.0\"?>"
-                + "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
-                + "<SOAP-ENV:Body>"
-                + "<TransferEMCOSData xmlns=\"http://www.sigmatelas.lt/webservices\">"
-                + "<parameters>"
-                + "<aDProperty>"
-                + "<UserId>" + config.getUser() + "</UserId>"
-                + "<aPacked>" + config.getIsPacked().toString() + "</aPacked>"
-                + "<Func>" + config.getFunc() + "</Func>"
-                + "<Reserved></Reserved>"
-                + "<AttType>" + config.getAttType() +"</AttType>"
-                + "</aDProperty>"
-                + "<aData>"
-                + Base64.encodeBase64String(data.getBytes())
-                + "</aData>"
-                + "</parameters>"
-                + "</TransferEMCOSData>"
-                + "</SOAP-ENV:Body>"
-                + "</SOAP-ENV:Envelope>";
+        String property = registryTemplate.getTemplate("EMCOS_REQML_PROPERTY")
+        	.replace("#user#", config.getUser())
+        	.replace("#isPacked#", config.getIsPacked().toString())
+        	.replace("#func#", config.getFunc())
+        	.replace("#attType#", config.getAttType());
+        
+        String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
+        	.replace("#property#", property)
+        	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
 
-        return requestBody;
+        return body;
     }
+    
 
     private List<MinuteMeteringDataRaw> extractData(String answerData) throws Exception {
         Document doc = DocumentBuilderFactory.newInstance()
@@ -135,7 +116,7 @@ public class EmcosDataRequester {
             startDateTime =  LocalDateTime.of(
                     now.getYear(),
                     now.getMonth(),
-                    1, //now.getDayOfMonth(),
+                    now.getDayOfMonth(),
                     0,
                     0
             );
@@ -143,6 +124,7 @@ public class EmcosDataRequester {
         return startDateTime;
     }
 
+    
     private MinuteMeteringDataRaw fromXmlNode(Node node) {
         String externalCode = node.getAttributes()
             .getNamedItem("PPOINT_CODE")
@@ -188,6 +170,7 @@ public class EmcosDataRequester {
         private LocalDateTime reqestedDateTime;
         private String paramCode;
         private String emcosParamCode;
+        private RegistryTemplate registryTemplate;
 
         public Builder config(EmcosConfig config) {
             this.config=config;
@@ -204,6 +187,11 @@ public class EmcosDataRequester {
             return this;
         }
 
+        public Builder registryTemplate(RegistryTemplate registryTemplate) {
+            this.registryTemplate=registryTemplate;
+            return this;
+        }
+                
         public Builder paramCode(String paramCodee) {
             this.paramCode=paramCodee;
 
