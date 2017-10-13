@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 @Singleton
 public class FileMeteringDataRawProducer<T extends HasId> implements MeteringDataProducer {
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
-	private Map<String, FileMeteringDataRawReader> mapReaders = new HashMap<>();
+	private Map<String, FileMeteringDataRawReader<? extends HasId>> mapReaders = new HashMap<>();
 
 	@PostConstruct
 	public void init() {
@@ -39,17 +39,18 @@ public class FileMeteringDataRawProducer<T extends HasId> implements MeteringDat
 		mapReaders.put("hour/xml", 	new XmlHourMeteringDataRawReader(hourMeteringDataQueueService));
 		mapReaders.put("day/csv", 	new CsvDayMeteringDataRawReader(dayMeteringDataQueueService));
 		mapReaders.put("day/xml", 	new XmlDayMeteringDataRawReader(dayMeteringDataQueueService));
-		mapReaders.put("month/csv", 	new CsvMonthMeteringDataRawReader(monthMeteringDataQueueService));
-		mapReaders.put("month/xml", 	new XmlMonthMeteringDataRawReader(monthMeteringDataQueueService));
+		mapReaders.put("month/csv", new CsvMonthMeteringDataRawReader(monthMeteringDataQueueService));
+		mapReaders.put("month/xml", new XmlMonthMeteringDataRawReader(monthMeteringDataQueueService));
 	}
 
+	
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
 		Arrays.asList("hour", "day", "month").stream().forEach(subDir -> {
 			for (Path p : getListFiles(Paths.get(dir + "/" + subDir))) {
 				try {
 					String extension = FilenameUtils.getExtension(p.toString());
-					FileMeteringDataRawReader reader = mapReaders.get(subDir + "/" + extension);
+					FileMeteringDataRawReader<? extends HasId> reader = mapReaders.get(subDir + "/" + extension);
 					reader.loadFromFile(p);
 					Files.delete(p);
 				}

@@ -11,7 +11,6 @@ import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.service.media.raw.DayMeteringDataRawService;
 
-
 @Singleton
 @Startup
 public class DailyMeteringDataRawLoader implements MeteringDataLoader {

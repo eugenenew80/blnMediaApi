@@ -3,17 +3,16 @@ package kz.kegoc.bln.producer.emcos;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.raw.EmcosMeteringPoint;
 import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
 import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,7 +27,9 @@ public class EmcosDataRequester {
     private final String paramCode;
     private final String emcosParamCode;
     private final RegistryTemplate registryTemplate;
-
+    private List<EmcosMeteringPoint> cfg = null;
+    private String strPoints = "";
+    
     private EmcosDataRequester(Builder builder) {
         this.config = builder.config;
         this.paramCode = builder.paramCode;
@@ -39,48 +40,101 @@ public class EmcosDataRequester {
     }
 
 
-    public List<MinuteMeteringDataRaw> requestMeteringData() throws Exception {
-        List<MinuteMeteringDataRaw> meteringData = new ArrayList<>();
-
-        HttpRequester httpRequester = new HttpReqesterImpl.Builder()
+    public List<EmcosMeteringPoint> requestCfg() throws Exception {
+        HttpRequester httpRequesterCfg = new HttpReqesterImpl.Builder()
     		.url(new URL(config.getUrl()))
     		.method("POST")
-    		.body(buildBody())
+    		.body(buildBody("REQCFG"))
+    		.build();    	
+    	
+        return extractMeteringPoints(httpRequesterCfg.doRequest());
+    }
+    
+    
+    public List<MinuteMeteringDataRaw> requestMeteringData() throws Exception {
+    	cfg = requestCfg();
+    	
+        strPoints = cfg.stream()
+            .map( p-> pointToXml(p))
+            .collect(Collectors.joining());
+    	
+    	HttpRequester httpRequester = new HttpReqesterImpl.Builder()
+    		.url(new URL(config.getUrl()))
+    		.method("POST")
+    		.body(buildBody("REQML"))
     		.build();
 
-        String answerData = httpRequester.doRequest();
-        return extractData(answerData);
+        return extractMeteringData(httpRequester.doRequest());
     }
 
 
-    private String buildBody() {
-        String strPoints = points.stream()
-            .map( p-> toXmlNode(p))
-            .collect(Collectors.joining());
-
-        String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
+    private String buildBody(String emcosFunc) {
+        String data = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_DATA")
         	.replace("#points#", strPoints);
 
-        String property = registryTemplate.getTemplate("EMCOS_REQML_PROPERTY")
+        String property = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
-        	.replace("#func#", config.getFunc())
+        	.replace("#func#", emcosFunc)
         	.replace("#attType#", config.getAttType());
         
-        String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
+        String body = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
 
         return body;
     }
     
+    
+    private List<EmcosMeteringPoint> extractMeteringPoints(String answerData) throws Exception {
+        Document doc = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder()
+            .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answerData), "Cp1251") )));
 
-    private List<MinuteMeteringDataRaw> extractData(String answerData) throws Exception {
+        NodeList nodes =  doc.getDocumentElement().getParentNode()
+            .getFirstChild()
+            .getChildNodes();    	
+        
+        List<EmcosMeteringPoint> points = new ArrayList<>();
+        for(int i = 0; i < nodes.getLength(); i++) {
+            if (nodes.item(i).getNodeName() == "ROWDATA") {
+                NodeList rowData = nodes.item(i).getChildNodes();
+                for(int j = 0; j < rowData.getLength(); j++) {
+                    if (rowData.item(j).getNodeName() == "ROW") {
+                        String pointCode = rowData.item(j).getAttributes()
+                            .getNamedItem("POINT_CODE")
+                            .getNodeValue();
+                        
+                        String emcosParamCode = rowData.item(j).getAttributes()
+                            .getNamedItem("ML_ID")
+                            .getNodeValue();
+                        
+                        String unitCode = rowData.item(j).getAttributes()
+                            .getNamedItem("EU_CODE")
+                            .getNodeValue();                        
+                        
+                        if (emcosParamCode!=null && (emcosParamCode.equals("1040") || emcosParamCode.equals("1041") || emcosParamCode.equals("1042") || emcosParamCode.equals("1043")) ) {
+	                        EmcosMeteringPoint p = new EmcosMeteringPoint();
+	                        p.setPointCode(pointCode);
+	                        p.setEmcosParamCode(emcosParamCode);
+	                        p.setUnitCode(unitCode);
+	                        points.add(p);
+                        }
+                    }
+                }
+            }
+        }    
+        
+        return points;
+    }
+
+    
+    private List<MinuteMeteringDataRaw> extractMeteringData(String answerData) throws Exception {
         List<MinuteMeteringDataRaw> meteringData = new ArrayList<>();
 
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
-            .parse(new InputSource(new StringReader(new String(Base64.decodeBase64(answerData), "Cp1251"))));
+            .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answerData), "Cp1251") )));
 
         NodeList nodes =  doc.getDocumentElement().getParentNode()
             .getFirstChild()
@@ -91,7 +145,7 @@ public class EmcosDataRequester {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW")
-                        meteringData.add(fromXmlNode(rowData.item(j)));
+                        meteringData.add(fromXmlToMeterinData(rowData.item(j)));
                 }
             }
         }
@@ -100,9 +154,14 @@ public class EmcosDataRequester {
     }
 
 
-    private String toXmlNode(MeteringPoint point) {
-        return ""
-                + "<ROW PPOINT_CODE=\"" + point.getExternalCode() + "\" "
+    private String pointToXml(EmcosMeteringPoint emcosPoint) {
+    	MeteringPoint point = points.stream()
+    		.filter(t -> t.getExternalCode().equals(emcosPoint.getPointCode()))
+    		.findFirst()
+    		.orElse(null);
+    	
+    	return ""
+                + "<ROW PPOINT_CODE=\"" + emcosPoint.getPointCode() + "\" "
                 + "PML_ID=\"" + emcosParamCode + "\" "
                 + "PBT=\"" + buildStartDateTime(point).format(timeFormatter) + "\" "
                 + "PET=\"" + reqestedDateTime.format(timeFormatter) + "\" />";
@@ -111,7 +170,7 @@ public class EmcosDataRequester {
 
     private LocalDateTime buildStartDateTime(MeteringPoint point) {
         LocalDateTime startDateTime;
-        if (point.getLoadInfo()!=null && point.getLoadInfo().getLastLoadedDate()!=null) {
+        if (point!=null && point.getLoadInfo()!=null && point.getLoadInfo().getLastLoadedDate()!=null) {
             LocalDateTime lastLoadTime = point.getLoadInfo().getLastLoadedDate();
             startDateTime = LocalDateTime.of(lastLoadTime.getYear(), lastLoadTime.getMonth(), lastLoadTime.getDayOfMonth(), lastLoadTime.getHour(), 0);
         }
@@ -129,11 +188,15 @@ public class EmcosDataRequester {
     }
 
     
-    private MinuteMeteringDataRaw fromXmlNode(Node node) {
+    private MinuteMeteringDataRaw fromXmlToMeterinData(Node node) {
         String externalCode = node.getAttributes()
             .getNamedItem("PPOINT_CODE")
             .getNodeValue() ;
 
+        String emcosParamCode = node.getAttributes()
+            .getNamedItem("PML_ID")
+            .getNodeValue() ;
+        
         LocalDateTime time = null;
         String timeStr = node.getAttributes()
             .getNamedItem("PBT")
@@ -149,7 +212,7 @@ public class EmcosDataRequester {
         Double val = null;
         String valStr = node.getAttributes()
             .getNamedItem("PVAL")
-            .getNodeValue() ;
+            .getNodeValue();
 
         if (valStr!=null)
             val = Double.parseDouble(valStr);
@@ -164,6 +227,15 @@ public class EmcosDataRequester {
         meteringData.setParamCode(this.paramCode);
         meteringData.setVal(val);
 
+        EmcosMeteringPoint emcosMeteringPoint = cfg.stream()
+        	.filter(t -> t.getPointCode().equals(meteringData.getExternalCode()))
+        	.filter(t -> t.getEmcosParamCode().equals(emcosParamCode))
+        	.findFirst()
+        	.get();
+        
+        if (emcosMeteringPoint!=null) 
+        	meteringData.setUnitCode(emcosMeteringPoint.getUnitCode());
+        
         return meteringData;
     }
 

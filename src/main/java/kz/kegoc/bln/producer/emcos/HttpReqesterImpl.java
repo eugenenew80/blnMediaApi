@@ -18,7 +18,7 @@ public class HttpReqesterImpl implements HttpRequester {
 	}
 	
     public String doRequest() throws Exception {
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+    	HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod(method);
         con.setDoOutput(true);
 

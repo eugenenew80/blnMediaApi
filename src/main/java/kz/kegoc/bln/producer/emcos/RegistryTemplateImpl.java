@@ -12,7 +12,10 @@ public class RegistryTemplateImpl implements RegistryTemplate {
 	
 	@PostConstruct
 	public void init() {
-        String template = ""
+        
+		//REQML
+		
+		String template = ""
                 + "<?xml version=\"1.0\" encoding=\"windows-1251\"?>"
                 + "<DATAPACKET Version=\"2.0\">"
                 + "<METADATA>"
@@ -57,6 +60,50 @@ public class RegistryTemplateImpl implements RegistryTemplate {
                 + "</SOAP-ENV:Body>"
                 + "</SOAP-ENV:Envelope>";                
         registerTemplate("EMCOS_REQML_BODY", template);
+        
+
+        
+        //REQCFG
+        
+        template = ""
+    	 		+ "<?xml version=\"1.0\" encoding=\"windows-1251\"?>"
+    	 		+ "<DATAPACKET Version=\"2.0\">"
+    	 		+ "<METADATA>"
+    	 		+ "<FIELDS>"
+    	 		+ "<FIELD attrname=\"CFG\" fieldtype=\"fixed\" WIDTH=\"6\" />"
+    	 		+ "</FIELDS>"
+    	 		+ "<PARAMS LCID=\"0\" />"
+    	 		+ "</METADATA>"
+    	 		+ "<ROWDATA>"
+    	 		+ "</ROWDATA>"
+    	 		+ "</DATAPACKET>";			
+        registerTemplate("EMCOS_REQCFG_DATA", template);    
+        
+        template = ""
+                + "<UserId>#user#</UserId>"
+                + "<aPacked>#isPacked#</aPacked>"
+                + "<Func>#func#</Func>"
+                + "<Reserved></Reserved>"
+                + "<AttType>#attType#</AttType>";        		
+        registerTemplate("EMCOS_REQCFG_PROPERTY", template);    
+        
+        template = ""
+                + "<?xml version=\"1.0\"?>"
+                + "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+                + "<SOAP-ENV:Body>"
+                + "<TransferEMCOSData xmlns=\"http://www.sigmatelas.lt/webservices\">"
+                + "<parameters>"
+                + "<aDProperty>"
+                + "#property#"
+                + "</aDProperty>"
+                + "<aData>"
+                + "#data#"
+                + "</aData>"
+                + "</parameters>"
+                + "</TransferEMCOSData>"
+                + "</SOAP-ENV:Body>"
+                + "</SOAP-ENV:Envelope>";                
+        registerTemplate("EMCOS_REQCFG_BODY", template);        
 	}
 	
 	

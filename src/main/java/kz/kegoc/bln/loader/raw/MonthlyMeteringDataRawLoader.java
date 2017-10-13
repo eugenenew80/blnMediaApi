@@ -10,7 +10,6 @@ import org.redisson.api.RedissonClient;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.service.media.raw.MonthMeteringDataRawService;
 
-
 @Singleton
 @Startup
 public class MonthlyMeteringDataRawLoader implements MeteringDataLoader {
