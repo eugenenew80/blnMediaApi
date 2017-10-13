@@ -1,4 +1,6 @@
-package kz.kegoc.bln.producer.emcos;
+package kz.kegoc.bln.producer.emcos.impl;
+
+import kz.kegoc.bln.producer.emcos.RegistryTemplate;
 
 import java.util.*;
 
