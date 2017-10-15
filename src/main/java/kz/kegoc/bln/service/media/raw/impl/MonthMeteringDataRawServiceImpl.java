@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
 
+import kz.kegoc.bln.entity.media.MeteringData;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.repository.media.raw.MeteringDataRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
@@ -22,7 +23,7 @@ public class MonthMeteringDataRawServiceImpl extends AbstractEntityService<Month
 
 	public void saveAll(List<MonthMeteringDataRaw> list) {
     	list.stream().forEach(m -> {
-			MonthMeteringDataRaw h = meteringDataRepository.selectByEntity(m);
+			MeteringData h = meteringDataRepository.selectByEntity(m);
 			if (h==null) {
 				m.setCreateDate(LocalDateTime.now());
 				meteringDataRepository.insert(m);

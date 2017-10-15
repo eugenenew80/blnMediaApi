@@ -5,6 +5,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
+
+import kz.kegoc.bln.entity.media.MeteringData;
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.repository.media.raw.MeteringDataRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
@@ -21,7 +23,7 @@ public class DayMeteringDataRawServiceImpl extends AbstractEntityService<DayMete
 
 	public void saveAll(List<DayMeteringDataRaw> list) {
     	list.stream().forEach(m -> {
-    		DayMeteringDataRaw h = meteringDataRepository.selectByEntity(m);
+    		MeteringData h = meteringDataRepository.selectByEntity(m);
 			if (h==null) {
 				m.setCreateDate(LocalDateTime.now());
 				meteringDataRepository.insert(m);
