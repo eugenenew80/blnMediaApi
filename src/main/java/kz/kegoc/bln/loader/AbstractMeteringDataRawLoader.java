@@ -3,11 +3,16 @@ package kz.kegoc.bln.loader;
 import kz.kegoc.bln.entity.media.MeteringData;
 import kz.kegoc.bln.service.media.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractMeteringDataRawLoader<T extends MeteringData> implements MeteringDataLoader {
+
+	public AbstractMeteringDataRawLoader(MeteringDataService<T> service, RBlockingQueue<T> queue) {
+		this.service = service;
+		this.queue = queue;
+	}
+
 	public void execute() {
 		List<T> list = new ArrayList<>();
 		while (true) {
@@ -20,9 +25,6 @@ public abstract class AbstractMeteringDataRawLoader<T extends MeteringData> impl
 		service.saveAll(list);
 	}
 
-	@Inject
 	private MeteringDataService<T> service;
-
-	@Inject
 	private RBlockingQueue<T> queue;
 }
