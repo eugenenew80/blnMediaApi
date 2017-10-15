@@ -1,4 +1,4 @@
-package kz.kegoc.bln.webapi.media.raw;
+package kz.kegoc.bln.webapi.media;
 
 import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEntering;

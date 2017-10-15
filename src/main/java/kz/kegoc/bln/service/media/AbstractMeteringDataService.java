@@ -1,7 +1,7 @@
 package kz.kegoc.bln.service.media;
 
 import kz.kegoc.bln.entity.media.MeteringData;
-import kz.kegoc.bln.repository.media.raw.MeteringDataRepository;
+import kz.kegoc.bln.repository.media.MeteringDataRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 
 import javax.validation.Validator;

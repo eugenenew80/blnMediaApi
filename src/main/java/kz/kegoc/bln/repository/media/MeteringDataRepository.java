@@ -1,4 +1,4 @@
-package kz.kegoc.bln.repository.media.raw;
+package kz.kegoc.bln.repository.media;
 
 import kz.kegoc.bln.entity.media.MeteringData;
 import kz.kegoc.bln.repository.common.Repository;

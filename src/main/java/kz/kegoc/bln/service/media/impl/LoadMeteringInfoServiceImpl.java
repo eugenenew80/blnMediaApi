@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.media.impl.raw;
+package kz.kegoc.bln.service.media.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;

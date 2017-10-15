@@ -1,8 +1,8 @@
-package kz.kegoc.bln.repository.media.raw.impl;
+package kz.kegoc.bln.repository.media.impl;
 
 import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.repository.common.AbstractRepository;
-import kz.kegoc.bln.repository.media.raw.MeteringDataRepository;
+import kz.kegoc.bln.repository.media.MeteringDataRepository;
 
 import javax.ejb.Stateless;
 
