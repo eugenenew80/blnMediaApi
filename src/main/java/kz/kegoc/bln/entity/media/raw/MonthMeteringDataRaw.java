@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class MonthMeteringDataRaw  implements MeteringData {
+public class MonthMeteringDataRaw implements MeteringData {
 	private Long id;
 	private Short year;
 	private Short month;
