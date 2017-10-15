@@ -5,7 +5,7 @@ import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.raw.dto.HourMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.raw.dto.HourMeteringDataRawListDto;
-import kz.kegoc.bln.queue.raw.HourlyMeteringDataRawQueue;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
 import org.dozer.DozerBeanMapper;
 
 import javax.enterprise.context.RequestScoped;
@@ -38,7 +38,7 @@ public class HourMeteringDataRawResource {
 		entity.setStatus(DataStatus.RAW);
 		entity.setDataSourceCode("MANUAL");
 		
-		service.addMeteringData(mapper.map(entity, HourMeteringDataRaw.class));
+		service.add(mapper.map(entity, HourMeteringDataRaw.class));
 		return Response.ok().build();
 	}	
 
@@ -56,12 +56,12 @@ public class HourMeteringDataRawResource {
 			})
 			.collect(Collectors.toList());
 
-		service.addMeteringListData(list);
+		service.addAll(list);
 		return Response.ok().build();
 	}
 
 
 	@Inject
-	private HourlyMeteringDataRawQueue service;
+	private MeteringDataQueueService<HourMeteringDataRaw> service;
 	private DozerBeanMapper mapper;
 }

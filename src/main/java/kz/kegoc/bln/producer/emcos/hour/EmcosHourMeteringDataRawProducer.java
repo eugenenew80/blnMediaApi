@@ -11,11 +11,10 @@ import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
 import kz.kegoc.bln.producer.emcos.EmcosConfig;
 import kz.kegoc.bln.service.media.raw.LoadMeteringInfoService;
 import org.apache.commons.lang3.tuple.Pair;
-import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.producer.emcos.impl.EmcosDataServiceImpl;
 import kz.kegoc.bln.producer.emcos.RegistryTemplate;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
-import kz.kegoc.bln.queue.common.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -27,12 +26,11 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 
 	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
-		LocalDateTime requestedDateTime = requestedDateTime();
-		List<MeteringPoint> points = meteringPointService.findAll();
+		LocalDateTime requestedDateTime = buildRequestedDateTime();
 
 		EmcosDataServiceImpl.Builder builder = new EmcosDataServiceImpl.Builder()
 			.config(EmcosConfig.defaultEmcosServer().build())
-			.points(points)
+			.points(meteringPointService.findAll())
 			.reqestedDateTime(requestedDateTime)
 			.registryTemplate(registryTemplate);
 
@@ -43,7 +41,7 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 					.build()
 					.requestMeteringData();
 				
-				queueService.addMeteringListData(buildHourMeteringData(meteringData));
+				queueService.addAll(buildHourMeteringData(meteringData));
 				loadMeteringInfoService.updateLoadMeteringInfo(meteringData, requestedDateTime);
 			}
 			catch (Exception e) {
@@ -86,7 +84,7 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 	}
 	
 	
-	private LocalDateTime requestedDateTime() {
+	private LocalDateTime buildRequestedDateTime() {
 		LocalDateTime now = LocalDateTime.now();
 		return LocalDateTime.of(
 					now.getYear(),

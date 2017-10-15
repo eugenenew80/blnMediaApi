@@ -4,9 +4,13 @@ import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.file.FileMeteringDataRawReader;
-import kz.kegoc.bln.queue.common.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.annotation.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -14,8 +18,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateless
+@XML
 public class XmlHourMeteringDataRawReader implements FileMeteringDataRawReader<HourMeteringDataRaw> {
 
+	@Inject
 	public XmlHourMeteringDataRawReader(MeteringDataQueueService<HourMeteringDataRaw> service) {
 		this.service = service;
 	}
@@ -32,7 +39,7 @@ public class XmlHourMeteringDataRawReader implements FileMeteringDataRawReader<H
 				list.add(convert(nodeRow));
 		}
 
-		service.addMeteringListData(list);
+		service.addAll(list);
 	}
 	
 	

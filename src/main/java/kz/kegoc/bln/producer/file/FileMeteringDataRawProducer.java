@@ -5,13 +5,9 @@ import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
-import kz.kegoc.bln.producer.file.day.CsvDayMeteringDataRawReader;
-import kz.kegoc.bln.producer.file.day.XmlDayMeteringDataRawReader;
-import kz.kegoc.bln.producer.file.hour.CsvHourMeteringDataRawReader;
-import kz.kegoc.bln.producer.file.hour.XmlHourMeteringDataRawReader;
-import kz.kegoc.bln.producer.file.month.CsvMonthMeteringDataRawReader;
-import kz.kegoc.bln.producer.file.month.XmlMonthMeteringDataRawReader;
-import kz.kegoc.bln.queue.common.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.annotation.CSV;
+import kz.kegoc.bln.annotation.XML;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.PostConstruct;
@@ -33,14 +29,15 @@ public class FileMeteringDataRawProducer<T extends HasId> implements MeteringDat
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
 	private Map<String, FileMeteringDataRawReader<? extends HasId>> mapReaders = new HashMap<>();
 
+
 	@PostConstruct
 	public void init() {
-		mapReaders.put("hour/csv", 	new CsvHourMeteringDataRawReader(hourMeteringDataQueueService));
-		mapReaders.put("hour/xml", 	new XmlHourMeteringDataRawReader(hourMeteringDataQueueService));
-		mapReaders.put("day/csv", 	new CsvDayMeteringDataRawReader(dayMeteringDataQueueService));
-		mapReaders.put("day/xml", 	new XmlDayMeteringDataRawReader(dayMeteringDataQueueService));
-		mapReaders.put("month/csv", new CsvMonthMeteringDataRawReader(monthMeteringDataQueueService));
-		mapReaders.put("month/xml", new XmlMonthMeteringDataRawReader(monthMeteringDataQueueService));
+		mapReaders.put("hour/csv", 	csvHourMeteringDataRawReader);
+		mapReaders.put("hour/xml", 	xmlHourMeteringDataRawReader);
+		mapReaders.put("day/csv", 	csvDayMeteringDataRawReader);
+		mapReaders.put("day/xml", 	xmlDayMeteringDataRawReader);
+		mapReaders.put("month/csv", 	csvMonthMeteringDataRawReader);
+		mapReaders.put("month/xml", 	xmlMonthMeteringDataRawReader);
 	}
 
 	
@@ -82,4 +79,22 @@ public class FileMeteringDataRawProducer<T extends HasId> implements MeteringDat
 
 	@Inject
 	private MeteringDataQueueService<MonthMeteringDataRaw> monthMeteringDataQueueService;
+
+	@Inject @CSV
+	private FileMeteringDataRawReader<HourMeteringDataRaw> csvHourMeteringDataRawReader;
+
+	@Inject @XML
+	private FileMeteringDataRawReader<HourMeteringDataRaw> xmlHourMeteringDataRawReader;
+
+	@Inject @CSV
+	private FileMeteringDataRawReader<DayMeteringDataRaw> csvDayMeteringDataRawReader;
+
+	@Inject @XML
+	private FileMeteringDataRawReader<DayMeteringDataRaw> xmlDayMeteringDataRawReader;
+
+	@Inject @CSV
+	private FileMeteringDataRawReader<MonthMeteringDataRaw> csvMonthMeteringDataRawReader;
+
+	@Inject @XML
+	private FileMeteringDataRawReader<MonthMeteringDataRaw> xmlMonthMeteringDataRawReader;
 }

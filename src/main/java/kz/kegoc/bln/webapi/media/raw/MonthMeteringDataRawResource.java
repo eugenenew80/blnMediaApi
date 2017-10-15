@@ -3,18 +3,16 @@ package kz.kegoc.bln.webapi.media.raw;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
 import org.dozer.DozerBeanMapper;
-
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.raw.dto.MonthMeteringDataRawDto;
-import kz.kegoc.bln.queue.raw.MonthlyMeteringDataRawQueue;
 
 
 @RequestScoped
@@ -35,7 +33,7 @@ public class MonthMeteringDataRawResource {
 		entity.setStatus(DataStatus.RAW);
 		entity.setDataSourceCode("MANUAL");
 		
-		service.addMeteringData(mapper.map(entity, MonthMeteringDataRaw.class));
+		service.add(mapper.map(entity, MonthMeteringDataRaw.class));
 		return Response.ok()
 				.build();
 	}	
@@ -53,12 +51,12 @@ public class MonthMeteringDataRawResource {
 			})
 			.collect(Collectors.toList());
 		
-		service.addMeteringListData(list);		
+		service.addAll(list);
 		return Response.ok().build();
 	}	
 	
 
 	@Inject
-	private MonthlyMeteringDataRawQueue service;
+	private MeteringDataQueueService<MonthMeteringDataRaw> service;
 	private DozerBeanMapper mapper;
 }

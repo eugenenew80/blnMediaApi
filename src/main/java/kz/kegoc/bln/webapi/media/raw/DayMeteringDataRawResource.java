@@ -8,13 +8,13 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
 import org.dozer.DozerBeanMapper;
 
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.raw.dto.DayMeteringDataRawDto;
-import kz.kegoc.bln.queue.raw.DailyMeteringDataRawQueue;
 
 
 @RequestScoped
@@ -35,7 +35,7 @@ public class DayMeteringDataRawResource {
 		entity.setStatus(DataStatus.RAW);
 		entity.setDataSourceCode("MANUAL");
 		
-		service.addMeteringData(mapper.map(entity, DayMeteringDataRaw.class));
+		service.add(mapper.map(entity, DayMeteringDataRaw.class));
 		return Response.ok()
 				.build();
 	}	
@@ -53,12 +53,12 @@ public class DayMeteringDataRawResource {
 			})
 			.collect(Collectors.toList());
 		
-		service.addMeteringListData(list);		
+		service.addAll(list);
 		return Response.ok().build();
 	}	
 
 
 	@Inject
-	private DailyMeteringDataRawQueue service;
+	private MeteringDataQueueService<DayMeteringDataRaw> service;
 	private DozerBeanMapper mapper;
 }

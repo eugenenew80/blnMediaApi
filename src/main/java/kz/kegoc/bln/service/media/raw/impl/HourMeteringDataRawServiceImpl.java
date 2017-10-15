@@ -9,10 +9,10 @@ import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.repository.common.Repository;
 import kz.kegoc.bln.repository.media.raw.HourMeteringDataRawRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
-import kz.kegoc.bln.service.media.raw.HourMeteringDataRawService;
+import kz.kegoc.bln.service.media.raw.MeteringDataService;
 
 @Stateless
-public class HourMeteringDataRawServiceImpl extends AbstractEntityService<HourMeteringDataRaw> implements HourMeteringDataRawService {
+public class HourMeteringDataRawServiceImpl extends AbstractEntityService<HourMeteringDataRaw> implements MeteringDataService<HourMeteringDataRaw> {
    
 	@Inject
     public HourMeteringDataRawServiceImpl(Repository<HourMeteringDataRaw> repository, Validator validator) {

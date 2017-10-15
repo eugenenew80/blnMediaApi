@@ -4,7 +4,11 @@ import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.producer.file.FileMeteringDataRawReader;
-import kz.kegoc.bln.queue.common.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.annotation.CSV;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -12,8 +16,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateless
+@CSV
 public class CsvDayMeteringDataRawReader implements FileMeteringDataRawReader<DayMeteringDataRaw> {
 
+    @Inject
     public CsvDayMeteringDataRawReader(MeteringDataQueueService<DayMeteringDataRaw> service) {
         this.service=service;
     }
@@ -25,9 +32,8 @@ public class CsvDayMeteringDataRawReader implements FileMeteringDataRawReader<Da
             list.add(convert(strs.get(i)));
         }
 
-        service.addMeteringListData(list);
+        service.addAll(list);
     }
-
 
     private DayMeteringDataRaw convert(String s) throws Exception {
         String[] data = s.split(";");

@@ -4,18 +4,23 @@ import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.file.FileMeteringDataRawReader;
-import kz.kegoc.bln.queue.common.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.annotation.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Stateless
+@XML
 public class XmlMonthMeteringDataRawReader implements FileMeteringDataRawReader<MonthMeteringDataRaw> {
 
+	@Inject
 	public XmlMonthMeteringDataRawReader(MeteringDataQueueService<MonthMeteringDataRaw> service) {
 		this.service=service;
 	}
@@ -32,7 +37,7 @@ public class XmlMonthMeteringDataRawReader implements FileMeteringDataRawReader<
 				list.add(convert(nodeRow));
 		}
 
-		service.addMeteringListData(list);
+		service.addAll(list);
 	}
 	
 	

@@ -53,17 +53,17 @@ public class HttpReqesterImpl implements HttpRequester {
     	private String method;
     	private String body;
     	
-    	public Builder url(URL url) {
+    	public Builder url(final URL url) {
     		this.url = url;
     		return this;
     	}
     	    	
-    	public Builder method(String method) {
+    	public Builder method(final String method) {
     		this.method = method;
     		return this;
     	}    	
 
-    	public Builder body(String body) {
+    	public Builder body(final String body) {
     		this.body = body;
     		return this;
     	}        

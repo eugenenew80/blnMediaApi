@@ -4,8 +4,11 @@ import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.file.FileMeteringDataRawReader;
-import kz.kegoc.bln.queue.common.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.annotation.CSV;
 
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -13,8 +16,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Stateless @CSV
 public class CsvHourMeteringDataRawReader implements FileMeteringDataRawReader<HourMeteringDataRaw> {
 
+	@Inject
 	public CsvHourMeteringDataRawReader(MeteringDataQueueService<HourMeteringDataRaw> service) {
 		this.service=service;
 	}
@@ -25,7 +30,7 @@ public class CsvHourMeteringDataRawReader implements FileMeteringDataRawReader<H
 		for (int i=1; i<strs.size(); i++ )
 			list.add(convert(strs.get(i)));
 
-		service.addMeteringListData(list);
+		service.addAll(list);
 	}
 	
 	

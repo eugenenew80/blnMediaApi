@@ -7,7 +7,11 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
+import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import org.redisson.Redisson;
+import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
@@ -33,5 +37,26 @@ public class RedissonClientProducer {
 
 		redissonClient = Redisson.create(config);
 		return redissonClient;
+	}
+
+
+	@Produces
+	public RBlockingQueue<HourMeteringDataRaw> hourMeteringDataQueue() {
+		createRedissonClient();
+		return redissonClient.getBlockingQueue("hourlyMeteringData");
+	}
+
+
+	@Produces
+	public RBlockingQueue<DayMeteringDataRaw> dayMeteringDataQueue() {
+		createRedissonClient();
+		return redissonClient.getBlockingQueue("dailyMeteringData");
+	}
+
+
+	@Produces
+	public RBlockingQueue<MonthMeteringDataRaw> monthMeteringDataQueue() {
+		createRedissonClient();
+		return redissonClient.getBlockingQueue("monthlyMeteringData");
 	}
 }

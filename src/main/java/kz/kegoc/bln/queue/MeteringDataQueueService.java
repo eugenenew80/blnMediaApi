@@ -1,9 +1,9 @@
-package kz.kegoc.bln.queue.common;
+package kz.kegoc.bln.queue;
 
 import kz.kegoc.bln.entity.common.HasId;
 import java.util.List;
 
 public interface MeteringDataQueueService<T extends HasId> {
-    void addMeteringData(T entity);
-    void addMeteringListData(List<T> list);
+    void add(T entity);
+    void addAll(List<T> list);
 }

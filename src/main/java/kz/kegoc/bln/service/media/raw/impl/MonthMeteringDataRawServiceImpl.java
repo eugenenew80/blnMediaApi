@@ -8,10 +8,10 @@ import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.repository.common.Repository;
 import kz.kegoc.bln.repository.media.raw.MonthMeteringDataRawRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
-import kz.kegoc.bln.service.media.raw.MonthMeteringDataRawService;
+import kz.kegoc.bln.service.media.raw.MeteringDataService;
 
 @Stateless
-public class MonthMeteringDataRawServiceImpl extends AbstractEntityService<MonthMeteringDataRaw> implements MonthMeteringDataRawService {
+public class MonthMeteringDataRawServiceImpl extends AbstractEntityService<MonthMeteringDataRaw> implements MeteringDataService<MonthMeteringDataRaw> {
    
 	@Inject
     public MonthMeteringDataRawServiceImpl(Repository<MonthMeteringDataRaw> repository, Validator validator) {
