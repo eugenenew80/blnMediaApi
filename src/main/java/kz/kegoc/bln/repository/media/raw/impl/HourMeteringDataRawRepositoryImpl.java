@@ -2,12 +2,13 @@ package kz.kegoc.bln.repository.media.raw.impl;
 
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.repository.common.AbstractRepository;
-import kz.kegoc.bln.repository.media.raw.HourMeteringDataRawRepository;
+import kz.kegoc.bln.repository.media.raw.MeteringDataRepository;
+
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 @Stateless
-public class HourMeteringDataRawRepositoryImpl extends AbstractRepository<HourMeteringDataRaw> implements HourMeteringDataRawRepository {
+public class HourMeteringDataRawRepositoryImpl extends AbstractRepository<HourMeteringDataRaw> implements MeteringDataRepository<HourMeteringDataRaw> {
 	public HourMeteringDataRaw selectByEntity(HourMeteringDataRaw entity) {
 		TypedQuery<HourMeteringDataRaw> typedQuery =  getEntityManager().createNamedQuery("HourMeteringDataRaw.findByEntity", HourMeteringDataRaw.class);
 		

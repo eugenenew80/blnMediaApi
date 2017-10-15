@@ -43,20 +43,20 @@ public class RedissonClientProducer {
 	@Produces
 	public RBlockingQueue<HourMeteringDataRaw> hourMeteringDataQueue() {
 		createRedissonClient();
-		return redissonClient.getBlockingQueue("hourlyMeteringData");
+		return redissonClient.getBlockingQueue("hourMeteringData");
 	}
 
 
 	@Produces
 	public RBlockingQueue<DayMeteringDataRaw> dayMeteringDataQueue() {
 		createRedissonClient();
-		return redissonClient.getBlockingQueue("dailyMeteringData");
+		return redissonClient.getBlockingQueue("dayMeteringData");
 	}
 
 
 	@Produces
 	public RBlockingQueue<MonthMeteringDataRaw> monthMeteringDataQueue() {
 		createRedissonClient();
-		return redissonClient.getBlockingQueue("monthlyMeteringData");
+		return redissonClient.getBlockingQueue("monthMeteringData");
 	}
 }

@@ -5,7 +5,6 @@ import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.producer.common.MeteringDataProducer;
-import kz.kegoc.bln.queue.MeteringDataQueueService;
 import kz.kegoc.bln.annotation.CSV;
 import kz.kegoc.bln.annotation.XML;
 import org.apache.commons.io.FilenameUtils;
@@ -69,16 +68,6 @@ public class FileMeteringDataRawProducer<T extends HasId> implements MeteringDat
 		}
 		return list;
 	}
-
-
-	@Inject
-	private MeteringDataQueueService<HourMeteringDataRaw> hourMeteringDataQueueService;
-
-	@Inject
-	private MeteringDataQueueService<DayMeteringDataRaw> dayMeteringDataQueueService;
-
-	@Inject
-	private MeteringDataQueueService<MonthMeteringDataRaw> monthMeteringDataQueueService;
 
 	@Inject @CSV
 	private FileMeteringDataRawReader<HourMeteringDataRaw> csvHourMeteringDataRawReader;
