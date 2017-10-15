@@ -28,7 +28,6 @@ public class FileMeteringDataRawProducer<T extends MeteringData> implements Mete
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
 	private Map<String, FileMeteringDataRawReader<? extends MeteringData>> mapReaders = new HashMap<>();
 
-
 	@PostConstruct
 	public void init() {
 		mapReaders.put("hour/csv", 	csvHourMeteringDataRawReader);

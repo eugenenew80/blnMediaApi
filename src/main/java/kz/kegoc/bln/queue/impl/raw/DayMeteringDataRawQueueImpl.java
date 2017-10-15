@@ -6,5 +6,7 @@ import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.queue.MeteringDataQueueService;
 
 @Stateless
-public class DayMeteringDataRawQueueImpl extends AbstractMeteringDataQueueService<DayMeteringDataRaw> implements MeteringDataQueueService<DayMeteringDataRaw> {
+public class DayMeteringDataRawQueueImpl
+    extends AbstractMeteringDataQueueService<DayMeteringDataRaw>
+        implements MeteringDataQueueService<DayMeteringDataRaw> {
 }

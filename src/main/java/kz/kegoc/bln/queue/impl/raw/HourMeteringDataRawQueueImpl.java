@@ -6,5 +6,7 @@ import kz.kegoc.bln.queue.MeteringDataQueueService;
 import javax.ejb.Stateless;
 
 @Stateless
-public class HourMeteringDataRawQueueImpl extends AbstractMeteringDataQueueService<HourMeteringDataRaw> implements MeteringDataQueueService<HourMeteringDataRaw> {
+public class HourMeteringDataRawQueueImpl
+    extends AbstractMeteringDataQueueService<HourMeteringDataRaw>
+        implements MeteringDataQueueService<HourMeteringDataRaw> {
 }

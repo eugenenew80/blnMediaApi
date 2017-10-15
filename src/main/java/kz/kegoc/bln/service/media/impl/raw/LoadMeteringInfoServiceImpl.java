@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.media.raw.impl;
+package kz.kegoc.bln.service.media.impl.raw;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +14,7 @@ import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
 import kz.kegoc.bln.repository.common.Repository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
-import kz.kegoc.bln.service.media.raw.LoadMeteringInfoService;
+import kz.kegoc.bln.service.media.LoadMeteringInfoService;
 
 
 @Stateless

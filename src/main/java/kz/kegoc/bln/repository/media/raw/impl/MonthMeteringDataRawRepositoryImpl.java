@@ -6,7 +6,10 @@ import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.media.raw.MeteringDataRepository;
 
 @Stateless
-public class MonthMeteringDataRawRepositoryImpl extends AbstractRepository<MonthMeteringDataRaw> implements MeteringDataRepository<MonthMeteringDataRaw> {
+public class MonthMeteringDataRawRepositoryImpl
+	extends AbstractRepository<MonthMeteringDataRaw>
+		implements MeteringDataRepository<MonthMeteringDataRaw> {
+
 	public MonthMeteringDataRaw selectByEntity(MonthMeteringDataRaw entity) {
 		return null;
 	}

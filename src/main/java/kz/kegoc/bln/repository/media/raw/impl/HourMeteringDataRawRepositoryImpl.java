@@ -8,21 +8,24 @@ import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 @Stateless
-public class HourMeteringDataRawRepositoryImpl extends AbstractRepository<HourMeteringDataRaw> implements MeteringDataRepository<HourMeteringDataRaw> {
+public class HourMeteringDataRawRepositoryImpl
+	extends AbstractRepository<HourMeteringDataRaw>
+		implements MeteringDataRepository<HourMeteringDataRaw> {
+
 	public HourMeteringDataRaw selectByEntity(HourMeteringDataRaw entity) {
-		TypedQuery<HourMeteringDataRaw> typedQuery =  getEntityManager().createNamedQuery("HourMeteringDataRaw.findByEntity", HourMeteringDataRaw.class);
-		
-		typedQuery.setParameter("externalCode", entity.getExternalCode());
-		typedQuery.setParameter("meteringDate", entity.getMeteringDate());
-		typedQuery.setParameter("hour", entity.getHour());
-		typedQuery.setParameter("unitCode", entity.getUnitCode());
-		typedQuery.setParameter("dataSourceCode", entity.getDataSourceCode());
-		typedQuery.setParameter("paramCode", entity.getParamCode());
-		typedQuery.setParameter("wayEntering", entity.getWayEntering());
-		typedQuery.setParameter("status", entity.getStatus());
-		
-		return typedQuery.getResultList().stream()
-			.findFirst()
-			.orElse(null);		
+		return
+			getEntityManager().createNamedQuery("HourMeteringDataRaw.findByEntity", HourMeteringDataRaw.class)
+				.setParameter("externalCode", 	entity.getExternalCode())
+				.setParameter("meteringDate", 	entity.getMeteringDate())
+				.setParameter("hour", 			entity.getHour())
+				.setParameter("unitCode", 		entity.getUnitCode())
+				.setParameter("dataSourceCode", 	entity.getDataSourceCode())
+				.setParameter("paramCode", 		entity.getParamCode())
+				.setParameter("wayEntering", 		entity.getWayEntering())
+				.setParameter("status", 			entity.getStatus())
+			.getResultList()
+				.stream()
+				.findFirst()
+				.orElse(null);
 	}
 }

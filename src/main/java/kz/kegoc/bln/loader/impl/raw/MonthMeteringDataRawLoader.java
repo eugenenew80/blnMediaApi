@@ -7,7 +7,9 @@ import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 
 @Singleton
 @Startup
-public class MonthMeteringDataRawLoader extends AbstractMeteringDataRawLoader<MonthMeteringDataRaw> implements MeteringDataLoader {
+public class MonthMeteringDataRawLoader
+	extends AbstractMeteringDataRawLoader<MonthMeteringDataRaw>
+		implements MeteringDataLoader {
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {

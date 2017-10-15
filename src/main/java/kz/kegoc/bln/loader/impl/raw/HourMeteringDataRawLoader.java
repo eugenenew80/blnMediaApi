@@ -10,7 +10,9 @@ import javax.ejb.Startup;
 
 @Singleton
 @Startup
-public class HourMeteringDataRawLoader extends AbstractMeteringDataRawLoader<HourMeteringDataRaw> implements MeteringDataLoader {
+public class HourMeteringDataRawLoader
+	extends AbstractMeteringDataRawLoader<HourMeteringDataRaw>
+		implements MeteringDataLoader {
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {

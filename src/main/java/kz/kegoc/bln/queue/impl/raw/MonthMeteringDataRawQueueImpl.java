@@ -6,5 +6,7 @@ import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.queue.MeteringDataQueueService;
 
 @Stateless
-public class MonthMeteringDataRawQueueImpl extends AbstractMeteringDataQueueService<MonthMeteringDataRaw> implements MeteringDataQueueService<MonthMeteringDataRaw> {
+public class MonthMeteringDataRawQueueImpl
+    extends AbstractMeteringDataQueueService<MonthMeteringDataRaw>
+        implements MeteringDataQueueService<MonthMeteringDataRaw> {
 }
