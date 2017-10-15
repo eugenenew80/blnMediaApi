@@ -1,7 +1,7 @@
 package kz.kegoc.bln.loader.impl;
 
 import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
-import kz.kegoc.bln.loader.AbstractMeteringDataRawLoader;
+import kz.kegoc.bln.loader.AbstractMeteringDataLoader;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 import kz.kegoc.bln.service.media.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
@@ -14,7 +14,7 @@ import javax.inject.Inject;
 @Singleton
 @Startup
 public class HourMeteringDataRawLoader
-	extends AbstractMeteringDataRawLoader<HourMeteringDataRaw>
+	extends AbstractMeteringDataLoader<HourMeteringDataRaw>
 		implements MeteringDataLoader {
 
 	@Inject

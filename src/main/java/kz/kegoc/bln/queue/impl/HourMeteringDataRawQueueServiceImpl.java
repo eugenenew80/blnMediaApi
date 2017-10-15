@@ -9,12 +9,12 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 @Stateless
-public class HourMeteringDataRawQueueImpl
+public class HourMeteringDataRawQueueServiceImpl
     extends AbstractMeteringDataQueueService<HourMeteringDataRaw>
         implements MeteringDataQueueService<HourMeteringDataRaw> {
 
     @Inject
-    public HourMeteringDataRawQueueImpl(RBlockingQueue<HourMeteringDataRaw> queue) {
+    public HourMeteringDataRawQueueServiceImpl(RBlockingQueue<HourMeteringDataRaw> queue) {
         super(queue);
     }
 }

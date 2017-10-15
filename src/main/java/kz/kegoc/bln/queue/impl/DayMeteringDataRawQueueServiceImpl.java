@@ -9,12 +9,12 @@ import kz.kegoc.bln.queue.MeteringDataQueueService;
 import org.redisson.api.RBlockingQueue;
 
 @Stateless
-public class DayMeteringDataRawQueueImpl
+public class DayMeteringDataRawQueueServiceImpl
     extends AbstractMeteringDataQueueService<DayMeteringDataRaw>
         implements MeteringDataQueueService<DayMeteringDataRaw> {
 
     @Inject
-    public DayMeteringDataRawQueueImpl(RBlockingQueue<DayMeteringDataRaw> queue) {
+    public DayMeteringDataRawQueueServiceImpl(RBlockingQueue<DayMeteringDataRaw> queue) {
         super(queue);
     }
 }
