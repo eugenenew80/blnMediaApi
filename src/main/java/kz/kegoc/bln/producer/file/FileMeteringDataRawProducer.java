@@ -7,7 +7,7 @@ import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.annotation.CSV;
 import kz.kegoc.bln.annotation.XML;
-import kz.kegoc.bln.producer.file.reader.FileMeteringDataRawReader;
+import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.PostConstruct;
@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 @Singleton
 public class FileMeteringDataRawProducer<T extends MeteringData> implements MeteringDataProducer {
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
-	private Map<String, FileMeteringDataRawReader<? extends MeteringData>> mapReaders = new HashMap<>();
+	private Map<String, FileMeteringDataReader<? extends MeteringData>> mapReaders = new HashMap<>();
 
 	@PostConstruct
 	public void init() {
@@ -46,7 +46,7 @@ public class FileMeteringDataRawProducer<T extends MeteringData> implements Mete
 			for (Path p : getListFiles(Paths.get(dir + "/" + subDir))) {
 				try {
 					String extension = FilenameUtils.getExtension(p.toString());
-					FileMeteringDataRawReader<? extends MeteringData> reader = mapReaders.get(subDir + "/" + extension);
+					FileMeteringDataReader<? extends MeteringData> reader = mapReaders.get(subDir + "/" + extension);
 					reader.loadFromFile(p);
 					Files.delete(p);
 				}
@@ -70,20 +70,20 @@ public class FileMeteringDataRawProducer<T extends MeteringData> implements Mete
 	}
 
 	@Inject @CSV
-	private FileMeteringDataRawReader<HourMeteringDataRaw> csvHourMeteringDataRawReader;
+	private FileMeteringDataReader<HourMeteringDataRaw> csvHourMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringDataRawReader<HourMeteringDataRaw> xmlHourMeteringDataRawReader;
+	private FileMeteringDataReader<HourMeteringDataRaw> xmlHourMeteringDataRawReader;
 
 	@Inject @CSV
-	private FileMeteringDataRawReader<DayMeteringDataRaw> csvDayMeteringDataRawReader;
+	private FileMeteringDataReader<DayMeteringDataRaw> csvDayMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringDataRawReader<DayMeteringDataRaw> xmlDayMeteringDataRawReader;
+	private FileMeteringDataReader<DayMeteringDataRaw> xmlDayMeteringDataRawReader;
 
 	@Inject @CSV
-	private FileMeteringDataRawReader<MonthMeteringDataRaw> csvMonthMeteringDataRawReader;
+	private FileMeteringDataReader<MonthMeteringDataRaw> csvMonthMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringDataRawReader<MonthMeteringDataRaw> xmlMonthMeteringDataRawReader;
+	private FileMeteringDataReader<MonthMeteringDataRaw> xmlMonthMeteringDataRawReader;
 }

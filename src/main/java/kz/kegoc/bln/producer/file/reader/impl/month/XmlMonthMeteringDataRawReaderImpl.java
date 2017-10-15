@@ -3,7 +3,7 @@ package kz.kegoc.bln.producer.file.reader.impl.month;
 import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.producer.file.reader.FileMeteringDataRawReader;
+import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.annotation.XML;
 import org.w3c.dom.Document;
@@ -18,10 +18,10 @@ import java.util.List;
 
 @Stateless
 @XML
-public class XmlMonthMeteringDataRawReader implements FileMeteringDataRawReader<MonthMeteringDataRaw> {
+public class XmlMonthMeteringDataRawReaderImpl implements FileMeteringDataReader<MonthMeteringDataRaw> {
 
 	@Inject
-	public XmlMonthMeteringDataRawReader(MeteringDataQueue<MonthMeteringDataRaw> service) {
+	public XmlMonthMeteringDataRawReaderImpl(MeteringDataQueue<MonthMeteringDataRaw> service) {
 		this.service=service;
 	}
 
