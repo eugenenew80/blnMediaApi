@@ -1,12 +1,13 @@
 package kz.kegoc.bln.producer.file;
 
 import kz.kegoc.bln.entity.media.MeteringData;
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
-import kz.kegoc.bln.producer.common.MeteringDataProducer;
+import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
+import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.annotation.CSV;
 import kz.kegoc.bln.annotation.XML;
+import kz.kegoc.bln.producer.file.reader.FileMeteringDataRawReader;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.PostConstruct;

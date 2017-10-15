@@ -9,8 +9,8 @@ import javax.inject.Inject;
 import javax.validation.Validator;
 
 import kz.kegoc.bln.entity.dict.MeteringPoint;
-import kz.kegoc.bln.entity.media.raw.LoadMeteringInfo;
-import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
+import kz.kegoc.bln.entity.media.LoadMeteringInfo;
+import kz.kegoc.bln.entity.media.MinuteMeteringDataRaw;
 import kz.kegoc.bln.repository.common.Repository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.dict.MeteringPointService;

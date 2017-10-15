@@ -1,11 +1,10 @@
 package kz.kegoc.bln.repository.media.raw.impl;
 
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.media.raw.MeteringDataRepository;
 
 import javax.ejb.Stateless;
-import javax.persistence.TypedQuery;
 
 @Stateless
 public class HourMeteringDataRawRepositoryImpl

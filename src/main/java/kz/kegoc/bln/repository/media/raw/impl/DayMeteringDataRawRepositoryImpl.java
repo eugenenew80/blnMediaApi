@@ -1,7 +1,7 @@
 package kz.kegoc.bln.repository.media.raw.impl;
 
 import javax.ejb.Stateless;
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
 import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.media.raw.MeteringDataRepository;
 

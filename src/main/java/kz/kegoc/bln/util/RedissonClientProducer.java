@@ -7,9 +7,9 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;

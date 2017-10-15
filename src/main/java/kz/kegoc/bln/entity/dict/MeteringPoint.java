@@ -1,7 +1,7 @@
 package kz.kegoc.bln.entity.dict;
 
 import kz.kegoc.bln.entity.common.*;
-import kz.kegoc.bln.entity.media.raw.LoadMeteringInfo;
+import kz.kegoc.bln.entity.media.LoadMeteringInfo;
 import lombok.Data;
 
 @Data

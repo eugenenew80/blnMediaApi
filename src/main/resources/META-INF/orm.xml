@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_1.xsd">
 
-	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.DayMeteringDataRaw">
 		<table name="media_daily_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -53,7 +53,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.HourMeteringDataRaw">
 		<table name="media_hourly_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -115,7 +115,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.MonthMeteringDataRaw">
 		<table name="media_monthly_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -203,7 +203,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.raw.LoadMeteringInfo">
+	<entity class="kz.kegoc.bln.entity.media.LoadMeteringInfo">
 		<table name="media_load_metering_info" schema="apps"/>
 		<attributes>
 			<id name="id">

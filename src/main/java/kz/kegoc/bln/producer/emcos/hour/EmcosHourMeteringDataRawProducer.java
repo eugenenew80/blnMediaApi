@@ -6,14 +6,14 @@ import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
 
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.MinuteMeteringDataRaw;
-import kz.kegoc.bln.producer.emcos.EmcosConfig;
+import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.MinuteMeteringDataRaw;
+import kz.kegoc.bln.producer.emcos.helper.EmcosConfig;
 import kz.kegoc.bln.service.media.LoadMeteringInfoService;
 import org.apache.commons.lang3.tuple.Pair;
-import kz.kegoc.bln.producer.emcos.impl.EmcosDataServiceImpl;
-import kz.kegoc.bln.producer.emcos.RegistryTemplate;
-import kz.kegoc.bln.producer.common.MeteringDataProducer;
+import kz.kegoc.bln.producer.emcos.helper.impl.EmcosDataServiceImpl;
+import kz.kegoc.bln.producer.emcos.helper.RegistryTemplate;
+import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.queue.MeteringDataQueueService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
 
