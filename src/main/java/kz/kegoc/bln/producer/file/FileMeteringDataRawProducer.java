@@ -1,6 +1,6 @@
 package kz.kegoc.bln.producer.file;
 
-import kz.kegoc.bln.entity.common.HasId;
+import kz.kegoc.bln.entity.media.MeteringData;
 import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
@@ -24,9 +24,9 @@ import java.util.stream.Stream;
 
 @Startup
 @Singleton
-public class FileMeteringDataRawProducer<T extends HasId> implements MeteringDataProducer {
+public class FileMeteringDataRawProducer<T extends MeteringData> implements MeteringDataProducer {
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
-	private Map<String, FileMeteringDataRawReader<? extends HasId>> mapReaders = new HashMap<>();
+	private Map<String, FileMeteringDataRawReader<? extends MeteringData>> mapReaders = new HashMap<>();
 
 
 	@PostConstruct
@@ -46,7 +46,7 @@ public class FileMeteringDataRawProducer<T extends HasId> implements MeteringDat
 			for (Path p : getListFiles(Paths.get(dir + "/" + subDir))) {
 				try {
 					String extension = FilenameUtils.getExtension(p.toString());
-					FileMeteringDataRawReader<? extends HasId> reader = mapReaders.get(subDir + "/" + extension);
+					FileMeteringDataRawReader<? extends MeteringData> reader = mapReaders.get(subDir + "/" + extension);
 					reader.loadFromFile(p);
 					Files.delete(p);
 				}

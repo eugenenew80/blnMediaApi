@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.file;
 
-import kz.kegoc.bln.entity.common.HasId;
+import kz.kegoc.bln.entity.media.MeteringData;
 import java.nio.file.Path;
 
-public interface FileMeteringDataRawReader<T extends HasId> {
+public interface FileMeteringDataRawReader<T extends MeteringData> {
     void loadFromFile(Path path) throws Exception;
 }
