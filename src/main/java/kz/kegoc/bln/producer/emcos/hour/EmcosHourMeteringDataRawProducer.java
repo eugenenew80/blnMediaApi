@@ -14,7 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.producer.emcos.helper.impl.EmcosDataServiceImpl;
 import kz.kegoc.bln.producer.emcos.helper.RegistryTemplate;
 import kz.kegoc.bln.producer.MeteringDataProducer;
-import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.service.dict.MeteringPointService;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -96,7 +96,7 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 	}
 
 	@Inject
-	private MeteringDataQueueService<HourMeteringDataRaw> queueService;
+	private MeteringDataQueue<HourMeteringDataRaw> queueService;
 
 	@Inject
 	private LoadMeteringInfoService loadMeteringInfoService;

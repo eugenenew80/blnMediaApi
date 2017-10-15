@@ -11,12 +11,12 @@ import org.redisson.api.RBlockingQueue;
 
 @Singleton
 @Startup
-public class MonthMeteringDataRawLoader
+public class MonthMeteringDataRawLoaderImpl
 	extends AbstractMeteringDataLoader<MonthMeteringDataRaw>
 		implements MeteringDataLoader {
 
 	@Inject
-	public MonthMeteringDataRawLoader(MeteringDataService<MonthMeteringDataRaw> service, RBlockingQueue<MonthMeteringDataRaw> queue) {
+	public MonthMeteringDataRawLoaderImpl(MeteringDataService<MonthMeteringDataRaw> service, RBlockingQueue<MonthMeteringDataRaw> queue) {
 		super(service, queue);
 	}
 

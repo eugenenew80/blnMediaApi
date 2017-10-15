@@ -4,7 +4,7 @@ import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataRawReader;
-import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.annotation.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -23,7 +23,7 @@ import java.util.List;
 public class XmlHourMeteringDataRawReader implements FileMeteringDataRawReader<HourMeteringDataRaw> {
 
 	@Inject
-	public XmlHourMeteringDataRawReader(MeteringDataQueueService<HourMeteringDataRaw> service) {
+	public XmlHourMeteringDataRawReader(MeteringDataQueue<HourMeteringDataRaw> service) {
 		this.service = service;
 	}
 
@@ -76,5 +76,5 @@ public class XmlHourMeteringDataRawReader implements FileMeteringDataRawReader<H
 		return d;
 	}
 
-	private MeteringDataQueueService<HourMeteringDataRaw> service;
+	private MeteringDataQueue<HourMeteringDataRaw> service;
 }

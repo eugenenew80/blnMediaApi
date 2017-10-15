@@ -4,7 +4,7 @@ import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataRawReader;
-import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.annotation.CSV;
 
 import javax.ejb.Stateless;
@@ -21,7 +21,7 @@ import java.util.List;
 public class CsvDayMeteringDataRawReader implements FileMeteringDataRawReader<DayMeteringDataRaw> {
 
     @Inject
-    public CsvDayMeteringDataRawReader(MeteringDataQueueService<DayMeteringDataRaw> service) {
+    public CsvDayMeteringDataRawReader(MeteringDataQueue<DayMeteringDataRaw> service) {
         this.service=service;
     }
 
@@ -51,5 +51,5 @@ public class CsvDayMeteringDataRawReader implements FileMeteringDataRawReader<Da
         return d;
     }
 
-    private MeteringDataQueueService<DayMeteringDataRaw> service;
+    private MeteringDataQueue<DayMeteringDataRaw> service;
 }

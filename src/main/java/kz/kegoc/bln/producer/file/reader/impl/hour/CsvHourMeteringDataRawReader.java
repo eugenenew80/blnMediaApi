@@ -4,7 +4,7 @@ import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataRawReader;
-import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.annotation.CSV;
 
 import javax.ejb.Stateless;
@@ -20,7 +20,7 @@ import java.util.List;
 public class CsvHourMeteringDataRawReader implements FileMeteringDataRawReader<HourMeteringDataRaw> {
 
 	@Inject
-	public CsvHourMeteringDataRawReader(MeteringDataQueueService<HourMeteringDataRaw> service) {
+	public CsvHourMeteringDataRawReader(MeteringDataQueue<HourMeteringDataRaw> service) {
 		this.service=service;
 	}
 
@@ -50,5 +50,5 @@ public class CsvHourMeteringDataRawReader implements FileMeteringDataRawReader<H
 		return d;
 	}
 
-	private MeteringDataQueueService<HourMeteringDataRaw> service;
+	private MeteringDataQueue<HourMeteringDataRaw> service;
 }

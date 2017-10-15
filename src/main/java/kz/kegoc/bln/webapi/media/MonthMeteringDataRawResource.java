@@ -7,7 +7,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -57,6 +57,6 @@ public class MonthMeteringDataRawResource {
 	
 
 	@Inject
-	private MeteringDataQueueService<MonthMeteringDataRaw> service;
+	private MeteringDataQueue<MonthMeteringDataRaw> service;
 	private DozerBeanMapper mapper;
 }

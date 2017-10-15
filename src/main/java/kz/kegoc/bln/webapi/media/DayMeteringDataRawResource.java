@@ -8,7 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import kz.kegoc.bln.queue.MeteringDataQueueService;
+import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 
 import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
@@ -59,6 +59,6 @@ public class DayMeteringDataRawResource {
 
 
 	@Inject
-	private MeteringDataQueueService<DayMeteringDataRaw> service;
+	private MeteringDataQueue<DayMeteringDataRaw> service;
 	private DozerBeanMapper mapper;
 }

@@ -4,9 +4,9 @@ import kz.kegoc.bln.entity.media.MeteringData;
 import org.redisson.api.RBlockingQueue;
 import java.util.List;
 
-public abstract class AbstractMeteringDataQueueService<T extends MeteringData> implements MeteringDataQueueService<T> {
+public abstract class AbstractMeteringDataQueue<T extends MeteringData> implements MeteringDataQueue<T> {
 
-    public AbstractMeteringDataQueueService(RBlockingQueue<T> queue) {
+    public AbstractMeteringDataQueue(RBlockingQueue<T> queue) {
         this.queue = queue;
     }
 

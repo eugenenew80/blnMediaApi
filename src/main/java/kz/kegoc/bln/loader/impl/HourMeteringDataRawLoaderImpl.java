@@ -1,22 +1,24 @@
 package kz.kegoc.bln.loader.impl;
 
-import javax.ejb.*;
-import javax.inject.Inject;
-
+import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.loader.AbstractMeteringDataLoader;
 import kz.kegoc.bln.loader.MeteringDataLoader;
-import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
 import kz.kegoc.bln.service.media.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
 
+import javax.ejb.Schedule;
+import javax.ejb.Singleton;
+import javax.ejb.Startup;
+import javax.inject.Inject;
+
 @Singleton
 @Startup
-public class DayMeteringDataRawLoader
-	extends AbstractMeteringDataLoader<DayMeteringDataRaw>
+public class HourMeteringDataRawLoaderImpl
+	extends AbstractMeteringDataLoader<HourMeteringDataRaw>
 		implements MeteringDataLoader {
 
 	@Inject
-	public DayMeteringDataRawLoader(MeteringDataService<DayMeteringDataRaw> service, RBlockingQueue<DayMeteringDataRaw> queue) {
+	public HourMeteringDataRawLoaderImpl(MeteringDataService<HourMeteringDataRaw> service, RBlockingQueue<HourMeteringDataRaw> queue) {
 		super(service, queue);
 	}
 
