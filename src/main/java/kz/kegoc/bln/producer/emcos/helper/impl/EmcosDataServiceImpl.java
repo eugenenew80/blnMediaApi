@@ -69,10 +69,13 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
 
     private String buildBody(String emcosFunc) {
-        String strPoints = cfg.stream()
-            .map( p-> pointToXml(p))
-            .collect(Collectors.joining());
-
+        String strPoints = "";
+        if (cfg!=null) {
+	    	strPoints = cfg.stream()
+	            .map( p-> pointToXml(p))
+	            .collect(Collectors.joining());
+        }
+        
         String data = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_DATA")
         	.replace("#points#", strPoints);
 
