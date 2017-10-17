@@ -266,7 +266,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         	.filter(t -> t.getPointCode().equals(meteringData.getExternalCode()))
         	.filter(t -> t.getEmcosParamCode().equals(emcosParamCode))
         	.findFirst()
-        	.get();
+        	.orElse(null);
         
         if (emcosMeteringPoint!=null) 
         	meteringData.setUnitCode(emcosMeteringPoint.getUnitCode());

@@ -87,14 +87,14 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 	
 	
 	private LocalDateTime buildRequestedDateTime() {
-		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now().plusHours(1);
 		return LocalDateTime.of(
 					now.getYear(),
 					now.getMonth(),
 					now.getDayOfMonth(),
 					now.getHour(),
 					45
-				).plusHours(1);
+				);
 	}
 
 	@Inject
