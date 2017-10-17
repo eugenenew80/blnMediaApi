@@ -4,6 +4,7 @@ import kz.kegoc.bln.entity.media.MeteringData;
 import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
+import kz.kegoc.bln.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.annotation.CSV;
 import kz.kegoc.bln.annotation.XML;
@@ -39,7 +40,8 @@ public class FileMeteringDataRawProducer<T extends MeteringData> implements Mete
 		mapReaders.put("month/xml", 	xmlMonthMeteringDataRawReader);
 	}
 
-	
+
+	@ProducerMonitor
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
 		Arrays.asList("hour", "day", "month").stream().forEach(subDir -> {

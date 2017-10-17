@@ -8,6 +8,7 @@ import javax.inject.*;
 
 import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MinuteMeteringDataRaw;
+import kz.kegoc.bln.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.emcos.helper.EmcosConfig;
 import kz.kegoc.bln.service.media.LoadMeteringInfoService;
 import org.apache.commons.lang3.tuple.Pair;
@@ -24,6 +25,7 @@ import static java.util.stream.Collectors.groupingBy;
 @Startup
 public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 
+	@ProducerMonitor
 	@Schedule(minute = "*/15", hour = "*", persistent = false)
 	public void execute() {
 		LocalDateTime requestedDateTime = buildRequestedDateTime();
