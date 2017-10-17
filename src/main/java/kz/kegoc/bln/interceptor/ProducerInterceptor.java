@@ -11,7 +11,7 @@ import javax.interceptor.InvocationContext;
 @Interceptor
 public class ProducerInterceptor {
     private boolean fileProducer = true;
-    private boolean emcosProducer = false;
+    private boolean emcosProducer = true;
 
     @AroundTimeout
     public Object monitor(InvocationContext ctx) throws Exception {
@@ -24,9 +24,9 @@ public class ProducerInterceptor {
             flag = emcosProducer;
 
         if (flag) {
-            System.out.println(aClass.getCanonicalName() + " start");
+            //System.out.println(aClass.getCanonicalName() + " start");
             ctx.proceed();
-            System.out.println(aClass.getCanonicalName() + " finish");
+            //System.out.println(aClass.getCanonicalName() + " finish");
         }
         else
             System.out.println(aClass.getCanonicalName() + " is disabled");

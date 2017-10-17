@@ -103,6 +103,33 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             .getChildNodes();    	
         
         List<EmcosMeteringPointCfg> cfg = new ArrayList<>();
+        EmcosMeteringPointCfg e = new EmcosMeteringPointCfg();
+        e.setEmcosParamCode("1040");
+        e.setPointCode("120620300070020001");
+        e.setUnitCode("-");
+        cfg.add(e);
+
+        e = new EmcosMeteringPointCfg();
+        e.setEmcosParamCode("1041");
+        e.setPointCode("120620300070020001");
+        e.setUnitCode("-");
+        cfg.add(e);
+
+        e = new EmcosMeteringPointCfg();
+        e.setEmcosParamCode("1042");
+        e.setPointCode("120620300070020001");
+        e.setUnitCode("-");
+        cfg.add(e);
+        
+        e = new EmcosMeteringPointCfg();
+        e.setEmcosParamCode("1043");
+        e.setPointCode("120620300070020001");
+        e.setUnitCode("-");
+        cfg.add(e);
+        
+        return cfg;
+        
+        /*
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -120,7 +147,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                             .getNamedItem("EU_CODE")
                             .getNodeValue();                        
                         
-                        if (emcosParamCode!=null && (emcosParamCode.equals("1040") || emcosParamCode.equals("1041") || emcosParamCode.equals("1042") || emcosParamCode.equals("1043")) ) {
+                        if  (!(emcosParamCode!=null && (emcosParamCode.equals("1040") || emcosParamCode.equals("1041") || emcosParamCode.equals("1042") || emcosParamCode.equals("1043")) )) {
 	                        EmcosMeteringPointCfg p = new EmcosMeteringPointCfg();
 	                        p.setPointCode(pointCode);
 	                        p.setEmcosParamCode(emcosParamCode);
@@ -133,6 +160,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         }    
         
         return cfg;
+        */
     }
 
     
