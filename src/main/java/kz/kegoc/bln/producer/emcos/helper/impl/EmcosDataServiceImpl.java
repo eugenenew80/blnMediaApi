@@ -269,8 +269,8 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     	return ""
                 + "<ROW PPOINT_CODE=\"" + emcosCfg.getPointCode() + "\" "
                 + "PML_ID=\"" + emcosParamCode + "\" "
-                + "PBT=\"" + buildStartDateTime(point).toLocalDate().format(dateFormatter) + "\" "
-                + "PET=\"" + buildStartDateTime(point).toLocalDate().format(dateFormatter) + "\" />";
+                + "PBT=\"" + buildStartDateTime(point).toLocalDate().plusDays(1).format(dateFormatter) + "\" "
+                + "PET=\"" + buildStartDateTime(point).toLocalDate().plusDays(1).format(dateFormatter) + "\" />";
     }    
 
     private LocalDateTime buildStartDateTime(MeteringPoint point) {
