@@ -6,6 +6,7 @@ import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
 
+import kz.kegoc.bln.entity.media.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MinuteMeteringDataRaw;
 import kz.kegoc.bln.interceptor.ProducerMonitor;
@@ -26,7 +27,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 
 	@ProducerMonitor
-	@Schedule(minute = "*/15", hour = "*", persistent = false)
+	@Schedule(minute = "*/1", hour = "*", persistent = false)
 	public void execute() {
 		LocalDateTime requestedDateTime = buildRequestedDateTime();
 
@@ -36,6 +37,22 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 			.reqestedDateTime(requestedDateTime)
 			.registryTemplate(registryTemplate);
 
+		Arrays.asList("AB+", "AB-", "RB+", "RB-").forEach(paramCode -> {
+			try {
+				List<DayMeteringBalanceRaw> meteringBalance = builder
+					.paramCode(paramCode)
+					.build()		
+					.requestMeteringBalance();
+				
+				meteringBalance.stream().forEach(System.out::println);
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
+		
+		/*
 		Arrays.asList("A+", "A-", "R+", "R-").forEach(paramCode -> {
 			try {			
 				List<MinuteMeteringDataRaw> meteringData = builder
@@ -50,6 +67,7 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 				e.printStackTrace();
 			}
 		});
+		*/
     }
 
 

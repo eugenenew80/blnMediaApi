@@ -2,6 +2,7 @@ package kz.kegoc.bln.producer.emcos.helper.impl;
 
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.media.DataStatus;
+import kz.kegoc.bln.entity.media.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.EmcosMeteringPointCfg;
 import kz.kegoc.bln.entity.media.MinuteMeteringDataRaw;
@@ -16,6 +17,7 @@ import org.xml.sax.InputSource;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 
 public class EmcosDataServiceImpl implements EmcosDataService {
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    
     private final EmcosConfig config;
     private final List<MeteringPoint> points;
     private final LocalDateTime reqestedDateTime;
@@ -46,7 +50,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         String answer = new HttpReqesterImpl.Builder()
             .url(new URL(config.getUrl()))
             .method("POST")
-            .body(buildBody("REQCFG"))
+            .body(buildBodyCfg("REQCFG"))
             .build()
             .doRequest();
 
@@ -56,11 +60,11 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     
     public List<MinuteMeteringDataRaw> requestMeteringData() throws Exception {
     	cfg = requestCfg();
-
+    	
         String answer = new HttpReqesterImpl.Builder()
             .url(new URL(config.getUrl()))
             .method("POST")
-            .body(buildBody("REQML"))
+            .body(buildBodyData("REQML"))
             .build()
             .doRequest();
 
@@ -68,13 +72,66 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     }
 
 
-    private String buildBody(String emcosFunc) {
-        String strPoints = "";
-        if (cfg!=null) {
-	    	strPoints = cfg.stream()
-	            .map( p-> pointToXml(p))
-	            .collect(Collectors.joining());
-        }
+    public List<DayMeteringBalanceRaw> requestMeteringBalance() throws Exception {
+    	cfg = requestCfg();
+    	
+        String answer = new HttpReqesterImpl.Builder()
+            .url(new URL(config.getUrl()))
+            .method("POST")
+            .body(buildBodyBalance("REQML"))
+            .build()
+            .doRequest();
+
+        return extractMeteringBalance(answer);
+    }    
+
+    
+    private String buildBodyCfg(String emcosFunc) {
+        String data = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_DATA")
+        	.replace("#points#", "");
+
+        String property = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_PROPERTY")
+        	.replace("#user#", config.getUser())
+        	.replace("#isPacked#", config.getIsPacked().toString())
+        	.replace("#func#", emcosFunc)
+        	.replace("#attType#", config.getAttType());
+        
+        String body = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_BODY")
+        	.replace("#property#", property)
+        	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
+
+        return body;
+    }
+    
+    
+    private String buildBodyData(String emcosFunc) {
+        String strPoints = cfg.stream()
+    		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )	
+            .map( p-> pointToXmlData(p))
+            .collect(Collectors.joining());
+
+        String data = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_DATA")
+        	.replace("#points#", strPoints);
+
+        String property = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_PROPERTY")
+        	.replace("#user#", config.getUser())
+        	.replace("#isPacked#", config.getIsPacked().toString())
+        	.replace("#func#", emcosFunc)
+        	.replace("#attType#", config.getAttType());
+        
+        String body = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_BODY")
+        	.replace("#property#", property)
+        	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
+
+        return body;
+    }
+    
+    
+    private String buildBodyBalance(String emcosFunc) {
+        String strPoints = cfg.stream()
+    		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )	
+            .map( p-> pointToXmlBalance(p))
+            .collect(Collectors.joining());
         
         String data = registryTemplate.getTemplate("EMCOS_" + emcosFunc + "_DATA")
         	.replace("#points#", strPoints);
@@ -102,34 +159,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             .getFirstChild()
             .getChildNodes();    	
         
-        List<EmcosMeteringPointCfg> cfg = new ArrayList<>();
-        EmcosMeteringPointCfg e = new EmcosMeteringPointCfg();
-        e.setEmcosParamCode("1040");
-        e.setPointCode("120620300070020001");
-        e.setUnitCode("-");
-        cfg.add(e);
-
-        e = new EmcosMeteringPointCfg();
-        e.setEmcosParamCode("1041");
-        e.setPointCode("120620300070020001");
-        e.setUnitCode("-");
-        cfg.add(e);
-
-        e = new EmcosMeteringPointCfg();
-        e.setEmcosParamCode("1042");
-        e.setPointCode("120620300070020001");
-        e.setUnitCode("-");
-        cfg.add(e);
-        
-        e = new EmcosMeteringPointCfg();
-        e.setEmcosParamCode("1043");
-        e.setPointCode("120620300070020001");
-        e.setUnitCode("-");
-        cfg.add(e);
-        
-        return cfg;
-        
-        /*
+        cfg = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -160,7 +190,6 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         }    
         
         return cfg;
-        */
     }
 
     
@@ -189,7 +218,35 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     }
 
 
-    private String pointToXml(EmcosMeteringPointCfg emcosCfg) {
+    private List<DayMeteringBalanceRaw> extractMeteringBalance(String answerData) throws Exception {
+    	List<DayMeteringBalanceRaw> meteringBalance = new ArrayList<>();
+        
+        Document doc = DocumentBuilderFactory.newInstance()
+            .newDocumentBuilder()
+            .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answerData), "Cp1251") )));
+
+        
+        System.out.println( new String(Base64.decodeBase64(answerData), "Cp1251"));
+        
+        NodeList nodes =  doc.getDocumentElement().getParentNode()
+            .getFirstChild()
+            .getChildNodes();
+
+        for(int i = 0; i < nodes.getLength(); i++) {
+            if (nodes.item(i).getNodeName() == "ROWDATA") {
+                NodeList rowData = nodes.item(i).getChildNodes();
+                for(int j = 0; j < rowData.getLength(); j++) {
+                    if (rowData.item(j).getNodeName() == "ROW")
+                    	meteringBalance.add(fromXmlToMeteringBalance(rowData.item(j)));
+                }
+            }
+        }
+        
+        return meteringBalance;
+    }
+    
+    
+    private String pointToXmlData(EmcosMeteringPointCfg emcosCfg) {
     	MeteringPoint point = points.stream()
     		.filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()))
     		.findFirst()
@@ -202,6 +259,19 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                 + "PET=\"" + reqestedDateTime.format(timeFormatter) + "\" />";
     }
 
+    
+    private String pointToXmlBalance(EmcosMeteringPointCfg emcosCfg) {
+    	MeteringPoint point = points.stream()
+    		.filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()))
+    		.findFirst()
+    		.orElse(null);
+    	
+    	return ""
+                + "<ROW PPOINT_CODE=\"" + emcosCfg.getPointCode() + "\" "
+                + "PML_ID=\"" + emcosParamCode + "\" "
+                + "PBT=\"" + buildStartDateTime(point).toLocalDate().format(dateFormatter) + "\" "
+                + "PET=\"" + buildStartDateTime(point).toLocalDate().format(dateFormatter) + "\" />";
+    }    
 
     private LocalDateTime buildStartDateTime(MeteringPoint point) {
         LocalDateTime startDateTime;
@@ -258,7 +328,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         meteringData.setWayEntering(WayEntering.EMCOS);
         meteringData.setDataSourceCode("EMCOS");
         meteringData.setStatus(DataStatus.RAW);
-        meteringData.setUnitCode("кВт.ч.");
+        meteringData.setUnitCode("-");
         meteringData.setParamCode(this.paramCode);
         meteringData.setVal(val);
 
@@ -275,6 +345,54 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     }
 
 
+    private DayMeteringBalanceRaw fromXmlToMeteringBalance(Node node) {
+        String externalCode = node.getAttributes()
+            .getNamedItem("PPOINT_CODE")
+            .getNodeValue() ;
+
+        String emcosParamCode = node.getAttributes()
+            .getNamedItem("PML_ID")
+            .getNodeValue() ;
+        
+        LocalDate date = null;
+        String dateStr = node.getAttributes()
+            .getNamedItem("PBT")
+            .getNodeValue() ;
+
+        if (dateStr!=null) 
+            date = LocalDate.parse(dateStr, dateFormatter);
+
+        Double val = null;
+        String valStr = node.getAttributes()
+            .getNamedItem("PVAL")
+            .getNodeValue();
+
+        if (valStr!=null)
+            val = Double.parseDouble(valStr);
+
+        DayMeteringBalanceRaw meteringBalance = new DayMeteringBalanceRaw();
+        meteringBalance.setExternalCode(externalCode);
+        meteringBalance.setMeteringDate(date);
+        meteringBalance.setWayEntering(WayEntering.EMCOS);
+        meteringBalance.setDataSourceCode("EMCOS");
+        meteringBalance.setStatus(DataStatus.RAW);
+        meteringBalance.setUnitCode("-");
+        meteringBalance.setParamCode(this.paramCode);
+        meteringBalance.setVal(val);
+
+        EmcosMeteringPointCfg emcosMeteringPoint = cfg.stream()
+        	.filter(t -> t.getPointCode().equals(meteringBalance.getExternalCode()))
+        	.filter(t -> t.getEmcosParamCode().equals(emcosParamCode))
+        	.findFirst()
+        	.orElse(null);
+        
+        if (emcosMeteringPoint!=null) 
+        	meteringBalance.setUnitCode(emcosMeteringPoint.getUnitCode());
+        
+        return meteringBalance;
+    }
+    
+    
     public static class Builder {
         private EmcosConfig config;
         private List<MeteringPoint> points;
@@ -319,6 +437,18 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                 case "R-":
                     this.emcosParamCode = "1043";
                     break;
+                case "AB+":
+                    this.emcosParamCode = "1498";
+                    break;
+                case "AB-":
+                    this.emcosParamCode = "1499";
+                    break;
+                case "RB+":
+                    this.emcosParamCode = "1500";
+                    break;
+                case "RB-":
+                    this.emcosParamCode = "1501";
+                    break;                    
             }
             return this;
         }

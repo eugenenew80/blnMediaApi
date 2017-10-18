@@ -220,4 +220,57 @@
 		</attributes>
 	</entity>
 	
+
+	<entity class="kz.kegoc.bln.entity.media.DayMeteringBalanceRaw">
+		<table name="media_day_metering_balance_raw" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+        		<generated-value strategy="SEQUENCE" generator="media_day_metering_balance_raw_gen" />
+        		<sequence-generator
+        			name="media_day_metering_balance_raw_gen"
+        			sequence-name="apps.media_day_metering_balance_raw_s"
+					allocation-size="1"
+        		/>				
+			</id>
+
+      		<basic name="externalCode">
+      			<column name="external_code" />
+      		</basic>
+      		
+      		<basic name="paramCode">
+      			<column name="param_code" />
+      		</basic>
+
+      		<basic name="meteringDate">
+      			<column name="metering_date" />
+      		</basic>
+      		
+      		<basic name="unitCode">
+      			<column name="unit_code" />
+      		</basic>
+      		      		
+      		<basic name="val">
+      			<column name="val" />
+      		</basic>   
+      		
+      		<basic name="dataSourceCode">
+      			<column name="data_source_code" />
+      		</basic>
+      		      		
+      		<basic name="wayEntering">
+      			<column name="way_entering" />
+      			<enumerated>STRING</enumerated>
+      		</basic>
+      		
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>      		       		    		      		
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>      		       		    		      		
+		</attributes>
+	</entity>
+
 </entity-mappings>

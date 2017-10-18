@@ -10,7 +10,7 @@ import javax.interceptor.InvocationContext;
 @ProducerMonitor
 @Interceptor
 public class ProducerInterceptor {
-    private boolean fileProducer = true;
+    private boolean fileProducer = false;
     private boolean emcosProducer = true;
 
     @AroundTimeout
@@ -24,12 +24,10 @@ public class ProducerInterceptor {
             flag = emcosProducer;
 
         if (flag) {
-            //System.out.println(aClass.getCanonicalName() + " start");
+            System.out.println(aClass.getCanonicalName() + " start");
             ctx.proceed();
-            //System.out.println(aClass.getCanonicalName() + " finish");
+            System.out.println(aClass.getCanonicalName() + " finish");
         }
-        else
-            System.out.println(aClass.getCanonicalName() + " is disabled");
 
         return null;
     }
