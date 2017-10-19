@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
+import kz.kegoc.bln.entity.media.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
@@ -59,4 +60,11 @@ public class RedissonClientProducer {
 		createRedissonClient();
 		return redissonClient.getBlockingQueue("monthMeteringData");
 	}
+	
+	
+	@Produces
+	public RBlockingQueue<DayMeteringBalanceRaw> dayMeteringBalanceQueue() {
+		createRedissonClient();
+		return redissonClient.getBlockingQueue("dayMeteringBalance");
+	}	
 }

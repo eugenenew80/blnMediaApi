@@ -1,5 +1,6 @@
 package kz.kegoc.bln.interceptor;
 
+import kz.kegoc.bln.producer.emcos.day.EmcosDayMeteringBalanceRawProducer;
 import kz.kegoc.bln.producer.emcos.hour.EmcosHourMeteringDataRawProducer;
 import kz.kegoc.bln.producer.file.FileMeteringDataRawProducer;
 
@@ -11,18 +12,21 @@ import javax.interceptor.InvocationContext;
 @Interceptor
 public class ProducerInterceptor {
     private boolean fileProducer = false;
-    private boolean emcosProducer = true;
+    private boolean emcosHourDataProducer = false;
+    private boolean emcosDayBalanceProducer = true;
 
     @AroundTimeout
     public Object monitor(InvocationContext ctx) throws Exception {
 
         Class<?> aClass = ctx.getTarget().getClass();
-        boolean flag = false;
+        boolean flag = true;
         if (aClass == FileMeteringDataRawProducer.class)
             flag = fileProducer;
         else if (aClass == EmcosHourMeteringDataRawProducer.class)
-            flag = emcosProducer;
-
+            flag = emcosHourDataProducer;
+        else if (aClass == EmcosDayMeteringBalanceRawProducer.class)
+            flag = emcosDayBalanceProducer;
+        
         if (flag) {
             System.out.println(aClass.getCanonicalName() + " start");
             ctx.proceed();

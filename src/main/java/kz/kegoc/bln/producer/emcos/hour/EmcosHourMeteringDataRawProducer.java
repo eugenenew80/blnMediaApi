@@ -6,7 +6,7 @@ import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
 
-import kz.kegoc.bln.entity.media.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.EmcosMeteringPointCfg;
 import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MinuteMeteringDataRaw;
 import kz.kegoc.bln.interceptor.ProducerMonitor;
@@ -21,38 +21,37 @@ import kz.kegoc.bln.service.dict.MeteringPointService;
 
 import static java.util.stream.Collectors.groupingBy;
 
-
 @Singleton
 @Startup
 public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 
 	@ProducerMonitor
-	@Schedule(minute = "*/1", hour = "*", persistent = false)
+	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
-		LocalDateTime requestedDateTime = buildRequestedDateTime();
+		
+		List<EmcosMeteringPointCfg> pointsCfg = null;
+		try {
+			pointsCfg = new EmcosDataServiceImpl.Builder()
+				.config(EmcosConfig.defaultEmcosServer().build())
+				.registryTemplate(registryTemplate)
+				.build()
+				.requestCfg();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+		
 
+		LocalDateTime requestedDateTime = buildRequestedDateTime();
+		
 		EmcosDataServiceImpl.Builder builder = new EmcosDataServiceImpl.Builder()
 			.config(EmcosConfig.defaultEmcosServer().build())
 			.points(meteringPointService.findAll())
 			.reqestedDateTime(requestedDateTime)
-			.registryTemplate(registryTemplate);
-
-		Arrays.asList("AB+", "AB-", "RB+", "RB-").forEach(paramCode -> {
-			try {
-				List<DayMeteringBalanceRaw> meteringBalance = builder
-					.paramCode(paramCode)
-					.build()		
-					.requestMeteringBalance();
-				
-				meteringBalance.stream().forEach(System.out::println);
-			} 
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
+			.registryTemplate(registryTemplate)
+			.pointsCfg(pointsCfg);		
 		
 		
-		/*
 		Arrays.asList("A+", "A-", "R+", "R-").forEach(paramCode -> {
 			try {			
 				List<MinuteMeteringDataRaw> meteringData = builder
@@ -67,7 +66,6 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 				e.printStackTrace();
 			}
 		});
-		*/
     }
 
 
@@ -115,6 +113,7 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 				);
 	}
 
+	
 	@Inject
 	private MeteringDataQueue<HourMeteringDataRaw> queueService;
 

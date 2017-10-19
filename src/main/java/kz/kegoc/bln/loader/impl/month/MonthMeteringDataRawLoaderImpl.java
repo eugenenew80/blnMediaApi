@@ -1,4 +1,4 @@
-package kz.kegoc.bln.loader.impl;
+package kz.kegoc.bln.loader.impl.month;
 
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -9,19 +9,17 @@ import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
 import kz.kegoc.bln.service.media.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
 
-@Singleton
-@Startup
+@Stateless
 public class MonthMeteringDataRawLoaderImpl
-	extends AbstractMeteringDataLoader<MonthMeteringDataRaw>
-		implements MeteringDataLoader {
+	extends AbstractMeteringDataLoader<MonthMeteringDataRaw> 
+		implements MeteringDataLoader<MonthMeteringDataRaw> {
 
 	@Inject
 	public MonthMeteringDataRawLoaderImpl(MeteringDataService<MonthMeteringDataRaw> service, RBlockingQueue<MonthMeteringDataRaw> queue) {
 		super(service, queue);
 	}
 
-	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
-	public void execute() {
-		super.execute();
+	public void load() {
+		super.load();
 	}
 }
