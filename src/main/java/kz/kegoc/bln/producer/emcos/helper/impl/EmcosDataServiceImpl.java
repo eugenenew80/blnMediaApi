@@ -1,5 +1,6 @@
 package kz.kegoc.bln.producer.emcos.helper.impl;
 
+import kz.kegoc.bln.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
@@ -14,6 +15,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.inject.Inject;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.net.URL;
@@ -22,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EmcosDataServiceImpl implements EmcosDataService {
@@ -39,11 +43,13 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     private EmcosDataServiceImpl(Builder builder) {
         this.config = builder.config;
         this.paramCode = builder.paramCode;
-        this.emcosParamCode = builder.emcosParamCode;
+        this.emcosParamCode = paramCodes.get(builder.paramCode);
         this.lastLoadInfoList = builder.lastLoadInfoList;
         this.reqestedDateTime = builder.reqestedDateTime;
         this.registryTemplate = builder.registryTemplate;
         this.pointsCfg = builder.pointsCfg;
+        
+        System.out.println(this.emcosParamCode);
     }
 
 
@@ -319,7 +325,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                     0
             );
         }
-        return startDateTime.minusDays(2);
+        return startDateTime;
     }
     
     
@@ -429,7 +435,6 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         private List<LastLoadInfo> lastLoadInfoList = new ArrayList<>();
         private LocalDateTime reqestedDateTime;
         private String paramCode;
-        private String emcosParamCode;
         private RegistryTemplate registryTemplate;
         private List<EmcosPointParamCfg> pointsCfg = new ArrayList<>();
 
@@ -460,33 +465,6 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         
         public Builder paramCode(String paramCodee) {
             this.paramCode=paramCodee;
-
-            switch (paramCode) {
-                case "A+":
-                    this.emcosParamCode = "1040";
-                    break;
-                case "A-":
-                    this.emcosParamCode = "1041";
-                    break;
-                case "R+":
-                    this.emcosParamCode = "1042";
-                    break;
-                case "R-":
-                    this.emcosParamCode = "1043";
-                    break;
-                case "AB+":
-                    this.emcosParamCode = "1498";
-                    break;
-                case "AB-":
-                    this.emcosParamCode = "1499";
-                    break;
-                case "RB+":
-                    this.emcosParamCode = "1500";
-                    break;
-                case "RB-":
-                    this.emcosParamCode = "1501";
-                    break;                    
-            }
             return this;
         }
 
@@ -494,4 +472,9 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             return new EmcosDataServiceImpl(this);
         }
     }
+
+
+    @Inject
+    @ParamCodes
+    private Map<String, String> paramCodes;
 }
