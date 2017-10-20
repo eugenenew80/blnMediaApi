@@ -21,6 +21,11 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class RedissonClientProducer {
 	private RedissonClient redissonClient = null;
+	private RBlockingQueue<HourMeteringDataRaw> hourMeteringDataQueue = null;
+	private RBlockingQueue<DayMeteringDataRaw> dayMeteringDataQueue  = null;
+	private RBlockingQueue<MonthMeteringDataRaw> monthMeteringDataQueue  = null;
+	private RBlockingQueue<DayMeteringBalanceRaw> dayMeteringBalanceQueue  = null;
+
 
 	@Produces
 	public RedissonClient createRedissonClient() {
@@ -42,29 +47,45 @@ public class RedissonClientProducer {
 
 
 	@Produces
-	public RBlockingQueue<HourMeteringDataRaw> hourMeteringDataQueue() {
+	public RBlockingQueue<HourMeteringDataRaw> createHourMeteringDataQueue() {
+		if (hourMeteringDataQueue!=null)
+			return hourMeteringDataQueue;
+
 		createRedissonClient();
-		return redissonClient.getBlockingQueue("hourMeteringData");
+		hourMeteringDataQueue = redissonClient.getBlockingQueue("hourMeteringData");
+		return hourMeteringDataQueue;
 	}
 
 
 	@Produces
-	public RBlockingQueue<DayMeteringDataRaw> dayMeteringDataQueue() {
+	public RBlockingQueue<DayMeteringDataRaw> createDayMeteringDataQueue() {
+		if (dayMeteringDataQueue!=null)
+			return dayMeteringDataQueue;
+
 		createRedissonClient();
-		return redissonClient.getBlockingQueue("dayMeteringData");
+		dayMeteringDataQueue = redissonClient.getBlockingQueue("dayMeteringData");
+		return dayMeteringDataQueue;
 	}
 
 
 	@Produces
-	public RBlockingQueue<MonthMeteringDataRaw> monthMeteringDataQueue() {
+	public RBlockingQueue<MonthMeteringDataRaw> createMonthMeteringDataQueue() {
+		if (monthMeteringDataQueue!=null)
+			return monthMeteringDataQueue;
+
 		createRedissonClient();
-		return redissonClient.getBlockingQueue("monthMeteringData");
+		monthMeteringDataQueue = redissonClient.getBlockingQueue("monthMeteringData");
+		return monthMeteringDataQueue;
 	}
 	
 	
 	@Produces
-	public RBlockingQueue<DayMeteringBalanceRaw> dayMeteringBalanceQueue() {
+	public RBlockingQueue<DayMeteringBalanceRaw> createDayMeteringBalanceQueue() {
+		if (dayMeteringBalanceQueue!=null)
+			return dayMeteringBalanceQueue;
+
 		createRedissonClient();
-		return redissonClient.getBlockingQueue("dayMeteringBalance");
+		dayMeteringBalanceQueue = redissonClient.getBlockingQueue("dayMeteringBalance");
+		return dayMeteringBalanceQueue;
 	}	
 }
