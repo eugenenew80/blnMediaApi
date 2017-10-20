@@ -2,7 +2,7 @@ package kz.kegoc.bln.producer.file.reader.impl.day;
 
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.annotation.XML;

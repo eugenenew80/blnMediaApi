@@ -5,8 +5,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class LoadMeteringInfo implements HasId {
+public class LastLoadInfo implements HasId {
     private Long id;
-    private LocalDateTime lastRequestedDate;
-    private LocalDateTime lastLoadedDate;
+    private String externalCode;
+    private String paramCode;
+    private LocalDateTime lastLoadDate;
 }

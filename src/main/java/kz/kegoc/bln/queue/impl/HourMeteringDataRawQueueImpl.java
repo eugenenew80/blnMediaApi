@@ -1,6 +1,6 @@
 package kz.kegoc.bln.queue.impl;
 
-import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.queue.AbstractMeteringDataQueue;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.redisson.api.RBlockingQueue;

@@ -3,8 +3,8 @@ package kz.kegoc.bln.queue.impl;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.queue.AbstractMeteringDataQueue;
-import kz.kegoc.bln.entity.media.DayMeteringBalanceRaw;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.redisson.api.RBlockingQueue;
 

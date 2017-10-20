@@ -2,9 +2,10 @@ package kz.kegoc.bln.loader.impl.day;
 
 import javax.ejb.*;
 import javax.inject.Inject;
+
+import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.loader.AbstractMeteringDataLoader;
 import kz.kegoc.bln.loader.MeteringDataLoader;
-import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
 import kz.kegoc.bln.service.media.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
 

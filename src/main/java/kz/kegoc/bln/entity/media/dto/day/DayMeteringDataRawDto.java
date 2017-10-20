@@ -1,4 +1,4 @@
-package kz.kegoc.bln.entity.media.dto;
+package kz.kegoc.bln.entity.media.dto.day;
 
 import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;

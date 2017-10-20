@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_1.xsd">
 
-	<entity class="kz.kegoc.bln.entity.media.DayMeteringDataRaw">
-		<table name="media_daily_metering_data_raw" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.day.DayMeteringDataRaw">
+		<table name="media_day_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_daily_metering_data_raw_gen" />
+        		<generated-value strategy="SEQUENCE" generator="media_day_metering_data_raw_gen" />
         		<sequence-generator
-        			name="media_daily_metering_data_raw_gen"
-        			sequence-name="apps.media_daily_metering_data_raw_s"
+        			name="media_day_metering_data_raw_gen"
+        			sequence-name="apps.media_day_metering_data_raw_s"
 					allocation-size="1"
         		/>				
 			</id>
@@ -53,15 +53,15 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.HourMeteringDataRaw">
-		<table name="media_hourly_metering_data_raw" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw">
+		<table name="media_hour_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_hourly_metering_data_raw_gen" />
+        		<generated-value strategy="SEQUENCE" generator="media_hour_metering_data_raw_gen" />
         		<sequence-generator
-        			name="media_hourly_metering_data_raw_gen"
-        			sequence-name="apps.media_hourly_metering_data_raw_s"
+        			name="media_hour_metering_data_raw_gen"
+        			sequence-name="apps.media_hour_metering_data_raw_s"
 					allocation-size="1"
         		/>
 			</id>
@@ -115,15 +115,15 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.MonthMeteringDataRaw">
-		<table name="media_monthly_metering_data_raw" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw">
+		<table name="media_month_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_monthly_metering_data_raw_gen" />
+        		<generated-value strategy="SEQUENCE" generator="media_month_metering_data_raw_gen" />
         		<sequence-generator
-        			name="media_monthly_metering_data_raw_gen"
-        			sequence-name="apps.media_monthly_metering_data_raw_s"
+        			name="media_month_metering_data_raw_gen"
+        			sequence-name="apps.media_month_metering_data_raw_s"
 					allocation-size="1"
         		/>
 			</id>
@@ -195,33 +195,39 @@
 			<basic name="externalCode">
 				<column name="external_code" />
 			</basic>
-
-			<one-to-one name="loadInfo">
-				<join-column name="id"/>
-			</one-to-one>
 		</attributes>
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.LoadMeteringInfo">
-		<table name="media_load_metering_info" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.LastLoadInfo">
+		<table name="media_last_load_info" schema="apps"/>
 		<attributes>
 			<id name="id">
-				<column name="metering_point_id" />
+				<column name="id" />
+        		<generated-value strategy="SEQUENCE" generator="media_last_load_info_gen" />
+        		<sequence-generator
+        			name="media_last_load_info_gen"
+        			sequence-name="apps.media_last_load_info_s"
+					allocation-size="1"
+        		/>				
 			</id>
 
-			<basic name="lastRequestedDate">
-				<column name="last_requested_date" />
+			<basic name="externalCode">
+				<column name="external_code" />
 			</basic>
-
-			<basic name="lastLoadedDate">
-				<column name="last_loaded_date" />
+			
+      		<basic name="paramCode">
+      			<column name="param_code" />
+      		</basic>
+      					
+			<basic name="lastLoadDate">
+				<column name="last_load_date" />
 			</basic>
 		</attributes>
 	</entity>
 	
 
-	<entity class="kz.kegoc.bln.entity.media.DayMeteringBalanceRaw">
+	<entity class="kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw">
 		<table name="media_day_metering_balance_raw" schema="apps"/>
 		<attributes>
 			<id name="id">

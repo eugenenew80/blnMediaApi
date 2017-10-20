@@ -1,4 +1,4 @@
-package kz.kegoc.bln.entity.media.dto;
+package kz.kegoc.bln.entity.media.dto.hour;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

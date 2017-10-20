@@ -1,4 +1,4 @@
-package kz.kegoc.bln.entity.media.dto;
+package kz.kegoc.bln.entity.media.dto.month;
 
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.DataStatus;

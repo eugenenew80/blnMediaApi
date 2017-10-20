@@ -1,11 +1,11 @@
-package kz.kegoc.bln.entity.media;
+package kz.kegoc.bln.producer.emcos.helper;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of= {"pointCode", "emcosParamCode"})
-public class EmcosMeteringPointCfg {
+public class EmcosPointParamCfg {
 	String pointCode;
 	String emcosParamCode;
 	String unitCode;

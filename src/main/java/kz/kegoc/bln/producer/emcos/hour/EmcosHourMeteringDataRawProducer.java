@@ -6,47 +6,46 @@ import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
 
-import kz.kegoc.bln.entity.media.EmcosMeteringPointCfg;
-import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.MinuteMeteringDataRaw;
+import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.emcos.helper.EmcosConfig;
-import kz.kegoc.bln.service.media.LoadMeteringInfoService;
+import kz.kegoc.bln.producer.emcos.helper.EmcosPointParamCfg;
+import kz.kegoc.bln.producer.emcos.helper.MinuteMeteringDataRaw;
+import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.producer.emcos.helper.impl.EmcosDataServiceImpl;
 import kz.kegoc.bln.producer.emcos.helper.RegistryTemplate;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.queue.MeteringDataQueue;
-import kz.kegoc.bln.service.dict.MeteringPointService;
-
 import static java.util.stream.Collectors.groupingBy;
+
 
 @Singleton
 @Startup
 public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
-
+	private List<EmcosPointParamCfg> pointsCfg = null;
+	
 	@ProducerMonitor
 	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
-		
-		List<EmcosMeteringPointCfg> pointsCfg = null;
-		try {
-			pointsCfg = new EmcosDataServiceImpl.Builder()
-				.config(EmcosConfig.defaultEmcosServer().build())
-				.registryTemplate(registryTemplate)
-				.build()
-				.requestCfg();
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-		}		
+		if (pointsCfg==null) {
+			try {
+				pointsCfg = new EmcosDataServiceImpl.Builder()
+					.config(EmcosConfig.defaultEmcosServer().build())
+					.registryTemplate(registryTemplate)
+					.build()
+					.requestCfg();
+			} 
+			catch (Exception e) { e.printStackTrace(); }		
+		}
+		if (pointsCfg==null) return;	
 		
 
 		LocalDateTime requestedDateTime = buildRequestedDateTime();
 		
 		EmcosDataServiceImpl.Builder builder = new EmcosDataServiceImpl.Builder()
 			.config(EmcosConfig.defaultEmcosServer().build())
-			.points(meteringPointService.findAll())
+			.lastLoadInfoList(lastLoadInfoService.findAll())
 			.reqestedDateTime(requestedDateTime)
 			.registryTemplate(registryTemplate)
 			.pointsCfg(pointsCfg);		
@@ -60,7 +59,7 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 					.requestMeteringData();
 				
 				queueService.addAll(buildHourMeteringData(meteringData));
-				loadMeteringInfoService.updateLoadMeteringInfo(meteringData, requestedDateTime);
+				lastLoadInfoService.updateLastDataLoadDate(meteringData);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -118,10 +117,7 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 	private MeteringDataQueue<HourMeteringDataRaw> queueService;
 
 	@Inject
-	private LoadMeteringInfoService loadMeteringInfoService;
-
-	@Inject
-	private MeteringPointService meteringPointService;
+	private LastLoadInfoService lastLoadInfoService;
 	
 	@Inject
 	private RegistryTemplate registryTemplate;

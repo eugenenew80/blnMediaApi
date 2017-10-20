@@ -7,10 +7,11 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
-import kz.kegoc.bln.entity.media.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
+
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;

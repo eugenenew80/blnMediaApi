@@ -11,10 +11,10 @@ import javax.ws.rs.core.*;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 
-import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.dto.day.DayMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.dto.DayMeteringDataRawDto;
 
 
 @RequestScoped

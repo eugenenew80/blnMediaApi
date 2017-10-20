@@ -5,11 +5,11 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
-import kz.kegoc.bln.entity.media.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.MeteringData;
-import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 
 @Startup

@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.file.reader.impl.hour;
 
-import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.annotation.CSV;

@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.file.reader.impl.month;
 
-import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.annotation.CSV;

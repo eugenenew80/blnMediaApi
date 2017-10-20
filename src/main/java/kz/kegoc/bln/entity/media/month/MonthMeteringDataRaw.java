@@ -1,6 +1,10 @@
-package kz.kegoc.bln.entity.media;
+package kz.kegoc.bln.entity.media.month;
 
 import java.time.LocalDateTime;
+
+import kz.kegoc.bln.entity.media.DataStatus;
+import kz.kegoc.bln.entity.media.MeteringData;
+import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

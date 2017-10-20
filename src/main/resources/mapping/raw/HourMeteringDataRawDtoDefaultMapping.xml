@@ -4,7 +4,7 @@
           xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
   <mapping>
-    <class-a>kz.kegoc.bln.entity.media.HourMeteringDataRaw</class-a>
-    <class-b>kz.kegoc.bln.entity.media.dto.HourMeteringDataRawDto</class-b>
+    <class-a>kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw</class-a>
+    <class-b>kz.kegoc.bln.entity.media.dto.hour.HourMeteringDataRawDto</class-b>
   </mapping> 
 </mappings> 

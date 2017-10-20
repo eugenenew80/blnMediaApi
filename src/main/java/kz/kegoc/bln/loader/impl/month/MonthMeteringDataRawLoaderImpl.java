@@ -3,9 +3,9 @@ package kz.kegoc.bln.loader.impl.month;
 import javax.ejb.*;
 import javax.inject.Inject;
 
+import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 import kz.kegoc.bln.loader.AbstractMeteringDataLoader;
 import kz.kegoc.bln.loader.MeteringDataLoader;
-import kz.kegoc.bln.entity.media.MonthMeteringDataRaw;
 import kz.kegoc.bln.service.media.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
 

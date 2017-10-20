@@ -1,14 +1,20 @@
-package kz.kegoc.bln.entity.media;
+package kz.kegoc.bln.entity.media.hour;
 
-import java.time.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import kz.kegoc.bln.entity.media.DataStatus;
+import kz.kegoc.bln.entity.media.MeteringData;
+import kz.kegoc.bln.entity.media.WayEntering;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class DayMeteringBalanceRaw implements MeteringData {
+public class HourMeteringDataRaw implements MeteringData {
 	private Long id;
 	private LocalDate meteringDate;
+	private Integer hour;
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;

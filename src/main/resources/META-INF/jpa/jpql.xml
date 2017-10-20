@@ -3,7 +3,7 @@
     
     <named-query name="MeteringPoint.findAll">
         <query>
-            select m from MeteringPoint m LEFT JOIN m.loadInfo l
+            select t from MeteringPoint t
         </query>
     </named-query>
     
@@ -13,21 +13,40 @@
         </query>
     </named-query>
     
+    <named-query name="LastLoadInfo.findAll">
+        <query>
+            select t from LastLoadInfo t
+        </query>
+    </named-query>    
+
+    <named-query name="LastLoadInfo.findByExternalCodeAndParamCode">
+        <query>
+            select 
+                t 
+            from 
+                LastLoadInfo t
+            where
+            	    t.externalCode=:externalCode 
+            	and t.paramCode=:paramCode  
+        </query>
+    </named-query>   
+    
+        
     <named-query name="HourMeteringDataRaw.findByEntity">
         <query>
             select 
-            	m 
+            	t 
             from 
-            	HourMeteringDataRaw m 
+            	HourMeteringDataRaw t 
             where 
-            	    m.externalCode=:externalCode
-            	and m.meteringDate=:meteringDate
-            	and m.hour=:hour
-            	and m.dataSourceCode=:dataSourceCode
-            	and m.wayEntering=:wayEntering
-            	and m.status=:status
-            	and m.unitCode=:unitCode
-            	and m.paramCode=:paramCode
+            	    t.externalCode=:externalCode
+            	and t.meteringDate=:meteringDate
+            	and t.hour=:hour
+            	and t.dataSourceCode=:dataSourceCode
+            	and t.wayEntering=:wayEntering
+            	and t.status=:status
+            	and t.unitCode=:unitCode
+            	and t.paramCode=:paramCode
         </query>
     </named-query>  
     
@@ -35,17 +54,17 @@
     <named-query name="DayMeteringBalanceRaw.findByEntity">
         <query>
             select 
-            	m 
+            	t 
             from 
-            	DayMeteringBalanceRaw m 
+            	DayMeteringBalanceRaw t 
             where 
-            	    m.externalCode=:externalCode
-            	and m.meteringDate=:meteringDate
-            	and m.dataSourceCode=:dataSourceCode
-            	and m.wayEntering=:wayEntering
-            	and m.status=:status
-            	and m.unitCode=:unitCode
-            	and m.paramCode=:paramCode
+            	    t.externalCode=:externalCode
+            	and t.meteringDate=:meteringDate
+            	and t.dataSourceCode=:dataSourceCode
+            	and t.wayEntering=:wayEntering
+            	and t.status=:status
+            	and t.unitCode=:unitCode
+            	and t.paramCode=:paramCode
         </query>
     </named-query>            
 </entity-mappings>

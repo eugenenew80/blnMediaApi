@@ -1,6 +1,6 @@
 package kz.kegoc.bln.loader.impl.hour;
 
-import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.loader.AbstractMeteringDataLoader;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 import kz.kegoc.bln.service.media.MeteringDataService;

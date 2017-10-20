@@ -1,16 +1,15 @@
-package kz.kegoc.bln.entity.media.dto;
+package kz.kegoc.bln.entity.media.dto.day;
 
+import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.DataStatus;
 import lombok.Data;
-import java.time.LocalDate;
 
 @Data
-public class HourMeteringDataRawDto {
+public class DayMeteringBalanceRawDto {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
-	private LocalDate meteringDate;
-	private Integer hour;
+	private LocalDateTime meteringDate;
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;

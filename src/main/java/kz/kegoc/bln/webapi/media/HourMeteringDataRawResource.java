@@ -1,10 +1,10 @@
 package kz.kegoc.bln.webapi.media;
 
-import kz.kegoc.bln.entity.media.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.WayEntering;
+import kz.kegoc.bln.entity.media.dto.hour.HourMeteringDataRawDto;
+import kz.kegoc.bln.entity.media.dto.hour.HourMeteringDataRawListDto;
 import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.dto.HourMeteringDataRawDto;
-import kz.kegoc.bln.entity.media.dto.HourMeteringDataRawListDto;
+import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 
