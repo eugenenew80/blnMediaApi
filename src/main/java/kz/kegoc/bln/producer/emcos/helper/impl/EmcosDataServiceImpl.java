@@ -48,8 +48,6 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         this.reqestedDateTime = builder.reqestedDateTime;
         this.registryTemplate = builder.registryTemplate;
         this.pointsCfg = builder.pointsCfg;
-        
-        System.out.println(this.emcosParamCode);
     }
 
 
@@ -429,7 +427,6 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     }
     
     
-    
     public static class Builder {
         private EmcosConfig config;
         private List<LastLoadInfo> lastLoadInfoList = new ArrayList<>();
@@ -473,8 +470,6 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         }
     }
 
-
-    @Inject
-    @ParamCodes
+    @Inject @ParamCodes
     private Map<String, String> paramCodes;
 }
