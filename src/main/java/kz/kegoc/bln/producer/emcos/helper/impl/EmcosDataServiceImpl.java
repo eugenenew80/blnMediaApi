@@ -38,8 +38,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         this.lastLoadInfoList = lastLoadInfoService.findAll();
     }
 
-    
-    public List<MinuteMeteringDataDto> request(String paramCode, LocalDateTime requestedDateTime) {
+    public List<MinuteMeteringDataDto> request(String paramCode, LocalDateTime requestedTime) {
         if (pointsCfg==null)
             this.pointsCfg = emcosCfgService.requestCfg();
 
@@ -47,7 +46,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
-                .body(buildBody(paramCode, requestedDateTime))
+                .body(buildBody(paramCodes.get(paramCode), requestedTime))
                 .build()
                 .doRequest();
 
@@ -60,14 +59,11 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         }
     }
 
-
-    private String buildBody(String paramCode, LocalDateTime requestedDateTime) {
-        String emcosParamCode = paramCodes.get(paramCode);
-
+    private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )	
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
-            .map( p-> serializePointCfg(p, requestedDateTime))
+            .map( p-> serializePointCfg(p, requestedTime))
             .collect(Collectors.joining());
 
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
@@ -85,11 +81,9 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
         return body;
     }
-    
-    
 
     private List<MinuteMeteringDataDto> parseAnswer(String answerData) throws Exception {
-        List<MinuteMeteringDataDto> meteringData = new ArrayList<>();
+        List<MinuteMeteringDataDto> list = new ArrayList<>();
 
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
@@ -104,18 +98,15 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW")
-                        meteringData.add(parseNode(rowData.item(j)));
+                        list.add(parseNode(rowData.item(j)));
                 }
             }
         }
 
-        return meteringData;
+        return list;
     }
 
-
-    private String serializePointCfg(EmcosPointCfg emcosCfg, LocalDateTime requestedDateTime) {
-        String emcosParamCode = paramCodes.get(emcosCfg.getParamCode());
-
+    private String serializePointCfg(EmcosPointCfg emcosCfg, LocalDateTime requestedTime) {
         LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
     		.filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()) && t.getParamCode().equals(emcosCfg.getParamCode()) )
     		.findFirst()
@@ -123,9 +114,9 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         	
     	return ""
 		        + "<ROW PPOINT_CODE=\"" + emcosCfg.getPointCode() + "\" "
-		        + "PML_ID=\"" + emcosParamCode + "\" "
+		        + "PML_ID=\"" + emcosCfg.getEmcosParamCode() + "\" "
 		        + "PBT=\"" + buildStartTime(lastLoadInfo).format(timeFormatter) + "\" "
-		        + "PET=\"" + requestedDateTime.format(timeFormatter) + "\" />";
+		        + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
     }
 
     

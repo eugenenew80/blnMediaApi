@@ -1,10 +1,10 @@
 package kz.kegoc.bln.producer.emcos.helper.impl;
 
 import com.google.common.collect.BiMap;
-import jodd.util.StringUtil;
 import kz.kegoc.bln.annotation.ParamCodes;
 import kz.kegoc.bln.producer.emcos.helper.*;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -75,7 +75,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW") {
                         EmcosPointCfg pointCfg = parseNode(rowData.item(j));
-                        if (StringUtil.isNotEmpty(pointCfg.getParamCode()))
+                        if (StringUtils.isNotEmpty(pointCfg.getParamCode()))
                             pointsCfg.add(pointCfg);
                     }
                 }

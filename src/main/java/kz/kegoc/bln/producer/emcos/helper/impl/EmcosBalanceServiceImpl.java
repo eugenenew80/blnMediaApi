@@ -40,8 +40,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         this.lastLoadInfoList = lastLoadInfoService.findAll();
     }
 
-
-    public List<DayMeteringBalanceRaw> request(String paramCode, LocalDateTime requestedDateTime) {
+    public List<DayMeteringBalanceRaw> request(String paramCode, LocalDateTime requestedTime) {
         if (pointsCfg==null)
             this.pointsCfg = emcosCfgService.requestCfg();
 
@@ -49,7 +48,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
-                .body(buildBody(paramCode, requestedDateTime))
+                .body(buildBody(paramCodes.get(paramCode), requestedTime))
                 .build()
                 .doRequest();
 
@@ -62,13 +61,11 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         }
     }
 
-    private String buildBody(String paramCode, LocalDateTime requestedDateTime) {
-        String emcosParamCode = paramCodes.get(paramCode);
-
+    private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
-            .map( p-> serializePointCfg(p, requestedDateTime))
+            .map( p-> serializePointCfg(p, requestedTime))
             .collect(Collectors.joining());
         
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
@@ -87,12 +84,12 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         return body;
     }
     
-    private List<DayMeteringBalanceRaw> parseAnswer(String answerData) throws Exception {
-    	List<DayMeteringBalanceRaw> meteringBalance = new ArrayList<>();
+    private List<DayMeteringBalanceRaw> parseAnswer(String answer) throws Exception {
+    	List<DayMeteringBalanceRaw> list = new ArrayList<>();
         
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
-            .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answerData), "Cp1251") )));
+            .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answer), "Cp1251") )));
         
         NodeList nodes =  doc.getDocumentElement().getParentNode()
             .getFirstChild()
@@ -103,27 +100,24 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW")
-                    	meteringBalance.add(parseNode(rowData.item(j)));
+                    	list.add(parseNode(rowData.item(j)));
                 }
             }
         }
         
-        return meteringBalance;
+        return list;
     }
     
 
-
-    private String serializePointCfg(EmcosPointCfg emcosCfg, LocalDateTime requestedDateTime) {
-        String emcosParamCode = paramCodes.get(emcosCfg.getParamCode());
-
+    private String serializePointCfg(EmcosPointCfg pointCfg, LocalDateTime requestedDateTime) {
         LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-            .filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()) && t.getParamCode().equals(emcosCfg.getParamCode()) )
+            .filter(t -> t.getExternalCode().equals(pointCfg.getPointCode()) && t.getParamCode().equals(pointCfg.getParamCode()) )
             .findFirst()
             .orElse(null);
         	
     	return ""
-                + "<ROW PPOINT_CODE=\"" + emcosCfg.getPointCode() + "\" "
-                + "PML_ID=\"" + emcosParamCode + "\" "
+                + "<ROW PPOINT_CODE=\"" + pointCfg.getPointCode() + "\" "
+                + "PML_ID=\"" + pointCfg.getEmcosParamCode() + "\" "
                 + "PBT=\"" + buildStartTime(lastLoadInfo).format(timeFormatter) + "\" "
                 + "PET=\"" + requestedDateTime.format(timeFormatter) + "\" />";
     }    
