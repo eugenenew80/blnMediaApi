@@ -12,8 +12,8 @@ import javax.interceptor.InvocationContext;
 @Interceptor
 public class ProducerInterceptor {
     private boolean fileProducer = false;
-    private boolean emcosHourDataProducer = false;
-    private boolean emcosDayBalanceProducer = false;
+    private boolean emcosHourDataProducer = true;
+    private boolean emcosDayBalanceProducer = true;
 
     @AroundTimeout
     public Object monitor(InvocationContext ctx) throws Exception {

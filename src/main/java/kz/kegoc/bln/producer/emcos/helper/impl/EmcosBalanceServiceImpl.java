@@ -69,8 +69,9 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
                 .build()
                 .doRequest();
 
-            logger.info("Request balances completed, raw answer: " + answer);
-            return parseAnswer(answer);
+            List<DayMeteringBalanceRaw> list = parseAnswer(answer); 
+            logger.info("Request balances completed");
+            return list;
         }
 
         catch (Exception e) {
@@ -109,7 +110,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     
     private List<DayMeteringBalanceRaw> parseAnswer(String answer) throws Exception {
         logger.info("Parse answer for balances...");
-        logger.info("answer: " + answer);
+        logger.info("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         List<DayMeteringBalanceRaw> list = new ArrayList<>();
         

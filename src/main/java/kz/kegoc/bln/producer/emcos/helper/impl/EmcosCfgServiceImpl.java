@@ -17,16 +17,12 @@ import javax.inject.Singleton;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
 public class EmcosCfgServiceImpl implements EmcosCfgService {
     private static Logger logger = LoggerFactory.getLogger(EmcosCfgServiceImpl.class);
-
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     public List<EmcosPointCfg> requestCfg()  {
         logger.info("Request list of points started...");
@@ -40,8 +36,9 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                 .build()
                 .doRequest();
 
-            logger.info("Request list of points completed, raw answer: " + answer);
-            return parseAnswer(answer);
+            List<EmcosPointCfg> list = parseAnswer(answer);
+            logger.info("Request list of points completed");
+            return list;
         }
 
         catch (Exception e) {
@@ -74,7 +71,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
     
     private List<EmcosPointCfg> parseAnswer(String answer) throws Exception {
         logger.info("Parse answer for list of points...");
-        logger.info("answer: " + answer);
+        //logger.info("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()

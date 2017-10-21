@@ -17,7 +17,7 @@ import kz.kegoc.bln.service.media.LastLoadInfoService;
 public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer {
 
 	@ProducerMonitor
-	@Schedule(minute = "*/5", hour = "*", persistent = false)
+	@Schedule(minute = "*/15", hour = "*", persistent = false)
 	public void execute() {
 		LocalDateTime requestedDateTime = buildRequestedDateTime();
 

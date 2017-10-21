@@ -32,9 +32,7 @@ import java.util.stream.Collectors;
 public class EmcosDataServiceImpl implements EmcosDataService {
     private static Logger logger = LoggerFactory.getLogger(EmcosDataServiceImpl.class);
 
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-    
+    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");    
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
 
@@ -67,8 +65,10 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                 .build()
                 .doRequest();
 
-            logger.info("Request metering data completed, raw answer: " + answer);
-            return parseAnswer(answer);
+            List<MinuteMeteringDataDto> list = parseAnswer(answer);            
+            logger.info("Request metering data completed");
+            
+            return list;
         }
 
         catch (Exception e) {
@@ -107,7 +107,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
     private List<MinuteMeteringDataDto> parseAnswer(String answer) throws Exception {
         logger.info("Parse answer for metering data...");
-        logger.info("answer: " + answer);
+        logger.info("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         List<MinuteMeteringDataDto> list = new ArrayList<>();
 
