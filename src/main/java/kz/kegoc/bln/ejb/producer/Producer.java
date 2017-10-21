@@ -1,4 +1,4 @@
-package kz.kegoc.bln.ejb.cdi;
+package kz.kegoc.bln.ejb.producer;
 
 import javax.enterprise.inject.Produces;
 
