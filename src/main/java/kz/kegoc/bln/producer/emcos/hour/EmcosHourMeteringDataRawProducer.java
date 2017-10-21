@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.groupingBy;
 public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 
 	@ProducerMonitor
-	@Schedule(minute = "*/15", hour = "*", persistent = false)
+	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
 		LocalDateTime requestedTime = buildRequestedTime();
 

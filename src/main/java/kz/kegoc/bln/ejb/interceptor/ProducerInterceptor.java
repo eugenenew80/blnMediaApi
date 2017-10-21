@@ -11,7 +11,7 @@ import javax.interceptor.InvocationContext;
 @ProducerMonitor
 @Interceptor
 public class ProducerInterceptor {
-    private boolean fileProducer = false;
+    private boolean fileProducer = true;
     private boolean emcosHourDataProducer = true;
     private boolean emcosDayBalanceProducer = true;
 
