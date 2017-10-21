@@ -1,5 +1,6 @@
 package kz.kegoc.bln.webapi.media;
 
+import kz.kegoc.bln.ejb.annotation.HourData;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.dto.hour.HourMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.dto.hour.HourMeteringDataRawListDto;
@@ -26,12 +27,6 @@ import java.util.stream.Collectors;
 @Consumes({ "application/xml", "application/json" })
 public class HourMeteringDataRawResource {
 
-	public HourMeteringDataRawResource() {
-		mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/HourMeteringDataRawDtoDefaultMapping.xml"));
-	}
-
-	
 	@POST
 	public Response create(HourMeteringDataRawDto entity) {
 		entity.setWayEntering(WayEntering.USER);
@@ -63,5 +58,7 @@ public class HourMeteringDataRawResource {
 
 	@Inject
 	private MeteringDataQueue<HourMeteringDataRaw> service;
+
+	@Inject @HourData
 	private DozerBeanMapper mapper;
 }

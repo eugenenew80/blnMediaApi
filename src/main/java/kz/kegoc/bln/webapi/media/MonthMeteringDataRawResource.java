@@ -7,6 +7,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import kz.kegoc.bln.ejb.annotation.MonthData;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 
@@ -21,12 +23,6 @@ import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class MonthMeteringDataRawResource {
-	
-	public MonthMeteringDataRawResource() {
-		mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml"));
-	}
-
 	
 	@POST
 	public Response create(MonthMeteringDataRawDto entity) {
@@ -59,5 +55,7 @@ public class MonthMeteringDataRawResource {
 
 	@Inject
 	private MeteringDataQueue<MonthMeteringDataRaw> service;
+
+	@Inject @MonthData
 	private DozerBeanMapper mapper;
 }

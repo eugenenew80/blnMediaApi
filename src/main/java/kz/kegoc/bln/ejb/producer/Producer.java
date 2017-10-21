@@ -9,6 +9,9 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import kz.kegoc.bln.ejb.annotation.DayData;
+import kz.kegoc.bln.ejb.annotation.HourData;
+import kz.kegoc.bln.ejb.annotation.MonthData;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
@@ -16,6 +19,7 @@ import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 
 import kz.kegoc.bln.producer.emcos.helper.EmcosConfig;
+import org.dozer.DozerBeanMapper;
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
@@ -23,6 +27,7 @@ import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.Arrays;
 
 @ApplicationScoped
 public class Producer {
@@ -115,5 +120,30 @@ public class Producer {
 	@Produces
 	public EmcosConfig defaultEmcosConfig() {
 		return EmcosConfig.defaultEmcosServer().build();
+	}
+
+
+	@Produces
+	@DayData
+	public DozerBeanMapper dayMeteringDataMapper() {
+		DozerBeanMapper mapper = new DozerBeanMapper();
+		mapper.setMappingFiles(Arrays.asList("mapping/raw/DayMeteringDataRawDtoDefaultMapping.xml"));
+		return mapper;
+	}
+
+	@Produces
+	@HourData
+	public DozerBeanMapper hourMeteringDataMapper() {
+		DozerBeanMapper mapper = new DozerBeanMapper();
+		mapper.setMappingFiles(Arrays.asList("mapping/raw/HourMeteringDataRawDtoDefaultMapping.xml"));
+		return mapper;
+	}
+
+	@Produces
+	@MonthData
+	public DozerBeanMapper monthMeteringDataMapper() {
+		DozerBeanMapper mapper = new DozerBeanMapper();
+		mapper.setMappingFiles(Arrays.asList("mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml"));
+		return mapper;
 	}
 }

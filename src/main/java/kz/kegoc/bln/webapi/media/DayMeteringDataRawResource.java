@@ -1,34 +1,26 @@
 package kz.kegoc.bln.webapi.media;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import kz.kegoc.bln.ejb.annotation.DayData;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
-
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.dto.day.DayMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.DataStatus;
-
 
 @RequestScoped
 @Path("/media/raw/day")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class DayMeteringDataRawResource {
-	
-	public DayMeteringDataRawResource() {
-		mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/DayMeteringDataRawDtoDefaultMapping.xml"));
-	}
 
-	
 	@POST
 	public Response create(DayMeteringDataRawDto entity) {
 		entity.setWayEntering(WayEntering.USER);
@@ -60,5 +52,7 @@ public class DayMeteringDataRawResource {
 
 	@Inject
 	private MeteringDataQueue<DayMeteringDataRaw> service;
+
+	@Inject @DayData
 	private DozerBeanMapper mapper;
 }
