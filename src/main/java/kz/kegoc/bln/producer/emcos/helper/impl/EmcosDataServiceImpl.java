@@ -29,6 +29,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.*;
+
 @Singleton
 public class EmcosDataServiceImpl implements EmcosDataService {
     private static Logger logger = LoggerFactory.getLogger(EmcosDataServiceImpl.class);
@@ -54,9 +56,10 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
         if (pointsCfg==null || pointsCfg.isEmpty()) {
             logger.warn("List of points is empty, request metering data terminated");
-            return Collections.emptyList();
+            return emptyList();
         }
 
+        List<MinuteMeteringDataDto> list;
         try {
             logger.info("Send http request for metering data...");
             String answer = new HttpReqesterImpl.Builder()
@@ -66,16 +69,16 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                 .build()
                 .doRequest();
 
-            List<MinuteMeteringDataDto> list = parseAnswer(answer);            
+            list = parseAnswer(answer);
             logger.info("Request metering data completed");
-            
-            return list;
         }
 
         catch (Exception e) {
             logger.error("Request metering data failed: " + e.toString());
-            return Collections.emptyList();
+            list = emptyList();
         }
+
+        return list;
     }
 
     private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {

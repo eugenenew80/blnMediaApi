@@ -20,6 +20,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Collections.emptyList;
+
 @Singleton
 public class EmcosCfgServiceImpl implements EmcosCfgService {
     private static Logger logger = LoggerFactory.getLogger(EmcosCfgServiceImpl.class);
@@ -27,6 +29,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
     public List<EmcosPointCfg> requestCfg()  {
         logger.info("Request list of points started...");
 
+        List<EmcosPointCfg> list;
         try {
             logger.info("send http request...");
             String answer = new HttpReqesterImpl.Builder()
@@ -36,15 +39,16 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                 .build()
                 .doRequest();
 
-            List<EmcosPointCfg> list = parseAnswer(answer);
+            list = parseAnswer(answer);
             logger.info("Request list of points completed");
-            return list;
         }
 
         catch (Exception e) {
             logger.error("Request list of points failed: " + e.toString());
-            return new ArrayList<>();
+            list = emptyList();
         }
+
+        return list;
     }
 
     private String buildBody() {

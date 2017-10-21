@@ -14,7 +14,6 @@ import org.apache.commons.io.FilenameUtils;
 import javax.annotation.PostConstruct;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +23,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Startup
 @Singleton
 public class FileMeteringDataRawProducer<T extends MeteringData> implements MeteringDataProducer {
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";

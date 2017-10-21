@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
+
 @Singleton
 public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     private static final Logger logger = LoggerFactory.getLogger(EmcosBalanceServiceImpl.class);
@@ -58,9 +60,10 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
 
         if (pointsCfg==null || pointsCfg.isEmpty()) {
             logger.warn("List of points is empty, request balance terminated");
-            return Collections.emptyList();
+            return emptyList();
         }
 
+        List<DayMeteringBalanceRaw> list;
         try {
             logger.info("Send http request for metering data...");
             String answer = new HttpReqesterImpl.Builder()
@@ -70,15 +73,16 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
                 .build()
                 .doRequest();
 
-            List<DayMeteringBalanceRaw> list = parseAnswer(answer); 
+            list = parseAnswer(answer);
             logger.info("Request balances completed");
-            return list;
         }
 
         catch (Exception e) {
             logger.error("Request balances failed: " + e.toString());
-            return Collections.emptyList();
+            list = emptyList();
         }
+
+        return list;
     }
 
     private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
