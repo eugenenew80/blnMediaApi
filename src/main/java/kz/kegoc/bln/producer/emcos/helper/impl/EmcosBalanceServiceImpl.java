@@ -1,7 +1,7 @@
 package kz.kegoc.bln.producer.emcos.helper.impl;
 
 import com.google.common.collect.BiMap;
-import kz.kegoc.bln.annotation.ParamCodes;
+import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.LastLoadInfo;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -24,6 +24,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -164,7 +165,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
             );
         }
         else {
-            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1"));
             startDateTime =  LocalDateTime.of(
                     now.getYear(),
                     now.getMonth(),

@@ -6,7 +6,7 @@ import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
-import kz.kegoc.bln.interceptor.ProducerMonitor;
+import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.emcos.helper.EmcosBalanceService;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.queue.MeteringDataQueue;
@@ -29,7 +29,7 @@ public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer 
     }
 
 	private LocalDateTime buildRequestedDateTime() {
-		LocalDateTime now = LocalDateTime.now().plusHours(1).plusDays(1);
+		LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1")).plusDays(1);
 		return LocalDateTime.of(
 					now.getYear(),
 					now.getMonth(),

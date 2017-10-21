@@ -5,7 +5,7 @@ import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
-import kz.kegoc.bln.annotation.XML;
+import kz.kegoc.bln.ejb.annotation.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 

@@ -7,6 +7,6 @@
         bean-discovery-mode="all">
 
     <interceptors>
-        <class>kz.kegoc.bln.interceptor.ProducerInterceptor</class>
+        <class>kz.kegoc.bln.ejb.interceptor.ProducerInterceptor</class>
     </interceptors>
 </beans>

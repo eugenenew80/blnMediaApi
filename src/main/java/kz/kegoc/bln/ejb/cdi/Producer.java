@@ -1,4 +1,4 @@
-package kz.kegoc.bln.util;
+package kz.kegoc.bln.ejb.cdi;
 
 import javax.enterprise.inject.Produces;
 
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import kz.kegoc.bln.annotation.ParamCodes;
+import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
@@ -22,13 +22,10 @@ import org.redisson.api.RedissonClient;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class CdiProducer {
+public class Producer {
 	private RedissonClient redissonClient = null;
 	private RBlockingQueue<HourMeteringDataRaw> hourMeteringDataQueue = null;
 	private RBlockingQueue<DayMeteringDataRaw> dayMeteringDataQueue  = null;

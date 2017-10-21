@@ -1,4 +1,4 @@
-package kz.kegoc.bln.converter;
+package kz.kegoc.bln.ejb.converter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

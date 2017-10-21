@@ -5,7 +5,7 @@ import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
-import kz.kegoc.bln.annotation.CSV;
+import kz.kegoc.bln.ejb.annotation.CSV;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

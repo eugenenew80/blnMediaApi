@@ -1,4 +1,4 @@
-package kz.kegoc.bln.annotation;
+package kz.kegoc.bln.ejb.annotation;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;
@@ -10,4 +10,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Qualifier
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, TYPE})
-public @interface CSV {}
+public @interface ParamCodes {}

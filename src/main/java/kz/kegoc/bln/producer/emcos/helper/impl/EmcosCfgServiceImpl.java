@@ -1,7 +1,7 @@
 package kz.kegoc.bln.producer.emcos.helper.impl;
 
 import com.google.common.collect.BiMap;
-import kz.kegoc.bln.annotation.ParamCodes;
+import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.producer.emcos.helper.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;

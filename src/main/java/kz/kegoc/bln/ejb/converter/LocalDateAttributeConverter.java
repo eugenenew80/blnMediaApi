@@ -1,4 +1,4 @@
-package kz.kegoc.bln.converter;
+package kz.kegoc.bln.ejb.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

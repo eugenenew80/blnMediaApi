@@ -4,10 +4,10 @@ import kz.kegoc.bln.entity.media.MeteringData;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
-import kz.kegoc.bln.interceptor.ProducerMonitor;
+import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.MeteringDataProducer;
-import kz.kegoc.bln.annotation.CSV;
-import kz.kegoc.bln.annotation.XML;
+import kz.kegoc.bln.ejb.annotation.CSV;
+import kz.kegoc.bln.ejb.annotation.XML;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import org.apache.commons.io.FilenameUtils;
 

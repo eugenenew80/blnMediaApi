@@ -1,4 +1,4 @@
-package kz.kegoc.bln.interceptor;
+package kz.kegoc.bln.ejb.interceptor;
 
 import javax.interceptor.InterceptorBinding;
 import java.lang.annotation.Retention;

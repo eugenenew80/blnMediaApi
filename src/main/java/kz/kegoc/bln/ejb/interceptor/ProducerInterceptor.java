@@ -1,4 +1,4 @@
-package kz.kegoc.bln.interceptor;
+package kz.kegoc.bln.ejb.interceptor;
 
 import kz.kegoc.bln.producer.emcos.day.EmcosDayMeteringBalanceRawProducer;
 import kz.kegoc.bln.producer.emcos.hour.EmcosHourMeteringDataRawProducer;
