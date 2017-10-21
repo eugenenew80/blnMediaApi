@@ -8,6 +8,8 @@ import kz.kegoc.bln.entity.media.LastLoadInfo;
 import kz.kegoc.bln.producer.emcos.helper.*;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -22,11 +24,14 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Singleton
 public class EmcosDataServiceImpl implements EmcosDataService {
+    private static Logger logger = LoggerFactory.getLogger(EmcosDataServiceImpl.class);
+
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     
@@ -39,10 +44,22 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     }
 
     public List<MinuteMeteringDataDto> request(String paramCode, LocalDateTime requestedTime) {
-        if (pointsCfg==null)
+        logger.info("Request metering data started...");
+        logger.info("Param: " + paramCode);
+        logger.info("Time: " + requestedTime);
+
+        if (pointsCfg==null || pointsCfg.isEmpty()) {
+            logger.info("Get list of points...");
             this.pointsCfg = emcosCfgService.requestCfg();
+        }
+
+        if (pointsCfg==null || pointsCfg.isEmpty()) {
+            logger.warn("List of points is empty, request metering data terminated");
+            return Collections.emptyList();
+        }
 
         try {
+            logger.info("Send http request for metering data...");
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
@@ -50,16 +67,19 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                 .build()
                 .doRequest();
 
+            logger.info("Request metering data completed, raw answer: " + answer);
             return parseAnswer(answer);
         }
 
         catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
+            logger.error("Request metering data failed: " + e.toString());
+            return Collections.emptyList();
         }
     }
 
     private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
+        logger.info("Build body for request metering data...");
+
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )	
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
@@ -68,26 +88,32 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
+        logger.info("data: " + data);
 
         String property = registryTemplate.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQML")
         	.replace("#attType#", config.getAttType());
-        
+        logger.info("property: " + property);
+
         String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
+        logger.info("body for request metering data: " + body);
 
         return body;
     }
 
-    private List<MinuteMeteringDataDto> parseAnswer(String answerData) throws Exception {
+    private List<MinuteMeteringDataDto> parseAnswer(String answer) throws Exception {
+        logger.info("Parse answer for metering data...");
+        logger.info("answer: " + answer);
+
         List<MinuteMeteringDataDto> list = new ArrayList<>();
 
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
-            .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answerData), "Cp1251") )));
+            .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answer), "Cp1251") )));
 
         NodeList nodes =  doc.getDocumentElement().getParentNode()
             .getFirstChild()
@@ -103,6 +129,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             }
         }
 
+        logger.info("Parse answer for metering data completed, count of rows: " + list.size());
         return list;
     }
 

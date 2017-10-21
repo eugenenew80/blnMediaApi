@@ -9,6 +9,8 @@ import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.producer.emcos.helper.*;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -24,11 +26,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Singleton
 public class EmcosBalanceServiceImpl implements EmcosBalanceService {
+    private static final Logger logger = LoggerFactory.getLogger(EmcosBalanceServiceImpl.class);
+
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     
@@ -41,10 +46,22 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     }
 
     public List<DayMeteringBalanceRaw> request(String paramCode, LocalDateTime requestedTime) {
-        if (pointsCfg==null)
+        logger.info("Request balances started...");
+        logger.info("Param: " + paramCode);
+        logger.info("Time: " + requestedTime);
+
+        if (pointsCfg==null || pointsCfg.isEmpty()) {
+            logger.info("Get list of points...");
             this.pointsCfg = emcosCfgService.requestCfg();
+        }
+
+        if (pointsCfg==null || pointsCfg.isEmpty()) {
+            logger.warn("List of points is empty, request balance terminated");
+            return Collections.emptyList();
+        }
 
         try {
+            logger.info("Send http request for metering data...");
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
@@ -52,40 +69,49 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
                 .build()
                 .doRequest();
 
+            logger.info("Request balances completed, raw answer: " + answer);
             return parseAnswer(answer);
         }
 
         catch (Exception e) {
-            e.printStackTrace();
-            return new ArrayList<>();
+            logger.error("Request balances failed: " + e.toString());
+            return Collections.emptyList();
         }
     }
 
     private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
+        logger.info("Build body for request balances...");
+
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
             .map( p-> serializePointCfg(p, requestedTime))
             .collect(Collectors.joining());
-        
+
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
+        logger.info("data: " + data);
 
         String property = registryTemplate.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQML")
         	.replace("#attType#", config.getAttType());
-        
+        logger.info("property: " + property);
+
         String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
+        logger.info("body for request balances: " + body);
 
         return body;
     }
     
     private List<DayMeteringBalanceRaw> parseAnswer(String answer) throws Exception {
-    	List<DayMeteringBalanceRaw> list = new ArrayList<>();
+        logger.info("Parse answer for balances...");
+        logger.info("answer: " + answer);
+
+        List<DayMeteringBalanceRaw> list = new ArrayList<>();
         
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
@@ -104,7 +130,8 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
                 }
             }
         }
-        
+
+        logger.info("Parse answer for balances completed, count of rows: " + list.size());
         return list;
     }
     

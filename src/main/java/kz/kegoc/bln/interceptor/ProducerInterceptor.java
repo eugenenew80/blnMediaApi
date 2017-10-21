@@ -12,7 +12,7 @@ import javax.interceptor.InvocationContext;
 @Interceptor
 public class ProducerInterceptor {
     private boolean fileProducer = false;
-    private boolean emcosHourDataProducer = true;
+    private boolean emcosHourDataProducer = false;
     private boolean emcosDayBalanceProducer = true;
 
     @AroundTimeout
@@ -27,11 +27,8 @@ public class ProducerInterceptor {
         else if (aClass == EmcosDayMeteringBalanceRawProducer.class)
             flag = emcosDayBalanceProducer;
         
-        if (flag) {
-            System.out.println(aClass.getCanonicalName() + " start");
+        if (flag)
             ctx.proceed();
-            System.out.println(aClass.getCanonicalName() + " finish");
-        }
 
         return null;
     }

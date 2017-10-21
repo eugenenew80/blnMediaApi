@@ -5,6 +5,8 @@ import kz.kegoc.bln.annotation.ParamCodes;
 import kz.kegoc.bln.producer.emcos.helper.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -21,11 +23,16 @@ import java.util.List;
 
 @Singleton
 public class EmcosCfgServiceImpl implements EmcosCfgService {
+    private static Logger logger = LoggerFactory.getLogger(EmcosCfgServiceImpl.class);
+
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     public List<EmcosPointCfg> requestCfg()  {
+        logger.info("Request list of points started...");
+
         try {
+            logger.info("send http request...");
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
@@ -33,33 +40,42 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                 .build()
                 .doRequest();
 
+            logger.info("Request list of points completed, raw answer: " + answer);
             return parseAnswer(answer);
         }
 
         catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Request list of points failed: " + e.toString());
             return new ArrayList<>();
         }
     }
 
     private String buildBody() {
+        logger.info("Build body for request list of points...");
+
         String data = registryTemplate.getTemplate("EMCOS_REQCFG_DATA")
         	.replace("#points#", "");
+        logger.info("data: " + data);
 
         String property = registryTemplate.getTemplate("EMCOS_REQCFG_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQCFG")
         	.replace("#attType#", config.getAttType());
-        
+        logger.info("property: " + property);
+
         String body = registryTemplate.getTemplate("EMCOS_REQCFG_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
+        logger.info("body: " + body);
 
         return body;
     }
     
     private List<EmcosPointCfg> parseAnswer(String answer) throws Exception {
+        logger.info("Parse answer for list of points...");
+        logger.info("answer: " + answer);
+
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
             .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answer), "Cp1251") )));
@@ -68,7 +84,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
             .getFirstChild()
             .getChildNodes();    	
         
-        List<EmcosPointCfg> pointsCfg = new ArrayList<>();
+        List<EmcosPointCfg> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -76,13 +92,14 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                     if (rowData.item(j).getNodeName() == "ROW") {
                         EmcosPointCfg pointCfg = parseNode(rowData.item(j));
                         if (StringUtils.isNotEmpty(pointCfg.getParamCode()))
-                            pointsCfg.add(pointCfg);
+                            list.add(pointCfg);
                     }
                 }
             }
-        }    
-        
-        return pointsCfg;
+        }
+
+        logger.info("Parse answer for list of points completed, count of rows: " + list.size());
+        return list;
     }
 
     private EmcosPointCfg parseNode(Node node) {
