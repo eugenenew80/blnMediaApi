@@ -5,14 +5,12 @@ import java.util.*;
 import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
-
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.interceptor.ProducerMonitor;
-import kz.kegoc.bln.producer.emcos.helper.EmcosDataService;
+import kz.kegoc.bln.producer.emcos.helper.EmcosBalanceService;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
-
 
 @Singleton
 @Startup
@@ -24,13 +22,12 @@ public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer 
 		LocalDateTime requestedDateTime = buildRequestedDateTime();
 
 		Arrays.asList("AB+", "AB-", "RB+", "RB-").forEach(paramCode -> {
-			List<DayMeteringBalanceRaw> meteringBalance = emcosDataService.requestBalance(paramCode, requestedDateTime);
+			List<DayMeteringBalanceRaw> meteringBalance = emcosBalanceService.request(paramCode, requestedDateTime);
 			queueService.addAll(meteringBalance);
 			lastLoadInfoService.updateLastBalanceLoadDate(meteringBalance);
 		});
     }
 
-	
 	private LocalDateTime buildRequestedDateTime() {
 		LocalDateTime now = LocalDateTime.now().plusHours(1).plusDays(1);
 		return LocalDateTime.of(
@@ -41,8 +38,7 @@ public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer 
 					0
 				);
 	}
-	
-	
+
 	@Inject
 	private MeteringDataQueue<DayMeteringBalanceRaw> queueService;
 
@@ -50,5 +46,5 @@ public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer 
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private EmcosDataService emcosDataService;
+	private EmcosBalanceService emcosBalanceService;
 }

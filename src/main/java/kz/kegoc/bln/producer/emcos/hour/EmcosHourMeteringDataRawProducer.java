@@ -23,25 +23,24 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 	@ProducerMonitor
 	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
-		LocalDateTime requestedDateTime = buildRequestedDateTime();
+		LocalDateTime requestedTime = buildRequestedTime();
 
 		Arrays.asList("A+", "A-", "R+", "R-").forEach(paramCode -> {
-			List<MinuteMeteringDataRaw> meteringData = emcosDataService.requestData(paramCode, requestedDateTime);
-			queueService.addAll(buildHourMeteringData(meteringData));
-			lastLoadInfoService.updateLastDataLoadDate(meteringData);
+			List<MinuteMeteringDataDto> data = emcosDataService.request(paramCode, requestedTime);
+			queueService.addAll(buildHourMeteringData(data));
+			lastLoadInfoService.updateLastDataLoadDate(data);
 		});
     }
 
-
-	private List<HourMeteringDataRaw> buildHourMeteringData(List<MinuteMeteringDataRaw> minuteMeteringData) {
-		Map<Pair<String, LocalDate>, List<MinuteMeteringDataRaw>> mapDayMeteringData = minuteMeteringData
+	private List<HourMeteringDataRaw> buildHourMeteringData(List<MinuteMeteringDataDto> minuteMeteringData) {
+		Map<Pair<String, LocalDate>, List<MinuteMeteringDataDto>> mapDayMeteringData = minuteMeteringData
 			.stream()
 			.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getMeteringDate().toLocalDate())));
 			
 		List<HourMeteringDataRaw> hourMeteringData = new ArrayList<>();
 		for (Pair<String, LocalDate> pair : mapDayMeteringData.keySet()) {
 
-			Map<Integer, List<MinuteMeteringDataRaw>> mapHourMeteringData =  mapDayMeteringData
+			Map<Integer, List<MinuteMeteringDataDto>> mapHourMeteringData =  mapDayMeteringData
 				.get(pair)
 				.stream()
 				.collect(groupingBy(m -> m.getMeteringDate().getHour() ));
@@ -64,9 +63,8 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 		
 		return hourMeteringData;
 	}
-	
-	
-	private LocalDateTime buildRequestedDateTime() {
+
+	private LocalDateTime buildRequestedTime() {
 		LocalDateTime now = LocalDateTime.now().plusHours(1);
 		return LocalDateTime.of(
 					now.getYear(),
