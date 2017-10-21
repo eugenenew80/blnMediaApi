@@ -28,7 +28,7 @@ import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class RedissonClientProducer {
+public class CdiProducer {
 	private RedissonClient redissonClient = null;
 	private RBlockingQueue<HourMeteringDataRaw> hourMeteringDataQueue = null;
 	private RBlockingQueue<DayMeteringDataRaw> dayMeteringDataQueue  = null;
