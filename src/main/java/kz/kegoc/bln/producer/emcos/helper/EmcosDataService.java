@@ -2,12 +2,13 @@ package kz.kegoc.bln.producer.emcos.helper;
 
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EmcosDataService {
-    List<EmcosPointParamCfg> requestCfg() throws Exception;
+    List<EmcosPointCfg> requestCfg();
 
-    List<MinuteMeteringDataRaw> requestMeteringData() throws Exception;
+    List<MinuteMeteringDataRaw> requestData(String paramCode, LocalDateTime requestedDateTime);
     
-    List<DayMeteringBalanceRaw> requestMeteringBalance() throws Exception;
+    List<DayMeteringBalanceRaw> requestBalance(String paramCode, LocalDateTime requestedDateTime);
 }

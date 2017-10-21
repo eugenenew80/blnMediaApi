@@ -7,12 +7,15 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import kz.kegoc.bln.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 
+import kz.kegoc.bln.producer.emcos.helper.EmcosConfig;
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RedissonClient;
@@ -98,8 +101,8 @@ public class RedissonClientProducer {
 	
 	@Produces
 	@ParamCodes
-	public Map<String, String> mapParamCodes() {
-		Map<String, String> map = new HashMap<>();
+	public BiMap<String, String> mapParamCodes() {
+		BiMap<String, String> map = HashBiMap.create();
 		map.put("A+", "1040");
 		map.put("A-", "1041");
 		map.put("R+", "1042");
@@ -109,5 +112,11 @@ public class RedissonClientProducer {
 		map.put("RB+", "1500");
 		map.put("RB-", "1501");
 		return map;
+	}
+
+
+	@Produces
+	public EmcosConfig defaultEmcosConfig() {
+		return EmcosConfig.defaultEmcosServer().build();
 	}
 }
