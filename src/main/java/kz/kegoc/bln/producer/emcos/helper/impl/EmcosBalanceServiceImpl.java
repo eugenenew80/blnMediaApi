@@ -16,7 +16,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -42,10 +41,6 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
 
-    @PostConstruct
-    private void init() {
-        this.lastLoadInfoList = lastLoadInfoService.findAll();
-    }
 
     public List<DayMeteringBalanceRaw> request(String paramCode, LocalDateTime requestedTime) {
         logger.info("Request balances started...");
@@ -61,6 +56,9 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
             logger.warn("List of points is empty, request balance terminated");
             return emptyList();
         }
+
+        logger.info("Get last load info...");
+        lastLoadInfoList = lastLoadInfoService.findAll();
 
         List<DayMeteringBalanceRaw> list;
         try {

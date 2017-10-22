@@ -21,7 +21,6 @@ import static java.util.stream.Collectors.groupingBy;
 @Singleton
 @Startup
 public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
-	private final int STEP = 15;
 
 	@ProducerMonitor
 	@Schedule(minute = "*/5", hour = "*", persistent = false)
@@ -70,14 +69,14 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 	}
 
 	private LocalDateTime buildRequestedTime() {
-		LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1"));
+		LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1")).minusMinutes(15);
 		return LocalDateTime.of(
 					now.getYear(),
 					now.getMonth(),
 					now.getDayOfMonth(),
 					now.getHour(),
-					Math.round(now.getMinute() / STEP) * STEP
-				).minusMinutes(2*STEP);
+					0
+				);
 	}
 
 	

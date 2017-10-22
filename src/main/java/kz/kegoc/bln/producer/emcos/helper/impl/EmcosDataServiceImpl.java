@@ -15,7 +15,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -38,11 +37,6 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
 
-    @PostConstruct
-    private void init() {
-        this.lastLoadInfoList = lastLoadInfoService.findAll();
-    }
-
     public List<MinuteMeteringDataDto> request(String paramCode, LocalDateTime requestedTime) {
         logger.info("Request metering data started...");
         logger.info("Param: " + paramCode);
@@ -57,7 +51,10 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             logger.warn("List of points is empty, request metering data terminated");
             return emptyList();
         }
-
+        
+        logger.info("Get last load info...");
+        lastLoadInfoList = lastLoadInfoService.findAll();
+        
         List<MinuteMeteringDataDto> list;
         try {
             logger.info("Send http request for metering data...");
@@ -137,7 +134,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     }
 
     private String serializePointCfg(EmcosPointCfg emcosCfg, LocalDateTime requestedTime) {
-        LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
+    	LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
     		.filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()) && t.getParamCode().equals(emcosCfg.getParamCode()) )
     		.findFirst()
     		.orElse(null);
@@ -153,14 +150,11 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
         LocalDateTime startTime;
         if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null) {
-            LocalDateTime lastLoadTime = lastLoadInfo.getLastLoadDate();
-            startTime = LocalDateTime.of(
-            	lastLoadTime.getYear(), 
-            	lastLoadTime.getMonth(), 
-            	lastLoadTime.getDayOfMonth(), 
-            	lastLoadTime.getHour(), 
-            	0
-            );
+            LocalDateTime lastLoadTime = lastLoadInfo.getLastLoadDate();            
+            if (lastLoadTime.getMinute() < 45)
+            	startTime = lastLoadTime.minusMinutes(lastLoadTime.getMinute());
+            else
+            	startTime = lastLoadTime.plusMinutes(15);
         }
         else {
             LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1"));
