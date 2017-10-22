@@ -36,7 +36,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
         }
 
         try {
-            logger.info("send http request...");
+            logger.info("Send http request for list o points...");
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
