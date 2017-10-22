@@ -8,6 +8,7 @@ import kz.kegoc.bln.entity.media.LastLoadInfo;
 import kz.kegoc.bln.producer.emcos.helper.*;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -31,9 +32,9 @@ import static java.util.Collections.*;
 
 @Singleton
 public class EmcosDataServiceImpl implements EmcosDataService {
-    private static Logger logger = LoggerFactory.getLogger(EmcosDataServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmcosDataServiceImpl.class);
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
 
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");    
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
 
@@ -55,10 +56,16 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         List<MinuteMeteringDataDto> list;
         try {
             logger.info("Send http request for metering data...");
+            String body = buildBody(paramCodes.get(paramCode), requestedTime);
+            if (StringUtils.isEmpty(body)) {
+                logger.info("Request body is empty, data is up to date");
+                return emptyList();
+            }
+
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
-                .body(buildBody(paramCodes.get(paramCode), requestedTime))
+                .body(body)
                 .build()
                 .doRequest();
 
@@ -81,7 +88,13 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )	
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
             .map( p-> serializePointCfg(p, requestedTime))
+            .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
+
+        if (StringUtils.isEmpty(strPoints)) {
+            logger.info("Metering data is up to date");
+            return "";
+        }
 
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
@@ -135,11 +148,15 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     		.filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()) && t.getParamCode().equals(emcosCfg.getParamCode()) )
     		.findFirst()
     		.orElse(null);
-        	
-    	return ""
+
+        LocalDateTime startTime = buildStartTime(lastLoadInfo);
+        if (startTime.isEqual(requestedTime) || startTime.isAfter(requestedTime))
+            return "";
+
+        return ""
 		        + "<ROW PPOINT_CODE=\"" + emcosCfg.getPointCode() + "\" "
 		        + "PML_ID=\"" + emcosCfg.getEmcosParamCode() + "\" "
-		        + "PBT=\"" + buildStartTime(lastLoadInfo).format(timeFormatter) + "\" "
+		        + "PBT=\"" + startTime.format(timeFormatter) + "\" "
 		        + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
     }
 

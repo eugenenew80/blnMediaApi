@@ -13,29 +13,36 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 @Singleton
 public class EmcosCfgServiceImpl implements EmcosCfgService {
-    private static Logger logger = LoggerFactory.getLogger(EmcosCfgServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmcosCfgServiceImpl.class);
 
-    public synchronized List<EmcosPointCfg> requestCfg()  {
+    @Lock(LockType.WRITE)
+    public List<EmcosPointCfg> requestCfg()  {
         logger.info("Request list of points started...");
 
         if (pointsCfg!=null && !pointsCfg.isEmpty()) {
             logger.info("Returning list of points from cache");
-            return pointsCfg;
+            return Collections.unmodifiableList(pointsCfg);
         }
 
         try {
-            logger.info("Send http request for list o points...");
+            logger.info("Send http request for list of points...");
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
@@ -52,7 +59,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
             logger.error("Request list of points failed: " + e.toString());
         }
 
-        return pointsCfg;
+        return Collections.unmodifiableList(pointsCfg);
     }
 
     private String buildBody() {

@@ -9,6 +9,7 @@ import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.producer.emcos.helper.*;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -34,13 +35,11 @@ import static java.util.Collections.emptyList;
 @Singleton
 public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     private static final Logger logger = LoggerFactory.getLogger(EmcosBalanceServiceImpl.class);
-
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
-
 
     public List<DayMeteringBalanceRaw> request(String paramCode, LocalDateTime requestedTime) {
         logger.info("Request balances started...");
@@ -60,10 +59,16 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         List<DayMeteringBalanceRaw> list;
         try {
             logger.info("Send http request for metering data...");
+            String body = buildBody(paramCodes.get(paramCode), requestedTime);
+            if (StringUtils.isEmpty(body)) {
+                logger.info("Request body is empty, data is up to date");
+                return emptyList();
+            }
+
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
-                .body(buildBody(paramCodes.get(paramCode), requestedTime))
+                .body(body)
                 .build()
                 .doRequest();
 
@@ -86,7 +91,13 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
             .map( p-> serializePointCfg(p, requestedTime))
+            .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
+
+        if (StringUtils.isEmpty(strPoints)) {
+            logger.info("Metering data is p to date");
+            return "";
+        }
 
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
@@ -136,17 +147,21 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     }
     
 
-    private String serializePointCfg(EmcosPointCfg pointCfg, LocalDateTime requestedDateTime) {
+    private String serializePointCfg(EmcosPointCfg pointCfg, LocalDateTime requestedTime) {
         LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
             .filter(t -> t.getExternalCode().equals(pointCfg.getPointCode()) && t.getParamCode().equals(pointCfg.getParamCode()) )
             .findFirst()
             .orElse(null);
-        	
-    	return ""
+
+        LocalDateTime startTime = buildStartTime(lastLoadInfo);
+        if (startTime.isEqual(requestedTime) || startTime.isAfter(requestedTime))
+            return "";
+
+        return ""
                 + "<ROW PPOINT_CODE=\"" + pointCfg.getPointCode() + "\" "
                 + "PML_ID=\"" + pointCfg.getEmcosParamCode() + "\" "
-                + "PBT=\"" + buildStartTime(lastLoadInfo).format(timeFormatter) + "\" "
-                + "PET=\"" + requestedDateTime.format(timeFormatter) + "\" />";
+                + "PBT=\"" + startTime.format(timeFormatter) + "\" "
+                + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
     }    
 
 
