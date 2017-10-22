@@ -5,6 +5,9 @@ import java.util.*;
 import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
+
+import com.google.common.collect.BiMap;
+import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.emcos.helper.EmcosBalanceService;
@@ -21,11 +24,14 @@ public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer 
 	public void execute() {
 		LocalDateTime requestedDateTime = buildRequestedDateTime();
 
-		Arrays.asList("AB+", "AB-", "RB+", "RB-").forEach(paramCode -> {
-			List<DayMeteringBalanceRaw> meteringBalance = emcosBalanceService.request(paramCode, requestedDateTime);
-			queueService.addAll(meteringBalance);
-			lastLoadInfoService.updateLastBalanceLoadDate(meteringBalance);
-		});
+		paramCodes.keySet()
+			.stream()
+			.filter( p -> p.contains("B") )
+			.forEach(p -> {
+				List<DayMeteringBalanceRaw> meteringBalance = emcosBalanceService.request(p, requestedDateTime);
+				queueService.addAll(meteringBalance);
+				lastLoadInfoService.updateLastBalanceLoadDate(meteringBalance);
+			});
     }
 
 	private LocalDateTime buildRequestedDateTime() {
@@ -47,4 +53,7 @@ public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer 
 
 	@Inject
 	private EmcosBalanceService emcosBalanceService;
+
+	@Inject @ParamCodes
+	private BiMap<String, String> paramCodes;
 }

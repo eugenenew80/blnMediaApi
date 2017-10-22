@@ -12,7 +12,7 @@ import javax.interceptor.InvocationContext;
 @Interceptor
 public class ProducerInterceptor {
     private boolean fileProducer = true;
-    private boolean emcosHourDataProducer = false;
+    private boolean emcosHourDataProducer = true;
     private boolean emcosDayBalanceProducer = false;
 
     @AroundTimeout

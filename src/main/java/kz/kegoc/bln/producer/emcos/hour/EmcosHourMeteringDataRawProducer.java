@@ -6,6 +6,8 @@ import javax.ejb.*;
 import javax.ejb.Singleton;
 import javax.inject.*;
 
+import com.google.common.collect.BiMap;
+import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.emcos.helper.*;
@@ -19,17 +21,20 @@ import static java.util.stream.Collectors.groupingBy;
 @Singleton
 @Startup
 public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
+	private final int STEP = 15;
 
 	@ProducerMonitor
 	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
 		LocalDateTime requestedTime = buildRequestedTime();
-
-		Arrays.asList("A+", "A-", "R+", "R-").forEach(paramCode -> {
-			List<MinuteMeteringDataDto> data = emcosDataService.request(paramCode, requestedTime);
-			queueService.addAll(buildHourMeteringData(data));
-			lastLoadInfoService.updateLastDataLoadDate(data);
-		});
+		paramCodes.keySet()
+			.stream()
+			.filter( p -> !p.contains("B") )
+			.forEach(p -> {
+				List<MinuteMeteringDataDto> data = emcosDataService.request(p, requestedTime);
+				queueService.addAll(buildHourMeteringData(data));
+				lastLoadInfoService.updateLastDataLoadDate(data);
+			});
     }
 
 	private List<HourMeteringDataRaw> buildHourMeteringData(List<MinuteMeteringDataDto> minuteMeteringData) {
@@ -71,8 +76,8 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 					now.getMonth(),
 					now.getDayOfMonth(),
 					now.getHour(),
-					45
-				);
+					Math.round(now.getMinute() / STEP) * STEP
+				).minusMinutes(2*STEP);
 	}
 
 	
@@ -84,4 +89,7 @@ public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 	
 	@Inject
 	private EmcosDataService emcosDataService;
+
+	@Inject @ParamCodes
+	private BiMap<String, String> paramCodes;
 }
