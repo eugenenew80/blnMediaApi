@@ -19,15 +19,18 @@ import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 
 import kz.kegoc.bln.producer.emcos.helper.EmcosConfig;
+import kz.kegoc.bln.producer.emcos.helper.EmcosPointCfg;
 import org.dozer.DozerBeanMapper;
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
+import org.redisson.api.RList;
 import org.redisson.api.RedissonClient;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 public class Producer {
@@ -36,6 +39,7 @@ public class Producer {
 	private RBlockingQueue<DayMeteringDataRaw> dayMeteringDataQueue  = null;
 	private RBlockingQueue<MonthMeteringDataRaw> monthMeteringDataQueue  = null;
 	private RBlockingQueue<DayMeteringBalanceRaw> dayMeteringBalanceQueue  = null;
+	private RList<EmcosPointCfg> emcosPointCfgList  = null;
 
 
 	@Produces
@@ -88,8 +92,8 @@ public class Producer {
 		monthMeteringDataQueue = redissonClient.getBlockingQueue("monthMeteringData");
 		return monthMeteringDataQueue;
 	}
-	
-	
+
+
 	@Produces
 	public RBlockingQueue<DayMeteringBalanceRaw> createDayMeteringBalanceQueue() {
 		if (dayMeteringBalanceQueue!=null)
@@ -98,9 +102,21 @@ public class Producer {
 		createRedissonClient();
 		dayMeteringBalanceQueue = redissonClient.getBlockingQueue("dayMeteringBalance");
 		return dayMeteringBalanceQueue;
-	}	
-	
-	
+	}
+
+
+	@Produces
+	public RList<EmcosPointCfg> createEmcosPointCfgList() {
+		if (emcosPointCfgList!=null)
+			return emcosPointCfgList;
+
+		createRedissonClient();
+		emcosPointCfgList = redissonClient.getList("emcosPointCfgList");
+		emcosPointCfgList.expire(1, TimeUnit.HOURS);
+		return emcosPointCfgList;
+	}
+
+
 	@Produces
 	@ParamCodes
 	public BiMap<String, String> mapParamCodes() {

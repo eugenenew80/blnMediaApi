@@ -5,6 +5,7 @@ import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.producer.emcos.helper.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -29,7 +30,11 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
     public List<EmcosPointCfg> requestCfg()  {
         logger.info("Request list of points started...");
 
-        List<EmcosPointCfg> list;
+        if (pointsCfg!=null && !pointsCfg.isEmpty()) {
+            logger.info("Returning list of points from cache");
+            return pointsCfg;
+        }
+
         try {
             logger.info("send http request...");
             String answer = new HttpReqesterImpl.Builder()
@@ -39,16 +44,15 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                 .build()
                 .doRequest();
 
-            list = parseAnswer(answer);
+            pointsCfg.addAll(parseAnswer(answer));
             logger.info("Request list of points completed");
         }
 
         catch (Exception e) {
             logger.error("Request list of points failed: " + e.toString());
-            list = emptyList();
         }
 
-        return list;
+        return pointsCfg;
     }
 
     private String buildBody() {
@@ -137,4 +141,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
 
     @Inject @ParamCodes
     private BiMap<String, String> paramCodes;
+
+    @Inject
+    private RList<EmcosPointCfg> pointsCfg;
 }
