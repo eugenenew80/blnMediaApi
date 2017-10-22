@@ -20,14 +20,13 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
+import java.util.concurrent.TimeUnit;
 
 @Singleton
 public class EmcosCfgServiceImpl implements EmcosCfgService {
     private static Logger logger = LoggerFactory.getLogger(EmcosCfgServiceImpl.class);
 
-    public List<EmcosPointCfg> requestCfg()  {
+    public synchronized List<EmcosPointCfg> requestCfg()  {
         logger.info("Request list of points started...");
 
         if (pointsCfg!=null && !pointsCfg.isEmpty()) {
@@ -43,8 +42,9 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                 .body(buildBody())
                 .build()
                 .doRequest();
-
+            
             pointsCfg.addAll(parseAnswer(answer));
+            pointsCfg.expire(1, TimeUnit.HOURS);
             logger.info("Request list of points completed");
         }
 

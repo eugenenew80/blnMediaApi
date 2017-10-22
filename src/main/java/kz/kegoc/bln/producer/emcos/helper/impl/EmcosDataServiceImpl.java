@@ -42,11 +42,8 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
 
-        if (pointsCfg==null || pointsCfg.isEmpty()) {
-            logger.info("Get list of points...");
-            this.pointsCfg = emcosCfgService.requestCfg();
-        }
-
+        logger.info("Get list of points...");
+        this.pointsCfg = emcosCfgService.requestCfg();
         if (pointsCfg==null || pointsCfg.isEmpty()) {
             logger.warn("List of points is empty, request metering data terminated");
             return emptyList();
