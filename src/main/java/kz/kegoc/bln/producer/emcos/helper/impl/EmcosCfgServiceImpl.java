@@ -118,16 +118,16 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
         EmcosPointCfg pointCfg = new EmcosPointCfg();
 
         String pointCode = node.getAttributes()
-                .getNamedItem("POINT_CODE")
-                .getNodeValue();
+            .getNamedItem("POINT_CODE")
+            .getNodeValue();
 
         String emcosParamCode = node.getAttributes()
-                .getNamedItem("ML_ID")
-                .getNodeValue();
+            .getNamedItem("ML_ID")
+            .getNodeValue();
 
         String unitCode = node.getAttributes()
-                .getNamedItem("EU_CODE")
-                .getNodeValue();
+            .getNamedItem("EU_CODE")
+            .getNodeValue();
 
         pointCfg.setPointCode(pointCode);
         pointCfg.setEmcosParamCode(emcosParamCode);
