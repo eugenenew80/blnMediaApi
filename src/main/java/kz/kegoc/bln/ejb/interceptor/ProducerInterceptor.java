@@ -27,9 +27,7 @@ public class ProducerInterceptor {
         else if (aClass == EmcosDayMeteringBalanceRawProducer.class)
             flag = emcosDayBalanceProducer;
         
-        if (flag)
-            ctx.proceed();
-
+        if (flag) return ctx.proceed();
         return null;
     }
 }

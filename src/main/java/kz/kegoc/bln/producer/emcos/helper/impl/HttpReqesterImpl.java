@@ -26,8 +26,8 @@ public class HttpReqesterImpl implements HttpRequester {
 	
     public String doRequest() throws IOException {
 		logger.info("http request started...");
-		logger.info("url:" + url);
-		logger.info("method:" + method);
+		logger.info("url: " + url);
+		logger.info("method: " + method);
 
 		StringBuffer response = new StringBuffer();
 		HttpURLConnection con = null;

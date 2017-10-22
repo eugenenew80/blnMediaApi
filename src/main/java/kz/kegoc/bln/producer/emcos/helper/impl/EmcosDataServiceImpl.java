@@ -88,26 +88,26 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
-        logger.info("data: " + data);
+        logger.debug("data: " + data);
 
         String property = registryTemplate.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQML")
         	.replace("#attType#", config.getAttType());
-        logger.info("property: " + property);
+        logger.debug("property: " + property);
 
         String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.info("body for request metering data: " + body);
+        logger.debug("body for request metering data: " + body);
 
         return body;
     }
 
     private List<MinuteMeteringDataDto> parseAnswer(String answer) throws Exception {
         logger.info("Parse answer for metering data...");
-        logger.info("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
+        logger.debug("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         List<MinuteMeteringDataDto> list = new ArrayList<>();
 

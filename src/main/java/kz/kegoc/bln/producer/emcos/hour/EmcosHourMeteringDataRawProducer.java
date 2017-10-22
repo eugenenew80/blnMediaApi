@@ -17,9 +17,7 @@ import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import static java.util.stream.Collectors.groupingBy;
 
-
 @Singleton
-@Startup
 public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
 
 	@ProducerMonitor

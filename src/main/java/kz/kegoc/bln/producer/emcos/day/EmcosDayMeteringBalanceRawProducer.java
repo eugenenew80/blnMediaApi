@@ -16,7 +16,6 @@ import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 
 @Singleton
-@Startup
 public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer {
 
 	@ProducerMonitor

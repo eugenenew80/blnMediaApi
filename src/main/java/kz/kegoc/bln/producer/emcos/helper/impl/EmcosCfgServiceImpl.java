@@ -56,19 +56,19 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
 
         String data = registryTemplate.getTemplate("EMCOS_REQCFG_DATA")
         	.replace("#points#", "");
-        logger.info("data: " + data);
+        logger.debug("data: " + data);
 
         String property = registryTemplate.getTemplate("EMCOS_REQCFG_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQCFG")
         	.replace("#attType#", config.getAttType());
-        logger.info("property: " + property);
+        logger.debug("property: " + property);
 
         String body = registryTemplate.getTemplate("EMCOS_REQCFG_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.info("body: " + body);
+        logger.debug("body: " + body);
 
         return body;
     }
