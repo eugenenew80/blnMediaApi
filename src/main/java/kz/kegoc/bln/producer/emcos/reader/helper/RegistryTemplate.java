@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.helper;
+package kz.kegoc.bln.producer.emcos.reader.helper;
 
 public interface RegistryTemplate {
 	void registerTemplate(String key, String template);

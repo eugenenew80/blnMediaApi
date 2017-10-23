@@ -1,11 +1,11 @@
-package kz.kegoc.bln.producer.emcos.helper.impl;
-
-import kz.kegoc.bln.producer.emcos.helper.RegistryTemplate;
+package kz.kegoc.bln.producer.emcos.reader.helper.impl;
 
 import java.util.*;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+
+import kz.kegoc.bln.producer.emcos.reader.helper.RegistryTemplate;
 
 
 @Stateless

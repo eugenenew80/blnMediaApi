@@ -1,28 +1,22 @@
-package kz.kegoc.bln.producer.emcos.day;
+package kz.kegoc.bln.producer.emcos.reader.impl.day;
 
 import java.time.*;
 import java.util.*;
 import javax.ejb.*;
-import javax.ejb.Singleton;
 import javax.inject.*;
-
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
-import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.producer.emcos.helper.EmcosBalanceService;
-import kz.kegoc.bln.producer.MeteringDataProducer;
+import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
+import kz.kegoc.bln.producer.emcos.reader.helper.EmcosBalanceService;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 
-@Singleton
-public class EmcosDayMeteringBalanceRawProducer implements MeteringDataProducer {
+@Stateless
+public class EmcosDayMeteringBalanceRawProducer implements EmcosMeteringDataReader<DayMeteringBalanceRaw> {
 
-	@ProducerMonitor
-	@Schedule(minute = "*/15", hour = "*", persistent = false)
-	public void execute() {
+	public void loadFromEmcos() {
 		LocalDateTime requestedDateTime = buildRequestedDateTime();
-
 		paramCodes.keySet()
 			.stream()
 			.filter( p -> p.contains("B") )

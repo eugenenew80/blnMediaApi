@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Singleton
-public class FileMeteringDataRawProducer<T extends MeteringData> implements MeteringDataProducer {
+public class FileMeteringDataRawProducer implements MeteringDataProducer {
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
 	private Map<String, FileMeteringDataReader<? extends MeteringData>> mapReaders = new HashMap<>();
 

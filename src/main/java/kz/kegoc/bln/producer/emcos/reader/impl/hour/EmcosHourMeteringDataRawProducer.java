@@ -1,28 +1,24 @@
-package kz.kegoc.bln.producer.emcos.hour;
+package kz.kegoc.bln.producer.emcos.reader.impl.hour;
 
 import java.time.*;
 import java.util.*;
 import javax.ejb.*;
-import javax.ejb.Singleton;
 import javax.inject.*;
-
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
-import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.producer.emcos.helper.*;
+import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
+import kz.kegoc.bln.producer.emcos.reader.helper.EmcosDataService;
+import kz.kegoc.bln.producer.emcos.reader.helper.MinuteMeteringDataDto;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.lang3.tuple.Pair;
-import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import static java.util.stream.Collectors.groupingBy;
 
-@Singleton
-public class EmcosHourMeteringDataRawProducer implements MeteringDataProducer {
+@Stateless
+public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader<HourMeteringDataRaw> {
 
-	@ProducerMonitor
-	@Schedule(minute = "*/5", hour = "*", persistent = false)
-	public void execute() {
+	public void loadFromEmcos() {
 		LocalDateTime requestedTime = buildRequestedTime();
 		paramCodes.keySet()
 			.stream()
