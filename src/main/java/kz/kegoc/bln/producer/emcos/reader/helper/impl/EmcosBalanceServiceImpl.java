@@ -1,6 +1,8 @@
 package kz.kegoc.bln.producer.emcos.reader.helper.impl;
 
 import com.google.common.collect.BiMap;
+
+import kz.kegoc.bln.ejb.annotation.EmcosParamUnits;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.LastLoadInfo;
@@ -32,6 +34,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
@@ -89,7 +92,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         logger.debug("EmcosBalanceServiceImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
-    		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )
+    		//.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
             .map( p-> serializePointCfg(p, requestedTime))
             .filter(p -> StringUtils.isNotEmpty(p))
@@ -121,30 +124,36 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     }
     
     private List<DayMeteringBalanceRaw> parseAnswer(String answer) throws Exception {
-        logger.debug("EmcosBalanceServiceImpl.parseAnswer started");
+        logger.info("EmcosBalanceServiceImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
-        List<DayMeteringBalanceRaw> list = new ArrayList<>();
-        
+        logger.debug("parsing xml started");
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
             .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answer), "Cp1251") )));
+        logger.debug("parsing xml completed");
         
+        
+        logger.debug("convert xml to list started");
         NodeList nodes =  doc.getDocumentElement().getParentNode()
             .getFirstChild()
             .getChildNodes();
 
+        List<DayMeteringBalanceRaw> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
-                    if (rowData.item(j).getNodeName() == "ROW")
+                    if (rowData.item(j).getNodeName() == "ROW") {
+                    	logger.debug("row: " + (j+1));
                     	list.add(parseNode(rowData.item(j)));
+                    }
                 }
             }
         }
-
-        logger.debug("EmcosBalanceServiceImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.debug("convert xml to list completed");
+        
+        logger.info("EmcosBalanceServiceImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
     
@@ -223,19 +232,10 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         balance.setWayEntering(WayEntering.EMCOS);
         balance.setDataSourceCode("EMCOS");
         balance.setStatus(DataStatus.RAW);
-        balance.setUnitCode("-");
+        balance.setUnitCode(emcosParamUnits.get(emcosParamCode));
+        balance.setParamCode(paramCodes.inverse().get(emcosParamCode));
         balance.setVal(val);
 
-        EmcosPointCfg pointCfg = pointsCfg.stream()
-        	.filter(t -> t.getPointCode().equals(balance.getExternalCode()) && t.getEmcosParamCode().equals(emcosParamCode))
-        	.findFirst()
-        	.orElse(null);
-
-        if (pointCfg!=null) {
-            balance.setParamCode(pointCfg.getParamCode());
-            balance.setUnitCode(pointCfg.getUnitCode());
-        }
-        
         return balance;
     }
 
@@ -253,4 +253,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
 
     @Inject @ParamCodes
     private BiMap<String, String> paramCodes;
+
+    @Inject @EmcosParamUnits
+    private Map<String, String> emcosParamUnits;
 }

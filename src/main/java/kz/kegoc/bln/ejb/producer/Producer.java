@@ -1,7 +1,6 @@
 package kz.kegoc.bln.ejb.producer;
 
 import javax.enterprise.inject.Produces;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -13,6 +12,7 @@ import kz.kegoc.bln.ejb.annotation.DayData;
 import kz.kegoc.bln.ejb.annotation.HourData;
 import kz.kegoc.bln.ejb.annotation.MonthData;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
+import kz.kegoc.bln.ejb.annotation.EmcosParamUnits;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
@@ -30,7 +30,9 @@ import org.redisson.config.Config;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
+
 
 @ApplicationScoped
 public class Producer {
@@ -112,7 +114,6 @@ public class Producer {
 
 		createRedissonClient();
 		emcosPointCfgList = redissonClient.getList("emcosPointCfgList");
-		emcosPointCfgList.expire(1, TimeUnit.HOURS);
 		return emcosPointCfgList;
 	}
 
@@ -133,6 +134,22 @@ public class Producer {
 	}
 
 
+	@Produces
+	@EmcosParamUnits
+	public Map<String, String> mapEmcosParamUnits() {
+		Map<String, String> map = new HashMap<>();
+		map.put("1040", "kWh");
+		map.put("1041", "kWh");
+		map.put("1042", "kVarh");
+		map.put("1043", "kVarh");
+		map.put("1498", "kWh");
+		map.put("1499", "kWh");
+		map.put("1500", "kVarh");
+		map.put("1501", "kVarh");
+		return map;
+	}
+	
+	
 	@Produces
 	public EmcosConfig defaultEmcosConfig() {
 		return EmcosConfig.defaultEmcosServer().build();

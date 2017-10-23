@@ -88,13 +88,17 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
     }
     
     private List<EmcosPointCfg> parseAnswer(String answer) throws Exception {
-        logger.debug("EmcosCfgServiceImpl.parseAnswer started");
+        logger.info("EmcosCfgServiceImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
+        logger.debug("parsing xml started");
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
             .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answer), "Cp1251") )));
-
+        logger.debug("parsing xml completed");
+        
+        
+        logger.debug("convert xml to list started");
         NodeList nodes =  doc.getDocumentElement().getParentNode()
             .getFirstChild()
             .getChildNodes();    	
@@ -105,6 +109,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW") {
+                    	logger.debug("row: " + (j+1));
                         EmcosPointCfg pointCfg = parseNode(rowData.item(j));
                         if (StringUtils.isNotEmpty(pointCfg.getParamCode()))
                             list.add(pointCfg);
@@ -112,7 +117,8 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
                 }
             }
         }
-
+        logger.debug("convert xml to list completed");
+        
         logger.info("EmcosCfgServiceImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }

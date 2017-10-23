@@ -2,6 +2,7 @@ package kz.kegoc.bln.producer.emcos.reader.helper.impl;
 
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
+import kz.kegoc.bln.ejb.annotation.EmcosParamUnits;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.LastLoadInfo;
@@ -31,6 +32,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.*;
@@ -42,21 +44,20 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
-
+    
     public List<MinuteMeteringDataDto> request(String paramCode, LocalDateTime requestedTime) {
         logger.info("EmcosDataServiceImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
 
-        logger.info("Get list of points...");
         this.pointsCfg = emcosCfgService.request();
         if (pointsCfg==null || pointsCfg.isEmpty()) {
             logger.warn("List of points is empty, EmcosDataServiceImpl.request interrupted");
             return emptyList();
         }
         
-        lastLoadInfoList = lastLoadInfoService.findAll();
-        
+        this.lastLoadInfoList = lastLoadInfoService.findAll();
+
         List<MinuteMeteringDataDto> list;
         try {
             logger.info("Send http request for metering data...");
@@ -89,7 +90,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     	logger.debug("EmcosDataServiceImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
-    		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )	
+    		//.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )	
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
             .map( p-> serializePointCfg(p, requestedTime))
             .filter(p -> StringUtils.isNotEmpty(p))
@@ -121,30 +122,36 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     }
 
     private List<MinuteMeteringDataDto> parseAnswer(String answer) throws Exception {
-    	logger.debug("EmcosDataServiceImpl.parseAnswer started");
+    	logger.info("EmcosDataServiceImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
-        List<MinuteMeteringDataDto> list = new ArrayList<>();
-
+        logger.debug("parsing xml started");
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
             .parse(new InputSource(new StringReader( new String(Base64.decodeBase64(answer), "Cp1251") )));
-
+        logger.debug("parsing xml completed");
+        
+        
+        logger.debug("convert xml to list started");
         NodeList nodes =  doc.getDocumentElement().getParentNode()
             .getFirstChild()
             .getChildNodes();
 
+        List<MinuteMeteringDataDto> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
-                    if (rowData.item(j).getNodeName() == "ROW")
+                    if (rowData.item(j).getNodeName() == "ROW") {
+                    	logger.debug("row: " + (j+1));
                         list.add(parseNode(rowData.item(j)));
+                    }
                 }
             }
         }
-
-        logger.debug("EmcosDataServiceImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.debug("convert xml to list completed");
+        
+        logger.info("EmcosDataServiceImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 
@@ -224,18 +231,9 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         data.setWayEntering(WayEntering.EMCOS);
         data.setDataSourceCode("EMCOS");
         data.setStatus(DataStatus.RAW);
-        data.setUnitCode("-");
+        data.setUnitCode(emcosParamUnits.get(emcosParamCode));
+        data.setParamCode(paramCodes.inverse().get(emcosParamCode));
         data.setVal(val);
-
-        EmcosPointCfg pointCfg = pointsCfg.stream()
-        	.filter(t -> t.getPointCode().equals(data.getExternalCode()) && t.getEmcosParamCode().equals(emcosParamCode))
-        	.findFirst()
-        	.orElse(null);
-
-        if (pointCfg!=null) {
-            data.setParamCode(pointCfg.getParamCode());
-            data.setUnitCode(pointCfg.getUnitCode());
-        }
         
         return data;
     }
@@ -255,4 +253,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
     @Inject @ParamCodes
     private BiMap<String, String> paramCodes;
+
+    @Inject @EmcosParamUnits
+    private Map<String, String> emcosParamUnits;
 }

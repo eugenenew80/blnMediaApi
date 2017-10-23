@@ -14,8 +14,8 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import org.apache.commons.codec.binary.Base64;
 
-//@Provider
-//@PreMatching
+@Provider
+@PreMatching
 public class BasicAuthentificationFilter implements ContainerRequestFilter {
 
 	@Override
