@@ -27,7 +27,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,16 +36,15 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
     private static final Logger logger = LoggerFactory.getLogger(EmcosCfgServiceImpl.class);
 
     @Lock(LockType.WRITE)
-    public List<EmcosPointCfg> requestCfg()  {
-        logger.info("Request list of points started...");
+    public List<EmcosPointCfg> request()  {
+        logger.info("EmcosCfgServiceImpl.request started");
 
         if (pointsCfg!=null && !pointsCfg.isEmpty()) {
-            logger.info("Returning list of points from cache");
-            return Collections.unmodifiableList(pointsCfg);
+            logger.info("Return list of points from cache, EmcosCfgServiceImpl.request interrupted");
+            return pointsCfg;
         }
 
         try {
-            logger.info("Send http request for list of points...");
             String answer = new HttpReqesterImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
@@ -56,41 +54,42 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
             
             pointsCfg.addAll(parseAnswer(answer));
             pointsCfg.expire(1, TimeUnit.HOURS);
-            logger.info("Request list of points completed");
+            logger.info("EmcosCfgServiceImpl.request successfully completed");
         }
 
         catch (Exception e) {
-            logger.error("Request list of points failed: " + e.toString());
+            logger.error("EmcosCfgServiceImpl.request failed: " + e.toString());
         }
 
-        return Collections.unmodifiableList(pointsCfg);
+        return pointsCfg;
     }
 
     private String buildBody() {
-        logger.info("Build body for request list of points...");
+        logger.debug("EmcosCfgServiceImpl.buildBody started");
 
         String data = registryTemplate.getTemplate("EMCOS_REQCFG_DATA")
         	.replace("#points#", "");
-        logger.debug("data: " + data);
+        logger.trace("data: " + data);
 
         String property = registryTemplate.getTemplate("EMCOS_REQCFG_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQCFG")
         	.replace("#attType#", config.getAttType());
-        logger.debug("property: " + property);
+        logger.trace("property: " + property);
 
         String body = registryTemplate.getTemplate("EMCOS_REQCFG_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.debug("body: " + body);
+        logger.trace("body: " + body);
 
+        logger.debug("EmcosCfgServiceImpl.buildBody completed");
         return body;
     }
     
     private List<EmcosPointCfg> parseAnswer(String answer) throws Exception {
-        logger.info("Parse answer for list of points...");
-        //logger.info("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
+        logger.debug("EmcosCfgServiceImpl.parseAnswer started");
+        logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         Document doc = DocumentBuilderFactory.newInstance()
             .newDocumentBuilder()
@@ -114,7 +113,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
             }
         }
 
-        logger.info("Parse answer for list of points completed, count of rows: " + list.size());
+        logger.info("EmcosCfgServiceImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 

@@ -26,7 +26,7 @@ public class HttpReqesterImpl implements HttpRequester {
 	}
 	
     public String doRequest() throws IOException {
-		logger.info("http request started...");
+		logger.info("HttpReqesterImpl.doRequest started");
 		logger.info("url: " + url);
 		logger.info("method: " + method);
 
@@ -48,11 +48,11 @@ public class HttpReqesterImpl implements HttpRequester {
 					response.append(output);
 				}
 			}
-			logger.info("http request completed");
+			logger.info("HttpReqesterImpl.doRequest successfully completed");
 		}
 
 		catch (IOException e) {
-			logger.info("http request failed: " + e);
+			logger.error("HttpReqesterImpl.doRequest failed: " + e);
 			throw e;
 		}
 

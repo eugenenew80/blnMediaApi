@@ -44,18 +44,17 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     private List<EmcosPointCfg> pointsCfg;
 
     public List<MinuteMeteringDataDto> request(String paramCode, LocalDateTime requestedTime) {
-        logger.info("Request metering data started...");
+        logger.info("EmcosDataServiceImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
 
         logger.info("Get list of points...");
-        this.pointsCfg = emcosCfgService.requestCfg();
+        this.pointsCfg = emcosCfgService.request();
         if (pointsCfg==null || pointsCfg.isEmpty()) {
-            logger.warn("List of points is empty, request metering data terminated");
+            logger.warn("List of points is empty, EmcosDataServiceImpl.request interrupted");
             return emptyList();
         }
         
-        logger.info("Get last load info...");
         lastLoadInfoList = lastLoadInfoService.findAll();
         
         List<MinuteMeteringDataDto> list;
@@ -63,7 +62,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             logger.info("Send http request for metering data...");
             String body = buildBody(paramCodes.get(paramCode), requestedTime);
             if (StringUtils.isEmpty(body)) {
-                logger.info("Request body is empty, data is up to date");
+            	logger.info("Request body is empty, EmcosDataServiceImpl.request interrupted");
                 return emptyList();
             }
 
@@ -75,11 +74,11 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("Request metering data completed");
+            logger.info("EmcosDataServiceImpl.request competed");
         }
 
         catch (Exception e) {
-            logger.error("Request metering data failed: " + e.toString());
+            logger.error("EmcosDataServiceImpl.request failed: " + e.toString());
             list = emptyList();
         }
 
@@ -87,7 +86,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     }
 
     private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
-        logger.info("Build body for request metering data...");
+    	logger.debug("EmcosDataServiceImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )	
@@ -97,32 +96,33 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             .collect(Collectors.joining());
 
         if (StringUtils.isEmpty(strPoints)) {
-            logger.info("Metering data is up to date");
+        	logger.debug("List of points is empty, EmcosDataServiceImpl.buildBody interrupted");
             return "";
         }
 
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
-        logger.debug("data: " + data);
+        logger.trace("data: " + data);
 
         String property = registryTemplate.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQML")
         	.replace("#attType#", config.getAttType());
-        logger.debug("property: " + property);
+        logger.trace("property: " + property);
 
         String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.debug("body for request metering data: " + body);
+        logger.trace("body for request metering data: " + body);
 
+        logger.debug("EmcosDataServiceImpl.buildBody completed");
         return body;
     }
 
     private List<MinuteMeteringDataDto> parseAnswer(String answer) throws Exception {
-        logger.info("Parse answer for metering data...");
-        logger.debug("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
+    	logger.debug("EmcosDataServiceImpl.parseAnswer started");
+        logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         List<MinuteMeteringDataDto> list = new ArrayList<>();
 
@@ -144,7 +144,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             }
         }
 
-        logger.info("Parse answer for metering data completed, count of rows: " + list.size());
+        logger.debug("EmcosDataServiceImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 

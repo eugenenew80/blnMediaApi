@@ -46,26 +46,23 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     private List<EmcosPointCfg> pointsCfg;
 
     public List<DayMeteringBalanceRaw> request(String paramCode, LocalDateTime requestedTime) {
-        logger.info("Request balances started...");
+        logger.info("EmcosBalanceServiceImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
 
-        logger.info("Get list of points...");
-        this.pointsCfg = emcosCfgService.requestCfg();
+        this.pointsCfg = emcosCfgService.request();
         if (pointsCfg==null || pointsCfg.isEmpty()) {
-            logger.warn("List of points is empty, request balance terminated");
+            logger.warn("List of points is empty, EmcosBalanceServiceImpl.request interrupted");
             return emptyList();
         }
 
-        logger.info("Get last load info...");
         lastLoadInfoList = lastLoadInfoService.findAll();
 
         List<DayMeteringBalanceRaw> list;
         try {
-            logger.info("Send http request for metering data...");
             String body = buildBody(paramCodes.get(paramCode), requestedTime);
             if (StringUtils.isEmpty(body)) {
-                logger.info("Request body is empty, data is up to date");
+                logger.info("Request body is empty, EmcosBalanceServiceImpl.request interrupted");
                 return emptyList();
             }
 
@@ -77,11 +74,11 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("Request balances completed");
+            logger.info("EmcosBalanceServiceImpl.request succesfully completed");
         }
 
         catch (Exception e) {
-            logger.error("Request balances failed: " + e.toString());
+            logger.error("EmcosBalanceServiceImpl.request failed: " + e.toString());
             list = emptyList();
         }
 
@@ -89,7 +86,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     }
 
     private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
-        logger.info("Build body for request balances...");
+        logger.debug("EmcosBalanceServiceImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )
@@ -99,32 +96,33 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
             .collect(Collectors.joining());
 
         if (StringUtils.isEmpty(strPoints)) {
-            logger.info("Metering data is p to date");
+        	logger.debug("List of points is empty, EmcosBalanceServiceImpl.buildBody interrupted");
             return "";
         }
-
+        
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
-        logger.debug("data: " + data);
+        logger.trace("data: " + data);
 
         String property = registryTemplate.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQML")
         	.replace("#attType#", config.getAttType());
-        logger.debug("property: " + property);
+        logger.trace("property: " + property);
 
         String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.debug("body for request balances: " + body);
+        logger.trace("body for request balances: " + body);
 
+        logger.debug("EmcosBalanceServiceImpl.buildBody completed");
         return body;
     }
     
     private List<DayMeteringBalanceRaw> parseAnswer(String answer) throws Exception {
-        logger.info("Parse answer for balances...");
-        logger.debug("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
+        logger.debug("EmcosBalanceServiceImpl.parseAnswer started");
+        logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         List<DayMeteringBalanceRaw> list = new ArrayList<>();
         
@@ -146,7 +144,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
             }
         }
 
-        logger.info("Parse answer for balances completed, count of rows: " + list.size());
+        logger.debug("EmcosBalanceServiceImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
     
