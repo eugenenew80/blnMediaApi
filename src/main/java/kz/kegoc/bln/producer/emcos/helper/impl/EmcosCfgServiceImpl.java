@@ -1,6 +1,7 @@
 package kz.kegoc.bln.producer.emcos.helper.impl;
 
 import com.google.common.collect.BiMap;
+import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.producer.emcos.helper.*;
 
@@ -29,29 +30,26 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
     public List<EmcosPointCfg> request()  {
         logger.info("EmcosCfgServiceImpl.request started");
 
-        if (pointsCfg!=null && !pointsCfg.isEmpty()) {
-            logger.info("Return list of points from cache, EmcosCfgServiceImpl.request interrupted");
-            return pointsCfg;
+        if (pointsCfg==null && pointsCfg.isEmpty()) {
+            logger.info("List of points not found in cache");
+            try {
+                String answer = new HttpReqesterImpl.Builder()
+                    .url(new URL(config.getUrl()))
+                    .method("POST")
+                    .body(buildBody())
+                    .build()
+                    .doRequest();
+
+                pointsCfg.addAll(parseAnswer(answer));
+                pointsCfg.expire(1, TimeUnit.HOURS);
+                logger.info("EmcosCfgServiceImpl.request successfully completed");
+            }
+            catch (Exception e) {
+                logger.error("EmcosCfgServiceImpl.request failed: " + e.toString());
+            }
         }
 
-        try {
-            String answer = new HttpReqesterImpl.Builder()
-                .url(new URL(config.getUrl()))
-                .method("POST")
-                .body(buildBody())
-                .build()
-                .doRequest();
-            
-            pointsCfg.addAll(parseAnswer(answer));
-            pointsCfg.expire(1, TimeUnit.HOURS);
-            logger.info("EmcosCfgServiceImpl.request successfully completed");
-        }
-
-        catch (Exception e) {
-            logger.error("EmcosCfgServiceImpl.request failed: " + e.toString());
-        }
-
-        return pointsCfg;
+        return ImmutableList.copyOf(pointsCfg);
     }
 
     private String buildBody() {

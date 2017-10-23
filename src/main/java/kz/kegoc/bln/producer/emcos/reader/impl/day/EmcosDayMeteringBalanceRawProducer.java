@@ -3,13 +3,12 @@ package kz.kegoc.bln.producer.emcos.reader.impl.day;
 import java.time.*;
 import java.util.*;
 import javax.ejb.*;
-import javax.inject.*;
+import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
-import kz.kegoc.bln.producer.emcos.helper.EmcosCfgService;
+import kz.kegoc.bln.producer.emcos.helper.*;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
-import kz.kegoc.bln.producer.emcos.helper.EmcosBalanceService;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 
@@ -18,7 +17,7 @@ public class EmcosDayMeteringBalanceRawProducer implements EmcosMeteringDataRead
 
 	public void loadFromEmcos() {
 		LocalDateTime requestedDateTime = buildRequestedDateTime();
-		emcosBalanceService.setPointsCfg(new ArrayList<>(emcosCfgService.request()));
+		emcosBalanceService.setPointsCfg(emcosCfgService.request());
 
 		paramCodes.keySet()
 			.stream()

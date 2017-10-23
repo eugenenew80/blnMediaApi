@@ -3,14 +3,12 @@ package kz.kegoc.bln.producer.emcos.reader.impl.hour;
 import java.time.*;
 import java.util.*;
 import javax.ejb.*;
-import javax.inject.*;
+import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
-import kz.kegoc.bln.producer.emcos.helper.EmcosCfgService;
+import kz.kegoc.bln.producer.emcos.helper.*;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
-import kz.kegoc.bln.producer.emcos.helper.EmcosDataService;
-import kz.kegoc.bln.producer.emcos.helper.MinuteMeteringDataDto;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.queue.MeteringDataQueue;
@@ -21,7 +19,7 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 
 	public void loadFromEmcos() {
 		LocalDateTime requestedTime = buildRequestedTime();
-		emcosDataService.setPointsCfg(new ArrayList<>(emcosCfgService.request()));
+		emcosDataService.setPointsCfg(emcosCfgService.request());
 
 		paramCodes.keySet()
 			.stream()
