@@ -1,5 +1,6 @@
 package kz.kegoc.bln.producer.file;
 
+import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.entity.media.MeteringData;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
@@ -12,16 +13,14 @@ import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Schedule;
-import javax.ejb.Singleton;
+import javax.ejb.*;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.*;
 
 @Singleton
 public class FileMeteringDataRawProducer implements MeteringDataProducer {
@@ -42,13 +41,15 @@ public class FileMeteringDataRawProducer implements MeteringDataProducer {
 	@ProducerMonitor
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void execute() {
-		Arrays.asList("hour", "day", "month").stream().forEach(subDir -> {
+		ImmutableList.of("hour", "day", "month").stream().forEach(subDir -> {
 			for (Path p : getListFiles(Paths.get(dir + "/" + subDir))) {
 				try {
-					String extension = FilenameUtils.getExtension(p.toString());
-					FileMeteringDataReader<? extends MeteringData> reader = mapReaders.get(subDir + "/" + extension);
-					reader.loadFromFile(p);
-					Files.delete(p);
+					String fileExtension = FilenameUtils.getExtension(p.toString());
+					FileMeteringDataReader<? extends MeteringData> reader = mapReaders.get(subDir + "/" + fileExtension);
+					if (reader!=null) {
+						reader.loadFromFile(p);
+						Files.delete(p);
+					}
 				}
 				catch (Exception e) {
 					e.printStackTrace();
