@@ -11,7 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import kz.kegoc.bln.entity.media.LastLoadInfo;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
-import kz.kegoc.bln.producer.emcos.reader.helper.MinuteMeteringDataDto;
+import kz.kegoc.bln.producer.emcos.helper.MinuteMeteringDataDto;
 import kz.kegoc.bln.repository.media.LastLoadInfoRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.media.LastLoadInfoService;

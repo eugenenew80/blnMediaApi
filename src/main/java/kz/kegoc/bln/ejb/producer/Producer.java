@@ -17,8 +17,8 @@ import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
-import kz.kegoc.bln.producer.emcos.reader.helper.EmcosConfig;
-import kz.kegoc.bln.producer.emcos.reader.helper.EmcosPointCfg;
+import kz.kegoc.bln.producer.emcos.helper.EmcosConfig;
+import kz.kegoc.bln.producer.emcos.helper.EmcosPointCfg;
 
 import org.dozer.DozerBeanMapper;
 import org.redisson.Redisson;

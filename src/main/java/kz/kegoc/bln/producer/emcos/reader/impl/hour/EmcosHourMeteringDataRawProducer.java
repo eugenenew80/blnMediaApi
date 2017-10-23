@@ -7,9 +7,10 @@ import javax.inject.*;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
+import kz.kegoc.bln.producer.emcos.helper.EmcosCfgService;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
-import kz.kegoc.bln.producer.emcos.reader.helper.EmcosDataService;
-import kz.kegoc.bln.producer.emcos.reader.helper.MinuteMeteringDataDto;
+import kz.kegoc.bln.producer.emcos.helper.EmcosDataService;
+import kz.kegoc.bln.producer.emcos.helper.MinuteMeteringDataDto;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.queue.MeteringDataQueue;
@@ -20,6 +21,8 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 
 	public void loadFromEmcos() {
 		LocalDateTime requestedTime = buildRequestedTime();
+		emcosDataService.setPointsCfg(new ArrayList<>(emcosCfgService.request()));
+
 		paramCodes.keySet()
 			.stream()
 			.filter( p -> !p.contains("B") )
@@ -79,7 +82,10 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 
 	@Inject
 	private LastLoadInfoService lastLoadInfoService;
-	
+
+	@Inject
+	EmcosCfgService emcosCfgService;
+
 	@Inject
 	private EmcosDataService emcosDataService;
 

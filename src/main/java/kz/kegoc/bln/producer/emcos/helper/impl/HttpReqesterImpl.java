@@ -1,9 +1,9 @@
-package kz.kegoc.bln.producer.emcos.reader.helper.impl;
+package kz.kegoc.bln.producer.emcos.helper.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kz.kegoc.bln.producer.emcos.reader.helper.HttpRequester;
+import kz.kegoc.bln.producer.emcos.helper.HttpRequester;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

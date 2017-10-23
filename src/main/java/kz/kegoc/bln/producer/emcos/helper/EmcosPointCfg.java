@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.reader.helper;
+package kz.kegoc.bln.producer.emcos.helper;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

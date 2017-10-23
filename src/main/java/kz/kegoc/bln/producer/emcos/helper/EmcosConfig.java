@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.reader.helper;
+package kz.kegoc.bln.producer.emcos.helper;
 
 import lombok.Getter;
 
@@ -17,8 +17,8 @@ public class EmcosConfig {
 
     public static Builder defaultEmcosServer() {
         return new Builder()
-            .url("http://10.8.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2")
-            //.url("http://127.0.0.1/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2")
+            //.url("http://10.8.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2")
+            .url("http://127.0.0.1/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2")
             .user("yug")
             .isPacked(false)
             .attType("1");

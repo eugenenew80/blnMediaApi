@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.reader.helper;
+package kz.kegoc.bln.producer.emcos.helper;
 
 import java.util.List;
 
