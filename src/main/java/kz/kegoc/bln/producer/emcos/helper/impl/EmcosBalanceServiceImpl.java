@@ -72,8 +72,8 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         }
 
         catch (Exception e) {
-            logger.error("EmcosBalanceServiceImpl.request failed: " + e.toString());
             list = emptyList();
+            logger.error("EmcosBalanceServiceImpl.request failed: " + e.toString());
         }
 
         return list;
@@ -83,7 +83,6 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         logger.debug("EmcosBalanceServiceImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
-    		//.filter(p -> p.getPointCode().equals("120620300070020001") || p.getPointCode().equals("121420300070010003") )
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
             .map( p-> serializePointCfg(p, requestedTime))
             .filter(p -> StringUtils.isNotEmpty(p))
