@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.gateway;
+package kz.kegoc.bln.registry.emcos;
 
 public interface TemplateRegistry {
 	void registerTemplate(String key, String template);

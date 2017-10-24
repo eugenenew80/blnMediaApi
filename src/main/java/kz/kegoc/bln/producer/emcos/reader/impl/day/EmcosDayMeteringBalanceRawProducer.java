@@ -17,11 +17,11 @@ public class EmcosDayMeteringBalanceRawProducer implements EmcosMeteringDataRead
 
 	public void loadFromEmcos() {
 		LocalDateTime requestedTime = buildRequestedDateTime();
-		List<EmcosPointCfg> pointsCfg = emcosCfgService.request();
+		List<EmcosPointCfg> pointsCfg = emcosCfgGateway.request();
 
 		paramCodes.keySet().stream()
 			.filter( p -> p.contains("B") ).forEach(p -> {
-				List<DayMeteringBalanceRaw> meteringBalance = emcosBalanceService
+				List<DayMeteringBalanceRaw> meteringBalance = emcosBalanceGateway
 					.cfg(pointsCfg)
 					.paramCode(p)
 					.requestedTime(requestedTime)
@@ -45,10 +45,10 @@ public class EmcosDayMeteringBalanceRawProducer implements EmcosMeteringDataRead
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	EmcosCfgGateway emcosCfgService;
+	EmcosCfgGateway emcosCfgGateway;
 
 	@Inject
-	private EmcosBalanceGateway emcosBalanceService;
+	private EmcosBalanceGateway emcosBalanceGateway;
 
 	@Inject @ParamCodes
 	private BiMap<String, String> paramCodes;

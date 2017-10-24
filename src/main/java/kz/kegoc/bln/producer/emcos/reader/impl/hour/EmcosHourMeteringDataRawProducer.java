@@ -20,11 +20,11 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 
 	public void loadFromEmcos() {
 		LocalDateTime requestedTime = buildRequestedTime();
-		List<EmcosPointCfg> pointsCfg = emcosCfgService.request();
+		List<EmcosPointCfg> pointsCfg = emcosCfgGateway.request();
 
 		paramCodes.keySet().stream()
 			.filter( p -> !p.contains("B") ).forEach(p -> {
-				List<MinuteMeteringData> data = emcosDataService
+				List<MinuteMeteringData> data = emcosDataGateway
 					.cfg(pointsCfg)
 					.paramCode(p)
 					.requestedTime(requestedTime)
@@ -81,10 +81,10 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	EmcosCfgGateway emcosCfgService;
+	EmcosCfgGateway emcosCfgGateway;
 
 	@Inject
-	private EmcosDataGateway emcosDataService;
+	private EmcosDataGateway emcosDataGateway;
 
 	@Inject @ParamCodes
 	private BiMap<String, String> paramCodes;

@@ -26,7 +26,7 @@ public class HttpGatewayImpl implements HttpGateway {
 	}
 	
     public String doRequest() throws IOException {
-		logger.info("HttpReqesterImpl.doRequest started");
+		logger.info("HttpGatewayImpl.doRequest started");
 		logger.info("url: " + url);
 		logger.info("method: " + method);
 
@@ -48,11 +48,11 @@ public class HttpGatewayImpl implements HttpGateway {
 					response.append(output);
 				}
 			}
-			logger.info("HttpReqesterImpl.doRequest successfully completed");
+			logger.info("HttpGatewayImpl.doRequest successfully completed");
 		}
 
 		catch (IOException e) {
-			logger.error("HttpReqesterImpl.doRequest failed: " + e);
+			logger.error("HttpGatewayImpl.doRequest failed: " + e);
 			throw e;
 		}
 

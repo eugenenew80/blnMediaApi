@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.*;
 import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.producer.emcos.gateway.*;
+import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -53,12 +54,12 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
 
 
     public List<MinuteMeteringData> request() {
-        logger.info("EmcosDataServiceImpl.request started");
+        logger.info("EmcosDataGatewayImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
 
         if (pointsCfg==null || pointsCfg.isEmpty()) {
-            logger.warn("List of points is empty, EmcosDataServiceImpl.request interrupted");
+            logger.warn("List of points is empty, EmcosDataGatewayImpl.request interrupted");
             return emptyList();
         }
         
@@ -69,7 +70,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
             logger.info("Send http request for metering data...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, EmcosDataServiceImpl.request interrupted");
+            	logger.info("Request body is empty, EmcosDataGatewayImpl.request interrupted");
                 return emptyList();
             }
 
@@ -81,19 +82,19 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("EmcosDataServiceImpl.request competed");
+            logger.info("EmcosDataGatewayImpl.request competed");
         }
 
         catch (Exception e) {
             list = emptyList();
-            logger.error("EmcosDataServiceImpl.request failed: " + e.toString());
+            logger.error("EmcosDataGatewayImpl.request failed: " + e.toString());
         }
 
         return list;
     }
 
     private String buildBody() {
-    	logger.debug("EmcosDataServiceImpl.buildBody started");
+    	logger.debug("EmcosDataGatewayImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
@@ -102,32 +103,32 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
             .collect(Collectors.joining());
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, EmcosDataServiceImpl.buildBody interrupted");
+        	logger.debug("List of points is empty, EmcosDataGatewayImpl.buildBody interrupted");
             return "";
         }
 
-        String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
+        String data = templateRegistry.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
         logger.trace("data: " + data);
 
-        String property = registryTemplate.getTemplate("EMCOS_REQML_PROPERTY")
+        String property = templateRegistry.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQML")
         	.replace("#attType#", config.getAttType());
         logger.trace("property: " + property);
 
-        String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
+        String body = templateRegistry.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
         logger.trace("body for request metering data: " + body);
 
-        logger.debug("EmcosDataServiceImpl.buildBody completed");
+        logger.debug("EmcosDataGatewayImpl.buildBody completed");
         return body;
     }
 
     private List<MinuteMeteringData> parseAnswer(String answer) throws Exception {
-    	logger.info("EmcosDataServiceImpl.parseAnswer started");
+    	logger.info("EmcosDataGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -156,7 +157,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
         }
         logger.debug("convert xml to list completed");
         
-        logger.info("EmcosDataServiceImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("EmcosDataGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 
@@ -236,7 +237,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
     private LastLoadInfoService lastLoadInfoService;
 
     @Inject
-    private TemplateRegistry registryTemplate;
+    private TemplateRegistry templateRegistry;
 
     @Inject
     private EmcosConfig config;

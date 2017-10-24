@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.producer.emcos.gateway.*;
+import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -28,9 +29,9 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
 
     @Lock(LockType.WRITE)
     public List<EmcosPointCfg> request()  {
-        logger.info("EmcosCfgServiceImpl.request started");
+        logger.info("EmcosCfgGatewayImpl.request started");
 
-        if (pointsCfg==null && pointsCfg.isEmpty()) {
+        if (pointsCfg==null || pointsCfg.isEmpty()) {
             logger.info("List of points not found in cache");
             try {
                 String answer = new HttpGatewayImpl.Builder()
@@ -42,10 +43,10 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
 
                 pointsCfg.addAll(parseAnswer(answer));
                 pointsCfg.expire(1, TimeUnit.HOURS);
-                logger.info("EmcosCfgServiceImpl.request successfully completed");
+                logger.info("EmcosCfgGatewayImpl.request successfully completed");
             }
             catch (Exception e) {
-                logger.error("EmcosCfgServiceImpl.request failed: " + e.toString());
+                logger.error("EmcosCfgGatewayImpl.request failed: " + e.toString());
             }
         }
 
@@ -53,30 +54,30 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
     }
 
     private String buildBody() {
-        logger.debug("EmcosCfgServiceImpl.buildBody started");
+        logger.debug("EmcosCfgGatewayImpl.buildBody started");
 
-        String data = registryTemplate.getTemplate("EMCOS_REQCFG_DATA")
+        String data = templateRegistry.getTemplate("EMCOS_REQCFG_DATA")
         	.replace("#points#", "");
         logger.trace("data: " + data);
 
-        String property = registryTemplate.getTemplate("EMCOS_REQCFG_PROPERTY")
+        String property = templateRegistry.getTemplate("EMCOS_REQCFG_PROPERTY")
         	.replace("#user#", config.getUser())
         	.replace("#isPacked#", config.getIsPacked().toString())
         	.replace("#func#", "REQCFG")
         	.replace("#attType#", config.getAttType());
         logger.trace("property: " + property);
 
-        String body = registryTemplate.getTemplate("EMCOS_REQCFG_BODY")
+        String body = templateRegistry.getTemplate("EMCOS_REQCFG_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
         logger.trace("body: " + body);
 
-        logger.debug("EmcosCfgServiceImpl.buildBody completed");
+        logger.debug("EmcosCfgGatewayImpl.buildBody completed");
         return body;
     }
     
     private List<EmcosPointCfg> parseAnswer(String answer) throws Exception {
-        logger.info("EmcosCfgServiceImpl.parseAnswer started");
+        logger.info("EmcosCfgGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -107,7 +108,7 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
         }
         logger.debug("convert xml to list completed");
         
-        logger.info("EmcosCfgServiceImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("EmcosCfgGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 
@@ -138,7 +139,7 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
 
 
     @Inject
-    private TemplateRegistry registryTemplate;
+    private TemplateRegistry templateRegistry;
 
     @Inject
     private EmcosConfig config;
