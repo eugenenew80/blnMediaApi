@@ -1,6 +1,7 @@
 package kz.kegoc.bln.producer.emcos.reader.impl.hour;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -19,13 +20,16 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 
 	public void loadFromEmcos() {
 		LocalDateTime requestedTime = buildRequestedTime();
-		emcosDataService.setPointsCfg(emcosCfgService.request());
+		List<EmcosPointCfg> pointsCfg = emcosCfgService.request();
 
-		paramCodes.keySet()
-			.stream()
-			.filter( p -> !p.contains("B") )
-			.forEach(p -> {
-				List<MinuteMeteringDataDto> data = emcosDataService.request(p, requestedTime);
+		paramCodes.keySet().stream()
+			.filter( p -> !p.contains("B") ).forEach(p -> {
+				List<MinuteMeteringDataDto> data = emcosDataService
+					.cfg(pointsCfg)
+					.paramCode(p)
+					.requestedTime(requestedTime)
+					.request();
+
 				queueService.addAll(buildHourMeteringData(data));
 				lastLoadInfoService.updateLastDataLoadDate(data);
 			});
@@ -64,14 +68,9 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 	}
 
 	private LocalDateTime buildRequestedTime() {
-		LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1")).minusMinutes(15);
-		return LocalDateTime.of(
-					now.getYear(),
-					now.getMonth(),
-					now.getDayOfMonth(),
-					now.getHour(),
-					0
-				);
+		return LocalDateTime.now(ZoneId.of("UTC+1"))
+			.minusMinutes(15)
+			.truncatedTo(ChronoUnit.HOURS);
 	}
 
 	

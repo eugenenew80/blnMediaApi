@@ -18,6 +18,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,12 +31,28 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
+    private String paramCode;
+    private String emcosParamCode;
+    private LocalDateTime requestedTime;
 
-    public void setPointsCfg(List<EmcosPointCfg> pointsCfg) {
+    public EmcosDataService cfg(List<EmcosPointCfg> pointsCfg) {
         this.pointsCfg = pointsCfg;
+        return this;
     }
 
-    public List<MinuteMeteringDataDto> request(String paramCode, LocalDateTime requestedTime) {
+    public EmcosDataService requestedTime(LocalDateTime requestedTime) {
+        this.requestedTime = requestedTime;
+        return this;
+    }
+
+    public EmcosDataService paramCode(String paramCode) {
+        this.paramCode = paramCode;
+        this.emcosParamCode = paramCodes.get(paramCode);
+        return this;
+    }
+
+
+    public List<MinuteMeteringDataDto> request() {
         logger.info("EmcosDataServiceImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
@@ -50,7 +67,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         List<MinuteMeteringDataDto> list;
         try {
             logger.info("Send http request for metering data...");
-            String body = buildBody(paramCodes.get(paramCode), requestedTime);
+            String body = buildBody();
             if (StringUtils.isEmpty(body)) {
             	logger.info("Request body is empty, EmcosDataServiceImpl.request interrupted");
                 return emptyList();
@@ -75,12 +92,12 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         return list;
     }
 
-    private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
+    private String buildBody() {
     	logger.debug("EmcosDataServiceImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
-            .map( p-> serializePointCfg(p, requestedTime))
+            .map( p-> serializePointCfg(p))
             .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
 
@@ -143,7 +160,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         return list;
     }
 
-    private String serializePointCfg(EmcosPointCfg emcosCfg, LocalDateTime requestedTime) {
+    private String serializePointCfg(EmcosPointCfg emcosCfg) {
     	LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
     		.filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()) && t.getParamCode().equals(emcosCfg.getParamCode()) )
     		.findFirst()
@@ -160,30 +177,18 @@ public class EmcosDataServiceImpl implements EmcosDataService {
 		        + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
     }
 
-    
     private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-        LocalDateTime startTime;
-        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null) {
-            LocalDateTime lastLoadTime = lastLoadInfo.getLastLoadDate();            
-            if (lastLoadTime.getMinute() < 45)
-            	startTime = lastLoadTime.minusMinutes(lastLoadTime.getMinute());
-            else
-            	startTime = lastLoadTime.plusMinutes(15);
+        LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
+        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
+            LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
+            startTime = lastLoadDate.getMinute() < 45
+                    ? lastLoadDate.truncatedTo(ChronoUnit.HOURS)
+                    : lastLoadDate.plusMinutes(15);
         }
-        else {
-            LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1"));
-            startTime =  LocalDateTime.of(
-                    now.getYear(),
-                    now.getMonth(),
-                    now.getDayOfMonth(),
-                    0,
-                    0
-            );
-        }
+
         return startTime;
     }
 
-    
     private MinuteMeteringDataDto parseNode(Node node) {
         String externalCode = node.getAttributes()
             .getNamedItem("PPOINT_CODE")

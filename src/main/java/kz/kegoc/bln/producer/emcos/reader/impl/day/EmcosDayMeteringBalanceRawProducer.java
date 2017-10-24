@@ -16,28 +16,26 @@ import kz.kegoc.bln.service.media.LastLoadInfoService;
 public class EmcosDayMeteringBalanceRawProducer implements EmcosMeteringDataReader<DayMeteringBalanceRaw> {
 
 	public void loadFromEmcos() {
-		LocalDateTime requestedDateTime = buildRequestedDateTime();
-		emcosBalanceService.setPointsCfg(emcosCfgService.request());
+		LocalDateTime requestedTime = buildRequestedDateTime();
+		List<EmcosPointCfg> pointsCfg = emcosCfgService.request();
 
-		paramCodes.keySet()
-			.stream()
-			.filter( p -> p.contains("B") )
-			.forEach(p -> {
-				List<DayMeteringBalanceRaw> meteringBalance = emcosBalanceService.request(p, requestedDateTime);
+		paramCodes.keySet().stream()
+			.filter( p -> p.contains("B") ).forEach(p -> {
+				List<DayMeteringBalanceRaw> meteringBalance = emcosBalanceService
+					.cfg(pointsCfg)
+					.paramCode(p)
+					.requestedTime(requestedTime)
+					.request();
+
 				queueService.addAll(meteringBalance);
 				lastLoadInfoService.updateLastBalanceLoadDate(meteringBalance);
 			});
     }
 
 	private LocalDateTime buildRequestedDateTime() {
-		LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1")).plusDays(1);
-		return LocalDateTime.of(
-					now.getYear(),
-					now.getMonth(),
-					now.getDayOfMonth(),
-					0,
-					0
-				);
+		return LocalDate.now(ZoneId.of("UTC+1"))
+			.plusDays(1)
+			.atStartOfDay();
 	}
 
 	@Inject

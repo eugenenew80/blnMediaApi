@@ -6,6 +6,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EmcosBalanceService {
-    void setPointsCfg(List<EmcosPointCfg> pointsCfg);
-    List<DayMeteringBalanceRaw> request(String paramCode, LocalDateTime requestedDateTime);
+    EmcosBalanceService cfg(List<EmcosPointCfg> pointsCfg);
+
+    EmcosBalanceService requestedTime(LocalDateTime requestedTime);
+
+    EmcosBalanceService paramCode(String paramCode);
+
+    List<DayMeteringBalanceRaw> request();
 }

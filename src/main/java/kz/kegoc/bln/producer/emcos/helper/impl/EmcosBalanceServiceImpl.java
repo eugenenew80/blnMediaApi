@@ -21,6 +21,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.*;
 import com.google.common.collect.BiMap;
@@ -35,12 +36,27 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
+    private String paramCode;
+    private String emcosParamCode;
+    private LocalDateTime requestedTime;
 
-    public void setPointsCfg(List<EmcosPointCfg> pointsCfg) {
+    public EmcosBalanceService cfg(List<EmcosPointCfg> pointsCfg) {
         this.pointsCfg = pointsCfg;
+        return this;
     }
 
-    public List<DayMeteringBalanceRaw> request(String paramCode, LocalDateTime requestedTime) {
+    public EmcosBalanceService requestedTime(LocalDateTime requestedTime) {
+        this.requestedTime = requestedTime;
+        return this;
+    }
+
+    public EmcosBalanceService paramCode(String paramCode) {
+        this.paramCode = paramCode;
+        this.emcosParamCode = paramCodes.get(paramCode);
+        return this;
+    }
+
+    public List<DayMeteringBalanceRaw> request() {
         logger.info("EmcosBalanceServiceImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
@@ -54,7 +70,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
 
         List<DayMeteringBalanceRaw> list;
         try {
-            String body = buildBody(paramCodes.get(paramCode), requestedTime);
+            String body = buildBody();
             if (StringUtils.isEmpty(body)) {
                 logger.info("Request body is empty, EmcosBalanceServiceImpl.request interrupted");
                 return emptyList();
@@ -79,12 +95,12 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
         return list;
     }
 
-    private String buildBody(String emcosParamCode, LocalDateTime requestedTime) {
+    private String buildBody() {
         logger.debug("EmcosBalanceServiceImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
-            .map( p-> serializePointCfg(p, requestedTime))
+            .map( p-> serializePointCfg(p))
             .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
 
@@ -148,7 +164,7 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
     }
     
 
-    private String serializePointCfg(EmcosPointCfg pointCfg, LocalDateTime requestedTime) {
+    private String serializePointCfg(EmcosPointCfg pointCfg) {
         LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
             .filter(t -> t.getExternalCode().equals(pointCfg.getPointCode()) && t.getParamCode().equals(pointCfg.getParamCode()) )
             .findFirst()
@@ -167,28 +183,10 @@ public class EmcosBalanceServiceImpl implements EmcosBalanceService {
 
 
     private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-        LocalDateTime startDateTime;
-        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null) {
-        	LocalDateTime lastLoadTime = lastLoadInfo.getLastLoadDate().plusDays(1);
-            startDateTime = LocalDateTime.of(
-            	lastLoadTime.getYear(), 
-            	lastLoadTime.getMonth(), 
-            	lastLoadTime.getDayOfMonth(), 
-            	0, 
-            	0
-            );
-        }
-        else {
-            LocalDateTime now = LocalDateTime.now(ZoneId.of("UTC+1"));
-            startDateTime =  LocalDateTime.of(
-                    now.getYear(),
-                    now.getMonth(),
-                    now.getDayOfMonth(),
-                    0,
-                    0
-            );
-        }
-        return startDateTime;
+        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
+            return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
+        else
+            return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
     }
     
     private DayMeteringBalanceRaw parseNode(Node node) {
