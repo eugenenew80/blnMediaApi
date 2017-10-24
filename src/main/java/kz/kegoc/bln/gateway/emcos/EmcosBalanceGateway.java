@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.gateway;
+package kz.kegoc.bln.gateway.emcos;
 
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 

@@ -1,9 +1,11 @@
-package kz.kegoc.bln.producer.emcos.gateway.impl;
+package kz.kegoc.bln.gateway.emcos.impl;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
-import kz.kegoc.bln.producer.emcos.gateway.*;
+import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
+import kz.kegoc.bln.gateway.emcos.EmcosConfig;
+import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 
 import org.apache.commons.codec.binary.Base64;

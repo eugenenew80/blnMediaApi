@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.gateway;
+package kz.kegoc.bln.gateway.emcos;
 
 import java.time.LocalDateTime;
 import java.util.List;

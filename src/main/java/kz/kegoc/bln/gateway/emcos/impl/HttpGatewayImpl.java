@@ -1,9 +1,9 @@
-package kz.kegoc.bln.producer.emcos.gateway.impl;
+package kz.kegoc.bln.gateway.emcos.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kz.kegoc.bln.producer.emcos.gateway.HttpGateway;
+import kz.kegoc.bln.gateway.emcos.HttpGateway;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
