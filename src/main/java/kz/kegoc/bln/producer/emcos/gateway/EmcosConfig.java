@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.helper;
+package kz.kegoc.bln.producer.emcos.gateway;
 
 import lombok.Getter;
 

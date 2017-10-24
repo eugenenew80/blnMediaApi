@@ -1,10 +1,12 @@
-package kz.kegoc.bln.producer.emcos.helper.impl;
+package kz.kegoc.bln.producer.emcos.gateway.impl;
 
-import com.google.common.collect.BiMap;
-import kz.kegoc.bln.ejb.annotation.*;
+import kz.kegoc.bln.ejb.annotation.EmcosParamUnits;
+import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.*;
-import kz.kegoc.bln.producer.emcos.helper.*;
+import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
+import kz.kegoc.bln.producer.emcos.gateway.*;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.*;
@@ -12,68 +14,69 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
-import javax.ejb.*;
+import javax.ejb.Singleton;
 import javax.inject.Inject;
+
 import java.io.StringReader;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.*;
+import com.google.common.collect.BiMap;
 
-import static java.util.Collections.*;
+import static java.util.Collections.emptyList;
 
 @Singleton
-public class EmcosDataServiceImpl implements EmcosDataService {
-    private static final Logger logger = LoggerFactory.getLogger(EmcosDataServiceImpl.class);
+public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
+    private static final Logger logger = LoggerFactory.getLogger(EmcosBalanceGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
-
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    
     private List<LastLoadInfo> lastLoadInfoList;
     private List<EmcosPointCfg> pointsCfg;
     private String paramCode;
     private String emcosParamCode;
     private LocalDateTime requestedTime;
 
-    public EmcosDataService cfg(List<EmcosPointCfg> pointsCfg) {
+    public EmcosBalanceGateway cfg(List<EmcosPointCfg> pointsCfg) {
         this.pointsCfg = pointsCfg;
         return this;
     }
 
-    public EmcosDataService requestedTime(LocalDateTime requestedTime) {
+    public EmcosBalanceGateway requestedTime(LocalDateTime requestedTime) {
         this.requestedTime = requestedTime;
         return this;
     }
 
-    public EmcosDataService paramCode(String paramCode) {
+    public EmcosBalanceGateway paramCode(String paramCode) {
         this.paramCode = paramCode;
         this.emcosParamCode = paramCodes.get(paramCode);
         return this;
     }
 
-
-    public List<MinuteMeteringDataDto> request() {
-        logger.info("EmcosDataServiceImpl.request started");
+    public List<DayMeteringBalanceRaw> request() {
+        logger.info("EmcosBalanceServiceImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
 
         if (pointsCfg==null || pointsCfg.isEmpty()) {
-            logger.warn("List of points is empty, EmcosDataServiceImpl.request interrupted");
+            logger.warn("List of points is empty, EmcosBalanceServiceImpl.request interrupted");
             return emptyList();
         }
-        
-        this.lastLoadInfoList = lastLoadInfoService.findAll();
 
-        List<MinuteMeteringDataDto> list;
+        lastLoadInfoList = lastLoadInfoService.findAll();
+
+        List<DayMeteringBalanceRaw> list;
         try {
-            logger.info("Send http request for metering data...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, EmcosDataServiceImpl.request interrupted");
+                logger.info("Request body is empty, EmcosBalanceServiceImpl.request interrupted");
                 return emptyList();
             }
 
-            String answer = new HttpReqesterImpl.Builder()
+            String answer = new HttpGatewayImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
                 .body(body)
@@ -81,19 +84,19 @@ public class EmcosDataServiceImpl implements EmcosDataService {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("EmcosDataServiceImpl.request competed");
+            logger.info("EmcosBalanceServiceImpl.request succesfully completed");
         }
 
         catch (Exception e) {
             list = emptyList();
-            logger.error("EmcosDataServiceImpl.request failed: " + e.toString());
+            logger.error("EmcosBalanceServiceImpl.request failed: " + e.toString());
         }
 
         return list;
     }
 
     private String buildBody() {
-    	logger.debug("EmcosDataServiceImpl.buildBody started");
+        logger.debug("EmcosBalanceServiceImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
@@ -102,10 +105,10 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             .collect(Collectors.joining());
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, EmcosDataServiceImpl.buildBody interrupted");
+        	logger.debug("List of points is empty, EmcosBalanceServiceImpl.buildBody interrupted");
             return "";
         }
-
+        
         String data = registryTemplate.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
         logger.trace("data: " + data);
@@ -120,14 +123,14 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         String body = registryTemplate.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.trace("body for request metering data: " + body);
+        logger.trace("body for request balances: " + body);
 
-        logger.debug("EmcosDataServiceImpl.buildBody completed");
+        logger.debug("EmcosBalanceServiceImpl.buildBody completed");
         return body;
     }
-
-    private List<MinuteMeteringDataDto> parseAnswer(String answer) throws Exception {
-    	logger.info("EmcosDataServiceImpl.parseAnswer started");
+    
+    private List<DayMeteringBalanceRaw> parseAnswer(String answer) throws Exception {
+        logger.info("EmcosBalanceServiceImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -142,54 +145,51 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             .getFirstChild()
             .getChildNodes();
 
-        List<MinuteMeteringDataDto> list = new ArrayList<>();
+        List<DayMeteringBalanceRaw> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW") {
                     	logger.debug("row: " + (j+1));
-                        list.add(parseNode(rowData.item(j)));
+                    	list.add(parseNode(rowData.item(j)));
                     }
                 }
             }
         }
         logger.debug("convert xml to list completed");
         
-        logger.info("EmcosDataServiceImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("EmcosBalanceServiceImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
+    
 
-    private String serializePointCfg(EmcosPointCfg emcosCfg) {
-    	LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-    		.filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()) && t.getParamCode().equals(emcosCfg.getParamCode()) )
-    		.findFirst()
-    		.orElse(null);
+    private String serializePointCfg(EmcosPointCfg pointCfg) {
+        LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
+            .filter(t -> t.getExternalCode().equals(pointCfg.getPointCode()) && t.getParamCode().equals(pointCfg.getParamCode()) )
+            .findFirst()
+            .orElse(null);
 
         LocalDateTime startTime = buildStartTime(lastLoadInfo);
         if (startTime.isEqual(requestedTime) || startTime.isAfter(requestedTime))
             return "";
 
         return ""
-		        + "<ROW PPOINT_CODE=\"" + emcosCfg.getPointCode() + "\" "
-		        + "PML_ID=\"" + emcosCfg.getEmcosParamCode() + "\" "
-		        + "PBT=\"" + startTime.format(timeFormatter) + "\" "
-		        + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
-    }
+                + "<ROW PPOINT_CODE=\"" + pointCfg.getPointCode() + "\" "
+                + "PML_ID=\"" + pointCfg.getEmcosParamCode() + "\" "
+                + "PBT=\"" + startTime.format(timeFormatter) + "\" "
+                + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
+    }    
+
 
     private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-        LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
-        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
-            LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
-            startTime = lastLoadDate.getMinute() < 45
-                    ? lastLoadDate.truncatedTo(ChronoUnit.HOURS)
-                    : lastLoadDate.plusMinutes(15);
-        }
-
-        return startTime;
+        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
+            return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
+        else
+            return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
     }
-
-    private MinuteMeteringDataDto parseNode(Node node) {
+    
+    private DayMeteringBalanceRaw parseNode(Node node) {
         String externalCode = node.getAttributes()
             .getNamedItem("PPOINT_CODE")
             .getNodeValue() ;
@@ -198,17 +198,13 @@ public class EmcosDataServiceImpl implements EmcosDataService {
             .getNamedItem("PML_ID")
             .getNodeValue() ;
         
-        LocalDateTime time = null;
-        String timeStr = node.getAttributes()
+        LocalDate date = null;
+        String dateStr = node.getAttributes()
             .getNamedItem("PBT")
             .getNodeValue() ;
 
-        if (timeStr!=null) {
-            if (timeStr.indexOf("T")<0) {
-                timeStr = timeStr+"T00:00:00000";
-            }
-            time = LocalDateTime.parse(timeStr, timeFormatter);
-        }
+        if (dateStr!=null) 
+            date = LocalDate.parse(dateStr, dateFormatter);
 
         Double val = null;
         String valStr = node.getAttributes()
@@ -218,17 +214,17 @@ public class EmcosDataServiceImpl implements EmcosDataService {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        MinuteMeteringDataDto data = new MinuteMeteringDataDto();
-        data.setExternalCode(externalCode);
-        data.setMeteringDate(time);
-        data.setWayEntering(WayEntering.EMCOS);
-        data.setDataSourceCode("EMCOS");
-        data.setStatus(DataStatus.RAW);
-        data.setUnitCode(emcosParamUnits.get(emcosParamCode));
-        data.setParamCode(paramCodes.inverse().get(emcosParamCode));
-        data.setVal(val);
-        
-        return data;
+        DayMeteringBalanceRaw balance = new DayMeteringBalanceRaw();
+        balance.setExternalCode(externalCode);
+        balance.setMeteringDate(date.atStartOfDay());
+        balance.setWayEntering(WayEntering.EMCOS);
+        balance.setDataSourceCode("EMCOS");
+        balance.setStatus(DataStatus.RAW);
+        balance.setUnitCode(emcosParamUnits.get(emcosParamCode));
+        balance.setParamCode(paramCodes.inverse().get(emcosParamCode));
+        balance.setVal(val);
+
+        return balance;
     }
 
 
@@ -236,7 +232,7 @@ public class EmcosDataServiceImpl implements EmcosDataService {
     private LastLoadInfoService lastLoadInfoService;
 
     @Inject
-    private RegistryTemplate registryTemplate;
+    private TemplateRegistry registryTemplate;
 
     @Inject
     private EmcosConfig config;

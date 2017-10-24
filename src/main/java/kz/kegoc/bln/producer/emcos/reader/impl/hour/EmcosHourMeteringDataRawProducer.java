@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
-import kz.kegoc.bln.producer.emcos.helper.*;
+import kz.kegoc.bln.producer.emcos.gateway.*;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.lang3.tuple.Pair;
@@ -24,7 +24,7 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 
 		paramCodes.keySet().stream()
 			.filter( p -> !p.contains("B") ).forEach(p -> {
-				List<MinuteMeteringDataDto> data = emcosDataService
+				List<MinuteMeteringData> data = emcosDataService
 					.cfg(pointsCfg)
 					.paramCode(p)
 					.requestedTime(requestedTime)
@@ -35,15 +35,15 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 			});
     }
 
-	private List<HourMeteringDataRaw> buildHourMeteringData(List<MinuteMeteringDataDto> minuteMeteringData) {
-		Map<Pair<String, LocalDate>, List<MinuteMeteringDataDto>> mapDayMeteringData = minuteMeteringData
+	private List<HourMeteringDataRaw> buildHourMeteringData(List<MinuteMeteringData> minuteMeteringData) {
+		Map<Pair<String, LocalDate>, List<MinuteMeteringData>> mapDayMeteringData = minuteMeteringData
 			.stream()
 			.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getMeteringDate().toLocalDate())));
 			
 		List<HourMeteringDataRaw> hourMeteringData = new ArrayList<>();
 		for (Pair<String, LocalDate> pair : mapDayMeteringData.keySet()) {
 
-			Map<Integer, List<MinuteMeteringDataDto>> mapHourMeteringData =  mapDayMeteringData
+			Map<Integer, List<MinuteMeteringData>> mapHourMeteringData =  mapDayMeteringData
 				.get(pair)
 				.stream()
 				.collect(groupingBy(m -> m.getMeteringDate().getHour() ));
@@ -81,10 +81,10 @@ public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	EmcosCfgService emcosCfgService;
+	EmcosCfgGateway emcosCfgService;
 
 	@Inject
-	private EmcosDataService emcosDataService;
+	private EmcosDataGateway emcosDataService;
 
 	@Inject @ParamCodes
 	private BiMap<String, String> paramCodes;

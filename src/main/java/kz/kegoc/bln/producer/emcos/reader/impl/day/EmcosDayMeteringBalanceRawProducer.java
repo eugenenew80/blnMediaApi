@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
-import kz.kegoc.bln.producer.emcos.helper.*;
+import kz.kegoc.bln.producer.emcos.gateway.*;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
@@ -45,10 +45,10 @@ public class EmcosDayMeteringBalanceRawProducer implements EmcosMeteringDataRead
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	EmcosCfgService emcosCfgService;
+	EmcosCfgGateway emcosCfgService;
 
 	@Inject
-	private EmcosBalanceService emcosBalanceService;
+	private EmcosBalanceGateway emcosBalanceService;
 
 	@Inject @ParamCodes
 	private BiMap<String, String> paramCodes;

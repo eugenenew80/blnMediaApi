@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.helper;
+package kz.kegoc.bln.producer.emcos.gateway;
 
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class MinuteMeteringDataDto {
+public class MinuteMeteringData {
 	private LocalDateTime meteringDate;
 	private String externalCode;
 	private String paramCode;

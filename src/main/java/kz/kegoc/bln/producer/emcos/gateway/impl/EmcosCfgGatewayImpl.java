@@ -1,9 +1,9 @@
-package kz.kegoc.bln.producer.emcos.helper.impl;
+package kz.kegoc.bln.producer.emcos.gateway.impl;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.ejb.annotation.ParamCodes;
-import kz.kegoc.bln.producer.emcos.helper.*;
+import kz.kegoc.bln.producer.emcos.gateway.*;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -23,8 +23,8 @@ import java.util.concurrent.TimeUnit;
 
 @ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 @Singleton
-public class EmcosCfgServiceImpl implements EmcosCfgService {
-    private static final Logger logger = LoggerFactory.getLogger(EmcosCfgServiceImpl.class);
+public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
+    private static final Logger logger = LoggerFactory.getLogger(EmcosCfgGatewayImpl.class);
 
     @Lock(LockType.WRITE)
     public List<EmcosPointCfg> request()  {
@@ -33,7 +33,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
         if (pointsCfg==null && pointsCfg.isEmpty()) {
             logger.info("List of points not found in cache");
             try {
-                String answer = new HttpReqesterImpl.Builder()
+                String answer = new HttpGatewayImpl.Builder()
                     .url(new URL(config.getUrl()))
                     .method("POST")
                     .body(buildBody())
@@ -138,7 +138,7 @@ public class EmcosCfgServiceImpl implements EmcosCfgService {
 
 
     @Inject
-    private RegistryTemplate registryTemplate;
+    private TemplateRegistry registryTemplate;
 
     @Inject
     private EmcosConfig config;

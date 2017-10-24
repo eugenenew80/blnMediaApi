@@ -1,7 +1,9 @@
-package kz.kegoc.bln.producer.emcos.helper;
+package kz.kegoc.bln.producer.emcos.gateway;
 
-public interface RegistryTemplate {
+public interface TemplateRegistry {
 	void registerTemplate(String key, String template);
+	
 	void unRegisterTemplate(String key, String template);
+	
 	String getTemplate(String key);
 }

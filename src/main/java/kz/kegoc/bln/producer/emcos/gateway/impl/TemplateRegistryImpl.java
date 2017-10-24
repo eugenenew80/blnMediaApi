@@ -1,15 +1,15 @@
-package kz.kegoc.bln.producer.emcos.helper.impl;
+package kz.kegoc.bln.producer.emcos.gateway.impl;
 
 import java.util.*;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 
-import kz.kegoc.bln.producer.emcos.helper.RegistryTemplate;
+import kz.kegoc.bln.producer.emcos.gateway.TemplateRegistry;
 
 
 @Stateless
-public class RegistryTemplateImpl implements RegistryTemplate {
+public class TemplateRegistryImpl implements TemplateRegistry {
 	private Map<String, String> templates = new HashMap<>();
 	
 	@PostConstruct

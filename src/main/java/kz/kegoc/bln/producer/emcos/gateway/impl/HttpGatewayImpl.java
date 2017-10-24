@@ -1,9 +1,9 @@
-package kz.kegoc.bln.producer.emcos.helper.impl;
+package kz.kegoc.bln.producer.emcos.gateway.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import kz.kegoc.bln.producer.emcos.helper.HttpRequester;
+import kz.kegoc.bln.producer.emcos.gateway.HttpGateway;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -12,14 +12,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HttpReqesterImpl implements HttpRequester {
-	private static Logger logger = LoggerFactory.getLogger(HttpReqesterImpl.class);
+public class HttpGatewayImpl implements HttpGateway {
+	private static Logger logger = LoggerFactory.getLogger(HttpGatewayImpl.class);
 
 	private final URL url;
 	private final String method;
 	private final String body;
 	
-	private HttpReqesterImpl(Builder builder) {
+	private HttpGatewayImpl(Builder builder) {
 		this.url = builder.url;
 		this.method = builder.method;
 		this.body = builder.body;
@@ -93,8 +93,8 @@ public class HttpReqesterImpl implements HttpRequester {
     		return this;
     	}        
     	
-    	public HttpRequester build() {
-    		return new HttpReqesterImpl(this); 
+    	public HttpGateway build() {
+    		return new HttpGatewayImpl(this); 
     	}
     }
 }
