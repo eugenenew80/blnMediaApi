@@ -3,32 +3,45 @@ package kz.kegoc.bln.producer.file.reader.impl.month;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
-import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
+import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.annotation.CSV;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 @Stateless
 @CSV
-public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringDataReader<MonthMeteringDataRaw> {
+public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringReader<MonthMeteringDataRaw> {
 
 	@Inject
 	public CsvMonthMeteringDataRawReaderImpl(MeteringDataQueue<MonthMeteringDataRaw> service) {
 		this.service=service;
 	}
 
-	public void loadFromFile(Path path) throws Exception {
-		List<MonthMeteringDataRaw> list = new ArrayList<>();
-		List<String> strs = Files.readAllLines(path);
-		for (int i=1; i<strs.size(); i++ ) {
-			list.add(convert(strs.get(i)));
+	public void read(Path path)  {
+		List<String> strs = null;
+		try {
+			strs = Files.readAllLines(path);
 		}
+		catch (IOException e) {
+			e.printStackTrace();
+			strs = emptyList();
+		}
+
+		List<MonthMeteringDataRaw> list = strs.stream()
+			.map(this::convert)
+			.collect(toList());
 
 		service.addAll(list);
 	}

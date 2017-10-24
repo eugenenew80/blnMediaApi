@@ -7,20 +7,20 @@ import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.producer.MeteringDataProducer;
-import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
+import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringReader;
 
 @Singleton
-public class EmcosMeteringDataRawProducer implements MeteringDataProducer {
+public class EmcosMeteringRawProducer implements MeteringDataProducer {
 	@ProducerMonitor
 	@Schedule(minute = "*/30", hour = "*", persistent = false)
 	public void execute() {
-		emcosDayMeteringBalanceReader.loadFromEmcos();
-		emcosHourMeteringDataReader.loadFromEmcos();
+		emcosDayMeteringBalanceReader.read();
+		emcosHourMeteringDataReader.read();
     }
 	
 	@Inject
-	private EmcosMeteringDataReader<HourMeteringDataRaw> emcosHourMeteringDataReader;
+	private EmcosMeteringReader<HourMeteringDataRaw> emcosHourMeteringDataReader;
 	
 	@Inject
-	private EmcosMeteringDataReader<DayMeteringBalanceRaw> emcosDayMeteringBalanceReader;
+	private EmcosMeteringReader<DayMeteringBalanceRaw> emcosDayMeteringBalanceReader;
 }

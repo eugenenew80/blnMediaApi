@@ -1,13 +1,13 @@
 package kz.kegoc.bln.service.media;
 
-import kz.kegoc.bln.entity.media.MeteringData;
+import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.repository.media.MeteringDataRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import javax.validation.Validator;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public abstract class AbstractMeteringDataService<T extends MeteringData>
+public abstract class AbstractMeteringDataService<T extends Metering>
 	extends AbstractEntityService<T>
 		implements MeteringDataService<T> {
 
@@ -18,7 +18,7 @@ public abstract class AbstractMeteringDataService<T extends MeteringData>
 
 	public void saveAll(List<T> list) {
     	list.stream().forEach(m -> {
-    		MeteringData meteringData = meteringDataRepository.selectByEntity(m);
+    		Metering meteringData = meteringDataRepository.selectByEntity(m);
 			if (meteringData==null) {
 				m.setCreateDate(LocalDateTime.now());
 				meteringDataRepository.insert(m);

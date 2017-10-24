@@ -12,16 +12,16 @@ import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosDataGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 import kz.kegoc.bln.gateway.emcos.MinuteMeteringData;
-import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
+import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringReader;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import static java.util.stream.Collectors.groupingBy;
 
 @Stateless
-public class EmcosHourMeteringDataRawProducer implements EmcosMeteringDataReader<HourMeteringDataRaw> {
+public class EmcosHourMeteringDataRawProducer implements EmcosMeteringReader<HourMeteringDataRaw> {
 
-	public void loadFromEmcos() {
+	public void read() {
 		LocalDateTime requestedTime = buildRequestedTime();
 		List<EmcosPointCfg> pointsCfg = emcosCfgGateway.request();
 

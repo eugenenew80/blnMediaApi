@@ -1,12 +1,12 @@
 package kz.kegoc.bln.loader;
 
-import kz.kegoc.bln.entity.media.MeteringData;
+import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.service.media.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractMeteringDataLoader<T extends MeteringData> implements MeteringDataLoader<T> {
+public abstract class AbstractMeteringDataLoader<T extends Metering> implements MeteringDataLoader<T> {
 
 	public AbstractMeteringDataLoader(MeteringDataService<T> service, RBlockingQueue<T> queue) {
 		this.service = service;

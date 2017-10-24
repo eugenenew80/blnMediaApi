@@ -1,7 +1,7 @@
 package kz.kegoc.bln.producer.file;
 
 import com.google.common.collect.ImmutableList;
-import kz.kegoc.bln.entity.media.MeteringData;
+import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
@@ -9,7 +9,7 @@ import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.ejb.annotation.CSV;
 import kz.kegoc.bln.ejb.annotation.XML;
-import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
+import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.annotation.PostConstruct;
@@ -23,9 +23,9 @@ import java.util.*;
 import java.util.stream.*;
 
 @Singleton
-public class FileMeteringDataRawProducer implements MeteringDataProducer {
+public class FileMeteringRawProducer implements MeteringDataProducer {
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
-	private Map<String, FileMeteringDataReader<? extends MeteringData>> mapReaders = new HashMap<>();
+	private Map<String, FileMeteringReader<? extends Metering>> mapReaders = new HashMap<>();
 
 	@PostConstruct
 	public void init() {
@@ -45,9 +45,9 @@ public class FileMeteringDataRawProducer implements MeteringDataProducer {
 			for (Path p : getListFiles(Paths.get(dir + "/" + subDir))) {
 				try {
 					String fileExtension = FilenameUtils.getExtension(p.toString());
-					FileMeteringDataReader<? extends MeteringData> reader = mapReaders.get(subDir + "/" + fileExtension);
+					FileMeteringReader<? extends Metering> reader = mapReaders.get(subDir + "/" + fileExtension);
 					if (reader!=null) {
-						reader.loadFromFile(p);
+						reader.read(p);
 						Files.delete(p);
 					}
 				}
@@ -71,20 +71,20 @@ public class FileMeteringDataRawProducer implements MeteringDataProducer {
 	}
 
 	@Inject @CSV
-	private FileMeteringDataReader<HourMeteringDataRaw> csvHourMeteringDataRawReader;
+	private FileMeteringReader<HourMeteringDataRaw> csvHourMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringDataReader<HourMeteringDataRaw> xmlHourMeteringDataRawReader;
+	private FileMeteringReader<HourMeteringDataRaw> xmlHourMeteringDataRawReader;
 
 	@Inject @CSV
-	private FileMeteringDataReader<DayMeteringDataRaw> csvDayMeteringDataRawReader;
+	private FileMeteringReader<DayMeteringDataRaw> csvDayMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringDataReader<DayMeteringDataRaw> xmlDayMeteringDataRawReader;
+	private FileMeteringReader<DayMeteringDataRaw> xmlDayMeteringDataRawReader;
 
 	@Inject @CSV
-	private FileMeteringDataReader<MonthMeteringDataRaw> csvMonthMeteringDataRawReader;
+	private FileMeteringReader<MonthMeteringDataRaw> csvMonthMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringDataReader<MonthMeteringDataRaw> xmlMonthMeteringDataRawReader;
+	private FileMeteringReader<MonthMeteringDataRaw> xmlMonthMeteringDataRawReader;
 }

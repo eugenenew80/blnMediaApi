@@ -4,7 +4,7 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 
-import kz.kegoc.bln.entity.media.MeteringData;
+import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
@@ -12,7 +12,7 @@ import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 
 @Singleton
-public class MeteringDataLoaderImpl implements MeteringDataLoader<MeteringData> {
+public class MeteringDataLoaderImpl implements MeteringDataLoader<Metering> {
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void load() {

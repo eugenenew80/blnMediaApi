@@ -3,14 +3,14 @@ package kz.kegoc.bln.entity.media.month;
 import java.time.LocalDateTime;
 
 import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.MeteringData;
+import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class MonthMeteringDataRaw implements MeteringData {
+public class MonthMeteringDataRaw implements Metering {
 	private Long id;
 	private Short year;
 	private Short month;

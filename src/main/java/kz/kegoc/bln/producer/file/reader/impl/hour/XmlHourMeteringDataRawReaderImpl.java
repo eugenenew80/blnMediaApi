@@ -3,15 +3,18 @@ package kz.kegoc.bln.producer.file.reader.impl.hour;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
-import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
+import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.annotation.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,18 +23,26 @@ import java.util.List;
 
 @Stateless
 @XML
-public class XmlHourMeteringDataRawReaderImpl implements FileMeteringDataReader<HourMeteringDataRaw> {
+public class XmlHourMeteringDataRawReaderImpl implements FileMeteringReader<HourMeteringDataRaw> {
 
 	@Inject
 	public XmlHourMeteringDataRawReaderImpl(MeteringDataQueue<HourMeteringDataRaw> service) {
 		this.service = service;
 	}
 
-	public void loadFromFile(Path path) throws Exception {
-		Document doc = DocumentBuilderFactory.newInstance()
-						.newDocumentBuilder()
-						.parse(path.toFile());
-		
+	public void read(Path path)  {
+		Document doc = null;
+		try {
+			doc = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder()
+                .parse(path.toFile());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (doc==null) return;
+
 		List<HourMeteringDataRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
@@ -43,7 +54,7 @@ public class XmlHourMeteringDataRawReaderImpl implements FileMeteringDataReader<
 	}
 	
 	
-	private HourMeteringDataRaw convert(Node node) throws Exception  {
+	private HourMeteringDataRaw convert(Node node) {
 		HourMeteringDataRaw d = new HourMeteringDataRaw();
 
 		for (int i=0; i< node.getAttributes().getLength(); i++) {

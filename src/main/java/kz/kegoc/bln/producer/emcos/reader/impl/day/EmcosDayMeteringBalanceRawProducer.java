@@ -10,14 +10,14 @@ import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.gateway.emcos.EmcosBalanceGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
-import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
+import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.service.media.LastLoadInfoService;
 
 @Stateless
-public class EmcosDayMeteringBalanceRawProducer implements EmcosMeteringDataReader<DayMeteringBalanceRaw> {
+public class EmcosDayMeteringBalanceRawProducer implements EmcosMeteringReader<DayMeteringBalanceRaw> {
 
-	public void loadFromEmcos() {
+	public void read() {
 		LocalDateTime requestedTime = buildRequestedDateTime();
 		List<EmcosPointCfg> pointsCfg = emcosCfgGateway.request();
 
