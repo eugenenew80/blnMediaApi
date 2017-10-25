@@ -106,12 +106,13 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
             .map( p-> serializePointCfg(p))
             .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
+        logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, EmcosBalanceGatewayImpl.buildBody interrupted");
+            logger.debug("List of points is empty, EmcosBalanceGatewayImpl.buildBody interrupted");
             return "";
         }
-        
+
         String data = templateRegistry.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
         logger.trace("data: " + data);

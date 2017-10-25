@@ -104,6 +104,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
             .map( p-> serializePointCfg(p))
             .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
+        logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
         	logger.debug("List of points is empty, EmcosDataGatewayImpl.buildBody interrupted");
