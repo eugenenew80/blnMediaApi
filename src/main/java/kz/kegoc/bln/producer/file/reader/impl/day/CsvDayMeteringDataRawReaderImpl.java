@@ -3,7 +3,6 @@ package kz.kegoc.bln.producer.file.reader.impl.day;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
-import kz.kegoc.bln.gateway.emcos.impl.EmcosBalanceGatewayImpl;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.annotation.CSV;
@@ -18,14 +17,12 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 @Stateless
 @CSV
 public class CsvDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMeteringDataRaw> {
-    private static final Logger logger = LoggerFactory.getLogger(EmcosBalanceGatewayImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(CsvDayMeteringDataRawReaderImpl.class);
 
     @Inject
     public CsvDayMeteringDataRawReaderImpl(MeteringDataQueue<DayMeteringDataRaw> service) {
@@ -42,10 +39,10 @@ public class CsvDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMe
             strs = Files.readAllLines(path);
         }
         catch (IOException e) {
-            logger.error("CsvDayMeteringDataRawReaderImpl.read faled: " + e.getMessage());
-            strs = emptyList();
+            logger.error("CsvDayMeteringDataRawReaderImpl.read failed: " + e.getMessage());
+            return;
         }
-        logger.debug("Reading file content started competed");
+        logger.debug("Reading file content competed");
 
         logger.debug("Parsing file content started");
         List<DayMeteringDataRaw> list = strs.stream()

@@ -6,6 +6,8 @@ import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.annotation.XML;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -21,13 +23,18 @@ import java.util.List;
 @Stateless
 @XML
 public class XmlHourMeteringDataRawReaderImpl implements FileMeteringReader<HourMeteringDataRaw> {
+	private static final Logger logger = LoggerFactory.getLogger(XmlHourMeteringDataRawReaderImpl.class);
 
 	@Inject
 	public XmlHourMeteringDataRawReaderImpl(MeteringDataQueue<HourMeteringDataRaw> service) {
-		this.service = service;
+		this.queue = service;
 	}
 
 	public void read(Path path)  {
+		logger.info("XmlHourMeteringDataRawReaderImpl.read started");
+		logger.info("file: " + path.toString());
+
+		logger.debug("Reading file content started");
 		Document doc = null;
 		try {
 			doc = DocumentBuilderFactory.newInstance()
@@ -35,19 +42,23 @@ public class XmlHourMeteringDataRawReaderImpl implements FileMeteringReader<Hour
                 .parse(path.toFile());
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logger.error("XmlHourMeteringDataRawReaderImpl.read failed: " + e.getMessage());
+			return;
 		}
+		logger.debug("Reading file content competed");
 
-		if (doc==null) return;
-
+		logger.debug("Parsing file content started");
 		List<HourMeteringDataRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
 			if (nodeRow.getNodeName().equals("row")) 
 				list.add(convert(nodeRow));
 		}
+		logger.debug("Parsing file content completed, count of rows: " + list.size());
 
-		service.addAll(list);
+		logger.debug("Adding data to queue");
+		queue.addAll(list);
+		logger.info("XmlHourMeteringDataRawReaderImpl.read completed");
 	}
 	
 	
@@ -84,5 +95,5 @@ public class XmlHourMeteringDataRawReaderImpl implements FileMeteringReader<Hour
 		return d;
 	}
 
-	private MeteringDataQueue<HourMeteringDataRaw> service;
+	private MeteringDataQueue<HourMeteringDataRaw> queue;
 }

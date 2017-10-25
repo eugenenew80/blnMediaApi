@@ -6,44 +6,52 @@ import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.annotation.CSV;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 @Stateless
 @CSV
 public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringReader<MonthMeteringDataRaw> {
+	private static final Logger logger = LoggerFactory.getLogger(CsvMonthMeteringDataRawReaderImpl.class);
 
 	@Inject
 	public CsvMonthMeteringDataRawReaderImpl(MeteringDataQueue<MonthMeteringDataRaw> service) {
-		this.service=service;
+		this.queue =service;
 	}
 
 	public void read(Path path)  {
+		logger.info("CsvMonthMeteringDataRawReaderImpl.read started");
+		logger.info("file: " + path.toString());
+
+		logger.debug("Reading file content started");
 		List<String> strs = null;
 		try {
 			strs = Files.readAllLines(path);
 		}
 		catch (IOException e) {
-			e.printStackTrace();
-			strs = emptyList();
+			logger.error("CsvMonthMeteringDataRawReaderImpl.read failed: " + e.getMessage());
+			return;
 		}
+		logger.debug("Reading file content competed");
 
+		logger.debug("Parsing file content started");
 		List<MonthMeteringDataRaw> list = strs.stream()
 			.map(this::convert)
 			.collect(toList());
+		logger.debug("Parsing file content completed, count of rows: " + list.size());
 
-		service.addAll(list);
+		logger.debug("Adding data to queue");
+		queue.addAll(list);
+		logger.info("CsvMonthMeteringDataRawReaderImpl.read completed");
 	}
 	
 	
@@ -63,5 +71,5 @@ public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringReader<Mon
 		return d;
 	}
 
-	private MeteringDataQueue<MonthMeteringDataRaw> service;
+	private MeteringDataQueue<MonthMeteringDataRaw> queue;
 }
