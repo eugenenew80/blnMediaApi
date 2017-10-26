@@ -443,4 +443,18 @@
 			</many-to-one>
 		</attributes>
 	</entity>
+
+	<entity class="kz.kegoc.bln.entity.media.Group">
+		<table name="media_groups" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+			</id>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+		</attributes>
+	</entity>
+
 </entity-mappings>
