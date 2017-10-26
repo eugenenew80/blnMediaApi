@@ -1,4 +1,4 @@
-package kz.kegoc.bln.ejb.producer;
+package kz.kegoc.bln.ejb.cdi;
 
 import javax.enterprise.inject.Produces;
 import com.fasterxml.jackson.databind.ObjectMapper;
