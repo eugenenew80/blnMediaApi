@@ -17,6 +17,10 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="meter_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+            
             <column name="param_code" type="varchar(4)">
                 <constraints nullable="false"/>
             </column>
