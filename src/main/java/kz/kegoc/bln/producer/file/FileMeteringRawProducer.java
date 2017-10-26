@@ -22,6 +22,9 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.*;
 
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
+
 @Singleton
 public class FileMeteringRawProducer implements MeteringDataProducer {
 	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
@@ -29,12 +32,22 @@ public class FileMeteringRawProducer implements MeteringDataProducer {
 
 	@PostConstruct
 	public void init() {
-		mapReaders.put("hour/csv", 	csvHourMeteringDataRawReader);
-		mapReaders.put("hour/xml", 	xmlHourMeteringDataRawReader);
-		mapReaders.put("day/csv", 	csvDayMeteringDataRawReader);
-		mapReaders.put("day/xml", 	xmlDayMeteringDataRawReader);
-		mapReaders.put("month/csv", 	csvMonthMeteringDataRawReader);
-		mapReaders.put("month/xml", 	xmlMonthMeteringDataRawReader);
+		registerFileReader("hour/csv", 	csvHourMeteringDataRawReader);
+		registerFileReader("hour/xml", 	xmlHourMeteringDataRawReader);
+		registerFileReader("day/csv", 	csvDayMeteringDataRawReader);
+		registerFileReader("day/xml", 	xmlDayMeteringDataRawReader);
+		registerFileReader("month/csv", 	csvMonthMeteringDataRawReader);
+		registerFileReader("month/csv", 	csvMonthMeteringDataRawReader);
+
+	}
+
+
+	public void registerFileReader(String subDir, FileMeteringReader<? extends Metering> reader) {
+		mapReaders.put(subDir, 	reader);
+	}
+
+	public void unregisterReader(String subDir) {
+		mapReaders.remove(subDir);
 	}
 
 
@@ -62,10 +75,10 @@ public class FileMeteringRawProducer implements MeteringDataProducer {
 	private List<Path> getListFiles(Path path) {
 		List<Path> list;
 		try (Stream<Path> stream = Files.list(path))  {
-			list = stream.collect(Collectors.toList());
+			list = stream.collect(toList());
 		} 
 		catch (IOException e) {
-			list = Collections.emptyList();
+			list = emptyList();
 		}
 		return list;
 	}
