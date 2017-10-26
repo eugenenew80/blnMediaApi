@@ -1,7 +1,7 @@
 package kz.kegoc.bln.service.media;
 
 import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.repository.media.MeteringDataRepository;
+import kz.kegoc.bln.repository.media.MeteringDataRawRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import javax.validation.Validator;
 import java.time.LocalDateTime;
@@ -11,7 +11,7 @@ public abstract class AbstractMeteringDataService<T extends Metering>
 	extends AbstractEntityService<T>
 		implements MeteringDataService<T> {
 
-    public AbstractMeteringDataService(MeteringDataRepository<T> repository, Validator validator) {
+    public AbstractMeteringDataService(MeteringDataRawRepository<T> repository, Validator validator) {
         super(repository, validator);
         this.meteringDataRepository=repository;
     }
@@ -32,5 +32,5 @@ public abstract class AbstractMeteringDataService<T extends Metering>
         });		
 	}
 
-	private MeteringDataRepository<T> meteringDataRepository;
+	private MeteringDataRawRepository<T> meteringDataRepository;
 }

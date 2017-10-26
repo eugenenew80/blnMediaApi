@@ -4,12 +4,12 @@ import javax.ejb.Stateless;
 
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.repository.common.AbstractRepository;
-import kz.kegoc.bln.repository.media.MeteringDataRepository;
+import kz.kegoc.bln.repository.media.MeteringDataRawRepository;
 
 @Stateless
 public class DayMeteringBalanceRawRepositoryImpl
 	extends AbstractRepository<DayMeteringBalanceRaw>
-		implements MeteringDataRepository<DayMeteringBalanceRaw> {
+		implements MeteringDataRawRepository<DayMeteringBalanceRaw> {
 
 	public DayMeteringBalanceRaw selectByEntity(DayMeteringBalanceRaw entity) {
 		return

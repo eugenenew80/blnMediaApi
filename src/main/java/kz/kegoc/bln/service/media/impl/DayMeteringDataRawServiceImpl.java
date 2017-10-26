@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import javax.validation.Validator;
 
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
-import kz.kegoc.bln.repository.media.MeteringDataRepository;
+import kz.kegoc.bln.repository.media.MeteringDataRawRepository;
 import kz.kegoc.bln.service.media.AbstractMeteringDataService;
 import kz.kegoc.bln.service.media.MeteringDataService;
 
@@ -15,7 +15,7 @@ public class DayMeteringDataRawServiceImpl
         implements MeteringDataService<DayMeteringDataRaw> {
 
 	@Inject
-    public DayMeteringDataRawServiceImpl(MeteringDataRepository<DayMeteringDataRaw> repository, Validator validator) {
+    public DayMeteringDataRawServiceImpl(MeteringDataRawRepository<DayMeteringDataRaw> repository, Validator validator) {
         super(repository, validator);
     }
 }

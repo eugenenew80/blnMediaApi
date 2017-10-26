@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import javax.validation.Validator;
 
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
-import kz.kegoc.bln.repository.media.MeteringDataRepository;
+import kz.kegoc.bln.repository.media.MeteringDataRawRepository;
 import kz.kegoc.bln.service.media.AbstractMeteringDataService;
 import kz.kegoc.bln.service.media.MeteringDataService;
 
@@ -15,7 +15,7 @@ public class HourMeteringDataRawServiceImpl
         implements MeteringDataService<HourMeteringDataRaw> {
    
 	@Inject
-    public HourMeteringDataRawServiceImpl(MeteringDataRepository<HourMeteringDataRaw> repository, Validator validator) {
+    public HourMeteringDataRawServiceImpl(MeteringDataRawRepository<HourMeteringDataRaw> repository, Validator validator) {
         super(repository, validator);
     }
 }

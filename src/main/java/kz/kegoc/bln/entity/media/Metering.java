@@ -4,12 +4,15 @@ import kz.kegoc.bln.entity.common.HasDates;
 import kz.kegoc.bln.entity.common.HasId;
 
 public interface Metering extends HasId, HasDates {
-    Double getVal();
-    void setVal(Double val);
+    String getDataSourceCode();
+    void setDataSourceCode(String dataSourceCode);    
+
+    WayEntering getWayEntering();
+    void setWayEntering(WayEntering dataSourceCode);   
     
-    String getExternalCode();
-    void setExternalCode(String externalCode);
-    
-    String getParamCode();
+	String getParamCode();
     void setParamCode(String paramCode);    
+
+    String getUnitCode();
+    void setUnitCode(String unitCode);  
 }
