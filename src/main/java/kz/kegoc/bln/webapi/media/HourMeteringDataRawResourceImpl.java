@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Path("/media/hour/day")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
-public class HourMeteringDataRawResource {
+public class HourMeteringDataRawResourceImpl {
 
 	@POST
 	public Response create(HourMeteringDataRawDto entity) {

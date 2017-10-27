@@ -18,7 +18,7 @@ import kz.kegoc.bln.entity.media.DataStatus;
 @Path("/media/raw/day")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
-public class DayMeteringDataRawResource {
+public class DayMeteringDataRawResourceImpl {
 
 	@POST
 	public Response create(DayMeteringDataRawDto entity) {

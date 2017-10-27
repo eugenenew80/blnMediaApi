@@ -38,7 +38,7 @@ public class Producer {
 	private RBlockingQueue<MonthMeteringDataRaw> monthMeteringDataQueue  = null;
 	private RBlockingQueue<DayMeteringBalanceRaw> dayMeteringBalanceQueue  = null;
 	private RList<EmcosPointCfg> emcosPointCfgList  = null;
-
+	private DozerBeanMapper mapper = null;
 
 	@Produces
 	public RedissonClient createRedissonClient() {
@@ -160,11 +160,16 @@ public class Producer {
 
 	@Produces
 	public DozerBeanMapper dozerBeanMapper() {
-		DozerBeanMapper mapper = new DozerBeanMapper();
+		if (mapper!=null)
+			return mapper;
+		
+		mapper = new DozerBeanMapper();
 		mapper.setMappingFiles(Arrays.asList(
+			"mapping/MappingConfig.xml",	
 			"mapping/raw/DayMeteringDataRawDtoDefaultMapping.xml",
 			"mapping/raw/HourMeteringDataRawDtoDefaultMapping.xml",
-			"mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml"
+			"mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml",
+			"mapping/oper/GroupDtoDefaultMapping.xml"
 		));
 		return mapper;
 	}

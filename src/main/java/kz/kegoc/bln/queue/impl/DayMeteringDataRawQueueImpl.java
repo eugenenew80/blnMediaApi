@@ -1,12 +1,11 @@
 package kz.kegoc.bln.queue.impl;
 
+import java.util.concurrent.BlockingQueue;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.queue.AbstractMeteringDataQueue;
 import kz.kegoc.bln.queue.MeteringDataQueue;
-import org.redisson.api.RBlockingQueue;
 
 @Stateless
 public class DayMeteringDataRawQueueImpl
@@ -14,7 +13,7 @@ public class DayMeteringDataRawQueueImpl
         implements MeteringDataQueue<DayMeteringDataRaw> {
 
     @Inject
-    public DayMeteringDataRawQueueImpl(RBlockingQueue<DayMeteringDataRaw> queue) {
+    public DayMeteringDataRawQueueImpl(BlockingQueue<DayMeteringDataRaw> queue) {
         super(queue);
     }
 }

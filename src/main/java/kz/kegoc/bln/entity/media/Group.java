@@ -1,5 +1,7 @@
 package kz.kegoc.bln.entity.media;
 
+import java.util.List;
+
 import kz.kegoc.bln.entity.common.HasId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,4 +11,5 @@ import lombok.EqualsAndHashCode;
 public class Group implements HasId {
     private Long id;
     private String name;
+    private List<GroupMeteringPoint> meteringPoints;
 }

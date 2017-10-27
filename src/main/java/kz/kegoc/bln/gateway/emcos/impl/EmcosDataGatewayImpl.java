@@ -1,6 +1,9 @@
 package kz.kegoc.bln.gateway.emcos.impl;
 
 import com.google.common.collect.BiMap;
+
+import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
+import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosDataGateway;

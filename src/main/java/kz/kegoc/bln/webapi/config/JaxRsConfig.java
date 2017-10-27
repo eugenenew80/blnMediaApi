@@ -6,9 +6,10 @@ import javax.ws.rs.core.*;
 
 import kz.kegoc.bln.ejb.jackson.ObjectMapperContextResolver;
 import kz.kegoc.bln.webapi.exception.mapper.*;
-import kz.kegoc.bln.webapi.media.DayMeteringDataRawResource;
-import kz.kegoc.bln.webapi.media.HourMeteringDataRawResource;
-import kz.kegoc.bln.webapi.media.MonthMeteringDataRawResource;
+import kz.kegoc.bln.webapi.media.DayMeteringDataRawResourceImpl;
+import kz.kegoc.bln.webapi.media.GroupResourceImpl;
+import kz.kegoc.bln.webapi.media.HourMeteringDataRawResourceImpl;
+import kz.kegoc.bln.webapi.media.MonthMeteringDataRawResourceImpl;
 
 
 @ApplicationPath("/webapi")
@@ -18,10 +19,11 @@ public class JaxRsConfig extends Application {
 	public Set<Class<?>> getClasses() {
 		final Set<Class<?>> resources = new HashSet<Class<?>>();
 
-		resources.add(MonthMeteringDataRawResource.class);
-		resources.add(DayMeteringDataRawResource.class);
-		resources.add(HourMeteringDataRawResource.class);
-
+		resources.add(MonthMeteringDataRawResourceImpl.class);
+		resources.add(DayMeteringDataRawResourceImpl.class);
+		resources.add(HourMeteringDataRawResourceImpl.class);
+		resources.add(GroupResourceImpl.class);
+		
 		//resources.add(BasicAuthentificationFilter.class);
 		resources.add(RepositryNotFoundExceptionMapperImpl.class);
 		resources.add(EntityNotFoundExceptionMapperImpl.class);

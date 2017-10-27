@@ -7,8 +7,8 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
     <changeSet id="media-eug-25" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <comment>Creating table: media_group_metering_point</comment>
-        <createTable tableName="media_group_metering_point" schemaName="apps">            
+        <comment>Creating table: media_group_metering_points</comment>
+        <createTable tableName="media_group_metering_points" schemaName="apps">            
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
@@ -24,33 +24,41 @@
             <column name="list_order" type="number">
                 <constraints nullable="true"/>
             </column>
+            
+            <column name="start_date" type="date">
+                <constraints nullable="true"/>
+            </column>
+                                    			                                                 
+            <column name="end_date" type="date">
+                <constraints nullable="true"/>
+            </column>             
         </createTable>
     </changeSet>
 
 	<changeSet id="media-eug-26" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating primary key for table: media_group_metering_point</comment>
+	    <comment>Creating primary key for table: media_group_metering_points</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_group_metering_point"
+	            constraintName="pk_media_group_metering_points"
 	            schemaName="apps"
-	            tableName="media_group_metering_point"/>
+	            tableName="media_group_metering_points"/>
 	</changeSet>
 	
 	<changeSet id="media-eug-27" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating sequence for table: media_group_metering_point</comment>
+	    <comment>Creating sequence for table: media_group_metering_points</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_group_metering_point_s"
+	            sequenceName="media_group_metering_points_s"
 	            startValue="1"/>
 	</changeSet>	
 	
 	<changeSet id="media-eug-28" logicalFilePath="path-independent" author="eugene" context="postgres">
-		<comment>Creating unique constraint for table: media_group_metering_point</comment>
+		<comment>Creating unique constraint for table: media_group_metering_points</comment>
 	    <addUniqueConstraint
 	            columnNames="group_id, metering_point_id"
-	            constraintName="un_media_group_metering_point_1"
+	            constraintName="un_media_group_metering_points_1"
 	            schemaName="apps"
-	            tableName="media_group_metering_point"/>
+	            tableName="media_group_metering_points"/>
 	</changeSet>		
 </databaseChangeLog>

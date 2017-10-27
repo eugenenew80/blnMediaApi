@@ -449,12 +449,55 @@
 		<attributes>
 			<id name="id">
 				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_groups_gen" />
+				<sequence-generator
+						name="media_groups_gen"
+						sequence-name="apps.media_groups_s"
+						allocation-size="1"
+				/>				
 			</id>
 
 			<basic name="name">
 				<column name="name" />
 			</basic>
+			
+			<one-to-many name="meteringPoints" mapped-by="group" />
 		</attributes>
 	</entity>
 
+
+	<entity class="kz.kegoc.bln.entity.media.GroupMeteringPoint">
+		<table name="media_group_metering_points" schema="apps" />
+		<attributes>
+			<id name="id">
+				<column name="id" />
+        		<generated-value strategy="SEQUENCE" generator="media_group_metering_points_gen" />
+        		<sequence-generator
+        			name="media_group_metering_points_gen"
+        			sequence-name="apps.media_group_metering_points_s"
+					allocation-size="1"
+        		/>				
+			</id>
+
+      		<basic name="listOrder">
+      			<column name="list_order" />
+      		</basic>
+      					
+      		<basic name="startDate">
+      			<column name="start_date" />
+      		</basic>
+
+      		<basic name="endDate">
+      			<column name="end_date" />
+      		</basic>
+      		
+			<many-to-one name="meteringPoint">
+				<join-column name="metering_point_id" />	
+			</many-to-one>  
+
+			<many-to-one name="group">
+				<join-column name="group_id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
 </entity-mappings>

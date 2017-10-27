@@ -3,7 +3,7 @@ package kz.kegoc.bln.queue.impl;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.queue.AbstractMeteringDataQueue;
 import kz.kegoc.bln.queue.MeteringDataQueue;
-import org.redisson.api.RBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -14,7 +14,7 @@ public class HourMeteringDataRawQueueImpl
         implements MeteringDataQueue<HourMeteringDataRaw> {
 
     @Inject
-    public HourMeteringDataRawQueueImpl(RBlockingQueue<HourMeteringDataRaw> queue) {
+    public HourMeteringDataRawQueueImpl(BlockingQueue<HourMeteringDataRaw> queue) {
         super(queue);
     }
 }

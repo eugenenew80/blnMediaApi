@@ -7,33 +7,33 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
     <changeSet id="media-eug-22" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <comment>Creating table: media_group</comment>
-        <createTable tableName="media_group" schemaName="apps">            
+        <comment>Creating table: media_groups</comment>
+        <createTable tableName="media_groups" schemaName="apps">            
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
             
-            <column name="name" type="number">
+            <column name="name" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
 
 	<changeSet id="media-eug-23" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating primary key for table: media_group</comment>
+	    <comment>Creating primary key for table: media_groups</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_group"
+	            constraintName="pk_media_groups"
 	            schemaName="apps"
-	            tableName="media_group"/>
+	            tableName="media_groups"/>
 	</changeSet>
 	
 	<changeSet id="media-eug-24" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating sequence for table: media_group</comment>
+	    <comment>Creating sequence for table: media_groups</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_group_s"
+	            sequenceName="media_groups_s"
 	            startValue="1"/>
 	</changeSet>		
 </databaseChangeLog>

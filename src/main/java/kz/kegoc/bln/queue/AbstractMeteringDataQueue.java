@@ -1,12 +1,12 @@
 package kz.kegoc.bln.queue;
 
 import kz.kegoc.bln.entity.media.Metering;
-import org.redisson.api.RBlockingQueue;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 public abstract class AbstractMeteringDataQueue<T extends Metering> implements MeteringDataQueue<T> {
 
-    public AbstractMeteringDataQueue(RBlockingQueue<T> queue) {
+    public AbstractMeteringDataQueue(BlockingQueue<T> queue) {
         this.queue = queue;
     }
 
@@ -18,5 +18,5 @@ public abstract class AbstractMeteringDataQueue<T extends Metering> implements M
         queue.addAll(list);
     }
 
-    private RBlockingQueue<T> queue;
+    private BlockingQueue<T> queue;
 }

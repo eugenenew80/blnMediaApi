@@ -66,5 +66,18 @@
             	and t.unitCode=:unitCode
             	and t.paramCode=:paramCode
         </query>
-    </named-query>            
+    </named-query> 
+    
+    
+	<named-query name="Group.findAll">
+		<query>
+			select t from Group t order by t.id
+		</query>
+	</named-query>   
+	
+	<named-query name="Group.findByName">
+		<query>
+			select t from Group t where t.name=:name
+		</query>	            
+	</named-query>	
 </entity-mappings>

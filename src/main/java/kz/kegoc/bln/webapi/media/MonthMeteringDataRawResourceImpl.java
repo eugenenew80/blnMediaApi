@@ -19,7 +19,7 @@ import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 @Path("/media/month/day")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
-public class MonthMeteringDataRawResource {
+public class MonthMeteringDataRawResourceImpl {
 	
 	@POST
 	public Response create(MonthMeteringDataRawDto entity) {
