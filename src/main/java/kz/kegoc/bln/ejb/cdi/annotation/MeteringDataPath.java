@@ -1,4 +1,4 @@
-package kz.kegoc.bln.ejb.annotation;
+package kz.kegoc.bln.ejb.cdi.annotation;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;

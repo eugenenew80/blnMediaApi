@@ -5,7 +5,7 @@ import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
-import kz.kegoc.bln.ejb.annotation.CSV;
+import kz.kegoc.bln.ejb.cdi.annotation.CSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

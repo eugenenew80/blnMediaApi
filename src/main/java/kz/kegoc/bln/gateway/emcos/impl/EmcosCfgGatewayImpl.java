@@ -2,7 +2,7 @@ package kz.kegoc.bln.gateway.emcos.impl;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableList;
-import kz.kegoc.bln.ejb.annotation.ParamCodes;
+import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import kz.kegoc.bln.ejb.annotation.*;
+import kz.kegoc.bln.ejb.cdi.annotation.*;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;

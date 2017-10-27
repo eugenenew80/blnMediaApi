@@ -6,7 +6,7 @@ import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
 import com.google.common.collect.BiMap;
-import kz.kegoc.bln.ejb.annotation.ParamCodes;
+import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosDataGateway;

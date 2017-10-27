@@ -1,15 +1,15 @@
 package kz.kegoc.bln.producer.file;
 
 import com.google.common.collect.ImmutableList;
-import kz.kegoc.bln.ejb.annotation.MeteringDataPath;
+import kz.kegoc.bln.ejb.cdi.annotation.MeteringDataPath;
 import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
 import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.MeteringDataProducer;
-import kz.kegoc.bln.ejb.annotation.CSV;
-import kz.kegoc.bln.ejb.annotation.XML;
+import kz.kegoc.bln.ejb.cdi.annotation.CSV;
+import kz.kegoc.bln.ejb.cdi.annotation.XML;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import org.apache.commons.io.FilenameUtils;
 
