@@ -16,7 +16,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
+
+import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 @Stateless
@@ -33,26 +37,33 @@ public class CsvDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMe
         logger.info("CsvDayMeteringDataRawReaderImpl.read started");
         logger.info("file: " + path.toString());
 
-        logger.debug("Reading file content started");
-        List<String> strs = null;
-        try {
-            strs = Files.readAllLines(path);
-        }
-        catch (IOException e) {
-            logger.error("CsvDayMeteringDataRawReaderImpl.read failed: " + e.getMessage());
-            return;
-        }
-        logger.debug("Reading file content competed");
+        List<String> strs = readFile(path);
 
-        logger.debug("Parsing file content started");
-        List<DayMeteringDataRaw> list = strs.stream()
+        logger.info("Parsing file content started");
+        List<DayMeteringDataRaw> list = IntStream.range(1, strs.size())
+            .mapToObj(i -> strs.get(i))
             .map(this::convert)
             .collect(toList());
-        logger.debug("Parsing file content completed, count of rows: " + list.size());
+        logger.info("Parsing file content completed, count of rows: " + list.size());
 
         logger.debug("Adding data to queue");
         queue.addAll(list);
         logger.info("CsvDayMeteringDataRawReaderImpl.read completed");
+    }
+
+    private List<String> readFile(Path path) {
+        logger.debug("Reading file content started");
+        List<String> strs;
+        try {
+            strs = Files.readAllLines(path);
+        }
+        catch (IOException e) {
+            logger.error("Reading file content failed: " + e.getMessage());
+            strs = emptyList();
+        }
+        logger.debug("Reading file content competed");
+
+        return strs;
     }
 
     private DayMeteringDataRaw convert(String s)  {

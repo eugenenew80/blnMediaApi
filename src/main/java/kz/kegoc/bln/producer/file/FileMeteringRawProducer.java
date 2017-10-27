@@ -52,7 +52,7 @@ public class FileMeteringRawProducer implements MeteringDataProducer {
 
 
 	@ProducerMonitor
-	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
+	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void execute() {
 		ImmutableList.of("hour", "day", "month").stream().forEach(subDir -> {
 			for (Path p : getListFiles(Paths.get(dir + "/" + subDir))) {
