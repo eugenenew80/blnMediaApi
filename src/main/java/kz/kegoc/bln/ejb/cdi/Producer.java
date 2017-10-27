@@ -8,11 +8,7 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import kz.kegoc.bln.ejb.annotation.DayData;
-import kz.kegoc.bln.ejb.annotation.HourData;
-import kz.kegoc.bln.ejb.annotation.MonthData;
-import kz.kegoc.bln.ejb.annotation.ParamCodes;
-import kz.kegoc.bln.ejb.annotation.EmcosParamUnits;
+import kz.kegoc.bln.ejb.annotation.*;
 import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
@@ -149,7 +145,13 @@ public class Producer {
 		return map;
 	}
 	
-	
+
+	@Produces
+	@MeteringDataPath
+	public String meteringDataPath() {
+		return "/home/eugene/dev/src/IdeaProjects/data";
+	}
+
 	@Produces
 	public EmcosConfig defaultEmcosConfig() {
 		return EmcosConfig.defaultEmcosServer().build();
@@ -157,26 +159,13 @@ public class Producer {
 
 
 	@Produces
-	@DayData
-	public DozerBeanMapper dayMeteringDataMapper() {
+	public DozerBeanMapper dozerBeanMapper() {
 		DozerBeanMapper mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/DayMeteringDataRawDtoDefaultMapping.xml"));
-		return mapper;
-	}
-
-	@Produces
-	@HourData
-	public DozerBeanMapper hourMeteringDataMapper() {
-		DozerBeanMapper mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/HourMeteringDataRawDtoDefaultMapping.xml"));
-		return mapper;
-	}
-
-	@Produces
-	@MonthData
-	public DozerBeanMapper monthMeteringDataMapper() {
-		DozerBeanMapper mapper = new DozerBeanMapper();
-		mapper.setMappingFiles(Arrays.asList("mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml"));
+		mapper.setMappingFiles(Arrays.asList(
+			"mapping/raw/DayMeteringDataRawDtoDefaultMapping.xml",
+			"mapping/raw/HourMeteringDataRawDtoDefaultMapping.xml",
+			"mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml"
+		));
 		return mapper;
 	}
 }

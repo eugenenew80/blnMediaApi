@@ -1,6 +1,5 @@
 package kz.kegoc.bln.webapi.media;
 
-import kz.kegoc.bln.ejb.annotation.HourData;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.dto.hour.HourMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.dto.hour.HourMeteringDataRawListDto;
@@ -58,6 +57,6 @@ public class HourMeteringDataRawResource {
 	@Inject
 	private MeteringDataQueue<HourMeteringDataRaw> service;
 
-	@Inject @HourData
-	private DozerBeanMapper mapper;
+	@Inject
+    private DozerBeanMapper mapper;
 }

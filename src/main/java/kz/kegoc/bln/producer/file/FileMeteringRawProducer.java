@@ -1,6 +1,7 @@
 package kz.kegoc.bln.producer.file;
 
 import com.google.common.collect.ImmutableList;
+import kz.kegoc.bln.ejb.annotation.MeteringDataPath;
 import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
@@ -27,7 +28,6 @@ import static java.util.stream.Collectors.toList;
 
 @Singleton
 public class FileMeteringRawProducer implements MeteringDataProducer {
-	private String dir = "/home/eugene/dev/src/IdeaProjects/data";
 	private Map<String, FileMeteringReader<? extends Metering>> mapReaders = new HashMap<>();
 
 	@PostConstruct
@@ -100,4 +100,7 @@ public class FileMeteringRawProducer implements MeteringDataProducer {
 
 	@Inject @XML
 	private FileMeteringReader<MonthMeteringDataRaw> xmlMonthMeteringDataRawReader;
+
+	@Inject @MeteringDataPath
+	private String dir;
 }

@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-import kz.kegoc.bln.ejb.annotation.DayData;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -53,6 +52,6 @@ public class DayMeteringDataRawResource {
 	@Inject
 	private MeteringDataQueue<DayMeteringDataRaw> service;
 
-	@Inject @DayData
-	private DozerBeanMapper mapper;
+	@Inject
+    private DozerBeanMapper mapper;
 }
