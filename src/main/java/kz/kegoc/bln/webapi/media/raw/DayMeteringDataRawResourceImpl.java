@@ -1,4 +1,4 @@
-package kz.kegoc.bln.webapi.media;
+package kz.kegoc.bln.webapi.media.raw;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,48 +10,47 @@ import javax.ws.rs.core.*;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.entity.media.dto.month.MonthMeteringDataRawDto;
+import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.dto.day.DayMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
-
 
 @RequestScoped
-@Path("/media/month/day")
+@Path("/media/raw/day")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
-public class MonthMeteringDataRawResourceImpl {
-	
+public class DayMeteringDataRawResourceImpl {
+
 	@POST
-	public Response create(MonthMeteringDataRawDto entity) {
+	public Response create(DayMeteringDataRawDto entity) {
 		entity.setWayEntering(WayEntering.USER);
 		entity.setStatus(DataStatus.RAW);
 		entity.setDataSourceCode("MANUAL");
 		
-		service.add(mapper.map(entity, MonthMeteringDataRaw.class));
+		service.add(mapper.map(entity, DayMeteringDataRaw.class));
 		return Response.ok()
 				.build();
 	}	
 
 	@POST
 	@Path("/list")
-	public Response createAll(List<MonthMeteringDataRawDto> listDto) {
+	public Response createAll(List<DayMeteringDataRawDto> listDto) {
 		
-		List<MonthMeteringDataRaw> list = listDto.stream()
+		List<DayMeteringDataRaw> list = listDto.stream()
 			.map(t-> { 
 				t.setWayEntering(WayEntering.USER);
 				t.setStatus(DataStatus.RAW);
 				t.setDataSourceCode("MANUAL");
-				return mapper.map(t, MonthMeteringDataRaw.class);
+				return mapper.map(t, DayMeteringDataRaw.class);
 			})
 			.collect(Collectors.toList());
 		
 		service.addAll(list);
 		return Response.ok().build();
 	}	
-	
+
 
 	@Inject
-	private MeteringDataQueue<MonthMeteringDataRaw> service;
+	private MeteringDataQueue<DayMeteringDataRaw> service;
 
 	@Inject
     private DozerBeanMapper mapper;

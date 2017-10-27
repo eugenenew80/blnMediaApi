@@ -3,14 +3,13 @@ package kz.kegoc.bln.webapi.config;
 import java.util.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import kz.kegoc.bln.ejb.jackson.ObjectMapperContextResolver;
 import kz.kegoc.bln.webapi.exception.mapper.*;
-import kz.kegoc.bln.webapi.media.DayMeteringDataRawResourceImpl;
-import kz.kegoc.bln.webapi.media.GroupResourceImpl;
-import kz.kegoc.bln.webapi.media.HourMeteringDataRawResourceImpl;
-import kz.kegoc.bln.webapi.media.MonthMeteringDataRawResourceImpl;
-
+import kz.kegoc.bln.webapi.media.oper.GroupMeteringPointResourceImpl;
+import kz.kegoc.bln.webapi.media.oper.GroupResourceImpl;
+import kz.kegoc.bln.webapi.media.raw.DayMeteringDataRawResourceImpl;
+import kz.kegoc.bln.webapi.media.raw.HourMeteringDataRawResourceImpl;
+import kz.kegoc.bln.webapi.media.raw.MonthMeteringDataRawResourceImpl;
 
 @ApplicationPath("/webapi")
 public class JaxRsConfig extends Application {
@@ -23,6 +22,7 @@ public class JaxRsConfig extends Application {
 		resources.add(DayMeteringDataRawResourceImpl.class);
 		resources.add(HourMeteringDataRawResourceImpl.class);
 		resources.add(GroupResourceImpl.class);
+		resources.add(GroupMeteringPointResourceImpl.class);
 		
 		//resources.add(BasicAuthentificationFilter.class);
 		resources.add(RepositryNotFoundExceptionMapperImpl.class);

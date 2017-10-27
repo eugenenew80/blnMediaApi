@@ -1,4 +1,4 @@
-package kz.kegoc.bln.webapi.media;
+package kz.kegoc.bln.webapi.media.oper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -8,7 +8,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import org.dozer.DozerBeanMapper;
 import org.apache.commons.lang3.StringUtils;
-
 import kz.kegoc.bln.entity.media.Group;
 import kz.kegoc.bln.entity.media.dto.GroupDto;
 import kz.kegoc.bln.repository.common.query.*;
@@ -87,9 +86,18 @@ public class GroupResourceImpl {
 	}
 	
 
+	@Path("/{groupId : \\d+}/mediaGroupMeteringPoint")
+	public GroupMeteringPointResourceImpl getMeteringPoints(@PathParam("groupId") Long id) {
+		return groupMeteringPointResource;
+	}
+	
+	
 	@Inject
 	private GroupService service;
 
+	@Inject
+	private GroupMeteringPointResourceImpl groupMeteringPointResource;
+	
 	@Inject
 	private DozerBeanMapper mapper;
 }

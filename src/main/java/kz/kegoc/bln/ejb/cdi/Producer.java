@@ -169,7 +169,8 @@ public class Producer {
 			"mapping/raw/DayMeteringDataRawDtoDefaultMapping.xml",
 			"mapping/raw/HourMeteringDataRawDtoDefaultMapping.xml",
 			"mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml",
-			"mapping/oper/GroupDtoDefaultMapping.xml"
+			"mapping/oper/GroupDtoDefaultMapping.xml",
+			"mapping/oper/GroupMeteringPointDtoDefaultMapping.xml"
 		));
 		return mapper;
 	}
