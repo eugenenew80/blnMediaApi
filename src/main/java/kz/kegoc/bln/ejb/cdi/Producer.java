@@ -165,12 +165,12 @@ public class Producer {
 		
 		mapper = new DozerBeanMapper();
 		mapper.setMappingFiles(Arrays.asList(
-			"mapping/MappingConfig.xml",	
-			"mapping/raw/DayMeteringDataRawDtoDefaultMapping.xml",
-			"mapping/raw/HourMeteringDataRawDtoDefaultMapping.xml",
-			"mapping/raw/MonthMeteringDataRawDtoDefaultMapping.xml",
-			"mapping/oper/GroupDtoDefaultMapping.xml",
-			"mapping/oper/GroupMeteringPointDtoDefaultMapping.xml"
+			"mapping/MappingConfig.xml",
+				"mapping/raw/default/DayMeteringDataRawDto.xml",
+				"mapping/raw/default/HourMeteringDataRawDto.xml",
+				"mapping/raw/default/MonthMeteringDataRawDto.xml",
+				"mapping/oper/default/GroupDto.xml",
+				"mapping/oper/default/GroupMeteringPointDto.xml"
 		));
 		return mapper;
 	}
