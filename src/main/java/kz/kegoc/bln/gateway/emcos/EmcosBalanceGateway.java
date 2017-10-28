@@ -1,6 +1,6 @@
 package kz.kegoc.bln.gateway.emcos;
 
-import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
 
 import java.time.LocalDateTime;
 import java.util.List;

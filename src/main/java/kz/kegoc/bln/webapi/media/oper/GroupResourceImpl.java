@@ -8,10 +8,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import org.dozer.DozerBeanMapper;
 import org.apache.commons.lang3.StringUtils;
-import kz.kegoc.bln.entity.media.Group;
-import kz.kegoc.bln.entity.media.dto.GroupDto;
+import kz.kegoc.bln.entity.media.oper.Group;
+import kz.kegoc.bln.entity.media.oper.dto.GroupDto;
 import kz.kegoc.bln.repository.common.query.*;
-import kz.kegoc.bln.service.media.GroupService;
+import kz.kegoc.bln.service.media.oper.GroupService;
 
 
 @RequestScoped

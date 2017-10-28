@@ -4,7 +4,7 @@
           xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
   <mapping>
-    <class-a>kz.kegoc.bln.entity.media.day.DayMeteringDataRaw</class-a>
-    <class-b>kz.kegoc.bln.entity.media.dto.day.DayMeteringDataRawDto</class-b>
+    <class-a>kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw</class-a>
+    <class-b>kz.kegoc.bln.entity.media.raw.dto.DayMeteringDataRawDto</class-b>
   </mapping> 
 </mappings> 

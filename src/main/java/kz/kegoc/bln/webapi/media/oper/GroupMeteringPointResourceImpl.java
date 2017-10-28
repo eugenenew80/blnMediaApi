@@ -6,11 +6,11 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import kz.kegoc.bln.entity.media.GroupMeteringPoint;
-import kz.kegoc.bln.service.media.GroupMeteringPointService;
+import kz.kegoc.bln.entity.media.oper.GroupMeteringPoint;
+import kz.kegoc.bln.service.media.oper.GroupMeteringPointService;
 import org.dozer.DozerBeanMapper;
-import kz.kegoc.bln.entity.media.dto.GroupMeteringPointDto;
-import kz.kegoc.bln.service.media.GroupService;;
+import kz.kegoc.bln.entity.media.oper.dto.GroupMeteringPointDto;
+import kz.kegoc.bln.service.media.oper.GroupService;;
 
 
 @RequestScoped

@@ -1,14 +1,14 @@
 package kz.kegoc.bln.loader;
 
 import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.service.media.MeteringDataService;
+import kz.kegoc.bln.service.media.raw.MeteringDataRawService;
 import org.redisson.api.RBlockingQueue;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractMeteringDataLoader<T extends Metering> implements MeteringDataLoader<T> {
 
-	public AbstractMeteringDataLoader(MeteringDataService<T> service, RBlockingQueue<T> queue) {
+	public AbstractMeteringDataLoader(MeteringDataRawService<T> service, RBlockingQueue<T> queue) {
 		this.service = service;
 		this.queue = queue;
 	}
@@ -25,6 +25,6 @@ public abstract class AbstractMeteringDataLoader<T extends Metering> implements 
 		service.saveAll(list);
 	}
 
-	private MeteringDataService<T> service;
+	private MeteringDataRawService<T> service;
 	private RBlockingQueue<T> queue;
 }

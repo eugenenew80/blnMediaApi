@@ -10,9 +10,9 @@ import javax.ws.rs.core.*;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.entity.media.dto.month.MonthMeteringDataRawDto;
+import kz.kegoc.bln.entity.media.raw.dto.MonthMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 
 
 @RequestScoped

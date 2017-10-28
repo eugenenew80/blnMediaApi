@@ -4,8 +4,8 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringReader;
 

@@ -3,12 +3,13 @@ package kz.kegoc.bln.gateway.emcos.impl;
 import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.*;
-import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.raw.LastLoadInfo;
 import kz.kegoc.bln.gateway.emcos.EmcosBalanceGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
-import kz.kegoc.bln.service.media.LastLoadInfoService;
+import kz.kegoc.bln.service.media.raw.LastLoadInfoService;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;

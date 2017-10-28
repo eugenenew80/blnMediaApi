@@ -9,10 +9,10 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.*;
-import kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.day.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 

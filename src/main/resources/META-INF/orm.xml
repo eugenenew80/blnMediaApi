@@ -44,7 +44,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.hour.HourMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw">
 		<table name="media_hour_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -105,7 +105,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.day.DayMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw">
 		<table name="media_day_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -157,7 +157,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.month.MonthMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw">
 		<table name="media_month_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -218,7 +218,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.day.DayMeteringBalanceRaw">
+	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw">
 		<table name="media_day_metering_balance_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -275,7 +275,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.LastLoadInfo">
+	<entity class="kz.kegoc.bln.entity.media.raw.LastLoadInfo">
 		<table name="media_last_load_info" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -302,7 +302,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.day.DayMeteringDataOper">
+	<entity class="kz.kegoc.bln.entity.media.oper.DayMeteringDataOper">
 		<table name="media_day_metering_data_oper" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -371,7 +371,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.month.MonthMeteringDataOper">
+	<entity class="kz.kegoc.bln.entity.media.oper.MonthMeteringDataOper">
 		<table name="media_month_metering_data_oper" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -444,7 +444,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.Group">
+	<entity class="kz.kegoc.bln.entity.media.oper.Group">
 		<table name="media_groups" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -466,7 +466,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.GroupMeteringPoint">
+	<entity class="kz.kegoc.bln.entity.media.oper.GroupMeteringPoint">
 		<table name="media_group_metering_points" schema="apps" />
 		<attributes>
 			<id name="id">
