@@ -1,5 +1,8 @@
 package kz.kegoc.bln.registry.emcos;
 
+import javax.ejb.Local;
+
+@Local
 public interface TemplateRegistry {
 	void registerTemplate(String key, String template);
 	

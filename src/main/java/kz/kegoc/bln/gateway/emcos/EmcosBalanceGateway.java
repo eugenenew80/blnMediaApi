@@ -2,9 +2,11 @@ package kz.kegoc.bln.gateway.emcos;
 
 import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
 
+import javax.ejb.Local;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Local
 public interface EmcosBalanceGateway {
     EmcosBalanceGateway cfg(List<EmcosPointCfg> pointsCfg);
 

@@ -2,7 +2,7 @@ package kz.kegoc.bln.webapi.media.oper;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -12,8 +12,7 @@ import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.oper.dto.GroupMeteringPointDto;
 import kz.kegoc.bln.service.media.oper.GroupService;;
 
-
-@RequestScoped
+@Stateless
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class GroupMeteringPointResourceImpl {

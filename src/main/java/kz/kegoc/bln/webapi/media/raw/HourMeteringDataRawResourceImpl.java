@@ -7,8 +7,7 @@ import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
-
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -18,8 +17,7 @@ import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@RequestScoped
+@Stateless
 @Path("/media/hour/day")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })

@@ -2,19 +2,18 @@ package kz.kegoc.bln.webapi.media.oper;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import org.dozer.DozerBeanMapper;
-import org.apache.commons.lang3.StringUtils;
 import kz.kegoc.bln.entity.media.oper.Group;
 import kz.kegoc.bln.entity.media.oper.dto.GroupDto;
 import kz.kegoc.bln.repository.common.query.*;
 import kz.kegoc.bln.service.media.oper.GroupService;
+import static org.apache.commons.lang3.StringUtils.*;
 
-
-@RequestScoped
+@Stateless
 @Path("/media/mediaGroup")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
@@ -23,7 +22,7 @@ public class GroupResourceImpl {
 	@GET 
 	public Response getAll(@QueryParam("name") String name) {		
 		Query query = QueryImpl.builder()			
-			.setParameter("name", StringUtils.isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)	
+			.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
 			.setOrderBy("t.id")
 			.build();		
 		

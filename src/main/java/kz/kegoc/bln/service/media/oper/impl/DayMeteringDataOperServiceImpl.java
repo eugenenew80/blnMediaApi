@@ -9,7 +9,8 @@ import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.media.oper.DayMeteringDataOperService;
 
 @Stateless
-public class DayMeteringDataOperServiceImpl extends AbstractEntityService<DayMeteringDataOper> implements DayMeteringDataOperService {
+public class DayMeteringDataOperServiceImpl extends AbstractEntityService<DayMeteringDataOper>
+        implements DayMeteringDataOperService {
     
 	@Inject
     public DayMeteringDataOperServiceImpl(DayMeteringDataOperRepository repository, Validator validator) {

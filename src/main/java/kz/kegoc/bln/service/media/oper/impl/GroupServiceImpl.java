@@ -10,7 +10,8 @@ import javax.inject.Inject;
 import javax.validation.Validator;
 
 @Stateless
-public class GroupServiceImpl extends AbstractEntityService<Group> implements GroupService {
+public class GroupServiceImpl extends AbstractEntityService<Group>
+        implements GroupService {
 
 	@Inject
     public GroupServiceImpl(GroupRepository repository, Validator validator) {

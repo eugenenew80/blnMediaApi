@@ -9,7 +9,8 @@ import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.media.oper.MonthMeteringDataOperService;
 
 @Stateless
-public class MonthMeteringDataOperServiceImpl extends AbstractEntityService<MonthMeteringDataOper> implements MonthMeteringDataOperService {
+public class MonthMeteringDataOperServiceImpl extends AbstractEntityService<MonthMeteringDataOper>
+        implements MonthMeteringDataOperService {
     
 	@Inject
     public MonthMeteringDataOperServiceImpl(MonthMeteringDataOperRepository repository, Validator validator) {

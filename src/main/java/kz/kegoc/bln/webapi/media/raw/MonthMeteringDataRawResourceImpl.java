@@ -2,7 +2,7 @@ package kz.kegoc.bln.webapi.media.raw;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -14,8 +14,7 @@ import kz.kegoc.bln.entity.media.raw.dto.MonthMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
 
-
-@RequestScoped
+@Stateless
 @Path("/media/month/day")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })

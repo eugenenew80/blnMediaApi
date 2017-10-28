@@ -2,11 +2,10 @@ package kz.kegoc.bln.webapi.media.raw;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.enterprise.context.RequestScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -14,7 +13,7 @@ import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
 import kz.kegoc.bln.entity.media.raw.dto.DayMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.DataStatus;
 
-@RequestScoped
+@Stateless
 @Path("/media/raw/day")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
