@@ -46,10 +46,6 @@ public class FileMeteringRawProducer implements MeteringDataProducer {
 		mapReaders.put(subDir, 	reader);
 	}
 
-	public void unregisterReader(String subDir) {
-		mapReaders.remove(subDir);
-	}
-
 
 	@ProducerMonitor
 	@Schedule(minute = "*/1", hour = "*", persistent = false)
@@ -82,6 +78,7 @@ public class FileMeteringRawProducer implements MeteringDataProducer {
 		}
 		return list;
 	}
+
 
 	@Inject @CSV
 	private FileMeteringReader<HourMeteringDataRaw> csvHourMeteringDataRawReader;
