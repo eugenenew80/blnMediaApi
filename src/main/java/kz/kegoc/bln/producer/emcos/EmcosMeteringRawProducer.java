@@ -12,7 +12,7 @@ import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringReader;
 @Singleton
 public class EmcosMeteringRawProducer implements MeteringDataProducer {
 	@ProducerMonitor
-	@Schedule(minute = "*/30", hour = "*", persistent = false)
+	@Schedule(minute = "30/5", hour = "*", persistent = false)
 	public void execute() {
 		emcosDayMeteringBalanceReader.read();
 		emcosHourMeteringDataReader.read();
