@@ -47,7 +47,7 @@ public class EmcosDayMeteringBalanceRawReader implements EmcosMeteringReader<Day
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	EmcosCfgGateway emcosCfgGateway;
+	private EmcosCfgGateway emcosCfgGateway;
 
 	@Inject
 	private EmcosBalanceGateway emcosBalanceGateway;
