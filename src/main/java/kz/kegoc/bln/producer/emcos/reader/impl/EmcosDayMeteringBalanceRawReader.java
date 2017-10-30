@@ -29,8 +29,10 @@ public class EmcosDayMeteringBalanceRawReader implements EmcosMeteringReader<Day
 					.requestedTime(requestedTime)
 					.request();
 
-				queueService.addAll(meteringBalance);
-				lastLoadInfoService.updateLastBalanceLoadDate(meteringBalance);
+				if (meteringBalance.size()>0) {
+					queueService.addAll(meteringBalance);
+					lastLoadInfoService.updateLastBalanceLoadDate(meteringBalance);
+				}
 			});
     }
 

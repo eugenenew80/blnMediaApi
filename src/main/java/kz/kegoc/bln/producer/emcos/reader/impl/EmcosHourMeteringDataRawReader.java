@@ -33,8 +33,10 @@ public class EmcosHourMeteringDataRawReader implements EmcosMeteringReader<HourM
 					.requestedTime(requestedTime)
 					.request();
 
-				queueService.addAll(buildHourMeteringData(data));
-				lastLoadInfoService.updateLastDataLoadDate(data);
+				if (data.size()>0) {
+					queueService.addAll(buildHourMeteringData(data));
+					lastLoadInfoService.updateLastDataLoadDate(data);
+				}
 			});
     }
 
