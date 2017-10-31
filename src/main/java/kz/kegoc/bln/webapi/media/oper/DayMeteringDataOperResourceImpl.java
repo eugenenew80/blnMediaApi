@@ -1,5 +1,6 @@
 package kz.kegoc.bln.webapi.media.oper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -30,7 +31,7 @@ public class DayMeteringDataOperResourceImpl {
 	@Path("/byGroup/{groupId : \\d+}") 
 	public Response getByGroup(@PathParam("groupId") Long groupId, @QueryParam("operDate") String operDateStr ) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDateTime operDate = LocalDateTime.parse(operDateStr, dateFormatter);
+		LocalDateTime operDate = LocalDate.parse(operDateStr, dateFormatter).atStartOfDay();
 		
 		
 		List<DayMeteringDataOperDto> list = null;
@@ -51,7 +52,7 @@ public class DayMeteringDataOperResourceImpl {
 							b.setDataSourceCode("EMCOS");
 							b.setWayEntering(WayEntering.EMCOS);
 							b.setUnitCode("kWh");
-							b.setParamCode("A+");
+							b.setParamCode("AB+");
 							b.setStatus(DataStatus.RAW);
 							
 							DayMeteringBalanceRaw balanceStart = dayMeteringBalanceService.findByEntity(b);
