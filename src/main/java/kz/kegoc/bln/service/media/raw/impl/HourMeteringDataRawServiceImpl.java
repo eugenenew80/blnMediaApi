@@ -18,4 +18,8 @@ public class HourMeteringDataRawServiceImpl
     public HourMeteringDataRawServiceImpl(MeteringDataRawRepository<HourMeteringDataRaw> repository, Validator validator) {
         super(repository, validator);
     }
+
+	public HourMeteringDataRaw findByEntity(HourMeteringDataRaw entity) {
+		return null;
+	}
 }

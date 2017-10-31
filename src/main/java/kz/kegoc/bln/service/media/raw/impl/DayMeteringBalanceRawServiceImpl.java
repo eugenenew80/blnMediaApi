@@ -17,5 +17,12 @@ public class DayMeteringBalanceRawServiceImpl
 	@Inject
     public DayMeteringBalanceRawServiceImpl(MeteringDataRawRepository<DayMeteringBalanceRaw> repository, Validator validator) {
         super(repository, validator);
+        this.dayMeteringBalanceRawRepository = repository;
     }
+
+	public DayMeteringBalanceRaw findByEntity(DayMeteringBalanceRaw entity) {
+		return dayMeteringBalanceRawRepository.selectByEntity(entity);
+	}
+	
+	private MeteringDataRawRepository<DayMeteringBalanceRaw> dayMeteringBalanceRawRepository;
 }

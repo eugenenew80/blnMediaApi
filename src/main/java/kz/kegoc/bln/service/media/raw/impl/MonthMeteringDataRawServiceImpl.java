@@ -18,4 +18,8 @@ public class MonthMeteringDataRawServiceImpl
     public MonthMeteringDataRawServiceImpl(MeteringDataRawRepository<MonthMeteringDataRaw> repository, Validator validator) {
 		super(repository, validator);
 	}
+
+	public MonthMeteringDataRaw findByEntity(MonthMeteringDataRaw entity) {
+		return null;
+	}
 }

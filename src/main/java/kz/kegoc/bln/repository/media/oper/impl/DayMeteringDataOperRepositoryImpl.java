@@ -1,5 +1,6 @@
 package kz.kegoc.bln.repository.media.oper.impl;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import kz.kegoc.bln.entity.media.oper.DayMeteringDataOper;
@@ -13,5 +14,11 @@ public class DayMeteringDataOperRepositoryImpl extends AbstractRepository<DayMet
 	public DayMeteringDataOperRepositoryImpl(EntityManager entityManager) {
 		this();
 		setEntityManager(entityManager);
+	}
+
+	public List<DayMeteringDataOper> selectByGroup(Long groupId) {
+		return getEntityManager().createNamedQuery("DayMeteringDataOper.findByGroup", DayMeteringDataOper.class)
+					.setParameter("groupId", groupId)
+					.getResultList();
 	}
 }

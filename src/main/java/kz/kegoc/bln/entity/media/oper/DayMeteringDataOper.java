@@ -20,7 +20,6 @@ public class DayMeteringDataOper implements Metering {
 	private Double startBalance;
 	private Double endBalance;
 	private Double dif;
-	private DataStatus status;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
 }

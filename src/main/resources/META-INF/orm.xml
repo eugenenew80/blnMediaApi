@@ -19,6 +19,8 @@
 			<basic name="externalCode">
 				<column name="external_code" />
 			</basic>
+			
+			<one-to-many name="meters" mapped-by="meteringPoint" /> 
 		</attributes>
 	</entity>
 
@@ -44,6 +46,30 @@
 		</attributes>
 	</entity>
 
+	<entity class="kz.kegoc.bln.entity.dict.MeteringPointMeter">
+		<table name="dict_metering_point_meters" schema="apps" />
+		<attributes>
+			<id name="id">
+				<column name="id" />
+        		<generated-value strategy="SEQUENCE" generator="dict_metering_point_meters_gen" />
+        		<sequence-generator
+        			name="dict_metering_point_meters_gen"
+        			sequence-name="apps.dict_metering_point_meters_s"
+					allocation-size="1"
+        		/>				
+			</id>
+      		
+			<many-to-one name="meteringPoint">
+				<join-column name="metering_point_id" />	
+			</many-to-one>  
+
+			<many-to-one name="meter">
+				<join-column name="meter_id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
+	
+	
 	<entity class="kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw">
 		<table name="media_hour_metering_data_raw" schema="apps"/>
 		<attributes>
@@ -348,11 +374,6 @@
 				<column name="dif" />
 			</basic>
 
-			<basic name="status">
-				<column name="status" />
-				<enumerated>ORDINAL</enumerated>
-			</basic>
-
 			<basic name="createDate">
 				<column name="create_date" />
 			</basic>
@@ -500,4 +521,5 @@
 			</many-to-one>
 		</attributes>
 	</entity>
+
 </entity-mappings>

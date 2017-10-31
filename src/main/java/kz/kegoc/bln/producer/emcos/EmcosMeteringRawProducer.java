@@ -16,7 +16,7 @@ public class EmcosMeteringRawProducer implements MeteringDataProducer {
 	private static final Logger logger = LoggerFactory.getLogger(EmcosMeteringRawProducer.class);
 	
 	@ProducerMonitor
-	@Schedule(minute = "30/15", hour = "*", persistent = false)
+	@Schedule(minute = "*/30", hour = "*", persistent = false)
 	public void execute() {
 		try {
 			emcosDayMeteringBalanceReader.read();

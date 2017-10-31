@@ -9,4 +9,6 @@ import java.util.List;
 @Local
 public interface MeteringDataRawService<T extends Metering> extends EntityService<T> {
     void saveAll(List<T> list);
+    
+    T findByEntity(T entity);
 }

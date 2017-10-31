@@ -18,4 +18,9 @@ public class DayMeteringDataRawServiceImpl
     public DayMeteringDataRawServiceImpl(MeteringDataRawRepository<DayMeteringDataRaw> repository, Validator validator) {
         super(repository, validator);
     }
+
+	public DayMeteringDataRaw findByEntity(DayMeteringDataRaw entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

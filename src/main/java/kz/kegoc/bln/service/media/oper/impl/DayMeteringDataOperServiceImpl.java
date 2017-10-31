@@ -1,5 +1,7 @@
 package kz.kegoc.bln.service.media.oper.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
@@ -15,5 +17,12 @@ public class DayMeteringDataOperServiceImpl extends AbstractEntityService<DayMet
 	@Inject
     public DayMeteringDataOperServiceImpl(DayMeteringDataOperRepository repository, Validator validator) {
         super(repository, validator);
+        this.dayMeteringDataOperRepository = repository;
     }
+
+	public List<DayMeteringDataOper> findByGroup(Long groupId) {
+		return dayMeteringDataOperRepository.selectByGroup(groupId);
+	}
+	
+	private DayMeteringDataOperRepository dayMeteringDataOperRepository;
 }

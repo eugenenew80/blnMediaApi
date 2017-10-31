@@ -1,9 +1,7 @@
 package kz.kegoc.bln.entity.media.oper;
 
 import java.time.LocalDate;
-
 import javax.validation.constraints.NotNull;
-
 import kz.kegoc.bln.entity.common.HasId;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import lombok.Data;
@@ -22,5 +20,5 @@ public class GroupMeteringPoint implements HasId {
     
     private Long listOrder;
 	private LocalDate startDate;
-	private LocalDate endDate;    
+	private LocalDate endDate; 
 }

@@ -75,9 +75,4 @@
 		</query>
 	</named-query>   
 	
-	<named-query name="Group.findByName">
-		<query>
-			select t from Group t where t.name=:name
-		</query>	            
-	</named-query>	
 </entity-mappings>
