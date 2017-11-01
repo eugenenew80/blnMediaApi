@@ -69,24 +69,20 @@ public class DayMeteringDataOperServiceImpl extends AbstractEntityService<DayMet
 		return 
 			group.getMeteringPoints().stream()
 				.map(GroupMeteringPoint::getMeteringPoint)
-				.map(point -> {
-					return point.getMeters().stream()
-						.map(MeteringPointMeter::getMeter)	
-						.map(meter -> {
-							return paramCodes.keySet().stream()
-								.filter(param -> param.contains("AB") )	
-								.map(param -> mapToPint(point, meter, param, operDate))
-								.collect(Collectors.toList());
-						})
-						.flatMap(p -> p.stream())
-						.collect(Collectors.toList());
-				})
+				.map(point -> point.getMeters().stream()
+                    .map(MeteringPointMeter::getMeter)
+                    .map(meter -> paramCodes.keySet().stream()
+                        .filter(param -> param.contains("AB") )
+                        .map(param -> mapToPoint(point, meter, param, operDate))
+                        .collect(Collectors.toList()))
+                    .flatMap(p -> p.stream())
+                    .collect(Collectors.toList()))
 				.flatMap(l -> l.stream())
 				.collect(Collectors.toList());
 	}
 	
 	
-	private DayMeteringDataOper mapToPint(MeteringPoint point, Meter meter, String param, LocalDateTime operDate) {
+	private DayMeteringDataOper mapToPoint(MeteringPoint point, Meter meter, String param, LocalDateTime operDate) {
 		DayMeteringDataOper d = new DayMeteringDataOper();
 		d.setMeteringPoint(point);
 		d.setMeter(meter);
