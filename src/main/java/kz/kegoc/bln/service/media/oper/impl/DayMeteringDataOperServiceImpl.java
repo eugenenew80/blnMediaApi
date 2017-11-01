@@ -36,8 +36,6 @@ public class DayMeteringDataOperServiceImpl extends AbstractEntityService<DayMet
 
 	
 	public List<DayMeteringDataOper> findByGroup(Long groupId, LocalDateTime operDate) {
-		List<DayMeteringDataOper> emptyList = emptyGroup(groupId, operDate);
-		
 		List<MeteringPoint> meteringPointsInGroup = groupService.findById(groupId).getMeteringPoints()
 			.stream()
 			.map(m -> m.getMeteringPoint())
@@ -53,7 +51,8 @@ public class DayMeteringDataOperServiceImpl extends AbstractEntityService<DayMet
 			.distinct()
 			.collect(Collectors.toList());
 		
-		List<DayMeteringDataOper> newOperData = emptyList.stream()
+		List<DayMeteringDataOper> newOperData = emptyGroup(groupId, operDate)
+			.stream()
 			.filter(t -> !curMeteringPoints.contains(t.getMeteringPoint()))
 			.collect(Collectors.toList());
 		
