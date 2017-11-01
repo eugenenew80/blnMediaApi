@@ -33,7 +33,6 @@ public class DayMeteringDataOperServiceImpl extends AbstractEntityService<DayMet
         super(repository, validator);
         this.dayMeteringDataOperRepository = repository;
     }
-
 	
 	public List<DayMeteringDataOper> findByGroup(Long groupId, LocalDateTime operDate) {
 		List<MeteringPoint> meteringPointsInGroup = groupService.findById(groupId).getMeteringPoints()
