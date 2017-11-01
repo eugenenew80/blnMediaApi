@@ -10,16 +10,9 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import org.dozer.DozerBeanMapper;
-
-import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.oper.DayMeteringDataOper;
-import kz.kegoc.bln.entity.media.oper.Group;
 import kz.kegoc.bln.entity.media.oper.dto.DayMeteringDataOperDto;
-import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
 import kz.kegoc.bln.service.media.oper.DayMeteringDataOperService;
-import kz.kegoc.bln.service.media.oper.GroupService;
-import kz.kegoc.bln.service.media.raw.MeteringDataRawService;
 
 @Stateless
 @Path("/media/mediaDayMeteringDataOper")
@@ -30,48 +23,33 @@ public class DayMeteringDataOperResourceImpl {
 	@GET 
 	@Path("/byGroup/{groupId : \\d+}") 
 	public Response getByGroup(@PathParam("groupId") Long groupId, @QueryParam("operDate") String operDateStr ) {
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDateTime operDate = LocalDate.parse(operDateStr, dateFormatter).atStartOfDay();
+		LocalDateTime operDate = LocalDate.parse(operDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
 		
-		
-		List<DayMeteringDataOperDto> list = null;
-		Group group = groupService.findById(groupId);
-		if (group!=null) {
-			list = group.getMeteringPoints().stream()
-				.map( g -> g.getMeteringPoint())
-				.map(m -> {
-					return m.getMeters().stream()
-						.map(mr -> {
-							DayMeteringDataOper d = new DayMeteringDataOper();
-							d.setMeteringPoint(m);
-							d.setMeter(mr.getMeter());
-							
-							DayMeteringBalanceRaw b = new DayMeteringBalanceRaw();
-							b.setMeteringDate(operDate.minusDays(1));
-							b.setExternalCode(m.getExternalCode());
-							b.setDataSourceCode("EMCOS");
-							b.setWayEntering(WayEntering.EMCOS);
-							b.setUnitCode("kWh");
-							b.setParamCode("AB+");
-							b.setStatus(DataStatus.RAW);
-							
-							DayMeteringBalanceRaw balanceStart = dayMeteringBalanceService.findByEntity(b);
-							System.out.println(balanceStart);
-							
-							return d;
-						})
-						.collect(Collectors.toList());
-				})
-				.flatMap(l -> l.stream())
+		List<DayMeteringDataOperDto> list = service.findByGroup(groupId, operDate)
+				.stream()
 				.map( it-> mapper.map(it, DayMeteringDataOperDto.class) )
 				.collect(Collectors.toList());
-		}
 		
 		return Response.ok()
 				.entity(new GenericEntity<Collection<DayMeteringDataOperDto>>(list){})
-				.build();
+				.build();		
 	}
 	
+
+	@GET 
+	@Path("/byGroup/{groupId : \\d+}/calc") 
+	public Response calcByGroup(@PathParam("groupId") Long groupId, @QueryParam("operDate") String operDateStr ) {
+		LocalDateTime operDate = LocalDate.parse(operDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
+		
+		List<DayMeteringDataOperDto> list = service.fillByGroup(groupId, operDate)
+				.stream()
+				.map( it-> mapper.map(it, DayMeteringDataOperDto.class) )
+				.collect(Collectors.toList());
+		
+		return Response.ok()
+				.entity(new GenericEntity<Collection<DayMeteringDataOperDto>>(list){})
+				.build();		
+	}
 	
 	@GET 
 	@Path("/{id : \\d+}") 
@@ -95,12 +73,6 @@ public class DayMeteringDataOperResourceImpl {
 	
 	@Inject
 	private DayMeteringDataOperService service;
-	
-	@Inject
-	private GroupService groupService;
-	
-	@Inject
-	private MeteringDataRawService<DayMeteringBalanceRaw> dayMeteringBalanceService;
 	
 	@Inject
 	private DozerBeanMapper mapper;
