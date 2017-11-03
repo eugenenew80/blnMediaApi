@@ -82,4 +82,10 @@
 		</query>
 	</named-query> 
 
+
+	<named-query name="DocType.findAll">
+		<query>
+			select t from DocType t order by t.id
+		</query>
+	</named-query>  
 </entity-mappings>

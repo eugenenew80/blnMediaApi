@@ -522,4 +522,23 @@
 		</attributes>
 	</entity>
 
+
+	<entity class="kz.kegoc.bln.entity.media.oper.DocType">
+		<table name="media_doc_types" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_types_gen" />
+				<sequence-generator
+						name="media_doc_types_gen"
+						sequence-name="apps.media_doc_types_s"
+						allocation-size="1"
+				/>				
+			</id>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+		</attributes>
+	</entity>
 </entity-mappings>

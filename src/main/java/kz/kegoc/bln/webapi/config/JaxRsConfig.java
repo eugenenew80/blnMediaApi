@@ -7,6 +7,7 @@ import kz.kegoc.bln.ejb.jackson.ObjectMapperContextResolver;
 import kz.kegoc.bln.webapi.exception.mapper.*;
 import kz.kegoc.bln.webapi.filters.BasicAuthentificationFilter;
 import kz.kegoc.bln.webapi.media.oper.DayMeteringDataOperResourceImpl;
+import kz.kegoc.bln.webapi.media.oper.DocTypeResourceImpl;
 import kz.kegoc.bln.webapi.media.oper.GroupMeteringPointResourceImpl;
 import kz.kegoc.bln.webapi.media.oper.GroupResourceImpl;
 import kz.kegoc.bln.webapi.media.raw.DayMeteringDataRawResourceImpl;
@@ -26,6 +27,7 @@ public class JaxRsConfig extends Application {
 		resources.add(GroupResourceImpl.class);
 		resources.add(GroupMeteringPointResourceImpl.class);
 		resources.add(DayMeteringDataOperResourceImpl.class);
+		resources.add(DocTypeResourceImpl.class);
 		
 		resources.add(BasicAuthentificationFilter.class);
 		resources.add(RepositryNotFoundExceptionMapperImpl.class);
