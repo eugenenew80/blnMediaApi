@@ -18,7 +18,7 @@ public class HourMeteringDataRawRepositoryImpl
 				.setParameter("meteringDate", 	entity.getMeteringDate())
 				.setParameter("hour", 			entity.getHour())
 				.setParameter("unitCode", 		entity.getUnitCode())
-				.setParameter("dataSourceCode", 	entity.getDataSourceCode())
+				.setParameter("dataSource", 		entity.getDataSource())
 				.setParameter("paramCode", 		entity.getParamCode())
 				.setParameter("wayEntering", 		entity.getWayEntering())
 				.setParameter("status", 			entity.getStatus())

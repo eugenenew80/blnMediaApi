@@ -42,7 +42,7 @@
             	    t.externalCode=:externalCode
             	and t.meteringDate=:meteringDate
             	and t.hour=:hour
-            	and t.dataSourceCode=:dataSourceCode
+            	and t.dataSource=:dataSource
             	and t.wayEntering=:wayEntering
             	and t.status=:status
             	and t.unitCode=:unitCode
@@ -60,7 +60,7 @@
             where 
             	    t.externalCode=:externalCode
             	and t.meteringDate=:meteringDate
-            	and t.dataSourceCode=:dataSourceCode
+            	and t.dataSource=:dataSource
             	and t.wayEntering=:wayEntering
             	and t.status=:status
             	and t.unitCode=:unitCode

@@ -17,7 +17,7 @@ public class DayMeteringBalanceRawRepositoryImpl
 				.setParameter("externalCode", 	entity.getExternalCode())
 				.setParameter("meteringDate", 	entity.getMeteringDate())
 				.setParameter("unitCode", 		entity.getUnitCode())
-				.setParameter("dataSourceCode", 	entity.getDataSourceCode())
+				.setParameter("dataSource", 		entity.getDataSource())
 				.setParameter("paramCode", 		entity.getParamCode())
 				.setParameter("wayEntering", 		entity.getWayEntering())
 				.setParameter("status", 			entity.getStatus())

@@ -1,5 +1,6 @@
 package kz.kegoc.bln.producer.file.reader.impl;
 
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
@@ -73,9 +74,9 @@ public class CsvHourMeteringDataRawReaderImpl implements FileMeteringReader<Hour
 		d.setParamCode(data[3]);
 		d.setUnitCode(data[4]);
 		d.setVal( Double.parseDouble(data[5]) );
-		d.setWayEntering(WayEntering.CSV);
+		d.setWayEntering(WayEntering.FILE);
 		d.setStatus(DataStatus.RAW);
-		d.setDataSourceCode("MANUAL");
+		d.setDataSource(DataSource.CSV);
 
 		return d;
 	}

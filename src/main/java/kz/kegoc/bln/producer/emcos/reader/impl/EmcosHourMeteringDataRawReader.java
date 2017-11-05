@@ -60,7 +60,7 @@ public class EmcosHourMeteringDataRawReader implements EmcosMeteringReader<HourM
 				h.setHour(hour);
 				
 				h.setStatus( mapHourMeteringData.get(hour).get(0).getStatus() );
-				h.setDataSourceCode( mapHourMeteringData.get(hour).get(0).getDataSourceCode() );
+				h.setDataSource( mapHourMeteringData.get(hour).get(0).getDataSource() );
 				h.setParamCode( mapHourMeteringData.get(hour).get(0).getParamCode() );
 				h.setUnitCode( mapHourMeteringData.get(hour).get(0).getUnitCode() );
 				h.setWayEntering( mapHourMeteringData.get(hour).get(0).getWayEntering() );

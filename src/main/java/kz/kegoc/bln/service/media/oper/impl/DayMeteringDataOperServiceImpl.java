@@ -12,6 +12,7 @@ import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.dict.Meter;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.dict.MeteringPointMeter;
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.oper.DayMeteringDataOper;
@@ -89,8 +90,8 @@ public class DayMeteringDataOperServiceImpl
 		d.setOperDate(operDate.toLocalDate());
 		d.setParamCode(param);
 		d.setUnitCode("kWh");
-		d.setWayEntering(WayEntering.EMCOS);
-		d.setDataSourceCode("EMCOS");
+		d.setWayEntering(WayEntering.AUTO);
+		d.setDataSource(DataSource.EMCOS);
 		return d;		
 	}
 	
@@ -103,7 +104,7 @@ public class DayMeteringDataOperServiceImpl
 					b.setMeteringDate(d.getOperDate().minusDays(1).atStartOfDay());
 					b.setExternalCode(d.getMeteringPoint().getExternalCode());
 					b.setParamCode(d.getParamCode());
-					b.setDataSourceCode(d.getDataSourceCode());
+					b.setDataSource(d.getDataSource());
 					b.setWayEntering(d.getWayEntering());
 					b.setUnitCode(d.getUnitCode());
 					b.setStatus(DataStatus.RAW);

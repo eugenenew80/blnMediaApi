@@ -2,6 +2,7 @@ package kz.kegoc.bln.entity.media.raw;
 
 import java.time.LocalDateTime;
 
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -17,7 +18,7 @@ public class MonthMeteringDataRaw implements Metering {
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;
-	private String dataSourceCode;
+	private DataSource dataSource;
 	private WayEntering wayEntering;
 	private DataStatus status;
 	private Double val;

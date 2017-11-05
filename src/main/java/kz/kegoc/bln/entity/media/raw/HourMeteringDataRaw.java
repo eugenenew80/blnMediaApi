@@ -1,5 +1,6 @@
 package kz.kegoc.bln.entity.media.raw;
 
+import kz.kegoc.bln.entity.media.DataSource;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ public class HourMeteringDataRaw implements Metering {
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;
-	private String dataSourceCode;
+	private DataSource dataSource;
 	private WayEntering wayEntering;
 	private DataStatus status;
 	private Double val;

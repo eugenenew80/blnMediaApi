@@ -229,8 +229,8 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
         MinuteMeteringData data = new MinuteMeteringData();
         data.setExternalCode(externalCode);
         data.setMeteringDate(time);
-        data.setWayEntering(WayEntering.EMCOS);
-        data.setDataSourceCode("EMCOS");
+        data.setWayEntering(WayEntering.AUTO);
+        data.setDataSource(DataSource.EMCOS);
         data.setStatus(DataStatus.RAW);
         data.setUnitCode(emcosParamUnits.get(emcosParamCode));
         data.setParamCode(paramCodes.inverse().get(emcosParamCode));
