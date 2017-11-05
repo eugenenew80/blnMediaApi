@@ -91,10 +91,17 @@ public class DocMeteringReadingHeaderResourceImpl {
 			.build();
 	}
 
-	
+
+	@Path("/{headerId : \\d+}/mediaDocMeteringReaderLine")
+	public DocMeteringReadingLineResourceImpl getLines() {
+		return docMeteringReadingLineResource;
+	}
 	
 	@Inject
 	private DocMeteringReadingHeaderService service;
+
+	@Inject
+	private DocMeteringReadingLineResourceImpl docMeteringReadingLineResource;
 
 	@Inject
 	private DozerBeanMapper mapper;

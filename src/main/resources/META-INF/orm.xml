@@ -582,7 +582,7 @@
 				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_headers_gen" />
 				<sequence-generator
 						name="media_doc_metering_reading_headers_gen"
-						sequence-name="apps.media_doc_metering_reading_headers_s"
+						sequence-name="apps.media_doc_metering_reading_header_s"
 						allocation-size="1"
 				/>
 			</id>
@@ -614,6 +614,8 @@
 			<many-to-one name="template">
 				<join-column name="template_id"/>
 			</many-to-one>
+
+			<one-to-many name="lines" mapped-by="header" />
 		</attributes>
 	</entity>
 

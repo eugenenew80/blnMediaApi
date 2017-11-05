@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
@@ -18,4 +19,5 @@ public class DocMeteringReadingHeader implements HasId {
     private TemplateMeteringReading template;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
+    private List<DocMeteringReadingLine> lines;
 }
