@@ -212,9 +212,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
             .getNodeValue() ;
 
         if (timeStr!=null) {
-            if (timeStr.indexOf("T")<0) {
-                timeStr = timeStr+"T00:00:00000";
-            }
+            if (timeStr.indexOf("T")<0) timeStr = timeStr+"T00:00:00000";
             time = LocalDateTime.parse(timeStr, timeFormatter);
         }
 
