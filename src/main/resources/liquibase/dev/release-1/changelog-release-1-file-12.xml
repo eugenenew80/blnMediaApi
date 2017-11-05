@@ -25,6 +25,14 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="start_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="end_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE">
                 <constraints nullable="true"/>
             </column>

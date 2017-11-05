@@ -572,4 +572,49 @@
 			</many-to-one>
 		</attributes>
 	</entity>
+
+
+	<entity class="kz.kegoc.bln.entity.media.oper.DocMeteringReadingHeader">
+		<table name="media_doc_metering_reading_header" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_header_gen" />
+				<sequence-generator
+						name="media_doc_metering_reading_header_gen"
+						sequence-name="apps.media_doc_metering_reading_header_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="header">
+				<column name="header" />
+			</basic>
+
+			<basic name="startDate">
+				<column name="start_date" />
+			</basic>
+
+			<basic name="endDate">
+				<column name="end_date" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="template">
+				<join-column name="template_id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
+
 </entity-mappings>
