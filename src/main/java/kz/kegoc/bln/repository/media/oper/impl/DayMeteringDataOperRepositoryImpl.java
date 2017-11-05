@@ -10,7 +10,10 @@ import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.media.oper.DayMeteringDataOperRepository;
 
 @Stateless
-public class DayMeteringDataOperRepositoryImpl extends AbstractRepository<DayMeteringDataOper> implements DayMeteringDataOperRepository {
+public class DayMeteringDataOperRepositoryImpl
+		extends AbstractRepository<DayMeteringDataOper>
+				implements DayMeteringDataOperRepository {
+
 	public DayMeteringDataOperRepositoryImpl() { setClazz(DayMeteringDataOper.class); }
 
 	public DayMeteringDataOperRepositoryImpl(EntityManager entityManager) {

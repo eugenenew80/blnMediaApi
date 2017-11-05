@@ -10,8 +10,9 @@ import javax.inject.Inject;
 import javax.validation.Validator;
 
 @Stateless
-public class MeteringReadingTemplateServiceImpl extends AbstractEntityService<MeteringReadingTemplate>
-        implements MeteringReadingTemplateService {
+public class MeteringReadingTemplateServiceImpl
+        extends AbstractEntityService<MeteringReadingTemplate>
+                implements MeteringReadingTemplateService {
 
 	@Inject
     public MeteringReadingTemplateServiceImpl(MeteringReadingTemplateRepository repository, Validator validator) {

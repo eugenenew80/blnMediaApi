@@ -7,7 +7,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 
 @Stateless
-public class GroupRepositoryImpl extends AbstractRepository<Group> implements GroupRepository {
+public class GroupRepositoryImpl extends AbstractRepository<Group>
+		implements GroupRepository {
+
 	public GroupRepositoryImpl() { setClazz(Group.class); }
 
 	public GroupRepositoryImpl(EntityManager entityManager) {

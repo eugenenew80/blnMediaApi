@@ -10,8 +10,9 @@ import javax.inject.Inject;
 import javax.validation.Validator;
 
 @Stateless
-public class GroupMeteringPointServiceImpl extends AbstractEntityService<GroupMeteringPoint>
-        implements GroupMeteringPointService {
+public class GroupMeteringPointServiceImpl
+        extends AbstractEntityService<GroupMeteringPoint>
+                implements GroupMeteringPointService {
 
 	@Inject
     public GroupMeteringPointServiceImpl(GroupMeteringPointRepository repository, Validator validator) {

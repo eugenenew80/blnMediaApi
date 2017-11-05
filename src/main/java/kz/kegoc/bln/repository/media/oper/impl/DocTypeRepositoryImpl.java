@@ -7,7 +7,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 
 @Stateless
-public class DocTypeRepositoryImpl extends AbstractRepository<DocType> implements DocTypeRepository {
+public class DocTypeRepositoryImpl extends AbstractRepository<DocType>
+		implements DocTypeRepository {
+
 	public DocTypeRepositoryImpl() { setClazz(DocType.class); }
 
 	public DocTypeRepositoryImpl(EntityManager entityManager) {

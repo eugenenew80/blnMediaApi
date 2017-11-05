@@ -7,7 +7,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 
 @Stateless
-public class GroupMeteringPointRepositoryImpl extends AbstractRepository<GroupMeteringPoint> implements GroupMeteringPointRepository {
+public class GroupMeteringPointRepositoryImpl
+		extends AbstractRepository<GroupMeteringPoint>
+				implements GroupMeteringPointRepository {
+
 	public GroupMeteringPointRepositoryImpl() { setClazz(GroupMeteringPoint.class); }
 
 	public GroupMeteringPointRepositoryImpl(EntityManager entityManager) {

@@ -8,7 +8,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 
 @Stateless
-public class MeteringReadingTemplateRepositoryImpl extends AbstractRepository<MeteringReadingTemplate> implements MeteringReadingTemplateRepository {
+public class MeteringReadingTemplateRepositoryImpl
+		extends AbstractRepository<MeteringReadingTemplate>
+				implements MeteringReadingTemplateRepository {
+
 	public MeteringReadingTemplateRepositoryImpl() { setClazz(MeteringReadingTemplate.class); }
 
 	public MeteringReadingTemplateRepositoryImpl(EntityManager entityManager) {
