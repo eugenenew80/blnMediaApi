@@ -7,8 +7,8 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
     <changeSet id="media-eug-32" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <comment>Creating table: media_meter_reading_templates</comment>
-        <createTable tableName="media_meter_reading_templates" schemaName="apps">            
+        <comment>Creating table: media_template_meter_reading</comment>
+        <createTable tableName="media_template_meter_reading" schemaName="apps">            
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
@@ -32,20 +32,20 @@
     </changeSet>
 
 	<changeSet id="media-eug-33" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating primary key for table: media_meter_reading_templates</comment>
+	    <comment>Creating primary key for table: media_template_meter_reading</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_meter_reading_templates"
+	            constraintName="pk_media_template_meter_reading"
 	            schemaName="apps"
-	            tableName="media_meter_reading_templates"/>
+	            tableName="media_template_meter_reading"/>
 	</changeSet>
 	
 	<changeSet id="media-eug-34" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating sequence for table: media_meter_reading_templates</comment>
+	    <comment>Creating sequence for table: media_template_meter_reading</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_meter_reading_templates_s"
+	            sequenceName="media_template_meter_reading_s"
 	            startValue="1"/>
 	</changeSet>	
 </databaseChangeLog>

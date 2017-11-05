@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MeteringReadingTemplateDto {
+public class TemplateMeteringReadingDto {
     private Long id;
     private String name;
     private String header;

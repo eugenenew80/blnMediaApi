@@ -542,7 +542,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.oper.MeteringReadingTemplate">
+	<entity class="kz.kegoc.bln.entity.media.oper.TemplateMeteringReading">
 		<table name="media_metering_reading_templates" schema="apps"/>
 		<attributes>
 			<id name="id">

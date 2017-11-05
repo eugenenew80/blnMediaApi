@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class MeteringReadingTemplate implements HasId {
+public class TemplateMeteringReading implements HasId {
     private Long id;
     private String name;
     private String header;
