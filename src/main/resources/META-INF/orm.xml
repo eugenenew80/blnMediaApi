@@ -617,4 +617,72 @@
 		</attributes>
 	</entity>
 
+	<entity class="kz.kegoc.bln.entity.media.oper.DocMeteringReadingLine">
+		<table name="media_doc_metering_reading_line" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_line_gen" />
+				<sequence-generator
+						name="media_doc_metering_reading_line_gen"
+						sequence-name="apps.media_doc_metering_reading_line_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="operDate">
+				<column name="oper_date" />
+			</basic>
+
+			<basic name="paramCode">
+				<column name="param_code" />
+			</basic>
+
+			<basic name="unitCode">
+				<column name="unit_code" />
+			</basic>
+
+			<basic name="dataSourceCode">
+				<column name="data_source_code" />
+			</basic>
+
+			<basic name="wayEntering">
+				<column name="way_entering" />
+				<enumerated>STRING</enumerated>
+			</basic>
+
+			<basic name="startBalance">
+				<column name="start_balance" />
+			</basic>
+
+			<basic name="endBalance">
+				<column name="end_balance" />
+			</basic>
+
+			<basic name="flow">
+				<column name="flow" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="header">
+				<join-column name="header_id"/>
+			</many-to-one>
+
+			<many-to-one name="meteringPoint">
+				<join-column name="metering_point_id"/>
+			</many-to-one>
+
+			<many-to-one name="meter">
+				<join-column name="meter_id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
+
 </entity-mappings>

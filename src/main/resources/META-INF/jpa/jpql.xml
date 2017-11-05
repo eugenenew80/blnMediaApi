@@ -87,5 +87,24 @@
 		<query>
 			select t from DocType t order by t.id
 		</query>
-	</named-query>  
+	</named-query>
+
+    <named-query name="TemplateMeteringReading.findAll">
+		<query>
+			select t from TemplateMeteringReading t order by t.id
+		</query>
+	</named-query>
+
+    <named-query name="DocMeteringReadingHeader.findAll">
+        <query>
+            select t from DocMeteringReadingHeader t order by t.id
+        </query>
+    </named-query>
+
+    <named-query name="DocMeteringReadingLine.findByHeader">
+        <query>
+            select t from DocMeteringReadingLine t where t.headerId=:headerId order by t.id
+        </query>
+    </named-query>
+
 </entity-mappings>
