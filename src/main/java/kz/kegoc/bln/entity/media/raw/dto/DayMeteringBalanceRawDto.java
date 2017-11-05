@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.DataStatus;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class DayMeteringBalanceRawDto {
 	private String externalCode;
 	private String paramCode;
 	private String unitCode;
-	private String dataSourceCode;
+	private DataSource dataSource;
 	private WayEntering wayEntering;
 	private DataStatus status;
 	private Double val;

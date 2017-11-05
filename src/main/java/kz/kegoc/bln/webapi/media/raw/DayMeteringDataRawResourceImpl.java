@@ -6,6 +6,8 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.WayEntering;
@@ -21,9 +23,9 @@ public class DayMeteringDataRawResourceImpl {
 
 	@POST
 	public Response create(DayMeteringDataRawDto entity) {
-		entity.setWayEntering(WayEntering.USER);
+		entity.setWayEntering(WayEntering.API);
 		entity.setStatus(DataStatus.RAW);
-		entity.setDataSourceCode("MANUAL");
+		entity.setDataSource(DataSource.MANUAL);
 		
 		service.add(mapper.map(entity, DayMeteringDataRaw.class));
 		return Response.ok()
@@ -36,9 +38,9 @@ public class DayMeteringDataRawResourceImpl {
 		
 		List<DayMeteringDataRaw> list = listDto.stream()
 			.map(t-> { 
-				t.setWayEntering(WayEntering.USER);
+				t.setWayEntering(WayEntering.API);
 				t.setStatus(DataStatus.RAW);
-				t.setDataSourceCode("MANUAL");
+				t.setDataSource(DataSource.MANUAL);
 				return mapper.map(t, DayMeteringDataRaw.class);
 			})
 			.collect(Collectors.toList());

@@ -1,5 +1,6 @@
 package kz.kegoc.bln.entity.media.oper.dto;
 
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
 
@@ -20,7 +21,7 @@ public class DocMeteringReadingLineDto {
 	private LocalDate operDate;
 	private String paramCode;
 	private String unitCode;
-	private String dataSourceCode;
+	private DataSource dataSource;
 	private WayEntering wayEntering;
 	private Double startBalance;
 	private Double endBalance;

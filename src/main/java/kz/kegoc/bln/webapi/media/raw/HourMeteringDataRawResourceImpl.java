@@ -1,5 +1,6 @@
 package kz.kegoc.bln.webapi.media.raw;
 
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.raw.dto.HourMeteringDataRawDto;
 import kz.kegoc.bln.entity.media.raw.dto.HourMeteringDataRawListDto;
@@ -25,9 +26,9 @@ public class HourMeteringDataRawResourceImpl {
 
 	@POST
 	public Response create(HourMeteringDataRawDto entity) {
-		entity.setWayEntering(WayEntering.USER);
+		entity.setWayEntering(WayEntering.API);
 		entity.setStatus(DataStatus.RAW);
-		entity.setDataSourceCode("MANUAL");
+		entity.setDataSource(DataSource.MANUAL);
 		
 		service.add(mapper.map(entity, HourMeteringDataRaw.class));
 		return Response.ok().build();
@@ -40,9 +41,9 @@ public class HourMeteringDataRawResourceImpl {
 			.map(t -> {
 				t.setMeteringDate(listDto.getMeteringDate());
 				t.setExternalCode(listDto.getExternalCode());
-				t.setWayEntering(WayEntering.USER);
+				t.setWayEntering(WayEntering.API);
 				t.setStatus(DataStatus.RAW);
-				t.setDataSourceCode("MANUAL");
+				t.setDataSource(DataSource.MANUAL);
 				return mapper.map(t, HourMeteringDataRaw.class);
 			})
 			.collect(Collectors.toList());

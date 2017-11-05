@@ -1,5 +1,6 @@
 package kz.kegoc.bln.entity.media.raw.dto;
 
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.WayEntering;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,6 +18,6 @@ public class MonthMeteringDataRawDto {
 	private String unitCode;
 	private WayEntering wayEntering;
 	private DataStatus status;
-	private String dataSourceCode;
+	private DataSource dataSource;
 	private Double val;
 }

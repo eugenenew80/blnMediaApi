@@ -18,7 +18,7 @@ public class DayMeteringDataOperDto  {
 	private LocalDate operDate;
 	private String paramCode;
 	private String unitCode;
-	private String dataSourceCode;
+	private DataSource dataSource;
 	private WayEntering wayEntering;
 	private Double startBalance;
 	private Double endBalance;
