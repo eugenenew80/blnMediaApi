@@ -541,4 +541,35 @@
 			</basic>
 		</attributes>
 	</entity>
+
+	<entity class="kz.kegoc.bln.entity.media.oper.MeteringReadingTemplate">
+		<table name="media_metering_reading_templates" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_metering_reading_templates_gen" />
+				<sequence-generator
+						name="media_metering_reading_templates_gen"
+						sequence-name="apps.media_metering_reading_templates_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="header">
+				<column name="header" />
+			</basic>
+
+			<many-to-one name="group">
+				<join-column name="group_id"/>
+			</many-to-one>
+
+			<many-to-one name="docType">
+				<join-column name="doc_type_id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
 </entity-mappings>
