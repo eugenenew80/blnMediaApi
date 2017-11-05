@@ -7,6 +7,7 @@ import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -14,14 +15,30 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of= {"id"})
 public class DocMeteringReadingLine implements HasId {
     private Long id;
+
+    @NotNull
     private DocMeteringReadingHeader header;
+
+    @NotNull
     private MeteringPoint meteringPoint;
+
     private Meter meter;
+
+    @NotNull
     private LocalDate operDate;
+
+    @NotNull
     private String paramCode;
+
+    @NotNull
     private String unitCode;
+
+    @NotNull
     private String dataSourceCode;
+
+    @NotNull
     private WayEntering wayEntering;
+
     private Double startBalance;
     private Double endBalance;
     private Double flow;
