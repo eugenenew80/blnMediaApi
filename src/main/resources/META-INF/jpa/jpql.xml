@@ -103,7 +103,7 @@
 
     <named-query name="DocMeteringReadingLine.findByHeader">
         <query>
-            select t from DocMeteringReadingLine t where t.headerId=:headerId order by t.id
+            select t from DocMeteringReadingLine t where t.header.id=:headerId order by t.id
         </query>
     </named-query>
 

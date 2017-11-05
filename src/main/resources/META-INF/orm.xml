@@ -575,14 +575,14 @@
 
 
 	<entity class="kz.kegoc.bln.entity.media.oper.DocMeteringReadingHeader">
-		<table name="media_doc_metering_reading_header" schema="apps"/>
+		<table name="media_doc_metering_reading_headers" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_header_gen" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_headers_gen" />
 				<sequence-generator
-						name="media_doc_metering_reading_header_gen"
-						sequence-name="apps.media_doc_metering_reading_header_s"
+						name="media_doc_metering_reading_headers_gen"
+						sequence-name="apps.media_doc_metering_reading_headers_s"
 						allocation-size="1"
 				/>
 			</id>
@@ -618,14 +618,14 @@
 	</entity>
 
 	<entity class="kz.kegoc.bln.entity.media.oper.DocMeteringReadingLine">
-		<table name="media_doc_metering_reading_line" schema="apps"/>
+		<table name="media_doc_metering_reading_lines" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_line_gen" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_lines_gen" />
 				<sequence-generator
-						name="media_doc_metering_reading_line_gen"
-						sequence-name="apps.media_doc_metering_reading_line_s"
+						name="media_doc_metering_reading_lines_gen"
+						sequence-name="apps.media_doc_metering_reading_lines_s"
 						allocation-size="1"
 				/>
 			</id>
