@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    
+    <changeSet id="media-eug-35" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <comment>Creating table: doc_metering_reading_header</comment>
+        <createTable tableName="doc_metering_reading_header" schemaName="apps">            
+            <column name="id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+                        
+            <column name="header" type="varchar(300)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="template_id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+	<changeSet id="media-eug-36" logicalFilePath="path-independent" author="eugene" context="postgres">
+	    <comment>Creating primary key for table: doc_metering_reading_header</comment>
+	    <addPrimaryKey 
+	            columnNames="id"
+	            constraintName="pk_doc_metering_reading_header"
+	            schemaName="apps"
+	            tableName="doc_metering_reading_header"/>
+	</changeSet>
+	
+	<changeSet id="media-eug-37" logicalFilePath="path-independent" author="eugene" context="postgres">
+	    <comment>Creating sequence for table: doc_metering_reading_header</comment>
+	    <createSequence 
+	            incrementBy="1"
+	            schemaName="apps"
+	            sequenceName="doc_metering_reading_header_s"
+	            startValue="1"/>
+	</changeSet>	
+</databaseChangeLog>

@@ -543,14 +543,14 @@
 	</entity>
 
 	<entity class="kz.kegoc.bln.entity.media.oper.TemplateMeteringReading">
-		<table name="media_metering_reading_templates" schema="apps"/>
+		<table name="media_template_metering_reading" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_metering_reading_templates_gen" />
+				<generated-value strategy="SEQUENCE" generator="media_template_metering_reading_gen" />
 				<sequence-generator
-						name="media_metering_reading_templates_gen"
-						sequence-name="apps.media_metering_reading_templates_s"
+						name="media_template_metering_reading_gen"
+						sequence-name="apps.media_template_metering_reading_s"
 						allocation-size="1"
 				/>
 			</id>
