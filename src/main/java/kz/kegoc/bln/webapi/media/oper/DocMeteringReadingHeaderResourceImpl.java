@@ -92,7 +92,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 	}
 
 
-	@Path("/{headerId : \\d+}/mediaDocMeteringReaderLine")
+	@Path("/{headerId : \\d+}/mediaDocMeteringReadingLine")
 	public DocMeteringReadingLineResourceImpl getLines() {
 		return docMeteringReadingLineResource;
 	}

@@ -588,7 +588,7 @@
 				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_headers_gen" />
 				<sequence-generator
 						name="media_doc_metering_reading_headers_gen"
-						sequence-name="apps.media_doc_metering_reading_header_s"
+						sequence-name="apps.media_doc_metering_reading_headers_s"
 						allocation-size="1"
 				/>
 			</id>
