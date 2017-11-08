@@ -22,7 +22,7 @@ public class DayMeteringDataOperRepositoryImpl
 	}
 
 	public List<DayMeteringDataOper> findByDate(LocalDate operDate) {
-		return getEntityManager().createNamedQuery("DayMeteringDataOper.findByDate", DayMeteringDataOper.class)
+		return getEntityManager().createNamedQuery("DocMeteringReadingLine.findByDate", DayMeteringDataOper.class)
 					.setParameter("operDate", operDate)
 					.getResultList();
 	}

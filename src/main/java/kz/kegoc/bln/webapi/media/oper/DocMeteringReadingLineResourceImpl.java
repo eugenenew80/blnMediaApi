@@ -26,11 +26,8 @@ public class DocMeteringReadingLineResourceImpl {
 
 	@GET
 	public Response getAll(@PathParam("headerId") Long headerId) {
-		String operDateStr = "2017-10-31";
-		LocalDateTime operDate = LocalDate.parse(operDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
-
-		List<DocMeteringReadingLineDto> list = service.createLines(headerId, operDate) //meteringReadingHeaderService.findById(headerId)
-			//.getLines()
+		List<DocMeteringReadingLineDto> list = meteringReadingHeaderService.findById(headerId)
+			.getLines()
 			.stream()
 			.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
 			.collect(Collectors.toList());		
@@ -38,6 +35,34 @@ public class DocMeteringReadingLineResourceImpl {
 		return Response.ok()
 			.entity(new GenericEntity<Collection<DocMeteringReadingLineDto>>(list){})
 			.build();
+	}
+
+
+	@GET
+	@Path("/createLines")
+	public Response createLines(@PathParam("headerId") Long headerId) {
+		List<DocMeteringReadingLineDto> list = service.createLines(headerId)
+				.stream()
+				.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
+				.collect(Collectors.toList());
+
+		return Response.ok()
+				.entity(new GenericEntity<Collection<DocMeteringReadingLineDto>>(list){})
+				.build();
+	}
+
+
+	@GET
+	@Path("/autoFill")
+	public Response autoFill(@PathParam("headerId") Long headerId) {
+		List<DocMeteringReadingLineDto> list = service.autoFill(headerId)
+				.stream()
+				.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
+				.collect(Collectors.toList());
+
+		return Response.ok()
+				.entity(new GenericEntity<Collection<DocMeteringReadingLineDto>>(list){})
+				.build();
 	}
 
 

@@ -9,5 +9,6 @@ import java.util.List;
 
 @Local
 public interface DocMeteringReadingLineService extends EntityService<DocMeteringReadingLine> {
-    List<DocMeteringReadingLine> createLines(Long headerId, LocalDateTime operDate);
+    List<DocMeteringReadingLine> createLines(Long headerId);
+    List<DocMeteringReadingLine> autoFill(Long headerId);
 }

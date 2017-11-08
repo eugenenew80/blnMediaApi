@@ -12,33 +12,33 @@
             select t from MeteringPoint t where t.externalCode=:externalCode
         </query>
     </named-query>
-    
+
     <named-query name="LastLoadInfo.findAll">
         <query>
             select t from LastLoadInfo t
         </query>
-    </named-query>    
+    </named-query>
 
     <named-query name="LastLoadInfo.findByExternalCodeAndParamCode">
         <query>
-            select 
-                t 
-            from 
+            select
+                t
+            from
                 LastLoadInfo t
             where
-            	    t.externalCode=:externalCode 
-            	and t.paramCode=:paramCode  
+            	    t.externalCode=:externalCode
+            	and t.paramCode=:paramCode
         </query>
-    </named-query>   
-    
-        
+    </named-query>
+
+
     <named-query name="HourMeteringDataRaw.findByEntity">
         <query>
-            select 
-            	t 
-            from 
-            	HourMeteringDataRaw t 
-            where 
+            select
+            	t
+            from
+            	HourMeteringDataRaw t
+            where
             	    t.externalCode=:externalCode
             	and t.meteringDate=:meteringDate
             	and t.hour=:hour
@@ -48,16 +48,16 @@
             	and t.unitCode=:unitCode
             	and t.paramCode=:paramCode
         </query>
-    </named-query>  
-    
-    
+    </named-query>
+
+
     <named-query name="DayMeteringBalanceRaw.findByEntity">
         <query>
-            select 
-            	t 
-            from 
-            	DayMeteringBalanceRaw t 
-            where 
+            select
+            	t
+            from
+            	DayMeteringBalanceRaw t
+            where
             	    t.externalCode=:externalCode
             	and t.meteringDate=:meteringDate
             	and t.dataSource=:dataSource
