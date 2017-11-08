@@ -1,12 +1,12 @@
 package kz.kegoc.bln.webapi.media.oper;
 
-import kz.kegoc.bln.entity.media.oper.TemplateMeteringReading;
-import kz.kegoc.bln.entity.media.oper.dto.TemplateMeteringReadingDto;
+import kz.kegoc.bln.entity.media.oper.DocTemplate;
+import kz.kegoc.bln.entity.media.oper.dto.DocTemplateDto;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
-import kz.kegoc.bln.service.media.oper.TemplateMeteringReadingService;
+import kz.kegoc.bln.service.media.oper.DocTemplateService;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;
@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Stateless
-@Path("/media/mediaTemplateMeteringReading")
+@Path("/media/mediaDocTemplate")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
-public class TemplateMeteringReadingResourceImpl {
+public class DocTemplateResourceImpl {
 
 	@GET 
 	public Response getAll(@QueryParam("name") String name) {		
@@ -33,13 +33,13 @@ public class TemplateMeteringReadingResourceImpl {
 			.setOrderBy("t.id")
 			.build();		
 		
-		List<TemplateMeteringReadingDto> list = service.find(query)
+		List<DocTemplateDto> list = service.find(query)
 			.stream()
-			.map( it-> mapper.map(it, TemplateMeteringReadingDto.class) )
+			.map( it-> mapper.map(it, DocTemplateDto.class) )
 			.collect(Collectors.toList());
 		
 		return Response.ok()
-				.entity(new GenericEntity<Collection<TemplateMeteringReadingDto>>(list){})
+				.entity(new GenericEntity<Collection<DocTemplateDto>>(list){})
 				.build();
 	}
 	
@@ -47,9 +47,9 @@ public class TemplateMeteringReadingResourceImpl {
 	@GET 
 	@Path("/{id : \\d+}") 
 	public Response getById(@PathParam("id") Long id) {
-		TemplateMeteringReading entity = service.findById(id);
+		DocTemplate entity = service.findById(id);
 		return Response.ok()
-			.entity(mapper.map(entity, TemplateMeteringReadingDto.class))
+			.entity(mapper.map(entity, DocTemplateDto.class))
 			.build();		
 	}
 	
@@ -57,28 +57,28 @@ public class TemplateMeteringReadingResourceImpl {
 	@GET
 	@Path("/byName/{name}")
 	public Response getByName(@PathParam("name") String name) {		
-		TemplateMeteringReading entity = service.findByName(name);
+		DocTemplate entity = service.findByName(name);
 		return Response.ok()
-			.entity(mapper.map(entity, TemplateMeteringReadingDto.class))
+			.entity(mapper.map(entity, DocTemplateDto.class))
 			.build();
 	}
 
 	
 	@POST
-	public Response create(TemplateMeteringReadingDto entityDto) {
-		TemplateMeteringReading newEntity = service.create(mapper.map(entityDto, TemplateMeteringReading.class));
+	public Response create(DocTemplateDto entityDto) {
+		DocTemplate newEntity = service.create(mapper.map(entityDto, DocTemplate.class));
 		return Response.ok()
-			.entity(mapper.map(newEntity, TemplateMeteringReadingDto.class))
+			.entity(mapper.map(newEntity, DocTemplateDto.class))
 			.build();
 	}
 	
 	
 	@PUT 
 	@Path("{id : \\d+}") 
-	public Response update(@PathParam("id") Long id, TemplateMeteringReadingDto entityDto ) {
-		TemplateMeteringReading newEntity = service.update(mapper.map(entityDto, TemplateMeteringReading.class));
+	public Response update(@PathParam("id") Long id, DocTemplateDto entityDto ) {
+		DocTemplate newEntity = service.update(mapper.map(entityDto, DocTemplate.class));
 		return Response.ok()
-			.entity(mapper.map(newEntity, TemplateMeteringReadingDto.class))
+			.entity(mapper.map(newEntity, DocTemplateDto.class))
 			.build();
 	}
 	
@@ -94,7 +94,7 @@ public class TemplateMeteringReadingResourceImpl {
 	
 	
 	@Inject
-	private TemplateMeteringReadingService service;
+	private DocTemplateService service;
 
 	@Inject
 	private DozerBeanMapper mapper;

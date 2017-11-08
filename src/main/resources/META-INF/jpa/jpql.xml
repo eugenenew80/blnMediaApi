@@ -89,9 +89,9 @@
 		</query>
 	</named-query>
 
-    <named-query name="TemplateMeteringReading.findAll">
+    <named-query name="DocTemplate.findAll">
 		<query>
-			select t from TemplateMeteringReading t order by t.id
+			select t from DocTemplate t order by t.id
 		</query>
 	</named-query>
 

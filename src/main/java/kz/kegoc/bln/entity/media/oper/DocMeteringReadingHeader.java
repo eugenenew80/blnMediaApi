@@ -28,7 +28,7 @@ public class DocMeteringReadingHeader implements HasId {
     private LocalDate endDate;
 
     @NotNull
-    private TemplateMeteringReading template;
+    private DocTemplate template;
 
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;

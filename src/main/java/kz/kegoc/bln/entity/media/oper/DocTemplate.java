@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class TemplateMeteringReading implements HasId {
+public class DocTemplate implements HasId {
     private Long id;
 
     @NotNull @Size(max = 100)

@@ -548,15 +548,15 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.oper.TemplateMeteringReading">
-		<table name="media_template_metering_reading" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.oper.DocTemplate">
+		<table name="media_doc_templates" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_template_metering_reading_gen" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_templates_gen" />
 				<sequence-generator
-						name="media_template_metering_reading_gen"
-						sequence-name="apps.media_template_metering_reading_s"
+						name="media_doc_templates_gen"
+						sequence-name="apps.media_doc_templates_s"
 						allocation-size="1"
 				/>
 			</id>
