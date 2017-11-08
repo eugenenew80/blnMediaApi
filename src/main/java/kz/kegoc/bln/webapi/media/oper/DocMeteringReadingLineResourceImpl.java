@@ -11,6 +11,9 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,8 +26,11 @@ public class DocMeteringReadingLineResourceImpl {
 
 	@GET
 	public Response getAll(@PathParam("headerId") Long headerId) {
-		List<DocMeteringReadingLineDto> list = meteringReadingHeaderService.findById(headerId)
-			.getLines()
+		String operDateStr = "2017-10-31";
+		LocalDateTime operDate = LocalDate.parse(operDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atStartOfDay();
+
+		List<DocMeteringReadingLineDto> list = service.createLines(headerId, operDate) //meteringReadingHeaderService.findById(headerId)
+			//.getLines()
 			.stream()
 			.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
 			.collect(Collectors.toList());		

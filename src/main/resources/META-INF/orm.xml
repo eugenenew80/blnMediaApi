@@ -650,7 +650,7 @@
 				<column name="unit_code" />
 			</basic>
 
-			<basic name="dataSourceCode">
+			<basic name="dataSource">
 				<column name="data_source_code" />
 			</basic>
 

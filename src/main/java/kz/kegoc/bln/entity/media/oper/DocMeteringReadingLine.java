@@ -3,6 +3,7 @@ package kz.kegoc.bln.entity.media.oper;
 import kz.kegoc.bln.entity.common.HasId;
 import kz.kegoc.bln.entity.dict.Meter;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,7 +35,7 @@ public class DocMeteringReadingLine implements HasId {
     private String unitCode;
 
     @NotNull
-    private String dataSourceCode;
+    private DataSource dataSource;
 
     @NotNull
     private WayEntering wayEntering;
