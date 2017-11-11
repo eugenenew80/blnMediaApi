@@ -26,8 +26,13 @@ public class DocMeteringReadingLineResourceImpl {
 
 	@GET
 	public Response getAll(@PathParam("headerId") Long headerId) {
-		List<DocMeteringReadingLineDto> list = meteringReadingHeaderService.findById(headerId)
-			.getLines()
+		List<DocMeteringReadingLine> lines = meteringReadingHeaderService.findById(headerId)
+				.getLines();
+
+		if (lines.size()==0)
+			lines = service.createLines(headerId);
+
+		List<DocMeteringReadingLineDto> list = lines
 			.stream()
 			.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
 			.collect(Collectors.toList());		

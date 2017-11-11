@@ -20,6 +20,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,20 +66,28 @@ public class DocMeteringReadingLineServiceImpl
         DocMeteringReadingHeader header = headerService.findById(headerId);
         Group group = header.getTemplate().getGroup();
 
-        return
+        List<DocMeteringReadingLine> lines =
                 group.getMeteringPoints().stream()
-                        .map(GroupMeteringPoint::getMeteringPoint)
-                        .map(point -> point.getMeters().stream()
-                                .map(MeteringPointMeter::getMeter)
-                                .map(meter -> paramCodes.keySet().stream()
-                                        .filter(param -> param.contains("AB") )
-                                        .map(param -> mapToPoint(header, point, meter, param))
-                                        .collect(Collectors.toList()))
-                                .flatMap(p -> p.stream())
-                                .collect(Collectors.toList()))
-                        .flatMap(l -> l.stream())
-                        .collect(Collectors.toList());
-    }
+                    .map(GroupMeteringPoint::getMeteringPoint)
+                    .map(point -> point.getMeters().stream()
+                            .map(MeteringPointMeter::getMeter)
+                            .map(meter -> paramCodes.keySet().stream()
+                                    .filter(param -> param.contains("AB") )
+                                    .map(param -> mapToPoint(header, point, meter, param))
+                                    .collect(Collectors.toList()))
+                            .flatMap(p -> p.stream())
+                            .collect(Collectors.toList()))
+                    .flatMap(l -> l.stream())
+                    .collect(Collectors.toList());
+
+        List<DocMeteringReadingLine> savedLines = new ArrayList<>();
+        lines.forEach(line -> {
+            DocMeteringReadingLine savedLine = super.create(line);
+            savedLines.add(savedLine);
+        });
+
+        return savedLines;
+	}
 
 
     public List<DocMeteringReadingLine> autoFill(Long headerId) {
