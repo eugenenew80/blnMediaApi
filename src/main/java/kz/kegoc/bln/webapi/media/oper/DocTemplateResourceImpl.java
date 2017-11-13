@@ -28,11 +28,11 @@ public class DocTemplateResourceImpl {
 
 	@GET 
 	public Response getAll(@QueryParam("name") String name) {		
-		Query query = QueryImpl.builder()			
-			.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
-			.setOrderBy("t.id")
-			.build();		
-		
+		Query query = QueryImpl.builder()
+				.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
+				.setOrderBy("t.id")
+				.build();
+
 		List<DocTemplateDto> list = service.find(query)
 			.stream()
 			.map( it-> mapper.map(it, DocTemplateDto.class) )

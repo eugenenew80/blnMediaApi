@@ -17,10 +17,10 @@ import kz.kegoc.bln.service.media.oper.DocMeteringReadingLineService;
 import kz.kegoc.bln.service.media.oper.GroupService;
 import kz.kegoc.bln.service.media.raw.MeteringDataRawService;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.validation.Validator;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,29 +36,36 @@ public class DocMeteringReadingLineServiceImpl
     }
 
 
-    public List<DocMeteringReadingLine> findByGroup(Long headerId, Long groupId, LocalDateTime operDate) {
-        List<MeteringPoint> meteringPointsInGroup = groupService.findById(groupId).getMeteringPoints()
-                .stream()
-                .map(m -> m.getMeteringPoint())
-                .collect(Collectors.toList());
+    public List<DocMeteringReadingLine> findByHeader(Long headerId) {
+        DocMeteringReadingHeader header = headerService.findById(headerId);
+        List<DocMeteringReadingLine> lines = header.getLines();
 
-        List<DocMeteringReadingLine> operData = lineRepository.findByHeader(headerId)
-                .stream()
-                .filter(m -> meteringPointsInGroup.contains(m.getMeteringPoint()))
-                .collect(Collectors.toList());
+        List<DocMeteringReadingLine> savedLines = lines;
+        if (lines.size()==0) {
+            for (DocMeteringReadingLine line : createLines(headerId)) {
+                DocMeteringReadingLine savedLine = super.create(line);
+                savedLines.add(savedLine);
+            }
+        }
 
-        List<MeteringPoint> curMeteringPoints = operData.stream()
+        List<MeteringPoint> curMeteringPoints = savedLines.stream()
                 .map(DocMeteringReadingLine::getMeteringPoint)
                 .distinct()
                 .collect(Collectors.toList());
 
-        List<DocMeteringReadingLine> newOperData = createLines(headerId)
+        List<DocMeteringReadingLine> newLines = createLines(headerId)
                 .stream()
                 .filter(t -> !curMeteringPoints.contains(t.getMeteringPoint()))
                 .collect(Collectors.toList());
 
-        operData.addAll(newOperData);
-        return operData;
+        if (newLines.size()!=0) {
+            for (DocMeteringReadingLine newLine : newLines) {
+                DocMeteringReadingLine savedNewLine = super.create(newLine);
+                savedLines.add(savedNewLine);
+            }
+        }
+
+        return savedLines;
     }
 
 
@@ -67,60 +74,54 @@ public class DocMeteringReadingLineServiceImpl
         Group group = header.getTemplate().getGroup();
 
         List<DocMeteringReadingLine> lines =
-                group.getMeteringPoints().stream()
-                    .map(GroupMeteringPoint::getMeteringPoint)
-                    .map(point -> point.getMeters().stream()
-                            .map(MeteringPointMeter::getMeter)
-                            .map(meter -> paramCodes.keySet().stream()
-                                    .filter(param -> param.contains("AB") )
-                                    .map(param -> mapToPoint(header, point, meter, param))
-                                    .collect(Collectors.toList()))
-                            .flatMap(p -> p.stream())
-                            .collect(Collectors.toList()))
-                    .flatMap(l -> l.stream())
-                    .collect(Collectors.toList());
+            group.getMeteringPoints().stream()
+                .map(GroupMeteringPoint::getMeteringPoint)
+                .map(point -> point.getMeters().stream()
+                        .map(MeteringPointMeter::getMeter)
+                        .map(meter -> paramCodes.keySet().stream()
+                                .filter(param -> param.contains("AB") )
+                                .map(param -> mapToPoint(header, point, meter, param))
+                                .collect(Collectors.toList()))
+                        .flatMap(p -> p.stream())
+                        .collect(Collectors.toList()))
+                .flatMap(l -> l.stream())
+                .collect(Collectors.toList());
 
-        List<DocMeteringReadingLine> savedLines = new ArrayList<>();
-        lines.forEach(line -> {
-            DocMeteringReadingLine savedLine = super.create(line);
-            savedLines.add(savedLine);
-        });
-
-        return savedLines;
+        return lines;
 	}
 
 
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<DocMeteringReadingLine> autoFill(Long headerId) {
         DocMeteringReadingHeader header = headerService.findById(headerId);
-        Group group = header.getTemplate().getGroup();
 
-	    return
-                findByGroup(header.getId(), group.getId(), header.getStartDate().atStartOfDay()).stream()
-                        .map(d -> {
-                            DayMeteringBalanceRaw b = new DayMeteringBalanceRaw();
-                            b.setMeteringDate(d.getOperDate().minusDays(1).atStartOfDay());
-                            b.setExternalCode(d.getMeteringPoint().getExternalCode());
-                            b.setParamCode(d.getParamCode());
-                            b.setDataSource(d.getDataSource());
-                            b.setWayEntering(d.getWayEntering());
-                            b.setUnitCode(d.getUnitCode());
-                            b.setStatus(DataStatus.RAW);
+        return
+            header.getLines().stream()
+                .map(d -> {
+                    DayMeteringBalanceRaw dayBalance = new DayMeteringBalanceRaw();
+                    dayBalance.setMeteringDate(header.getStartDate().atStartOfDay());
+                    dayBalance.setExternalCode(d.getMeteringPoint().getExternalCode());
+                    dayBalance.setParamCode(d.getParamCode());
+                    dayBalance.setDataSource(d.getDataSource());
+                    dayBalance.setWayEntering(d.getWayEntering());
+                    dayBalance.setUnitCode(d.getUnitCode());
+                    dayBalance.setStatus(DataStatus.RAW);
 
-                            DayMeteringBalanceRaw balanceStart = dayMeteringBalanceService.findByEntity(b);
-                            d.setStartBalance(0d);
-                            if (balanceStart!=null)
-                                d.setStartBalance(balanceStart.getVal());
+                    DayMeteringBalanceRaw dayBalanceStart = dayMeteringBalanceService.findByEntity(dayBalance);
+                    d.setStartBalance(0d);
+                    if (dayBalanceStart!=null)
+                        d.setStartBalance(dayBalanceStart.getVal());
 
-                            b.setMeteringDate(header.getStartDate().atStartOfDay());
-                            DayMeteringBalanceRaw balanceEnd = dayMeteringBalanceService.findByEntity(b);
-                            d.setEndBalance(0d);
-                            if (balanceEnd!=null)
-                                d.setEndBalance(balanceEnd.getVal());
+                    dayBalance.setMeteringDate(header.getStartDate().plusDays(1).atStartOfDay());
+                    DayMeteringBalanceRaw dayBalanceEnd = dayMeteringBalanceService.findByEntity(dayBalance);
+                    d.setEndBalance(0d);
+                    if (dayBalanceEnd!=null)
+                        d.setEndBalance(dayBalanceEnd.getVal());
 
-                            d.setFlow(Math.round((d.getEndBalance() - d.getStartBalance())*100d ) / 100d);
-                            return d;
-                        })
-                        .collect(Collectors.toList());
+                    d.setFlow(Math.round((d.getEndBalance() - d.getStartBalance())*100d ) / 100d);
+                    return d;
+                })
+                .collect(Collectors.toList());
     }
 
 

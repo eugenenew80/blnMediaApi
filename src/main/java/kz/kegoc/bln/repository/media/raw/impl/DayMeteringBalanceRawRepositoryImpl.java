@@ -11,6 +11,10 @@ public class DayMeteringBalanceRawRepositoryImpl
 	extends AbstractRepository<DayMeteringBalanceRaw>
 		implements MeteringDataRawRepository<DayMeteringBalanceRaw> {
 
+	public DayMeteringBalanceRawRepositoryImpl() {
+		setClazz(DayMeteringBalanceRaw.class);
+	}
+
 	public DayMeteringBalanceRaw selectByEntity(DayMeteringBalanceRaw entity) {
 		return
 			getEntityManager().createNamedQuery("DayMeteringBalanceRaw.findByEntity", DayMeteringBalanceRaw.class)

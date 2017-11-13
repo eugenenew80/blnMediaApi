@@ -302,6 +302,14 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="meteringPoint">
+				<join-column name="metering_point_id"/>
+			</many-to-one>
+
+			<many-to-one name="meter">
+				<join-column name="meter_id"/>
+			</many-to-one>
 		</attributes>
 	</entity>
 

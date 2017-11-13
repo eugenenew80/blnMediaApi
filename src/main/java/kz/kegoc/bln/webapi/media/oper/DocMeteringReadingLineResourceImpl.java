@@ -26,13 +26,7 @@ public class DocMeteringReadingLineResourceImpl {
 
 	@GET
 	public Response getAll(@PathParam("headerId") Long headerId) {
-		List<DocMeteringReadingLine> lines = meteringReadingHeaderService.findById(headerId)
-				.getLines();
-
-		if (lines.size()==0)
-			lines = service.createLines(headerId);
-
-		List<DocMeteringReadingLineDto> list = lines
+		List<DocMeteringReadingLineDto> list = service.findByHeader(headerId)
 			.stream()
 			.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
 			.collect(Collectors.toList());		
@@ -40,20 +34,6 @@ public class DocMeteringReadingLineResourceImpl {
 		return Response.ok()
 			.entity(new GenericEntity<Collection<DocMeteringReadingLineDto>>(list){})
 			.build();
-	}
-
-
-	@GET
-	@Path("/createLines")
-	public Response createLines(@PathParam("headerId") Long headerId) {
-		List<DocMeteringReadingLineDto> list = service.createLines(headerId)
-				.stream()
-				.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
-				.collect(Collectors.toList());
-
-		return Response.ok()
-				.entity(new GenericEntity<Collection<DocMeteringReadingLineDto>>(list){})
-				.build();
 	}
 
 

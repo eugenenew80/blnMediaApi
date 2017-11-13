@@ -50,6 +50,25 @@
         </query>
     </named-query>
 
+    <named-query name="DayMeteringBalanceRaw.findAll">
+        <query>
+            select
+                t
+            from
+                DayMeteringBalanceRaw t
+        </query>
+    </named-query>
+
+    <named-query name="DayMeteringBalanceRaw.findByExternalCode">
+        <query>
+            select
+                t
+            from
+                DayMeteringBalanceRaw t
+            where
+                t.externalCode=:externalCode
+        </query>
+    </named-query>
 
     <named-query name="DayMeteringBalanceRaw.findByEntity">
         <query>
@@ -68,7 +87,7 @@
         </query>
     </named-query> 
     
-    
+
 	<named-query name="Group.findAll">
 		<query>
 			select t from Group t order by t.id
