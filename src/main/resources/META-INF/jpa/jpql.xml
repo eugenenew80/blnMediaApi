@@ -85,10 +85,25 @@
             	and t.unitCode=:unitCode
             	and t.paramCode=:paramCode
         </query>
-    </named-query> 
-    
+    </named-query>
 
-	<named-query name="Group.findAll">
+
+    <named-query name="DayMeteringBalanceRaw.findReadyData">
+        <query>
+            select
+                t
+            from
+                DayMeteringBalanceRaw t
+            where
+                    t.meteringPoint.id=:meteringPointId
+                and t.meteringDate=:meteringDate
+                and t.status=:status
+                and t.paramCode=:paramCode
+        </query>
+    </named-query>
+
+
+    <named-query name="Group.findAll">
 		<query>
 			select t from Group t order by t.id
 		</query>

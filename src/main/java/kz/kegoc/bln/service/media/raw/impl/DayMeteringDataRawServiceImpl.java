@@ -9,6 +9,9 @@ import kz.kegoc.bln.repository.media.raw.MeteringDataRawRepository;
 import kz.kegoc.bln.service.media.raw.AbstractMeteringDataRawService;
 import kz.kegoc.bln.service.media.raw.MeteringDataRawService;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Stateless
 public class DayMeteringDataRawServiceImpl
     extends AbstractMeteringDataRawService<DayMeteringDataRaw>
@@ -21,6 +24,10 @@ public class DayMeteringDataRawServiceImpl
 
 	public DayMeteringDataRaw findByEntity(DayMeteringDataRaw entity) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<DayMeteringDataRaw> findReadyData(Long meteringPointId, LocalDateTime meteringDate, String paramCode) {
 		return null;
 	}
 }

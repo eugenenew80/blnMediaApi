@@ -5,6 +5,8 @@ import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.media.raw.MeteringDataRawRepository;
 
 import javax.ejb.Stateless;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Stateless
 public class HourMeteringDataRawRepositoryImpl
@@ -26,5 +28,9 @@ public class HourMeteringDataRawRepositoryImpl
 				.stream()
 				.findFirst()
 				.orElse(null);
+	}
+
+	public List selectReadyData(Long meteringPointId, LocalDateTime meteringDate, String paramCode) {
+		return null;
 	}
 }

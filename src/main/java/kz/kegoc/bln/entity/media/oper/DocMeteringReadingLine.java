@@ -34,12 +34,8 @@ public class DocMeteringReadingLine implements HasId {
     @NotNull
     private String unitCode;
 
-    @NotNull
     private DataSource dataSource;
-
-    @NotNull
     private WayEntering wayEntering;
-
     private Double startBalance;
     private Double endBalance;
     private Double flow;

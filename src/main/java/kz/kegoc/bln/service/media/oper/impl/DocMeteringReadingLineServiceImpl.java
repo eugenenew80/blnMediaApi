@@ -48,6 +48,7 @@ public class DocMeteringReadingLineServiceImpl
             }
         }
 
+        /*
         List<MeteringPoint> curMeteringPoints = savedLines.stream()
                 .map(DocMeteringReadingLine::getMeteringPoint)
                 .distinct()
@@ -64,9 +65,12 @@ public class DocMeteringReadingLineServiceImpl
                 savedLines.add(savedNewLine);
             }
         }
+        */
 
         return savedLines;
     }
+
+
 
 
     public List<DocMeteringReadingLine> createLines(Long headerId) {
@@ -79,8 +83,17 @@ public class DocMeteringReadingLineServiceImpl
                 .map(point -> point.getMeters().stream()
                         .map(MeteringPointMeter::getMeter)
                         .map(meter -> paramCodes.keySet().stream()
-                                .filter(param -> param.contains("AB") )
-                                .map(param -> mapToPoint(header, point, meter, param))
+                                .filter(paramCode -> paramCode.contains("AB") )
+                                .map(param -> {
+                                    DocMeteringReadingLine docLine = new DocMeteringReadingLine();
+                                    docLine.setMeteringPoint(point);
+                                    docLine.setMeter(meter);
+                                    docLine.setOperDate(header.getStartDate());
+                                    docLine.setParamCode(param);
+                                    docLine.setHeader(header);
+                                    docLine.setUnitCode("кВт.ч");
+                                    return docLine;
+                                })
                                 .collect(Collectors.toList()))
                         .flatMap(p -> p.stream())
                         .collect(Collectors.toList()))
@@ -97,46 +110,40 @@ public class DocMeteringReadingLineServiceImpl
 
         return
             header.getLines().stream()
-                .map(d -> {
-                    DayMeteringBalanceRaw dayBalance = new DayMeteringBalanceRaw();
-                    dayBalance.setMeteringDate(header.getStartDate().atStartOfDay());
-                    dayBalance.setExternalCode(d.getMeteringPoint().getExternalCode());
-                    dayBalance.setParamCode(d.getParamCode());
-                    dayBalance.setDataSource(d.getDataSource());
-                    dayBalance.setWayEntering(d.getWayEntering());
-                    dayBalance.setUnitCode(d.getUnitCode());
-                    dayBalance.setStatus(DataStatus.RAW);
+                .map(docLine -> {
+                    docLine.setStartBalance(0d);
+                    docLine.setEndBalance(0d);
 
-                    DayMeteringBalanceRaw dayBalanceStart = dayMeteringBalanceService.findByEntity(dayBalance);
-                    d.setStartBalance(0d);
-                    if (dayBalanceStart!=null)
-                        d.setStartBalance(dayBalanceStart.getVal());
+                    List<DayMeteringBalanceRaw> dayBalanceList = dayMeteringBalanceService.findReadyData(
+                        docLine.getMeteringPoint().getId(),
+                        header.getStartDate().atStartOfDay(),
+                        docLine.getParamCode()
+                    );
+                    if (dayBalanceList!=null && dayBalanceList.size()>0) {
+                        DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
+                        docLine.setStartBalance(dayBalance.getVal());
+                        docLine.setDataSource(dayBalance.getDataSource());
+                        docLine.setWayEntering(dayBalance.getWayEntering());
+                    }
 
-                    dayBalance.setMeteringDate(header.getStartDate().plusDays(1).atStartOfDay());
-                    DayMeteringBalanceRaw dayBalanceEnd = dayMeteringBalanceService.findByEntity(dayBalance);
-                    d.setEndBalance(0d);
-                    if (dayBalanceEnd!=null)
-                        d.setEndBalance(dayBalanceEnd.getVal());
+                    dayBalanceList = dayMeteringBalanceService.findReadyData(
+                        docLine.getMeteringPoint().getId(),
+                        header.getStartDate().plusDays(1).atStartOfDay(),
+                        docLine.getParamCode()
+                    );
+                    if (dayBalanceList!=null && dayBalanceList.size()>0) {
+                        DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
+                        docLine.setEndBalance(dayBalance.getVal());
+                        docLine.setDataSource(dayBalance.getDataSource());
+                        docLine.setWayEntering(dayBalance.getWayEntering());
+                    }
 
-                    d.setFlow(Math.round((d.getEndBalance() - d.getStartBalance())*100d ) / 100d);
-                    return d;
+                    docLine.setFlow(Math.round((docLine.getEndBalance() - docLine.getStartBalance())*100d ) / 100d);
+                    return docLine;
                 })
                 .collect(Collectors.toList());
     }
 
-
-    private DocMeteringReadingLine mapToPoint(DocMeteringReadingHeader header, MeteringPoint point, Meter meter, String param) {
-        DocMeteringReadingLine d = new DocMeteringReadingLine();
-        d.setMeteringPoint(point);
-        d.setMeter(meter);
-        d.setOperDate(header.getStartDate());
-        d.setParamCode(param);
-        d.setUnitCode("kWh");
-        d.setWayEntering(WayEntering.AUTO);
-        d.setDataSource(DataSource.EMCOS);
-        d.setHeader(header);
-        return d;
-    }
 
 
     private DocMeteringReadingLineRepository lineRepository;

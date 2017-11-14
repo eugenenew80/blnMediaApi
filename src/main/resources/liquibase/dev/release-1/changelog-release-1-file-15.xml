@@ -20,4 +20,20 @@
             <column name="meter_id"          type="number" />
         </addColumn>
     </changeSet>
+
+    <changeSet id="media-eug-49" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <dropNotNullConstraint
+                columnDataType="varchar(15)"
+                columnName="data_source_code"
+                schemaName="apps"
+                tableName="media_doc_metering_reading_lines"/>
+    </changeSet>
+
+    <changeSet id="media-eug-50" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <dropNotNullConstraint
+                columnDataType="varchar(15)"
+                columnName="way_entering"
+                schemaName="apps"
+                tableName="media_doc_metering_reading_lines"/>
+    </changeSet>
 </databaseChangeLog>
