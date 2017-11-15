@@ -91,6 +91,8 @@ public class DocMeteringReadingLineServiceImpl
                                     docLine.setOperDate(header.getStartDate());
                                     docLine.setParamCode(param);
                                     docLine.setHeader(header);
+                                    docLine.setDataSource(DataSource.NOT_SET);
+                                    docLine.setWayEntering(WayEntering.NOT_SET);
                                     docLine.setUnitCode("кВт.ч");
                                     return docLine;
                                 })
@@ -104,44 +106,44 @@ public class DocMeteringReadingLineServiceImpl
 	}
 
 
-    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<DocMeteringReadingLine> autoFill(Long headerId) {
         DocMeteringReadingHeader header = headerService.findById(headerId);
 
-        return
-            header.getLines().stream()
-                .map(docLine -> {
-                    docLine.setStartBalance(0d);
-                    docLine.setEndBalance(0d);
+        List<DocMeteringReadingLine> lines = header.getLines().stream()
+            .map(docLine -> {
+                docLine.setStartBalance(0d);
+                docLine.setEndBalance(0d);
 
-                    List<DayMeteringBalanceRaw> dayBalanceList = dayMeteringBalanceService.findReadyData(
+                List<DayMeteringBalanceRaw> dayBalanceList = dayMeteringBalanceService.findReadyData(
                         docLine.getMeteringPoint().getId(),
                         header.getStartDate().atStartOfDay(),
                         docLine.getParamCode()
-                    );
-                    if (dayBalanceList!=null && dayBalanceList.size()>0) {
-                        DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
-                        docLine.setStartBalance(dayBalance.getVal());
-                        docLine.setDataSource(dayBalance.getDataSource());
-                        docLine.setWayEntering(dayBalance.getWayEntering());
-                    }
+                );
+                if (dayBalanceList != null && dayBalanceList.size() > 0) {
+                    DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
+                    docLine.setStartBalance(dayBalance.getVal());
+                    docLine.setDataSource(dayBalance.getDataSource());
+                    docLine.setWayEntering(dayBalance.getWayEntering());
+                }
 
-                    dayBalanceList = dayMeteringBalanceService.findReadyData(
+                dayBalanceList = dayMeteringBalanceService.findReadyData(
                         docLine.getMeteringPoint().getId(),
                         header.getStartDate().plusDays(1).atStartOfDay(),
                         docLine.getParamCode()
-                    );
-                    if (dayBalanceList!=null && dayBalanceList.size()>0) {
-                        DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
-                        docLine.setEndBalance(dayBalance.getVal());
-                        docLine.setDataSource(dayBalance.getDataSource());
-                        docLine.setWayEntering(dayBalance.getWayEntering());
-                    }
+                );
+                if (dayBalanceList != null && dayBalanceList.size() > 0) {
+                    DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
+                    docLine.setEndBalance(dayBalance.getVal());
+                    docLine.setDataSource(dayBalance.getDataSource());
+                    docLine.setWayEntering(dayBalance.getWayEntering());
+                }
 
-                    docLine.setFlow(Math.round((docLine.getEndBalance() - docLine.getStartBalance())*100d ) / 100d);
-                    return docLine;
-                })
-                .collect(Collectors.toList());
+                docLine.setFlow(Math.round((docLine.getEndBalance() - docLine.getStartBalance()) * 100d) / 100d);
+                return docLine;
+            })
+            .collect(Collectors.toList());
+
+        return lines;
     }
 
 
