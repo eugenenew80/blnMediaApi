@@ -702,4 +702,97 @@
 		</attributes>
 	</entity>
 
+
+	<entity class="kz.kegoc.bln.entity.media.oper.DocMeterReplacingHeader">
+		<table name="media_doc_meter_replacing_headers" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_meter_replacing_headers_gen" />
+				<sequence-generator
+						name="media_doc_meter_replacing_headers_gen"
+						sequence-name="apps.media_doc_meter_replacing_headers_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="header">
+				<column name="header" />
+			</basic>
+
+			<basic name="docDate">
+				<column name="doc_date" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="docType">
+				<join-column name="doc_type_id"/>
+			</many-to-one>
+
+			<many-to-one name="meteringPoint">
+				<join-column name="metering_point_id"/>
+			</many-to-one>
+
+			<many-to-one name="oldMeter">
+				<join-column name="old_meter_id"/>
+			</many-to-one>
+
+			<many-to-one name="newMeter">
+				<join-column name="new_meter_id"/>
+			</many-to-one>
+
+			<one-to-many name="lines" mapped-by="header" />
+		</attributes>
+	</entity>
+
+
+	<entity class="kz.kegoc.bln.entity.media.oper.DocMeterReplacingLine">
+		<table name="media_doc_meter_replacing_lines" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_meter_replacing_lines_gen" />
+				<sequence-generator
+						name="media_doc_meter_replacing_lines_gen"
+						sequence-name="apps.media_doc_meter_replacing_lines_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="paramCode">
+				<column name="param_code" />
+			</basic>
+
+			<basic name="oldBalance">
+				<column name="old_balance" />
+			</basic>
+
+			<basic name="newBalance">
+				<column name="new_balance" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="header">
+				<join-column name="header_id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
 </entity-mappings>

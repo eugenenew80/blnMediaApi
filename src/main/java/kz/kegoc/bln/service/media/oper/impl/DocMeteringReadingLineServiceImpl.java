@@ -48,28 +48,8 @@ public class DocMeteringReadingLineServiceImpl
             }
         }
 
-        /*
-        List<MeteringPoint> curMeteringPoints = savedLines.stream()
-                .map(DocMeteringReadingLine::getMeteringPoint)
-                .distinct()
-                .collect(Collectors.toList());
-
-        List<DocMeteringReadingLine> newLines = createLines(headerId)
-                .stream()
-                .filter(t -> !curMeteringPoints.contains(t.getMeteringPoint()))
-                .collect(Collectors.toList());
-
-        if (newLines.size()!=0) {
-            for (DocMeteringReadingLine newLine : newLines) {
-                DocMeteringReadingLine savedNewLine = super.create(newLine);
-                savedLines.add(savedNewLine);
-            }
-        }
-        */
-
         return savedLines;
     }
-
 
 
 

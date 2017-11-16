@@ -141,4 +141,15 @@
         </query>
     </named-query>
 
+    <named-query name="DocMeterReplacingHeader.findAll">
+        <query>
+            select t from DocMeterReplacingHeader t order by t.id
+        </query>
+    </named-query>
+
+    <named-query name="DocMeterReplacingLine.findByHeader">
+        <query>
+            select t from DocMeterReplacingLine t where t.header.id=:headerId order by t.id
+        </query>
+    </named-query>
 </entity-mappings>

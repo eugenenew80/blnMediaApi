@@ -1,5 +1,7 @@
 package kz.kegoc.bln.entity.media.oper.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
@@ -7,6 +9,8 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DocMeteringReadingLineDto {
 	private Long id;
 	private Long headerId;

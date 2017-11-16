@@ -175,7 +175,9 @@ public class Producer {
 				"mapping/oper/default/DocTypeDto.xml",
                 "mapping/oper/default/TemplateMeteringReadingDto.xml",
                 "mapping/oper/default/DocMeteringReadingHeaderDto.xml",
-                "mapping/oper/default/DocMeteringReadingLineDto.xml"
+                "mapping/oper/default/DocMeteringReadingLineDto.xml",
+				"mapping/oper/default/DocMeterReplacingHeaderDto.xml",
+				"mapping/oper/default/DocMeterReplacingLineDto.xml"
 		));
 		return mapper;
 	}
