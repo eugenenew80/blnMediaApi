@@ -1,12 +1,14 @@
 package kz.kegoc.bln.webapi.media.oper;
 
 import kz.kegoc.bln.entity.media.oper.DocMeterReplacingHeader;
+import kz.kegoc.bln.entity.media.oper.DocType;
 import kz.kegoc.bln.entity.media.oper.dto.DocMeterReplacingHeaderDto;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
 import kz.kegoc.bln.service.media.oper.DocMeterReplacingHeaderService;
+import kz.kegoc.bln.service.media.oper.DocTypeService;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;
@@ -66,7 +68,11 @@ public class DocMeterReplacingHeaderResourceImpl {
 	
 	@POST
 	public Response create(DocMeterReplacingHeaderDto entityDto) {
-		DocMeterReplacingHeader newEntity = service.create(mapper.map(entityDto, DocMeterReplacingHeader.class));
+		DocMeterReplacingHeader entity = mapper.map(entityDto, DocMeterReplacingHeader.class);
+		DocType docType = docTypeService.findById(2l);
+		entity.setDocType(docType);
+
+		DocMeterReplacingHeader newEntity = service.create(entity);
 		return Response.ok()
 			.entity(mapper.map(newEntity, DocMeterReplacingHeaderDto.class))
 			.build();
@@ -99,6 +105,9 @@ public class DocMeterReplacingHeaderResourceImpl {
 	
 	@Inject
 	private DocMeterReplacingHeaderService service;
+
+	@Inject
+	private DocTypeService docTypeService;
 
 	@Inject
 	private DocMeterReplacingLineResourceImpl docMeterReplacingLineResource;

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+  <mapping>
+    <class-a>kz.kegoc.bln.entity.media.oper.DocUnderAccountingHeader</class-a>
+    <class-b>kz.kegoc.bln.entity.media.oper.dto.DocUnderAccountingHeaderDto</class-b>
+
+    <field>
+      <a>docType.id</a>
+      <b>docTypeId</b>
+    </field>
+
+    <field>
+      <a>docType.name</a>
+      <b>docTypeName</b>
+    </field>
+
+    <field>
+      <a>meteringPoint.id</a>
+      <b>meteringPointId</b>
+    </field>
+
+    <field>
+      <a>meteringPoint.code</a>
+      <b>meteringPointCode</b>
+    </field>
+
+    <field>
+      <a>meteringPoint.externalCode</a>
+      <b>meteringPointExternalCode</b>
+    </field>
+
+    <field>
+      <a>meteringPoint.name</a>
+      <b>meteringPointName</b>
+    </field>
+
+    <field>
+      <a>meter.id</a>
+      <b>meterId</b>
+    </field>
+
+    <field>
+      <a>meter.code</a>
+      <b>meterCode</b>
+    </field>
+
+    <field>
+      <a>meter.name</a>
+      <b>meterName</b>
+    </field>
+
+    <field>
+      <a>meter.serialNumber</a>
+      <b>meterSerialNumber</b>
+    </field>
+  </mapping>
+</mappings> 

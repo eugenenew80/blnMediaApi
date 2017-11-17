@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    
+    <changeSet id="media-eug-60" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <comment>Creating table: media_doc_under_accounting_meas_lines</comment>
+        <createTable tableName="media_doc_under_accounting_meas_lines" schemaName="apps">
+
+            <column name="id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="header_id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="param_code" type="varchar(4)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="meas_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+	<changeSet id="media-eug-61" logicalFilePath="path-independent" author="eugene" context="postgres">
+	    <comment>Creating primary key for table: media_doc_under_accounting_meas_lines</comment>
+	    <addPrimaryKey 
+	            columnNames="id"
+	            constraintName="pk_media_doc_under_accounting_meas_lines"
+	            schemaName="apps"
+	            tableName="media_doc_under_accounting_meas_lines"/>
+	</changeSet>
+	
+	<changeSet id="media-eug-62" logicalFilePath="path-independent" author="eugene" context="postgres">
+	    <comment>Creating sequence for table: media_doc_under_accounting_meas_lines</comment>
+	    <createSequence 
+	            incrementBy="1"
+	            schemaName="apps"
+	            sequenceName="media_doc_under_accounting_meas_lines_s"
+	            startValue="1"/>
+	</changeSet>	
+</databaseChangeLog>

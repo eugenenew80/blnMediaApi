@@ -177,7 +177,10 @@ public class Producer {
                 "mapping/oper/default/DocMeteringReadingHeaderDto.xml",
                 "mapping/oper/default/DocMeteringReadingLineDto.xml",
 				"mapping/oper/default/DocMeterReplacingHeaderDto.xml",
-				"mapping/oper/default/DocMeterReplacingLineDto.xml"
+				"mapping/oper/default/DocMeterReplacingLineDto.xml",
+				"mapping/oper/default/DocUnderAccountingHeaderDto.xml",
+				"mapping/oper/default/DocUnderAccountingMeasLineDto.xml",
+				"mapping/oper/default/DocUnderAccountingCalcLineDto.xml"
 		));
 		return mapper;
 	}

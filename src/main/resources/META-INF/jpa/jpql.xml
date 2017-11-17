@@ -152,4 +152,23 @@
             select t from DocMeterReplacingLine t where t.header.id=:headerId order by t.id
         </query>
     </named-query>
+
+
+    <named-query name="DocUnderAccountingHeader.findAll">
+        <query>
+            select t from DocUnderAccountingHeader t order by t.id
+        </query>
+    </named-query>
+
+    <named-query name="DocUnderAccountingMeasLine.findMeasByHeader">
+        <query>
+            select t from DocUnderAccountingMeasLine t where t.header.id=:headerId order by t.id
+        </query>
+    </named-query>
+
+    <named-query name="DocUnderAccountingCalcLine.findCalcByHeader">
+        <query>
+            select t from DocUnderAccountingCalcLine t where t.header.id=:headerId order by t.id
+        </query>
+    </named-query>
 </entity-mappings>
