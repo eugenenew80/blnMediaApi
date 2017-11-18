@@ -100,7 +100,7 @@ public class DocMeteringReadingHeaderServiceImpl
 
                 dayBalanceList = dayMeteringBalanceService.findReadyData(
                     docLine.getMeteringPoint().getId(),
-                    header.getStartDate().plusDays(1),
+                    header.getEndDate(),
                     params.get(docLine.getParamCode())
                 );
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {
