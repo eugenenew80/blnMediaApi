@@ -8,7 +8,4 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Local
-public interface DocMeteringReadingLineService extends EntityService<DocMeteringReadingLine> {
-    List<DocMeteringReadingLine> findByHeader(Long headerId);
-    List<DocMeteringReadingLine> autoFill(Long headerId);
-}
+public interface DocMeteringReadingLineService extends EntityService<DocMeteringReadingLine> { }

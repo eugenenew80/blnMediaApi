@@ -483,7 +483,11 @@
 				<join-column name="group_id"/>
 			</many-to-one>
 
-			<one-to-many name="lines" mapped-by="header" orphan-removal="true" />
+			<one-to-many name="lines" mapped-by="header" orphan-removal="true" >
+				<cascade>
+					<cascade-persist/>
+				</cascade>
+			</one-to-many>
 		</attributes>
 	</entity>
 

@@ -8,6 +8,8 @@ import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,4 +40,23 @@ public class DocMeteringReadingLine implements HasId {
     private Double flow;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
+
+    @PreUpdate
+    @PrePersist
+    private void prePersist() {
+        if (getMeteringPoint().getMeteringPointType().getCode().equals("01")) {
+            if (getStartBalance() == null)
+                setStartBalance(0d);
+
+            if (getEndBalance() == null)
+                setEndBalance(0d);
+
+            setFlow(Math.round((getEndBalance() - getStartBalance()) * 100d) / 100d);
+        }
+
+        if (getMeteringPoint().getMeteringPointType().getCode().equals("02")) {
+            setStartBalance(null);
+            setEndBalance(null);
+        }
+    }
 }

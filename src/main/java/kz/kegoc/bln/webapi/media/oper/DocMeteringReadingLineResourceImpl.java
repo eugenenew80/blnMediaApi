@@ -26,7 +26,8 @@ public class DocMeteringReadingLineResourceImpl {
 
 	@GET
 	public Response getAll(@PathParam("headerId") Long headerId) {
-		List<DocMeteringReadingLineDto> list = service.findByHeader(headerId)
+		List<DocMeteringReadingLineDto> list = headerService.findById(headerId)
+			.getLines()
 			.stream()
 			.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
 			.collect(Collectors.toList());		
@@ -40,7 +41,7 @@ public class DocMeteringReadingLineResourceImpl {
 	@GET
 	@Path("/autoFill")
 	public Response autoFill(@PathParam("headerId") Long headerId) {
-		List<DocMeteringReadingLineDto> list = service.autoFill(headerId)
+		List<DocMeteringReadingLineDto> list = headerService.autoFill(headerId)
 			.stream()
 			.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
 			.collect(Collectors.toList());
@@ -94,7 +95,7 @@ public class DocMeteringReadingLineResourceImpl {
 
 
 	@Inject
-	private DocMeteringReadingHeaderService meteringReadingHeaderService;
+	private DocMeteringReadingHeaderService headerService;
 
 	@Inject
 	private DocMeteringReadingLineService service;
