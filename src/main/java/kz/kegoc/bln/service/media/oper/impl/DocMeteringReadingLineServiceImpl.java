@@ -52,7 +52,6 @@ public class DocMeteringReadingLineServiceImpl
     }
 
 
-
     public List<DocMeteringReadingLine> createLines(Long headerId) {
         DocMeteringReadingHeader header = headerService.findById(headerId);
         Group group = header.getTemplate().getGroup();

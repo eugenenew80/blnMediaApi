@@ -19,10 +19,4 @@ public class DocUnderAccountingCalcLineRepositoryImpl
 		this();
 		setEntityManager(entityManager);
 	}
-
-	public List<DocUnderAccountingCalcLine> findByHeader(Long headerId) {
-		return getEntityManager().createNamedQuery("DocUnderAccountingCalcLine.findByHeader", DocUnderAccountingCalcLine.class)
-				.setParameter("headerId", headerId)
-				.getResultList();
-	}
 }

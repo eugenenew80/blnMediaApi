@@ -23,7 +23,6 @@ public class JaxRsConfig extends Application {
 		resources.add(HourMeteringDataRawResourceImpl.class);
 		resources.add(GroupResourceImpl.class);
 		resources.add(GroupMeteringPointResourceImpl.class);
-		resources.add(DayMeteringDataOperResourceImpl.class);
 		resources.add(DocTypeResourceImpl.class);
 		resources.add(DocTemplateResourceImpl.class);
 		resources.add(DocMeteringReadingHeaderResourceImpl.class);

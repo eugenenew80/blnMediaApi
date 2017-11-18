@@ -19,10 +19,4 @@ public class DocUnderAccountingMeasLineRepositoryImpl
 		this();
 		setEntityManager(entityManager);
 	}
-
-	public List<DocUnderAccountingMeasLine> findByHeader(Long headerId) {
-		return getEntityManager().createNamedQuery("DocUnderAccountingMeasLine.findMeasByHeader", DocUnderAccountingMeasLine.class)
-				.setParameter("headerId", headerId)
-				.getResultList();
-	}
 }

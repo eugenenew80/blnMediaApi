@@ -6,6 +6,4 @@ import javax.ejb.Local;
 import java.util.List;
 
 @Local
-public interface DocMeterReplacingLineRepository extends Repository<DocMeterReplacingLine> {
-    List<DocMeterReplacingLine> findByHeader(Long headerId);
-}
+public interface DocMeterReplacingLineRepository extends Repository<DocMeterReplacingLine> { }

@@ -19,10 +19,4 @@ public class DocMeterReplacingLineRepositoryImpl
 		this();
 		setEntityManager(entityManager);
 	}
-
-	public List<DocMeterReplacingLine> findByHeader(Long headerId) {
-		return getEntityManager().createNamedQuery("DocMeteringReadingLine.findByHeader", DocMeterReplacingLine.class)
-				.setParameter("headerId", headerId)
-				.getResultList();
-	}
 }

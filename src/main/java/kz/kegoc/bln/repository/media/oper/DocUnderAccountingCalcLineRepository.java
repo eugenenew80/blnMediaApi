@@ -7,6 +7,4 @@ import javax.ejb.Local;
 import java.util.List;
 
 @Local
-public interface DocUnderAccountingCalcLineRepository extends Repository<DocUnderAccountingCalcLine> {
-    List<DocUnderAccountingCalcLine> findByHeader(Long headerId);
-}
+public interface DocUnderAccountingCalcLineRepository extends Repository<DocUnderAccountingCalcLine> { }

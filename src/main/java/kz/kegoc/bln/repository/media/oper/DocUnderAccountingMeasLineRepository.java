@@ -8,5 +8,4 @@ import java.util.List;
 
 @Local
 public interface DocUnderAccountingMeasLineRepository extends Repository<DocUnderAccountingMeasLine> {
-    List<DocUnderAccountingMeasLine> findByHeader(Long headerId);
 }

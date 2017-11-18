@@ -108,14 +108,6 @@
 			select t from Group t order by t.id
 		</query>
 	</named-query>   
-	
-
-	<named-query name="DayMeteringDataOper.findByDate">
-		<query>
-			select t from DayMeteringDataOper t where t.operDate=:operDate
-		</query>
-	</named-query> 
-
 
 	<named-query name="DocType.findAll">
 		<query>
