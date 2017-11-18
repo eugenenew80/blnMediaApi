@@ -44,8 +44,8 @@ public class DocMeteringReadingLineResourceImpl {
 			.collect(Collectors.toList());
 
 		return Response.ok()
-				.entity(new GenericEntity<Collection<DocMeteringReadingLineDto>>(list){})
-				.build();
+			.entity(new GenericEntity<Collection<DocMeteringReadingLineDto>>(list){})
+			.build();
 	}
 
 
