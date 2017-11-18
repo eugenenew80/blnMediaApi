@@ -41,9 +41,9 @@ public class DocMeteringReadingLineResourceImpl {
 	@Path("/autoFill")
 	public Response autoFill(@PathParam("headerId") Long headerId) {
 		List<DocMeteringReadingLineDto> list = service.autoFill(headerId)
-				.stream()
-				.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
-				.collect(Collectors.toList());
+			.stream()
+			.map( it-> mapper.map(it, DocMeteringReadingLineDto.class) )
+			.collect(Collectors.toList());
 
 		return Response.ok()
 				.entity(new GenericEntity<Collection<DocMeteringReadingLineDto>>(list){})
@@ -56,8 +56,8 @@ public class DocMeteringReadingLineResourceImpl {
 	public Response getById(@PathParam("id") Long id) {
 		DocMeteringReadingLine entity = service.findById(id);
 		return Response.ok()
-				.entity(mapper.map(entity, DocMeteringReadingLineDto.class))
-				.build();
+			.entity(mapper.map(entity, DocMeteringReadingLineDto.class))
+			.build();
 	}
 
 
