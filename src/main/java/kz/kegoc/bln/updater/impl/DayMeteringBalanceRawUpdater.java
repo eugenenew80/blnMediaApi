@@ -20,7 +20,6 @@ public class DayMeteringBalanceRawUpdater implements MeteringDataUpdater<DayMete
 
     @Schedule(minute = "*/5", hour = "*", persistent = false)
     public void update() {
-
         Query query = QueryImpl.builder()
             .setParameter("status", new MyQueryParam("status", DataStatus.RAW, ConditionType.EQUALS))
             .setOrderBy("t.id")
