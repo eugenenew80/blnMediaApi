@@ -227,7 +227,6 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
         MinuteMeteringFlow data = new MinuteMeteringFlow();
         data.setExternalCode(externalCode);
         data.setMeteringDate(time);
-        data.setWayEntering(WayEntering.AUTO);
         data.setDataSource(DataSource.EMCOS);
         data.setStatus(DataStatus.RAW);
         data.setUnitCode(emcosParamUnits.get(emcosParamCode));

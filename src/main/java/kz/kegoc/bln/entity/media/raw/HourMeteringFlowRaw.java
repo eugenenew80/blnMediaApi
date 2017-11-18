@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.entity.media.WayEntering;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
@@ -20,7 +19,6 @@ public class HourMeteringFlowRaw implements Metering {
 	private String paramCode;
 	private String unitCode;
 	private DataSource dataSource;
-	private WayEntering wayEntering;
 	private DataStatus status;
 	private Double val;
 	private LocalDateTime createDate;

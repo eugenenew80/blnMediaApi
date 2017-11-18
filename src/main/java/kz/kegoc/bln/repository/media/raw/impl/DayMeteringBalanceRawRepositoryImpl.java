@@ -27,7 +27,6 @@ public class DayMeteringBalanceRawRepositoryImpl
 				.setParameter("unitCode", 		entity.getUnitCode())
 				.setParameter("dataSource", 		entity.getDataSource())
 				.setParameter("paramCode", 		entity.getParamCode())
-				.setParameter("wayEntering", 		entity.getWayEntering())
 				.setParameter("status", 			entity.getStatus())
 			.getResultList()
 				.stream()

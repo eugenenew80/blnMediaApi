@@ -4,7 +4,6 @@ import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.dict.MeteringPointMeter;
 import kz.kegoc.bln.entity.media.DataSource;
-import kz.kegoc.bln.entity.media.WayEntering;
 import kz.kegoc.bln.entity.media.oper.DocMeteringReadingHeader;
 import kz.kegoc.bln.entity.media.oper.DocMeteringReadingLine;
 import kz.kegoc.bln.entity.media.oper.Group;
@@ -19,7 +18,6 @@ import kz.kegoc.bln.service.media.raw.MeteringDataRawService;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +58,6 @@ public class DocMeteringReadingHeaderServiceImpl
                             docLine.setParamCode(param);
                             docLine.setHeader(header);
                             docLine.setDataSource(DataSource.NOT_SET);
-                            docLine.setWayEntering(WayEntering.NOT_SET);
                             docLine.setUnitCode("кВт.ч");
                             return docLine;
                         })
@@ -88,6 +85,7 @@ public class DocMeteringReadingHeaderServiceImpl
             .map(docLine -> {
                 docLine.setStartBalance(0d);
                 docLine.setEndBalance(0d);
+                docLine.setDataSource(DataSource.NOT_SET);
 
                 List<DayMeteringBalanceRaw> dayBalanceList = dayMeteringBalanceService.findReadyData(
                     docLine.getMeteringPoint().getId(),
@@ -98,7 +96,6 @@ public class DocMeteringReadingHeaderServiceImpl
                     DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
                     docLine.setStartBalance(dayBalance.getVal());
                     docLine.setDataSource(dayBalance.getDataSource());
-                    docLine.setWayEntering(dayBalance.getWayEntering());
                 }
 
                 dayBalanceList = dayMeteringBalanceService.findReadyData(
@@ -110,7 +107,6 @@ public class DocMeteringReadingHeaderServiceImpl
                     DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
                     docLine.setEndBalance(dayBalance.getVal());
                     docLine.setDataSource(dayBalance.getDataSource());
-                    docLine.setWayEntering(dayBalance.getWayEntering());
                 }
 
                 return docLine;

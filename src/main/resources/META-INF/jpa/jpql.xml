@@ -43,7 +43,6 @@
             	and t.meteringDate=:meteringDate
             	and t.hour=:hour
             	and t.dataSource=:dataSource
-            	and t.wayEntering=:wayEntering
             	and t.status=:status
             	and t.unitCode=:unitCode
             	and t.paramCode=:paramCode
@@ -80,7 +79,6 @@
             	    t.externalCode=:externalCode
             	and t.meteringDate=:meteringDate
             	and t.dataSource=:dataSource
-            	and t.wayEntering=:wayEntering
             	and t.status=:status
             	and t.unitCode=:unitCode
             	and t.paramCode=:paramCode

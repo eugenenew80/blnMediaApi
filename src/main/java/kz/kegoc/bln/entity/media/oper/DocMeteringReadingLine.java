@@ -4,14 +4,12 @@ import kz.kegoc.bln.entity.common.HasId;
 import kz.kegoc.bln.entity.dict.Meter;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.media.DataSource;
-import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -34,7 +32,6 @@ public class DocMeteringReadingLine implements HasId {
     private String unitCode;
 
     private DataSource dataSource;
-    private WayEntering wayEntering;
     private Double startBalance;
     private Double endBalance;
     private Double flow;

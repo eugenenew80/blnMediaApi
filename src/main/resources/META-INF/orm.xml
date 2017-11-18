@@ -133,11 +133,6 @@
 				<enumerated>STRING</enumerated>
 			</basic>
 
-			<basic name="wayEntering">
-				<column name="way_entering" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
 			<basic name="createDate">
 				<column name="create_date" />
 			</basic>
@@ -184,11 +179,6 @@
       		<basic name="dataSource">
       			<column name="data_source_code" />
 				<enumerated>STRING</enumerated>
-      		</basic>
-      		      		
-      		<basic name="wayEntering">
-      			<column name="way_entering" />
-      			<enumerated>STRING</enumerated>
       		</basic>
       		
 			<basic name="createDate">
@@ -247,11 +237,6 @@
       			<column name="data_source_code" />
 				<enumerated>STRING</enumerated>
       		</basic>
-      		      		
-      		<basic name="wayEntering">
-      			<column name="way_entering" />
-      			<enumerated>STRING</enumerated>
-      		</basic> 
       		
 			<basic name="createDate">
 				<column name="create_date" />
@@ -298,11 +283,6 @@
 
 			<basic name="dataSource">
 				<column name="data_source_code" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="wayEntering">
-				<column name="way_entering" />
 				<enumerated>STRING</enumerated>
 			</basic>
 
@@ -515,11 +495,6 @@
 
 			<basic name="dataSource">
 				<column name="data_source_code"  />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="wayEntering">
-				<column name="way_entering" />
 				<enumerated>STRING</enumerated>
 			</basic>
 

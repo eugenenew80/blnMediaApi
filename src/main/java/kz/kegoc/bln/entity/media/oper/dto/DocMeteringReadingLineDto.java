@@ -3,10 +3,7 @@ package kz.kegoc.bln.entity.media.oper.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import kz.kegoc.bln.entity.media.DataSource;
-import kz.kegoc.bln.entity.media.WayEntering;
 import lombok.Data;
-
-import java.time.LocalDate;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -28,7 +25,6 @@ public class DocMeteringReadingLineDto {
 	private String paramCode;
 	private String unitCode;
 	private DataSource dataSource;
-	private WayEntering wayEntering;
 	private Double startBalance;
 	private Double endBalance;
 	private Double flow;

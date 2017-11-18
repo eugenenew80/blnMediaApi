@@ -222,7 +222,6 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
         DayMeteringBalanceRaw balance = new DayMeteringBalanceRaw();
         balance.setExternalCode(externalCode);
         balance.setMeteringDate(date.atStartOfDay());
-        balance.setWayEntering(WayEntering.AUTO);
         balance.setDataSource(DataSource.EMCOS);
         balance.setStatus(DataStatus.RAW);
         balance.setUnitCode(emcosParamUnits.get(emcosParamCode));

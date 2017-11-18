@@ -15,14 +15,13 @@ public class HourMeteringFlowRawRepositoryImpl
 
 	public HourMeteringFlowRaw selectByEntity(HourMeteringFlowRaw entity) {
 		return
-			getEntityManager().createNamedQuery("HourMeteringDataRaw.findByEntity", HourMeteringFlowRaw.class)
+			getEntityManager().createNamedQuery("HourMeteringFlowRaw.findByEntity", HourMeteringFlowRaw.class)
 				.setParameter("externalCode", 	entity.getExternalCode())
 				.setParameter("meteringDate", 	entity.getMeteringDate())
 				.setParameter("hour", 			entity.getHour())
 				.setParameter("unitCode", 		entity.getUnitCode())
 				.setParameter("dataSource", 		entity.getDataSource())
 				.setParameter("paramCode", 		entity.getParamCode())
-				.setParameter("wayEntering", 		entity.getWayEntering())
 				.setParameter("status", 			entity.getStatus())
 			.getResultList()
 				.stream()

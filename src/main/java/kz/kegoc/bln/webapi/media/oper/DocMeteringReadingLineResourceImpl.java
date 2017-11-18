@@ -1,5 +1,6 @@
 package kz.kegoc.bln.webapi.media.oper;
 
+import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.oper.DocMeteringReadingLine;
 import kz.kegoc.bln.entity.media.oper.dto.DocMeteringReadingLineDto;
 import kz.kegoc.bln.service.media.oper.DocMeteringReadingHeaderService;
@@ -74,6 +75,7 @@ public class DocMeteringReadingLineResourceImpl {
 	@Path("{id : \\d+}")
 	public Response update(@PathParam("id") Long id, DocMeteringReadingLineDto entityDto ) {
 		DocMeteringReadingLine entity = mapper.map(entityDto, DocMeteringReadingLine.class);
+		entity.setDataSource(DataSource.DOC);
 		DocMeteringReadingLine newEntity = lineService.update(entity);
 
 		return Response.ok()
