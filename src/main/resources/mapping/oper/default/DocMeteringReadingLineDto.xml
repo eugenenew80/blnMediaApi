@@ -30,26 +30,41 @@
      <field>
        <a>meteringPoint.name</a>
        <b>meteringPointName</b>
-     </field>    
+     </field>
 
-     <field>
-       <a>meter.id</a>
-       <b>meterId</b>
-     </field>    
+    <field>
+      <a>meteringPoint.meteringPointType.id</a>
+      <b>meteringPointTypeId</b>
+    </field>
 
-     <field>
-       <a>meter.code</a>
-       <b>meterCode</b>
-     </field>    
+    <field>
+      <a>meteringPoint.meteringPointType.code</a>
+      <b>meteringPointTypeCode</b>
+    </field>
 
-     <field>
-       <a>meter.name</a>
-       <b>meterName</b>
-     </field>    
+    <field>
+      <a>meteringPoint.meteringPointType.name</a>
+      <b>meteringPointTypeName</b>
+    </field>
 
-     <field>
-       <a>meter.serialNumber</a>
-       <b>meterSerialNumber</b>
-     </field>  
+    <field>
+        <a>meter.id</a>
+        <b>meterId</b>
+    </field>
+
+    <field>
+        <a>meter.code</a>
+        <b>meterCode</b>
+    </field>
+
+    <field>
+        <a>meter.name</a>
+        <b>meterName</b>
+    </field>
+
+    <field>
+        <a>meter.serialNumber</a>
+        <b>meterSerialNumber</b>
+    </field>
   </mapping> 
 </mappings> 

@@ -19,8 +19,30 @@
 			<basic name="externalCode">
 				<column name="external_code" />
 			</basic>
-			
-			<one-to-many name="meters" mapped-by="meteringPoint" orphan-removal="true" />
+
+			<many-to-one name="meteringPointType">
+				<join-column name="metering_point_type_id"/>
+			</many-to-one>
+
+			<one-to-many name="meters" mapped-by="meteringPoint"/>
+		</attributes>
+	</entity>
+
+
+	<entity class="kz.kegoc.bln.entity.dict.MeteringPointType">
+		<table name="dict_metering_point_types" schema="apps" />
+		<attributes>
+			<id name="id">
+				<column name="id" />
+			</id>
+
+			<basic name="code">
+				<column name="code" />
+			</basic>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
 		</attributes>
 	</entity>
 
@@ -51,12 +73,6 @@
 		<attributes>
 			<id name="id">
 				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="dict_metering_point_meters_gen" />
-        		<sequence-generator
-        			name="dict_metering_point_meters_gen"
-        			sequence-name="apps.dict_metering_point_meters_s"
-					allocation-size="1"
-        		/>				
 			</id>
       		
 			<many-to-one name="meteringPoint">

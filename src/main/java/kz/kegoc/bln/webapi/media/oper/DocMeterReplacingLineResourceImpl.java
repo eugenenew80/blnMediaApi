@@ -23,7 +23,8 @@ public class DocMeterReplacingLineResourceImpl {
 
 	@GET
 	public Response getAll(@PathParam("headerId") Long headerId) {
-		List<DocMeterReplacingLineDto> list = service.findByHeader(headerId)
+		List<DocMeterReplacingLineDto> list = headerService.findById(headerId)
+			.getLines()
 			.stream()
 			.map( it-> mapper.map(it, DocMeterReplacingLineDto.class) )
 			.collect(Collectors.toList());		
@@ -48,7 +49,7 @@ public class DocMeterReplacingLineResourceImpl {
 	public Response create(DocMeterReplacingLineDto entityDto) {
 		DocMeterReplacingLine newEntity = service.create(mapper.map(entityDto, DocMeterReplacingLine.class));
 		return Response.ok()
-				.entity(mapper.map(service.findById(newEntity.getId()), DocMeterReplacingLineDto.class))
+				.entity(mapper.map(newEntity, DocMeterReplacingLineDto.class))
 				.build();
 	}
 
@@ -58,7 +59,7 @@ public class DocMeterReplacingLineResourceImpl {
 	public Response update(@PathParam("id") Long id, DocMeterReplacingLineDto entityDto ) {
 		DocMeterReplacingLine newEntity = service.update(mapper.map(entityDto, DocMeterReplacingLine.class));
 		return Response.ok()
-				.entity(mapper.map(service.findById(newEntity.getId()), DocMeterReplacingLineDto.class))
+				.entity(mapper.map(newEntity, DocMeterReplacingLineDto.class))
 				.build();
 	}
 
@@ -73,7 +74,7 @@ public class DocMeterReplacingLineResourceImpl {
 
 
 	@Inject
-	private DocMeterReplacingHeaderService meterReplacingHeaderService;
+	private DocMeterReplacingHeaderService headerService;
 
 	@Inject
 	private DocMeterReplacingLineService service;

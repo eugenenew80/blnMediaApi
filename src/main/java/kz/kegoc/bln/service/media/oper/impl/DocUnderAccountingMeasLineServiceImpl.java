@@ -20,18 +20,5 @@ public class DocUnderAccountingMeasLineServiceImpl
 	@Inject
     public DocUnderAccountingMeasLineServiceImpl(DocUnderAccountingMeasLineRepository repository, Validator validator) {
         super(repository, validator);
-        this.lineRepository = repository;
     }
-
-
-    public List<DocUnderAccountingMeasLine> findByHeader(Long headerId) {
-        DocUnderAccountingHeader header = headerService.findById(headerId);
-        return header.getMeasLines();
-    }
-
-
-    private DocUnderAccountingMeasLineRepository lineRepository;
-
-    @Inject
-    private DocUnderAccountingHeaderService headerService;
 }

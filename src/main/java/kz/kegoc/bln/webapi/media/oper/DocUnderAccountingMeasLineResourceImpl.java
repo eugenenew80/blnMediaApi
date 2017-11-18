@@ -23,7 +23,8 @@ public class DocUnderAccountingMeasLineResourceImpl {
 
 	@GET
 	public Response getAll(@PathParam("headerId") Long headerId) {
-		List<DocUnderAccountingMeasLineDto> list = service.findByHeader(headerId)
+		List<DocUnderAccountingMeasLineDto> list = headerService.findById(headerId)
+			.getMeasLines()
 			.stream()
 			.map( it-> mapper.map(it, DocUnderAccountingMeasLineDto.class) )
 			.collect(Collectors.toList());		
@@ -73,7 +74,7 @@ public class DocUnderAccountingMeasLineResourceImpl {
 
 
 	@Inject
-	private DocUnderAccountingHeaderService underAccountingHeaderService;
+	private DocUnderAccountingHeaderService headerService;
 
 	@Inject
 	private DocUnderAccountingMeasLineService service;

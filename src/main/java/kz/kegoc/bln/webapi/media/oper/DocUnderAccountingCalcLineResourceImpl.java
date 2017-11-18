@@ -23,7 +23,8 @@ public class DocUnderAccountingCalcLineResourceImpl {
 
 	@GET
 	public Response getAll(@PathParam("headerId") Long headerId) {
-		List<DocUnderAccountingCalcLineDto> list = service.findByHeader(headerId)
+		List<DocUnderAccountingCalcLineDto> list = headerService.findById(headerId)
+			.getCalcLines()
 			.stream()
 			.map( it-> mapper.map(it, DocUnderAccountingCalcLineDto.class) )
 			.collect(Collectors.toList());		
@@ -73,7 +74,7 @@ public class DocUnderAccountingCalcLineResourceImpl {
 
 
 	@Inject
-	private DocUnderAccountingHeaderService underAccountingHeaderService;
+	private DocUnderAccountingHeaderService headerService;
 
 	@Inject
 	private DocUnderAccountingCalcLineService service;

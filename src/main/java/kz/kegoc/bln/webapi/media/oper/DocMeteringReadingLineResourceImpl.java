@@ -63,9 +63,11 @@ public class DocMeteringReadingLineResourceImpl {
 
 	@POST
 	public Response create(DocMeteringReadingLineDto entityDto) {
-		DocMeteringReadingLine newEntity = service.create(mapper.map(entityDto, DocMeteringReadingLine.class));
+		DocMeteringReadingLine entity = mapper.map(entityDto, DocMeteringReadingLine.class);
+		DocMeteringReadingLine newEntity = service.create(entity);
+
 		return Response.ok()
-				.entity(mapper.map(service.findById(newEntity.getId()), DocMeteringReadingLineDto.class))
+				.entity(mapper.map(newEntity, DocMeteringReadingLineDto.class))
 				.build();
 	}
 
@@ -73,9 +75,11 @@ public class DocMeteringReadingLineResourceImpl {
 	@PUT
 	@Path("{id : \\d+}")
 	public Response update(@PathParam("id") Long id, DocMeteringReadingLineDto entityDto ) {
-		DocMeteringReadingLine newEntity = service.update(mapper.map(entityDto, DocMeteringReadingLine.class));
+		DocMeteringReadingLine entity = mapper.map(entityDto, DocMeteringReadingLine.class);
+		DocMeteringReadingLine newEntity = service.update(entity);
+
 		return Response.ok()
-				.entity(mapper.map(service.findById(newEntity.getId()), DocMeteringReadingLineDto.class))
+				.entity(mapper.map(newEntity, DocMeteringReadingLineDto.class))
 				.build();
 	}
 

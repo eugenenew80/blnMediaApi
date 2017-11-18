@@ -13,5 +13,6 @@ public class MeteringPoint implements HasId, HasCode, HasName {
     private String name;
     private String code;
     private String externalCode;
+    private MeteringPointType meteringPointType;
     private List<MeteringPointMeter> meters;
 }

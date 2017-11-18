@@ -18,6 +18,9 @@ public class DocMeteringReadingLineDto {
 	private String meteringPointCode;
 	private String meteringPointExternalCode;
 	private String meteringPointName;
+	private Long meteringPointTypeId;
+	private String meteringPointTypeCode;
+	private String meteringPointTypeName;
 	private Long meterId;
 	private String meterCode;
 	private String meterName;
