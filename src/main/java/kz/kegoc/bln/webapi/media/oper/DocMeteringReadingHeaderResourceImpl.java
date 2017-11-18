@@ -90,15 +90,16 @@ public class DocMeteringReadingHeaderResourceImpl {
 
 
 	@Path("/{headerId : \\d+}/mediaDocMeteringReadingLine")
-	public DocMeteringReadingLineResourceImpl getLines() {
-		return docMeteringReadingLineResource;
+	public DocMeteringReadingLineResourceImpl getLineResource() {
+		return lineResource;
 	}
-	
+
+
 	@Inject
 	private DocMeteringReadingHeaderService service;
 
 	@Inject
-	private DocMeteringReadingLineResourceImpl docMeteringReadingLineResource;
+	private DocMeteringReadingLineResourceImpl lineResource;
 
 	@Inject
 	private DozerBeanMapper dtoMapper;

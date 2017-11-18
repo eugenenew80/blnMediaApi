@@ -30,18 +30,18 @@ public class DocMeterReplacingHeaderResourceImpl {
 	@GET
 	public Response getAll(@QueryParam("name") String name) {
 		Query query = QueryImpl.builder()
-				.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
-				.setOrderBy("t.id")
-				.build();
+			.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
+			.setOrderBy("t.id")
+			.build();
 
 		List<DocMeterReplacingHeaderDto> list = service.find(query)
-				.stream()
-				.map( it-> dtoMapper.map(it, DocMeterReplacingHeaderDto.class) )
-				.collect(Collectors.toList());
+			.stream()
+			.map( it-> dtoMapper.map(it, DocMeterReplacingHeaderDto.class) )
+			.collect(Collectors.toList());
 
 		return Response.ok()
-				.entity(new GenericEntity<Collection<DocMeterReplacingHeaderDto>>(list){})
-				.build();
+			.entity(new GenericEntity<Collection<DocMeterReplacingHeaderDto>>(list){})
+			.build();
 	}
 	
 	
@@ -90,7 +90,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 
 
 	@Path("/{headerId : \\d+}/mediaDocMeterReplacingLine")
-	public DocMeterReplacingLineResourceImpl getLines() {
+	public DocMeterReplacingLineResourceImpl getLineResource() {
 		return lineResource;
 	}
 	

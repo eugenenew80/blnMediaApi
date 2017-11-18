@@ -38,38 +38,38 @@ public class DocUnderAccountingMeasLineResourceImpl {
 	@GET
 	@Path("/{id : \\d+}")
 	public Response getById(@PathParam("id") Long id) {
-		DocUnderAccountingMeasLine entity = service.findById(id);
+		DocUnderAccountingMeasLine entity = lineService.findById(id);
 		return Response.ok()
-				.entity(mapper.map(entity, DocUnderAccountingMeasLineDto.class))
-				.build();
+			.entity(mapper.map(entity, DocUnderAccountingMeasLineDto.class))
+			.build();
 	}
 
 
 	@POST
 	public Response create(DocUnderAccountingMeasLineDto entityDto) {
-		DocUnderAccountingMeasLine newEntity = service.create(mapper.map(entityDto, DocUnderAccountingMeasLine.class));
+		DocUnderAccountingMeasLine newEntity = lineService.create(mapper.map(entityDto, DocUnderAccountingMeasLine.class));
 		return Response.ok()
-				.entity(mapper.map(service.findById(newEntity.getId()), DocUnderAccountingMeasLineDto.class))
-				.build();
+			.entity(mapper.map(lineService.findById(newEntity.getId()), DocUnderAccountingMeasLineDto.class))
+			.build();
 	}
 
 
 	@PUT
 	@Path("{id : \\d+}")
 	public Response update(@PathParam("id") Long id, DocUnderAccountingMeasLineDto entityDto ) {
-		DocUnderAccountingMeasLine newEntity = service.update(mapper.map(entityDto, DocUnderAccountingMeasLine.class));
+		DocUnderAccountingMeasLine newEntity = lineService.update(mapper.map(entityDto, DocUnderAccountingMeasLine.class));
 		return Response.ok()
-				.entity(mapper.map(service.findById(newEntity.getId()), DocUnderAccountingMeasLineDto.class))
-				.build();
+			.entity(mapper.map(lineService.findById(newEntity.getId()), DocUnderAccountingMeasLineDto.class))
+			.build();
 	}
 
 
 	@DELETE
 	@Path("{id : \\d+}")
 	public Response delete(@PathParam("id") Long id) {
-		service.delete(id);
+		lineService.delete(id);
 		return Response.noContent()
-				.build();
+			.build();
 	}
 
 
@@ -77,7 +77,7 @@ public class DocUnderAccountingMeasLineResourceImpl {
 	private DocUnderAccountingHeaderService headerService;
 
 	@Inject
-	private DocUnderAccountingMeasLineService service;
+	private DocUnderAccountingMeasLineService lineService;
 
 	@Inject
 	private DozerBeanMapper mapper;

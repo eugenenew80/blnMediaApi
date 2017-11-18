@@ -31,18 +31,18 @@ public class DocUnderAccountingHeaderResourceImpl {
 	@GET
 	public Response getAll(@QueryParam("name") String name) {
 		Query query = QueryImpl.builder()
-				.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
-				.setOrderBy("t.id")
-				.build();
+			.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
+			.setOrderBy("t.id")
+			.build();
 
 		List<DocUnderAccountingHeaderDto> list = service.find(query)
-				.stream()
-				.map( it-> mapper.map(it, DocUnderAccountingHeaderDto.class) )
-				.collect(Collectors.toList());
+			.stream()
+			.map( it-> dtoMapper.map(it, DocUnderAccountingHeaderDto.class) )
+			.collect(Collectors.toList());
 
 		return Response.ok()
-				.entity(new GenericEntity<Collection<DocUnderAccountingHeaderDto>>(list){})
-				.build();
+			.entity(new GenericEntity<Collection<DocUnderAccountingHeaderDto>>(list){})
+			.build();
 	}
 	
 	
@@ -51,20 +51,20 @@ public class DocUnderAccountingHeaderResourceImpl {
 	public Response getById(@PathParam("id") Long id) {
 		DocUnderAccountingHeader entity = service.findById(id);
 		return Response.ok()
-			.entity(mapper.map(entity, DocUnderAccountingHeaderDto.class))
+			.entity(dtoMapper.map(entity, DocUnderAccountingHeaderDto.class))
 			.build();		
 	}
 	
 
 	@POST
 	public Response create(DocUnderAccountingHeaderDto entityDto) {
-		DocUnderAccountingHeader entity = mapper.map(entityDto, DocUnderAccountingHeader.class);
+		DocUnderAccountingHeader entity = dtoMapper.map(entityDto, DocUnderAccountingHeader.class);
 		DocType docType = docTypeService.findById(3l);
 		entity.setDocType(docType);
 
 		DocUnderAccountingHeader newEntity = service.create(entity);
 		return Response.ok()
-			.entity(mapper.map(newEntity, DocUnderAccountingHeaderDto.class))
+			.entity(dtoMapper.map(newEntity, DocUnderAccountingHeaderDto.class))
 			.build();
 	}
 	
@@ -72,9 +72,9 @@ public class DocUnderAccountingHeaderResourceImpl {
 	@PUT 
 	@Path("{id : \\d+}") 
 	public Response update(@PathParam("id") Long id, DocUnderAccountingHeaderDto entityDto ) {
-		DocUnderAccountingHeader newEntity = service.update(mapper.map(entityDto, DocUnderAccountingHeader.class));
+		DocUnderAccountingHeader newEntity = service.update(dtoMapper.map(entityDto, DocUnderAccountingHeader.class));
 		return Response.ok()
-			.entity(mapper.map(newEntity, DocUnderAccountingHeaderDto.class))
+			.entity(dtoMapper.map(newEntity, DocUnderAccountingHeaderDto.class))
 			.build();
 	}
 	
@@ -89,15 +89,16 @@ public class DocUnderAccountingHeaderResourceImpl {
 
 
 	@Path("/{headerId : \\d+}/mediaDocUnderAccountingMeasLine")
-	public DocUnderAccountingMeasLineResourceImpl getMeasLines() {
-		return docUnderAccountingMeasLineResource;
+	public DocUnderAccountingMeasLineResourceImpl getMeasLineResource() {
+		return measLineResource;
 	}
 
 	@Path("/{headerId : \\d+}/mediaDocUnderAccountingCalcLine")
-	public DocUnderAccountingCalcLineResourceImpl getCalcLines() {
-		return docUnderAccountingCalcLineResource;
+	public DocUnderAccountingCalcLineResourceImpl getCalcLineResource() {
+		return calcLineResource;
 	}
-	
+
+
 	@Inject
 	private DocUnderAccountingHeaderService service;
 
@@ -105,11 +106,11 @@ public class DocUnderAccountingHeaderResourceImpl {
 	private DocTypeService docTypeService;
 
 	@Inject
-	private DocUnderAccountingMeasLineResourceImpl docUnderAccountingMeasLineResource;
+	private DocUnderAccountingMeasLineResourceImpl measLineResource;
 
 	@Inject
-	private DocUnderAccountingCalcLineResourceImpl docUnderAccountingCalcLineResource;
+	private DocUnderAccountingCalcLineResourceImpl calcLineResource;
 
 	@Inject
-	private DozerBeanMapper mapper;
+	private DozerBeanMapper dtoMapper;
 }

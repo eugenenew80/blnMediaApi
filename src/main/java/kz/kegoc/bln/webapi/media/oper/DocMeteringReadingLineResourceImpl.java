@@ -11,9 +11,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,7 +52,7 @@ public class DocMeteringReadingLineResourceImpl {
 	@GET
 	@Path("/{id : \\d+}")
 	public Response getById(@PathParam("id") Long id) {
-		DocMeteringReadingLine entity = service.findById(id);
+		DocMeteringReadingLine entity = lineService.findById(id);
 		return Response.ok()
 			.entity(mapper.map(entity, DocMeteringReadingLineDto.class))
 			.build();
@@ -65,11 +62,11 @@ public class DocMeteringReadingLineResourceImpl {
 	@POST
 	public Response create(DocMeteringReadingLineDto entityDto) {
 		DocMeteringReadingLine entity = mapper.map(entityDto, DocMeteringReadingLine.class);
-		DocMeteringReadingLine newEntity = service.create(entity);
+		DocMeteringReadingLine newEntity = lineService.create(entity);
 
 		return Response.ok()
-				.entity(mapper.map(newEntity, DocMeteringReadingLineDto.class))
-				.build();
+			.entity(mapper.map(newEntity, DocMeteringReadingLineDto.class))
+			.build();
 	}
 
 
@@ -77,20 +74,20 @@ public class DocMeteringReadingLineResourceImpl {
 	@Path("{id : \\d+}")
 	public Response update(@PathParam("id") Long id, DocMeteringReadingLineDto entityDto ) {
 		DocMeteringReadingLine entity = mapper.map(entityDto, DocMeteringReadingLine.class);
-		DocMeteringReadingLine newEntity = service.update(entity);
+		DocMeteringReadingLine newEntity = lineService.update(entity);
 
 		return Response.ok()
-				.entity(mapper.map(newEntity, DocMeteringReadingLineDto.class))
-				.build();
+			.entity(mapper.map(newEntity, DocMeteringReadingLineDto.class))
+			.build();
 	}
 
 
 	@DELETE
 	@Path("{id : \\d+}")
 	public Response delete(@PathParam("id") Long id) {
-		service.delete(id);
+		lineService.delete(id);
 		return Response.noContent()
-				.build();
+			.build();
 	}
 
 
@@ -98,7 +95,7 @@ public class DocMeteringReadingLineResourceImpl {
 	private DocMeteringReadingHeaderService headerService;
 
 	@Inject
-	private DocMeteringReadingLineService service;
+	private DocMeteringReadingLineService lineService;
 
 	@Inject
 	private DozerBeanMapper mapper;

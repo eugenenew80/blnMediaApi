@@ -38,36 +38,36 @@ public class DocMeterReplacingLineResourceImpl {
 	@GET
 	@Path("/{id : \\d+}")
 	public Response getById(@PathParam("id") Long id) {
-		DocMeterReplacingLine entity = service.findById(id);
+		DocMeterReplacingLine entity = lineService.findById(id);
 		return Response.ok()
-				.entity(mapper.map(entity, DocMeterReplacingLineDto.class))
-				.build();
+			.entity(mapper.map(entity, DocMeterReplacingLineDto.class))
+			.build();
 	}
 
 
 	@POST
 	public Response create(DocMeterReplacingLineDto entityDto) {
-		DocMeterReplacingLine newEntity = service.create(mapper.map(entityDto, DocMeterReplacingLine.class));
+		DocMeterReplacingLine newEntity = lineService.create(mapper.map(entityDto, DocMeterReplacingLine.class));
 		return Response.ok()
-				.entity(mapper.map(newEntity, DocMeterReplacingLineDto.class))
-				.build();
+			.entity(mapper.map(newEntity, DocMeterReplacingLineDto.class))
+			.build();
 	}
 
 
 	@PUT
 	@Path("{id : \\d+}")
 	public Response update(@PathParam("id") Long id, DocMeterReplacingLineDto entityDto ) {
-		DocMeterReplacingLine newEntity = service.update(mapper.map(entityDto, DocMeterReplacingLine.class));
+		DocMeterReplacingLine newEntity = lineService.update(mapper.map(entityDto, DocMeterReplacingLine.class));
 		return Response.ok()
-				.entity(mapper.map(newEntity, DocMeterReplacingLineDto.class))
-				.build();
+			.entity(mapper.map(newEntity, DocMeterReplacingLineDto.class))
+			.build();
 	}
 
 
 	@DELETE
 	@Path("{id : \\d+}")
 	public Response delete(@PathParam("id") Long id) {
-		service.delete(id);
+		lineService.delete(id);
 		return Response.noContent()
 				.build();
 	}
@@ -77,7 +77,7 @@ public class DocMeterReplacingLineResourceImpl {
 	private DocMeterReplacingHeaderService headerService;
 
 	@Inject
-	private DocMeterReplacingLineService service;
+	private DocMeterReplacingLineService lineService;
 
 	@Inject
 	private DozerBeanMapper mapper;
