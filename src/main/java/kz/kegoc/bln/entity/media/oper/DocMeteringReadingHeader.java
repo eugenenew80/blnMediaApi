@@ -3,7 +3,6 @@ package kz.kegoc.bln.entity.media.oper;
 import kz.kegoc.bln.entity.common.HasId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -19,13 +18,19 @@ public class DocMeteringReadingHeader implements HasId {
     private String name;
 
     @NotNull
+    private DocType docType;
+
+    @NotNull
+    private Group group;
+
+    @NotNull
+    private LocalDate docDate;
+
+    @NotNull
     private LocalDateTime startDate;
 
     @NotNull
     private LocalDateTime endDate;
-
-    @NotNull
-    private DocTemplate template;
 
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;

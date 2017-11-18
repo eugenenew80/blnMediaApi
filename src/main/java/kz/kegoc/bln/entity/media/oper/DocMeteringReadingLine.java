@@ -26,9 +26,6 @@ public class DocMeteringReadingLine implements HasId {
     private Meter meter;
 
     @NotNull
-    private LocalDate operDate;
-
-    @NotNull
     private String paramCode;
 
     @NotNull

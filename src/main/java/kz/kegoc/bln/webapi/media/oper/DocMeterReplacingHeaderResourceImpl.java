@@ -53,16 +53,6 @@ public class DocMeterReplacingHeaderResourceImpl {
 			.entity(dtoMapper.map(entity, DocMeterReplacingHeaderDto.class))
 			.build();		
 	}
-	
-	
-	@GET
-	@Path("/byName/{name}")
-	public Response getByName(@PathParam("name") String name) {		
-		DocMeterReplacingHeader entity = service.findByName(name);
-		return Response.ok()
-			.entity(dtoMapper.map(entity, DocMeterReplacingHeaderDto.class))
-			.build();
-	}
 
 	
 	@POST

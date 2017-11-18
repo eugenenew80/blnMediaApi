@@ -24,7 +24,6 @@ public class JaxRsConfig extends Application {
 		resources.add(GroupResourceImpl.class);
 		resources.add(GroupMeteringPointResourceImpl.class);
 		resources.add(DocTypeResourceImpl.class);
-		resources.add(DocTemplateResourceImpl.class);
 		resources.add(DocMeteringReadingHeaderResourceImpl.class);
 		resources.add(DocMeterReplacingHeaderResourceImpl.class);
 		resources.add(DocUnderAccountingHeaderResourceImpl.class);

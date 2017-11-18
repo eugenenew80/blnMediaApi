@@ -7,6 +7,7 @@ import kz.kegoc.bln.entity.media.oper.DocType;
 import kz.kegoc.bln.mapper.EntityMapper;
 import kz.kegoc.bln.service.dict.MeterService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
+import kz.kegoc.bln.service.media.oper.DocMeterReplacingHeaderService;
 import kz.kegoc.bln.service.media.oper.DocTypeService;
 
 import javax.ejb.Stateless;
@@ -39,9 +40,17 @@ public class DocMeterReplacingHeaderMapper implements EntityMapper<DocMeterRepla
             entity.setNewMeter(newMeter);
         }
 
+        if (entity.getLines()==null && entity.getId()!=null) {
+            DocMeterReplacingHeader header = headerService.findById(entity.getId());
+            entity.setLines(header.getLines());
+        }
+
         return entity;
     }
 
+
+    @Inject
+    private DocMeterReplacingHeaderService headerService;
 
     @Inject
     private DocTypeService docTypeService;

@@ -65,6 +65,12 @@
 
     <changeSet id="media-eug-84" logicalFilePath="path-independent" author="eugene" context="postgres">
         <addColumn schemaName="apps" tableName="media_doc_metering_reading_headers">
+            <column name="doc_date" type="date">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+
+        <addColumn schemaName="apps" tableName="media_doc_metering_reading_headers">
             <column name="doc_type_id" type="number">
                 <constraints nullable="false" />
             </column>
@@ -79,6 +85,8 @@
 
     <changeSet id="media-eug-85" logicalFilePath="path-independent" author="eugene" context="postgres">
         <dropTable schemaName="apps" tableName="media_doc_templates"/>
+        <dropSequence sequenceName="media_doc_templates_s" schemaName="apps" />
+
         <rollback>
             <createTable tableName="media_doc_templates" schemaName="apps">
                 <column name="id" type="number">
@@ -101,12 +109,13 @@
                     <constraints nullable="false"/>
                 </column>
             </createTable>
-        </rollback>
-    </changeSet>
 
-    <changeSet id="media-eug-86" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <dropSequence sequenceName="media_doc_templates_s" schemaName="apps" />
-        <rollback>
+            <createSequence
+                    incrementBy="1"
+                    schemaName="apps"
+                    sequenceName="media_doc_templates_s"
+                    startValue="2"/>
+
             <loadData
                     encoding="UTF-8"
                     relativeToChangelogFile="true"
@@ -122,12 +131,15 @@
                 <column name="header"		type="STRING"/>
                 <column name="group_id" 	type="NUMERIC"/>
             </loadData>
+        </rollback>
+    </changeSet>
 
-            <createSequence
-                    incrementBy="1"
-                    schemaName="apps"
-                    sequenceName="media_doc_templates_s"
-                    startValue="2"/>
+    <changeSet id="media-eug-86" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <dropColumn columnName="oper_date" schemaName="apps" tableName="media_doc_metering_reading_lines"/>
+        <rollback>
+            <addColumn schemaName="apps" tableName="media_doc_metering_reading_lines">
+                <column name="oper_date" type="date"/>
+            </addColumn>
         </rollback>
     </changeSet>
 

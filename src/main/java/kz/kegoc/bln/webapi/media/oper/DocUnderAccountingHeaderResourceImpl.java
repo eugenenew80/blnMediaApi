@@ -55,17 +55,7 @@ public class DocUnderAccountingHeaderResourceImpl {
 			.build();		
 	}
 	
-	
-	@GET
-	@Path("/byName/{name}")
-	public Response getByName(@PathParam("name") String name) {		
-		DocUnderAccountingHeader entity = service.findByName(name);
-		return Response.ok()
-			.entity(mapper.map(entity, DocUnderAccountingHeaderDto.class))
-			.build();
-	}
 
-	
 	@POST
 	public Response create(DocUnderAccountingHeaderDto entityDto) {
 		DocUnderAccountingHeader entity = mapper.map(entityDto, DocUnderAccountingHeader.class);

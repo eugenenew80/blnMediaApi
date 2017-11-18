@@ -2,6 +2,7 @@ package kz.kegoc.bln.webapi.media.oper;
 
 import kz.kegoc.bln.entity.media.oper.DocMeteringReadingHeader;
 import kz.kegoc.bln.entity.media.oper.dto.DocMeteringReadingHeaderDto;
+import kz.kegoc.bln.mapper.EntityMapper;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
@@ -35,7 +36,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 		
 		List<DocMeteringReadingHeaderDto> list = service.find(query)
 			.stream()
-			.map( it-> mapper.map(it, DocMeteringReadingHeaderDto.class) )
+			.map( it-> dtoMapper.map(it, DocMeteringReadingHeaderDto.class) )
 			.collect(Collectors.toList());
 		
 		return Response.ok()
@@ -49,26 +50,19 @@ public class DocMeteringReadingHeaderResourceImpl {
 	public Response getById(@PathParam("id") Long id) {
 		DocMeteringReadingHeader entity = service.findById(id);
 		return Response.ok()
-			.entity(mapper.map(entity, DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(entity, DocMeteringReadingHeaderDto.class))
 			.build();		
-	}
-	
-	
-	@GET
-	@Path("/byName/{name}")
-	public Response getByName(@PathParam("name") String name) {		
-		DocMeteringReadingHeader entity = service.findByName(name);
-		return Response.ok()
-			.entity(mapper.map(entity, DocMeteringReadingHeaderDto.class))
-			.build();
 	}
 
 	
 	@POST
 	public Response create(DocMeteringReadingHeaderDto entityDto) {
-		DocMeteringReadingHeader newEntity = service.create(mapper.map(entityDto, DocMeteringReadingHeader.class));
+		DocMeteringReadingHeader entity = dtoMapper.map(entityDto, DocMeteringReadingHeader.class);
+		entity = entityMapper.map(entity);
+		DocMeteringReadingHeader newEntity = service.create(entity);
+
 		return Response.ok()
-			.entity(mapper.map(newEntity, DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(newEntity, DocMeteringReadingHeaderDto.class))
 			.build();
 	}
 	
@@ -76,9 +70,12 @@ public class DocMeteringReadingHeaderResourceImpl {
 	@PUT 
 	@Path("{id : \\d+}") 
 	public Response update(@PathParam("id") Long id, DocMeteringReadingHeaderDto entityDto ) {
-		DocMeteringReadingHeader newEntity = service.update(mapper.map(entityDto, DocMeteringReadingHeader.class));
+		DocMeteringReadingHeader entity = dtoMapper.map(entityDto, DocMeteringReadingHeader.class);
+		entity = entityMapper.map(entity);
+		DocMeteringReadingHeader newEntity = service.update(entity);
+
 		return Response.ok()
-			.entity(mapper.map(newEntity, DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(newEntity, DocMeteringReadingHeaderDto.class))
 			.build();
 	}
 	
@@ -104,5 +101,8 @@ public class DocMeteringReadingHeaderResourceImpl {
 	private DocMeteringReadingLineResourceImpl docMeteringReadingLineResource;
 
 	@Inject
-	private DozerBeanMapper mapper;
+	private DozerBeanMapper dtoMapper;
+
+	@Inject
+	private EntityMapper<DocMeteringReadingHeader> entityMapper;
 }

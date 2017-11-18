@@ -3,6 +3,7 @@ package kz.kegoc.bln.entity.media.oper.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -12,10 +13,13 @@ import java.time.LocalDateTime;
 public class DocMeteringReadingHeaderDto  {
     private Long id;
     private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Long templateId;
-    private String templateName;
+    private LocalDate docDate;
+    private Long docTypeId;
+    private String docTypeName;
+    private Long groupId;
+    private String groupName;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
 }

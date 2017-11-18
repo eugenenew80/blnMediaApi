@@ -8,13 +8,23 @@
     <class-b>kz.kegoc.bln.entity.media.oper.dto.DocMeteringReadingHeaderDto</class-b>
 
     <field>
-      <a>template.id</a>
-      <b>templateId</b>
+      <a>docType.id</a>
+      <b>docTypeId</b>
     </field>
 
     <field>
-      <a>template.name</a>
-      <b>templateName</b>
+      <a>docType.name</a>
+      <b>docTypeName</b>
+    </field>
+
+    <field>
+      <a>group.id</a>
+      <b>groupId</b>
+    </field>
+
+    <field>
+      <a>group.name</a>
+      <b>groupName</b>
     </field>
   </mapping>
 </mappings> 

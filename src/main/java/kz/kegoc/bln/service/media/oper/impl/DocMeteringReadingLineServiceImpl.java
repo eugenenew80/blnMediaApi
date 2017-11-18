@@ -54,7 +54,7 @@ public class DocMeteringReadingLineServiceImpl
 
     public List<DocMeteringReadingLine> createLines(Long headerId) {
         DocMeteringReadingHeader header = headerService.findById(headerId);
-        Group group = header.getTemplate().getGroup();
+        Group group = header.getGroup();
 
         List<DocMeteringReadingLine> lines =
             group.getMeteringPoints().stream()
@@ -67,7 +67,6 @@ public class DocMeteringReadingLineServiceImpl
                                     DocMeteringReadingLine docLine = new DocMeteringReadingLine();
                                     docLine.setMeteringPoint(point);
                                     docLine.setMeter(meter);
-                                    docLine.setOperDate(header.getStartDate());
                                     docLine.setParamCode(param);
                                     docLine.setHeader(header);
                                     docLine.setDataSource(DataSource.NOT_SET);
@@ -95,7 +94,7 @@ public class DocMeteringReadingLineServiceImpl
 
                 List<DayMeteringBalanceRaw> dayBalanceList = dayMeteringBalanceService.findReadyData(
                         docLine.getMeteringPoint().getId(),
-                        header.getStartDate().atStartOfDay(),
+                        header.getStartDate(),
                         docLine.getParamCode()
                 );
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {
@@ -107,7 +106,7 @@ public class DocMeteringReadingLineServiceImpl
 
                 dayBalanceList = dayMeteringBalanceService.findReadyData(
                         docLine.getMeteringPoint().getId(),
-                        header.getStartDate().plusDays(1).atStartOfDay(),
+                        header.getStartDate().plusDays(1),
                         docLine.getParamCode()
                 );
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {

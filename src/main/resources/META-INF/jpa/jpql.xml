@@ -121,21 +121,9 @@
 		</query>
 	</named-query>
 
-    <named-query name="DocTemplate.findAll">
-		<query>
-			select t from DocTemplate t order by t.id
-		</query>
-	</named-query>
-
     <named-query name="DocMeteringReadingHeader.findAll">
         <query>
             select t from DocMeteringReadingHeader t order by t.id
-        </query>
-    </named-query>
-
-    <named-query name="DocMeteringReadingLine.findByHeader">
-        <query>
-            select t from DocMeteringReadingLine t where t.header.id=:headerId order by t.id
         </query>
     </named-query>
 
@@ -145,28 +133,9 @@
         </query>
     </named-query>
 
-    <named-query name="DocMeterReplacingLine.findByHeader">
-        <query>
-            select t from DocMeterReplacingLine t where t.header.id=:headerId order by t.id
-        </query>
-    </named-query>
-
-
     <named-query name="DocUnderAccountingHeader.findAll">
         <query>
             select t from DocUnderAccountingHeader t order by t.id
-        </query>
-    </named-query>
-
-    <named-query name="DocUnderAccountingMeasLine.findMeasByHeader">
-        <query>
-            select t from DocUnderAccountingMeasLine t where t.header.id=:headerId order by t.id
-        </query>
-    </named-query>
-
-    <named-query name="DocUnderAccountingCalcLine.findCalcByHeader">
-        <query>
-            select t from DocUnderAccountingCalcLine t where t.header.id=:headerId order by t.id
         </query>
     </named-query>
 </entity-mappings>

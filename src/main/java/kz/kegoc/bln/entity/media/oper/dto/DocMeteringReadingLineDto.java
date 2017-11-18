@@ -22,7 +22,6 @@ public class DocMeteringReadingLineDto {
 	private String meterCode;
 	private String meterName;
 	private String meterSerialNumber;
-	private LocalDate operDate;
 	private String paramCode;
 	private String unitCode;
 	private DataSource dataSource;
