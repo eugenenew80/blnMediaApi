@@ -48,7 +48,7 @@ public class BasicAuthentificationFilter implements ContainerRequestFilter {
 			if (!authHeader.equals(storedAuthHeader))
 				throw new NotAuthorizedException("USER IS NOT REGISTERED");
 			
-			jedis.expire(user, 300);
+			jedis.expire(user, 1800);
 		}
 		finally {
 			pool.close();
