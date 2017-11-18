@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 public class DocMeteringReadingHeaderDto  {
     private Long id;
     private String name;
-    private String header;
     private LocalDate startDate;
     private LocalDate endDate;
     private Long templateId;

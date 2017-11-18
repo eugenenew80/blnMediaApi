@@ -12,7 +12,6 @@ import java.time.LocalDate;
 public class DocUnderAccountingHeaderDto {
     private Long id;
     private String name;
-    private String header;
     private LocalDate docDate;
     private Long docTypeId;
     private String docTypeName;

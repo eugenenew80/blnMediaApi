@@ -18,14 +18,11 @@ public class DocMeteringReadingHeader implements HasId {
     @NotNull @Size(max = 100)
     private String name;
 
-    @Size(max = 300)
-    private String header;
+    @NotNull
+    private LocalDateTime startDate;
 
     @NotNull
-    private LocalDate startDate;
-
-    @NotNull
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @NotNull
     private DocTemplate template;

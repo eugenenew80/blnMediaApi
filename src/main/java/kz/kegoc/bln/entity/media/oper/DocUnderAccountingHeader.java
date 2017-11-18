@@ -21,9 +21,6 @@ public class DocUnderAccountingHeader implements HasId {
     @NotNull @Size(max = 100)
     private String name;
 
-    @Size(max = 300)
-    private String header;
-
     @NotNull
     private LocalDate docDate;
 

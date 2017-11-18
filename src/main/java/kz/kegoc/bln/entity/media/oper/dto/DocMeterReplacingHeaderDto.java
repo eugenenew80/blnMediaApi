@@ -22,7 +22,6 @@ import java.util.List;
 public class DocMeterReplacingHeaderDto {
     private Long id;
     private String name;
-    private String header;
     private LocalDate docDate;
     private Long docTypeId;
     private String docTypeName;

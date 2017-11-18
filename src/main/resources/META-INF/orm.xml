@@ -471,10 +471,6 @@
 				<column name="name" />
 			</basic>
 
-			<basic name="header">
-				<column name="header" />
-			</basic>
-
 			<basic name="startDate">
 				<column name="start_date" />
 			</basic>
@@ -586,10 +582,6 @@
 				<column name="name" />
 			</basic>
 
-			<basic name="header">
-				<column name="header" />
-			</basic>
-
 			<basic name="docDate">
 				<column name="doc_date" />
 			</basic>
@@ -678,10 +670,6 @@
 
 			<basic name="name">
 				<column name="name" />
-			</basic>
-
-			<basic name="header">
-				<column name="header" />
 			</basic>
 
 			<basic name="docDate">
