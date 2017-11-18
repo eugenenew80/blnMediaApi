@@ -11,7 +11,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import kz.kegoc.bln.entity.media.raw.LastLoadInfo;
 import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
-import kz.kegoc.bln.gateway.emcos.MinuteMeteringData;
+import kz.kegoc.bln.gateway.emcos.MinuteMeteringFlow;
 import kz.kegoc.bln.repository.media.raw.LastLoadInfoRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.media.raw.LastLoadInfoService;
@@ -25,8 +25,8 @@ public class LastLoadInfoServiceImpl extends AbstractEntityService<LastLoadInfo>
         this.lastLoadInfoRepository = repository;
     }
 
-	public void updateLastDataLoadDate(List<MinuteMeteringData> minuteMeteringData) {
-		Map<Pair<String, String>, List<MinuteMeteringData>> map = minuteMeteringData
+	public void updateLastDataLoadDate(List<MinuteMeteringFlow> minuteMeteringData) {
+		Map<Pair<String, String>, List<MinuteMeteringFlow>> map = minuteMeteringData
 			.stream()
 			.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getParamCode())));		
 		

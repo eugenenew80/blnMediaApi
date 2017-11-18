@@ -3,7 +3,7 @@ package kz.kegoc.bln.producer.file.reader.impl;
 import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.CSV;
@@ -23,11 +23,11 @@ import static java.util.stream.Collectors.toList;
 
 @Stateless
 @CSV
-public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringReader<MonthMeteringDataRaw> {
+public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringReader<MonthMeteringFlowRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(CsvMonthMeteringDataRawReaderImpl.class);
 
 	@Inject
-	public CsvMonthMeteringDataRawReaderImpl(MeteringDataQueue<MonthMeteringDataRaw> service) {
+	public CsvMonthMeteringDataRawReaderImpl(MeteringDataQueue<MonthMeteringFlowRaw> service) {
 		this.queue =service;
 	}
 
@@ -38,7 +38,7 @@ public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringReader<Mon
 		List<String> strs = readFile(path);
 
 		logger.debug("Parsing file content started");
-		List<MonthMeteringDataRaw> list = IntStream.range(1, strs.size())
+		List<MonthMeteringFlowRaw> list = IntStream.range(1, strs.size())
 			.mapToObj(i -> strs.get(i))
 			.map(this::convert)
 			.collect(toList());
@@ -64,9 +64,9 @@ public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringReader<Mon
 		return strs;
 	}
 
-	private MonthMeteringDataRaw convert(String s) {
+	private MonthMeteringFlowRaw convert(String s) {
 		String[] data = s.split(";");
-		MonthMeteringDataRaw d = new MonthMeteringDataRaw();
+		MonthMeteringFlowRaw d = new MonthMeteringFlowRaw();
 		d.setYear( Short.parseShort(data[0]));
 		d.setMonth( Short.parseShort(data[1]));
 		d.setExternalCode(data[2]);
@@ -80,5 +80,5 @@ public class CsvMonthMeteringDataRawReaderImpl implements FileMeteringReader<Mon
 		return d;
 	}
 
-	private MeteringDataQueue<MonthMeteringDataRaw> queue;
+	private MeteringDataQueue<MonthMeteringFlowRaw> queue;
 }

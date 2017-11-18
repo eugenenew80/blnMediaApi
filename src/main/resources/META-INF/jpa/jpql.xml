@@ -32,12 +32,12 @@
     </named-query>
 
 
-    <named-query name="HourMeteringDataRaw.findByEntity">
+    <named-query name="HourMeteringFlowRaw.findByEntity">
         <query>
             select
             	t
             from
-            	HourMeteringDataRaw t
+                HourMeteringFlowRaw t
             where
             	    t.externalCode=:externalCode
             	and t.meteringDate=:meteringDate

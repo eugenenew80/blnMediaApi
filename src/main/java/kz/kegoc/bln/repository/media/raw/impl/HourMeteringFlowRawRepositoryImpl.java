@@ -1,6 +1,6 @@
 package kz.kegoc.bln.repository.media.raw.impl;
 
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
 import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.media.raw.MeteringDataRawRepository;
 
@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
-public class HourMeteringDataRawRepositoryImpl
-	extends AbstractRepository<HourMeteringDataRaw>
-		implements MeteringDataRawRepository<HourMeteringDataRaw> {
+public class HourMeteringFlowRawRepositoryImpl
+	extends AbstractRepository<HourMeteringFlowRaw>
+		implements MeteringDataRawRepository<HourMeteringFlowRaw> {
 
-	public HourMeteringDataRaw selectByEntity(HourMeteringDataRaw entity) {
+	public HourMeteringFlowRaw selectByEntity(HourMeteringFlowRaw entity) {
 		return
-			getEntityManager().createNamedQuery("HourMeteringDataRaw.findByEntity", HourMeteringDataRaw.class)
+			getEntityManager().createNamedQuery("HourMeteringDataRaw.findByEntity", HourMeteringFlowRaw.class)
 				.setParameter("externalCode", 	entity.getExternalCode())
 				.setParameter("meteringDate", 	entity.getMeteringDate())
 				.setParameter("hour", 			entity.getHour())

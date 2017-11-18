@@ -7,11 +7,11 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
 import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
-import kz.kegoc.bln.gateway.emcos.EmcosDataGateway;
+import kz.kegoc.bln.gateway.emcos.EmcosFlowGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
-import kz.kegoc.bln.gateway.emcos.MinuteMeteringData;
+import kz.kegoc.bln.gateway.emcos.MinuteMeteringFlow;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringReader;
 import kz.kegoc.bln.service.media.raw.LastLoadInfoService;
 import org.apache.commons.lang3.tuple.Pair;
@@ -19,7 +19,7 @@ import kz.kegoc.bln.queue.MeteringDataQueue;
 import static java.util.stream.Collectors.groupingBy;
 
 @Stateless
-public class EmcosHourMeteringDataRawReader implements EmcosMeteringReader<HourMeteringDataRaw> {
+public class EmcosHourMeteringFlowRawReader implements EmcosMeteringReader<HourMeteringFlowRaw> {
 
 	public void read() {
 		LocalDateTime requestedTime = buildRequestedTime();
@@ -27,7 +27,7 @@ public class EmcosHourMeteringDataRawReader implements EmcosMeteringReader<HourM
 
 		paramCodes.keySet().stream()
 			.filter( p -> !p.contains("B") ).forEach(p -> {
-				List<MinuteMeteringData> data = emcosDataGateway
+				List<MinuteMeteringFlow> data = emcosDataGateway
 					.cfg(pointsCfg)
 					.paramCode(p)
 					.requestedTime(requestedTime)
@@ -40,21 +40,21 @@ public class EmcosHourMeteringDataRawReader implements EmcosMeteringReader<HourM
 			});
     }
 
-	private List<HourMeteringDataRaw> buildHourMeteringData(List<MinuteMeteringData> minuteMeteringData) {
-		Map<Pair<String, LocalDate>, List<MinuteMeteringData>> mapDayMeteringData = minuteMeteringData
+	private List<HourMeteringFlowRaw> buildHourMeteringData(List<MinuteMeteringFlow> minuteMeteringData) {
+		Map<Pair<String, LocalDate>, List<MinuteMeteringFlow>> mapDayMeteringData = minuteMeteringData
 			.stream()
 			.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getMeteringDate().toLocalDate())));
 			
-		List<HourMeteringDataRaw> hourMeteringData = new ArrayList<>();
+		List<HourMeteringFlowRaw> hourMeteringData = new ArrayList<>();
 		for (Pair<String, LocalDate> pair : mapDayMeteringData.keySet()) {
 
-			Map<Integer, List<MinuteMeteringData>> mapHourMeteringData =  mapDayMeteringData
+			Map<Integer, List<MinuteMeteringFlow>> mapHourMeteringData =  mapDayMeteringData
 				.get(pair)
 				.stream()
 				.collect(groupingBy(m -> m.getMeteringDate().getHour() ));
 			
 			for (Integer hour : mapHourMeteringData.keySet()) {
-				HourMeteringDataRaw h = new HourMeteringDataRaw();
+				HourMeteringFlowRaw h = new HourMeteringFlowRaw();
 				h.setExternalCode(pair.getLeft());
 				h.setMeteringDate(pair.getRight());
 				h.setHour(hour);
@@ -80,7 +80,7 @@ public class EmcosHourMeteringDataRawReader implements EmcosMeteringReader<HourM
 
 	
 	@Inject
-	private MeteringDataQueue<HourMeteringDataRaw> queueService;
+	private MeteringDataQueue<HourMeteringFlowRaw> queueService;
 
 	@Inject
 	private LastLoadInfoService lastLoadInfoService;
@@ -89,7 +89,7 @@ public class EmcosHourMeteringDataRawReader implements EmcosMeteringReader<HourM
 	EmcosCfgGateway emcosCfgGateway;
 
 	@Inject
-	private EmcosDataGateway emcosDataGateway;
+	private EmcosFlowGateway emcosDataGateway;
 
 	@Inject @ParamCodes
 	private BiMap<String, String> paramCodes;

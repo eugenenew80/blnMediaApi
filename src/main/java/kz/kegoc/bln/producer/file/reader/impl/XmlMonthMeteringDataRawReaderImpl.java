@@ -3,7 +3,7 @@ package kz.kegoc.bln.producer.file.reader.impl;
 import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.XML;
@@ -21,11 +21,11 @@ import java.util.List;
 
 @Stateless
 @XML
-public class XmlMonthMeteringDataRawReaderImpl implements FileMeteringReader<MonthMeteringDataRaw> {
+public class XmlMonthMeteringDataRawReaderImpl implements FileMeteringReader<MonthMeteringFlowRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(XmlMonthMeteringDataRawReaderImpl.class);
 
 	@Inject
-	public XmlMonthMeteringDataRawReaderImpl(MeteringDataQueue<MonthMeteringDataRaw> service) {
+	public XmlMonthMeteringDataRawReaderImpl(MeteringDataQueue<MonthMeteringFlowRaw> service) {
 		this.queue =service;
 	}
 
@@ -47,7 +47,7 @@ public class XmlMonthMeteringDataRawReaderImpl implements FileMeteringReader<Mon
 		logger.debug("Reading file content competed");
 
 		logger.debug("Parsing file content started");
-		List<MonthMeteringDataRaw> list = new ArrayList<>();
+		List<MonthMeteringFlowRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
 			if (nodeRow.getNodeName().equals("row")) 
@@ -61,8 +61,8 @@ public class XmlMonthMeteringDataRawReaderImpl implements FileMeteringReader<Mon
 	}
 	
 	
-	private MonthMeteringDataRaw convert(Node node) {
-		MonthMeteringDataRaw d = new MonthMeteringDataRaw();
+	private MonthMeteringFlowRaw convert(Node node) {
+		MonthMeteringFlowRaw d = new MonthMeteringFlowRaw();
 
 		for (int i=0; i< node.getAttributes().getLength(); i++) {
 			Node nodeAttr = node.getAttributes().item(i);
@@ -94,5 +94,5 @@ public class XmlMonthMeteringDataRawReaderImpl implements FileMeteringReader<Mon
 		return d;
 	}
 
-	private MeteringDataQueue<MonthMeteringDataRaw> queue;
+	private MeteringDataQueue<MonthMeteringFlowRaw> queue;
 }

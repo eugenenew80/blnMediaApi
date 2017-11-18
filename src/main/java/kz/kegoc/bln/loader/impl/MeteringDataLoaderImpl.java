@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import kz.kegoc.bln.entity.media.Metering;
 import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 
 @Singleton
@@ -26,11 +26,11 @@ public class MeteringDataLoaderImpl implements MeteringDataLoader<Metering> {
 	private MeteringDataLoader<DayMeteringBalanceRaw> dayMeteringBalanceLoader;
 
 	@Inject
-	private MeteringDataLoader<DayMeteringDataRaw> dayMeteringDataLoader;
+	private MeteringDataLoader<DayMeteringFlowRaw> dayMeteringDataLoader;
 
 	@Inject
-	private MeteringDataLoader<HourMeteringDataRaw> hourMeteringDataLoader;
+	private MeteringDataLoader<HourMeteringFlowRaw> hourMeteringDataLoader;
 
 	@Inject
-	private MeteringDataLoader<MonthMeteringDataRaw> monthMeteringDataLoader;
+	private MeteringDataLoader<MonthMeteringFlowRaw> monthMeteringDataLoader;
 }

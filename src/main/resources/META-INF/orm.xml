@@ -86,7 +86,7 @@
 	</entity>
 	
 	
-	<entity class="kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw">
 		<table name="media_hour_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -148,7 +148,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw">
 		<table name="media_day_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -201,7 +201,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw">
+	<entity class="kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw">
 		<table name="media_month_metering_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">

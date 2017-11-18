@@ -3,7 +3,7 @@ package kz.kegoc.bln.producer.file.reader.impl;
 import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.XML;
@@ -23,11 +23,11 @@ import java.util.List;
 
 @Stateless
 @XML
-public class XmlDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMeteringDataRaw> {
+public class XmlDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMeteringFlowRaw> {
     private static final Logger logger = LoggerFactory.getLogger(XmlDayMeteringDataRawReaderImpl.class);
 
     @Inject
-    public XmlDayMeteringDataRawReaderImpl(MeteringDataQueue<DayMeteringDataRaw> service) {
+    public XmlDayMeteringDataRawReaderImpl(MeteringDataQueue<DayMeteringFlowRaw> service) {
         this.queue =service;
     }
 
@@ -49,7 +49,7 @@ public class XmlDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMe
         logger.debug("Reading file content competed");
 
         logger.debug("Parsing file content started");
-        List<DayMeteringDataRaw> list = new ArrayList<>();
+        List<DayMeteringFlowRaw> list = new ArrayList<>();
         for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
             Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
             if (nodeRow.getNodeName().equals("row"))
@@ -63,8 +63,8 @@ public class XmlDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMe
     }
 
 
-    private DayMeteringDataRaw convert(Node node)   {
-        DayMeteringDataRaw d = new DayMeteringDataRaw();
+    private DayMeteringFlowRaw convert(Node node)   {
+        DayMeteringFlowRaw d = new DayMeteringFlowRaw();
 
         for (int i=0; i< node.getAttributes().getLength(); i++) {
             Node nodeAttr = node.getAttributes().item(i);
@@ -93,5 +93,5 @@ public class XmlDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMe
         return d;
     }
 
-    private MeteringDataQueue<DayMeteringDataRaw> queue;
+    private MeteringDataQueue<DayMeteringFlowRaw> queue;
 }

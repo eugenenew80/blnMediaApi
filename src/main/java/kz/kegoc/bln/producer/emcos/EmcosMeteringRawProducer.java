@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringReader;
 
@@ -29,7 +29,7 @@ public class EmcosMeteringRawProducer implements MeteringDataProducer {
     }
 
 	@Inject
-	private EmcosMeteringReader<HourMeteringDataRaw> emcosHourMeteringDataReader;
+	private EmcosMeteringReader<HourMeteringFlowRaw> emcosHourMeteringDataReader;
 	
 	@Inject
 	private EmcosMeteringReader<DayMeteringBalanceRaw> emcosDayMeteringBalanceReader;

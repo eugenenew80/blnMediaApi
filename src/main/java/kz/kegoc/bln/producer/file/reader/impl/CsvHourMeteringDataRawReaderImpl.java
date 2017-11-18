@@ -3,7 +3,7 @@ package kz.kegoc.bln.producer.file.reader.impl;
 import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.CSV;
@@ -24,11 +24,11 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 @Stateless @CSV
-public class CsvHourMeteringDataRawReaderImpl implements FileMeteringReader<HourMeteringDataRaw> {
+public class CsvHourMeteringDataRawReaderImpl implements FileMeteringReader<HourMeteringFlowRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(CsvHourMeteringDataRawReaderImpl.class);
 
 	@Inject
-	public CsvHourMeteringDataRawReaderImpl(MeteringDataQueue<HourMeteringDataRaw> service) {
+	public CsvHourMeteringDataRawReaderImpl(MeteringDataQueue<HourMeteringFlowRaw> service) {
 		this.queue =service;
 	}
 
@@ -39,7 +39,7 @@ public class CsvHourMeteringDataRawReaderImpl implements FileMeteringReader<Hour
 		List<String> strs = readFile(path);
 
 		logger.debug("Parsing file content started");
-		List<HourMeteringDataRaw> list = IntStream.range(1, strs.size())
+		List<HourMeteringFlowRaw> list = IntStream.range(1, strs.size())
 			.mapToObj(i -> strs.get(i))
 			.map(this::convert)
 			.collect(toList());
@@ -65,9 +65,9 @@ public class CsvHourMeteringDataRawReaderImpl implements FileMeteringReader<Hour
 		return strs;
 	}
 
-	private HourMeteringDataRaw convert(String s) {
+	private HourMeteringFlowRaw convert(String s) {
 		String[] data = s.split(";");
-		HourMeteringDataRaw d = new HourMeteringDataRaw();
+		HourMeteringFlowRaw d = new HourMeteringFlowRaw();
 		d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 		d.setHour( Integer.parseInt(data[1]));
 		d.setExternalCode(data[2]);
@@ -81,5 +81,5 @@ public class CsvHourMeteringDataRawReaderImpl implements FileMeteringReader<Hour
 		return d;
 	}
 
-	private MeteringDataQueue<HourMeteringDataRaw> queue;
+	private MeteringDataQueue<HourMeteringFlowRaw> queue;
 }

@@ -3,9 +3,9 @@ package kz.kegoc.bln.producer.file;
 import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.ejb.cdi.annotation.MeteringDataPath;
 import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.ejb.cdi.annotation.CSV;
@@ -81,22 +81,22 @@ public class FileMeteringRawProducer implements MeteringDataProducer {
 
 
 	@Inject @CSV
-	private FileMeteringReader<HourMeteringDataRaw> csvHourMeteringDataRawReader;
+	private FileMeteringReader<HourMeteringFlowRaw> csvHourMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringReader<HourMeteringDataRaw> xmlHourMeteringDataRawReader;
+	private FileMeteringReader<HourMeteringFlowRaw> xmlHourMeteringDataRawReader;
 
 	@Inject @CSV
-	private FileMeteringReader<DayMeteringDataRaw> csvDayMeteringDataRawReader;
+	private FileMeteringReader<DayMeteringFlowRaw> csvDayMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringReader<DayMeteringDataRaw> xmlDayMeteringDataRawReader;
+	private FileMeteringReader<DayMeteringFlowRaw> xmlDayMeteringDataRawReader;
 
 	@Inject @CSV
-	private FileMeteringReader<MonthMeteringDataRaw> csvMonthMeteringDataRawReader;
+	private FileMeteringReader<MonthMeteringFlowRaw> csvMonthMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringReader<MonthMeteringDataRaw> xmlMonthMeteringDataRawReader;
+	private FileMeteringReader<MonthMeteringFlowRaw> xmlMonthMeteringDataRawReader;
 
 	@Inject @MeteringDataPath
 	private String dir;

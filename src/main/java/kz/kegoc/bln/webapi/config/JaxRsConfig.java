@@ -7,9 +7,6 @@ import kz.kegoc.bln.ejb.jackson.ObjectMapperContextResolver;
 import kz.kegoc.bln.webapi.exception.mapper.*;
 import kz.kegoc.bln.webapi.filters.BasicAuthentificationFilter;
 import kz.kegoc.bln.webapi.media.oper.*;
-import kz.kegoc.bln.webapi.media.raw.DayMeteringDataRawResourceImpl;
-import kz.kegoc.bln.webapi.media.raw.HourMeteringDataRawResourceImpl;
-import kz.kegoc.bln.webapi.media.raw.MonthMeteringDataRawResourceImpl;
 
 @ApplicationPath("/webapi")
 public class JaxRsConfig extends Application {
@@ -18,9 +15,6 @@ public class JaxRsConfig extends Application {
 	public Set<Class<?>> getClasses() {
 		final Set<Class<?>> resources = new HashSet<Class<?>>();
 
-		resources.add(MonthMeteringDataRawResourceImpl.class);
-		resources.add(DayMeteringDataRawResourceImpl.class);
-		resources.add(HourMeteringDataRawResourceImpl.class);
 		resources.add(GroupResourceImpl.class);
 		resources.add(GroupMeteringPointResourceImpl.class);
 		resources.add(DocTypeResourceImpl.class);

@@ -4,7 +4,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
 
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw;
 import kz.kegoc.bln.repository.media.raw.MeteringDataRawRepository;
 import kz.kegoc.bln.service.media.raw.AbstractMeteringDataRawService;
 import kz.kegoc.bln.service.media.raw.MeteringDataRawService;
@@ -13,21 +13,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
-public class DayMeteringDataRawServiceImpl
-    extends AbstractMeteringDataRawService<DayMeteringDataRaw>
-        implements MeteringDataRawService<DayMeteringDataRaw> {
+public class DayMeteringFlowRawServiceImpl
+    extends AbstractMeteringDataRawService<DayMeteringFlowRaw>
+        implements MeteringDataRawService<DayMeteringFlowRaw> {
 
 	@Inject
-    public DayMeteringDataRawServiceImpl(MeteringDataRawRepository<DayMeteringDataRaw> repository, Validator validator) {
+    public DayMeteringFlowRawServiceImpl(MeteringDataRawRepository<DayMeteringFlowRaw> repository, Validator validator) {
         super(repository, validator);
     }
 
-	public DayMeteringDataRaw findByEntity(DayMeteringDataRaw entity) {
+	public DayMeteringFlowRaw findByEntity(DayMeteringFlowRaw entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<DayMeteringDataRaw> findReadyData(Long meteringPointId, LocalDateTime meteringDate, String paramCode) {
+	public List<DayMeteringFlowRaw> findReadyData(Long meteringPointId, LocalDateTime meteringDate, String paramCode) {
 		return null;
 	}
 }

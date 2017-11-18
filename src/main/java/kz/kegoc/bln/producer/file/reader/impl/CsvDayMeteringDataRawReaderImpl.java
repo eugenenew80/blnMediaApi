@@ -3,7 +3,7 @@ package kz.kegoc.bln.producer.file.reader.impl;
 import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.WayEntering;
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.CSV;
@@ -25,11 +25,11 @@ import static java.util.stream.Collectors.toList;
 
 @Stateless
 @CSV
-public class CsvDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMeteringDataRaw> {
+public class CsvDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMeteringFlowRaw> {
     private static final Logger logger = LoggerFactory.getLogger(CsvDayMeteringDataRawReaderImpl.class);
 
     @Inject
-    public CsvDayMeteringDataRawReaderImpl(MeteringDataQueue<DayMeteringDataRaw> service) {
+    public CsvDayMeteringDataRawReaderImpl(MeteringDataQueue<DayMeteringFlowRaw> service) {
         this.queue =service;
     }
 
@@ -40,7 +40,7 @@ public class CsvDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMe
         List<String> strs = readFile(path);
 
         logger.info("Parsing file content started");
-        List<DayMeteringDataRaw> list = IntStream.range(1, strs.size())
+        List<DayMeteringFlowRaw> list = IntStream.range(1, strs.size())
             .mapToObj(i -> strs.get(i))
             .map(this::convert)
             .collect(toList());
@@ -66,10 +66,10 @@ public class CsvDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMe
         return strs;
     }
 
-    private DayMeteringDataRaw convert(String s)  {
+    private DayMeteringFlowRaw convert(String s)  {
         String[] data = s.split(";");
 
-        DayMeteringDataRaw d = new DayMeteringDataRaw();
+        DayMeteringFlowRaw d = new DayMeteringFlowRaw();
         d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         d.setExternalCode(data[1]);
         d.setParamCode(data[2]);
@@ -81,5 +81,5 @@ public class CsvDayMeteringDataRawReaderImpl implements FileMeteringReader<DayMe
         return d;
     }
 
-    private MeteringDataQueue<DayMeteringDataRaw> queue;
+    private MeteringDataQueue<DayMeteringFlowRaw> queue;
 }

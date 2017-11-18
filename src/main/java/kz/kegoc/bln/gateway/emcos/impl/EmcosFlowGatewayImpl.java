@@ -7,9 +7,9 @@ import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.entity.media.raw.LastLoadInfo;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
-import kz.kegoc.bln.gateway.emcos.EmcosDataGateway;
+import kz.kegoc.bln.gateway.emcos.EmcosFlowGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
-import kz.kegoc.bln.gateway.emcos.MinuteMeteringData;
+import kz.kegoc.bln.gateway.emcos.MinuteMeteringFlow;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 import kz.kegoc.bln.service.media.raw.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
 import static java.util.Collections.*;
 
 @Singleton
-public class EmcosDataGatewayImpl implements EmcosDataGateway {
-    private static final Logger logger = LoggerFactory.getLogger(EmcosDataGatewayImpl.class);
+public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
+    private static final Logger logger = LoggerFactory.getLogger(EmcosFlowGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
 
     private List<LastLoadInfo> lastLoadInfoList;
@@ -42,41 +42,41 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
     private String emcosParamCode;
     private LocalDateTime requestedTime;
 
-    public EmcosDataGateway cfg(List<EmcosPointCfg> pointsCfg) {
+    public EmcosFlowGateway cfg(List<EmcosPointCfg> pointsCfg) {
         this.pointsCfg = pointsCfg;
         return this;
     }
 
-    public EmcosDataGateway requestedTime(LocalDateTime requestedTime) {
+    public EmcosFlowGateway requestedTime(LocalDateTime requestedTime) {
         this.requestedTime = requestedTime;
         return this;
     }
 
-    public EmcosDataGateway paramCode(String paramCode) {
+    public EmcosFlowGateway paramCode(String paramCode) {
         this.paramCode = paramCode;
         this.emcosParamCode = paramCodes.get(paramCode);
         return this;
     }
 
 
-    public List<MinuteMeteringData> request() {
-        logger.info("EmcosDataGatewayImpl.request started");
+    public List<MinuteMeteringFlow> request() {
+        logger.info("EmcosFlowGatewayImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
 
         if (pointsCfg==null || pointsCfg.isEmpty()) {
-            logger.warn("List of points is empty, EmcosDataGatewayImpl.request interrupted");
+            logger.warn("List of points is empty, EmcosFlowGatewayImpl.request interrupted");
             return emptyList();
         }
         
         this.lastLoadInfoList = lastLoadInfoService.findAll();
 
-        List<MinuteMeteringData> list;
+        List<MinuteMeteringFlow> list;
         try {
             logger.info("Send http request for metering data...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, EmcosDataGatewayImpl.request interrupted");
+            	logger.info("Request body is empty, EmcosFlowGatewayImpl.request interrupted");
                 return emptyList();
             }
 
@@ -88,19 +88,19 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("EmcosDataGatewayImpl.request competed");
+            logger.info("EmcosFlowGatewayImpl.request competed");
         }
 
         catch (Exception e) {
             list = emptyList();
-            logger.error("EmcosDataGatewayImpl.request failed: " + e.toString());
+            logger.error("EmcosFlowGatewayImpl.request failed: " + e.toString());
         }
 
         return list;
     }
 
     private String buildBody() {
-    	logger.debug("EmcosDataGatewayImpl.buildBody started");
+    	logger.debug("EmcosFlowGatewayImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
@@ -110,7 +110,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
         logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, EmcosDataGatewayImpl.buildBody interrupted");
+        	logger.debug("List of points is empty, EmcosFlowGatewayImpl.buildBody interrupted");
             return "";
         }
 
@@ -130,12 +130,12 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
         logger.trace("body for request metering data: " + body);
 
-        logger.debug("EmcosDataGatewayImpl.buildBody completed");
+        logger.debug("EmcosFlowGatewayImpl.buildBody completed");
         return body;
     }
 
-    private List<MinuteMeteringData> parseAnswer(String answer) throws Exception {
-    	logger.info("EmcosDataGatewayImpl.parseAnswer started");
+    private List<MinuteMeteringFlow> parseAnswer(String answer) throws Exception {
+    	logger.info("EmcosFlowGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -150,7 +150,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
             .getFirstChild()
             .getChildNodes();
 
-        List<MinuteMeteringData> list = new ArrayList<>();
+        List<MinuteMeteringFlow> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -164,7 +164,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
         }
         logger.debug("convert xml to list completed");
         
-        logger.info("EmcosDataGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("EmcosFlowGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 
@@ -197,7 +197,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
         return startTime;
     }
 
-    private MinuteMeteringData parseNode(Node node) {
+    private MinuteMeteringFlow parseNode(Node node) {
         String externalCode = node.getAttributes()
             .getNamedItem("PPOINT_CODE")
             .getNodeValue() ;
@@ -224,7 +224,7 @@ public class EmcosDataGatewayImpl implements EmcosDataGateway {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        MinuteMeteringData data = new MinuteMeteringData();
+        MinuteMeteringFlow data = new MinuteMeteringFlow();
         data.setExternalCode(externalCode);
         data.setMeteringDate(time);
         data.setWayEntering(WayEntering.AUTO);

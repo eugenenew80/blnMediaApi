@@ -10,9 +10,9 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.*;
 import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.raw.DayMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.HourMeteringDataRaw;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringDataRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 
@@ -33,9 +33,9 @@ import java.util.Map;
 @ApplicationScoped
 public class Producer {
 	private RedissonClient redissonClient = null;
-	private RBlockingQueue<HourMeteringDataRaw> hourMeteringDataQueue = null;
-	private RBlockingQueue<DayMeteringDataRaw> dayMeteringDataQueue  = null;
-	private RBlockingQueue<MonthMeteringDataRaw> monthMeteringDataQueue  = null;
+	private RBlockingQueue<HourMeteringFlowRaw> hourMeteringFlowQueue = null;
+	private RBlockingQueue<DayMeteringFlowRaw> dayMeteringFlowQueue = null;
+	private RBlockingQueue<MonthMeteringFlowRaw> monthMeteringFlowQueue = null;
 	private RBlockingQueue<DayMeteringBalanceRaw> dayMeteringBalanceQueue  = null;
 	private RList<EmcosPointCfg> emcosPointCfgList  = null;
 	private DozerBeanMapper mapper = null;
@@ -60,35 +60,35 @@ public class Producer {
 
 
 	@Produces
-	public RBlockingQueue<HourMeteringDataRaw> createHourMeteringDataQueue() {
-		if (hourMeteringDataQueue!=null)
-			return hourMeteringDataQueue;
+	public RBlockingQueue<HourMeteringFlowRaw> createHourMeteringDataQueue() {
+		if (hourMeteringFlowQueue !=null)
+			return hourMeteringFlowQueue;
 
 		createRedissonClient();
-		hourMeteringDataQueue = redissonClient.getBlockingQueue("hourMeteringData");
-		return hourMeteringDataQueue;
+		hourMeteringFlowQueue = redissonClient.getBlockingQueue("hourMeteringFlow");
+		return hourMeteringFlowQueue;
 	}
 
 
 	@Produces
-	public RBlockingQueue<DayMeteringDataRaw> createDayMeteringDataQueue() {
-		if (dayMeteringDataQueue!=null)
-			return dayMeteringDataQueue;
+	public RBlockingQueue<DayMeteringFlowRaw> createDayMeteringDataQueue() {
+		if (dayMeteringFlowQueue !=null)
+			return dayMeteringFlowQueue;
 
 		createRedissonClient();
-		dayMeteringDataQueue = redissonClient.getBlockingQueue("dayMeteringData");
-		return dayMeteringDataQueue;
+		dayMeteringFlowQueue = redissonClient.getBlockingQueue("dayMeteringFlow");
+		return dayMeteringFlowQueue;
 	}
 
 
 	@Produces
-	public RBlockingQueue<MonthMeteringDataRaw> createMonthMeteringDataQueue() {
-		if (monthMeteringDataQueue!=null)
-			return monthMeteringDataQueue;
+	public RBlockingQueue<MonthMeteringFlowRaw> createMonthMeteringDataQueue() {
+		if (monthMeteringFlowQueue !=null)
+			return monthMeteringFlowQueue;
 
 		createRedissonClient();
-		monthMeteringDataQueue = redissonClient.getBlockingQueue("monthMeteringData");
-		return monthMeteringDataQueue;
+		monthMeteringFlowQueue = redissonClient.getBlockingQueue("monthMeteringFlow");
+		return monthMeteringFlowQueue;
 	}
 
 
@@ -166,9 +166,6 @@ public class Producer {
 		mapper = new DozerBeanMapper();
 		mapper.setMappingFiles(Arrays.asList(
 			"mapping/MappingConfig.xml",
-				"mapping/raw/default/DayMeteringDataRawDto.xml",
-				"mapping/raw/default/HourMeteringDataRawDto.xml",
-				"mapping/raw/default/MonthMeteringDataRawDto.xml",
 				"mapping/oper/default/GroupDto.xml",
 				"mapping/oper/default/GroupMeteringPointDto.xml",
 				"mapping/oper/default/DocTypeDto.xml",

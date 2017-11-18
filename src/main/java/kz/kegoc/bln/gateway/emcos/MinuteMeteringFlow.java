@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class MinuteMeteringData {
+public class MinuteMeteringFlow {
 	private LocalDateTime meteringDate;
 	private String externalCode;
 	private String paramCode;
