@@ -1,14 +1,13 @@
 package kz.kegoc.bln.webapi.media.oper;
 
 import kz.kegoc.bln.entity.media.oper.DocMeterReplacingHeader;
-import kz.kegoc.bln.entity.media.oper.DocType;
 import kz.kegoc.bln.entity.media.oper.dto.DocMeterReplacingHeaderDto;
+import kz.kegoc.bln.mapper.EntityMapper;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
 import kz.kegoc.bln.service.media.oper.DocMeterReplacingHeaderService;
-import kz.kegoc.bln.service.media.oper.DocTypeService;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;
@@ -37,7 +36,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 
 		List<DocMeterReplacingHeaderDto> list = service.find(query)
 				.stream()
-				.map( it-> mapper.map(it, DocMeterReplacingHeaderDto.class) )
+				.map( it-> dtoMapper.map(it, DocMeterReplacingHeaderDto.class) )
 				.collect(Collectors.toList());
 
 		return Response.ok()
@@ -51,7 +50,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 	public Response getById(@PathParam("id") Long id) {
 		DocMeterReplacingHeader entity = service.findById(id);
 		return Response.ok()
-			.entity(mapper.map(entity, DocMeterReplacingHeaderDto.class))
+			.entity(dtoMapper.map(entity, DocMeterReplacingHeaderDto.class))
 			.build();		
 	}
 	
@@ -61,20 +60,19 @@ public class DocMeterReplacingHeaderResourceImpl {
 	public Response getByName(@PathParam("name") String name) {		
 		DocMeterReplacingHeader entity = service.findByName(name);
 		return Response.ok()
-			.entity(mapper.map(entity, DocMeterReplacingHeaderDto.class))
+			.entity(dtoMapper.map(entity, DocMeterReplacingHeaderDto.class))
 			.build();
 	}
 
 	
 	@POST
 	public Response create(DocMeterReplacingHeaderDto entityDto) {
-		DocMeterReplacingHeader entity = mapper.map(entityDto, DocMeterReplacingHeader.class);
-		DocType docType = docTypeService.findById(2l);
-		entity.setDocType(docType);
-
+		DocMeterReplacingHeader entity = dtoMapper.map(entityDto, DocMeterReplacingHeader.class);
+		entity = entityMapper.map(entity);
 		DocMeterReplacingHeader newEntity = service.create(entity);
+
 		return Response.ok()
-			.entity(mapper.map(newEntity, DocMeterReplacingHeaderDto.class))
+			.entity(dtoMapper.map(newEntity, DocMeterReplacingHeaderDto.class))
 			.build();
 	}
 	
@@ -82,9 +80,12 @@ public class DocMeterReplacingHeaderResourceImpl {
 	@PUT 
 	@Path("{id : \\d+}") 
 	public Response update(@PathParam("id") Long id, DocMeterReplacingHeaderDto entityDto ) {
-		DocMeterReplacingHeader newEntity = service.update(mapper.map(entityDto, DocMeterReplacingHeader.class));
+		DocMeterReplacingHeader entity = dtoMapper.map(entityDto, DocMeterReplacingHeader.class);
+		entity = entityMapper.map(entity);
+		DocMeterReplacingHeader newEntity = service.update(entity);
+
 		return Response.ok()
-			.entity(mapper.map(newEntity, DocMeterReplacingHeaderDto.class))
+			.entity(dtoMapper.map(newEntity, DocMeterReplacingHeaderDto.class))
 			.build();
 	}
 	
@@ -100,18 +101,19 @@ public class DocMeterReplacingHeaderResourceImpl {
 
 	@Path("/{headerId : \\d+}/mediaDocMeterReplacingLine")
 	public DocMeterReplacingLineResourceImpl getLines() {
-		return docMeterReplacingLineResource;
+		return lineResource;
 	}
 	
+
 	@Inject
 	private DocMeterReplacingHeaderService service;
 
 	@Inject
-	private DocTypeService docTypeService;
+	private DocMeterReplacingLineResourceImpl lineResource;
 
 	@Inject
-	private DocMeterReplacingLineResourceImpl docMeterReplacingLineResource;
+	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private DozerBeanMapper mapper;
+	private EntityMapper<DocMeterReplacingHeader> entityMapper;
 }

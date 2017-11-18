@@ -12,6 +12,9 @@ import javax.validation.constraints.Size;
 public class DocType implements HasId {
     private Long id;
 
+    @NotNull @Size(max = 30)
+    private String code;
+
     @NotNull @Size(max = 100)
     private String name;
 }

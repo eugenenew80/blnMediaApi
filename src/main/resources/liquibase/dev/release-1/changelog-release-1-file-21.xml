@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="media-eug-66" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <delete schemaName="apps" tableName="media_doc_types" />
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="media-eug-67" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <addColumn schemaName="apps" tableName="media_doc_types">
+            <column name="code" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="media-eug-68" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <insert schemaName="apps" tableName="media_doc_types">
+            <column name="id" 	type="number" 		value="1"/>
+            <column name="code" type="varchar(30)" 	value="DocMeteringReading"/>
+            <column name="name" type="varchar(300)" value="Акт съёма показаний"/>
+        </insert>
+
+        <rollback>
+            <delete schemaName="apps" tableName="media_doc_types">
+                <where>id=1</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="media-eug-69" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <insert schemaName="apps" tableName="media_doc_types">
+            <column name="id" 	type="number" 		value="2"/>
+            <column name="code" type="varchar(30)" 	value="DocMeterReplacing"/>
+            <column name="name" type="varchar(300)" value="Акт замены прибора учёта"/>
+        </insert>
+
+        <rollback>
+            <delete schemaName="apps" tableName="media_doc_types">
+                <where>id=2</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="media-eug-70" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <insert schemaName="apps" tableName="media_doc_types">
+            <column name="id" 	type="number" 		value="3"/>
+            <column name="code" type="varchar(30)" 	value="DocUnderAccounting"/>
+            <column name="name" type="varchar(300)" value="Акт недоучёта электоэнергии"/>
+        </insert>
+
+        <rollback>
+            <delete schemaName="apps" tableName="media_doc_types">
+                <where>id=3</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="media-eug-71" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <alterSequence
+                schemaName="apps"
+                sequenceName="media_day_metering_data_raw_s"
+                incrementBy="1"
+                startValue="4"/>
+
+        <rollback/>
+    </changeSet>
+</databaseChangeLog>

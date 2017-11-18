@@ -20,7 +20,7 @@
 				<column name="external_code" />
 			</basic>
 			
-			<one-to-many name="meters" mapped-by="meteringPoint" /> 
+			<one-to-many name="meters" mapped-by="meteringPoint" orphan-removal="true" />
 		</attributes>
 	</entity>
 
@@ -358,7 +358,7 @@
 				<column name="name" />
 			</basic>
 			
-			<one-to-many name="meteringPoints" mapped-by="group" />
+			<one-to-many name="meteringPoints" mapped-by="group" orphan-removal="true" />
 		</attributes>
 	</entity>
 
@@ -411,6 +411,10 @@
 						allocation-size="1"
 				/>				
 			</id>
+
+			<basic name="code">
+				<column name="code" />
+			</basic>
 
 			<basic name="name">
 				<column name="name" />
@@ -491,7 +495,7 @@
 				<join-column name="template_id"/>
 			</many-to-one>
 
-			<one-to-many name="lines" mapped-by="header" />
+			<one-to-many name="lines" mapped-by="header" orphan-removal="true" />
 		</attributes>
 	</entity>
 
@@ -614,7 +618,7 @@
 				<join-column name="new_meter_id"/>
 			</many-to-one>
 
-			<one-to-many name="lines" mapped-by="header" />
+			<one-to-many name="lines" mapped-by="header" orphan-removal="true" />
 		</attributes>
 	</entity>
 
@@ -704,8 +708,8 @@
 				<join-column name="meter_id"/>
 			</many-to-one>
 
-			<one-to-many name="measLines" mapped-by="header" />
-			<one-to-many name="calcLines" mapped-by="header" />
+			<one-to-many name="measLines" mapped-by="header" orphan-removal="true" />
+			<one-to-many name="calcLines" mapped-by="header" orphan-removal="true" />
 		</attributes>
 	</entity>
 

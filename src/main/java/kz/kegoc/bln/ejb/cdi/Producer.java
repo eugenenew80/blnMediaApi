@@ -171,7 +171,6 @@ public class Producer {
 				"mapping/raw/default/MonthMeteringDataRawDto.xml",
 				"mapping/oper/default/GroupDto.xml",
 				"mapping/oper/default/GroupMeteringPointDto.xml",
-				"mapping/oper/default/DayMeteringDataOperDto.xml",
 				"mapping/oper/default/DocTypeDto.xml",
                 "mapping/oper/default/TemplateMeteringReadingDto.xml",
                 "mapping/oper/default/DocMeteringReadingHeaderDto.xml",

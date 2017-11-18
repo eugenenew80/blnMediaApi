@@ -9,5 +9,6 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DocTypeDto {
     private Long id;
+    private String code;
     private String name;
 }

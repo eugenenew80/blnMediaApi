@@ -115,6 +115,12 @@
 		</query>
 	</named-query>
 
+	<named-query name="DocType.findByCode">
+		<query>
+			select t from DocType t where t.code=:code
+		</query>
+	</named-query>
+
     <named-query name="DocTemplate.findAll">
 		<query>
 			select t from DocTemplate t order by t.id

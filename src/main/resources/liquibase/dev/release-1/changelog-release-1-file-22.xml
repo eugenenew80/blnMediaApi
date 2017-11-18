@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="media-eug-72" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <createIndex indexName="idx_media_group_metering_points_1" schemaName="apps" tableName="media_group_metering_points">
+            <column name="group_id" type="number"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="media-eug-73" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <createIndex indexName="idx_media_group_metering_points_2" schemaName="apps" tableName="media_group_metering_points">
+            <column name="metering_point_id" type="number"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="media-eug-74" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <createIndex indexName="idx_media_doc_metering_reading_lines_1" schemaName="apps" tableName="media_doc_metering_reading_lines">
+            <column name="header_id" type="number"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="media-eug-75" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <createIndex indexName="idx_media_doc_meter_replacing_lines_1" schemaName="apps" tableName="media_doc_meter_replacing_lines">
+            <column name="header_id" type="number"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="media-eug-76" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <createIndex indexName="idx_media_doc_under_accounting_meas_lines_1" schemaName="apps" tableName="media_doc_under_accounting_meas_lines">
+            <column name="header_id" type="number"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="media-eug-77" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <createIndex indexName="idx_media_doc_under_accounting_calc_lines_1" schemaName="apps" tableName="media_doc_under_accounting_calc_lines">
+            <column name="header_id" type="number"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
