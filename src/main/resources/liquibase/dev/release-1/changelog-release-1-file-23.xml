@@ -110,6 +110,12 @@
                 </column>
             </createTable>
 
+            <addPrimaryKey
+                    columnNames="id"
+                    constraintName="pk_media_doc_templates"
+                    schemaName="apps"
+                    tableName="media_doc_templates"/>
+
             <createSequence
                     incrementBy="1"
                     schemaName="apps"
@@ -142,5 +148,4 @@
             </addColumn>
         </rollback>
     </changeSet>
-
 </databaseChangeLog>
