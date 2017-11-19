@@ -6,14 +6,11 @@ import kz.kegoc.bln.entity.media.Lang;
 import kz.kegoc.bln.translator.Translator;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 @Stateless
 public class DocMeteringReadingHeaderTranslatorImpl implements Translator<DocMeteringReadingHeader> {
-    public DocMeteringReadingHeader translate(DocMeteringReadingHeader entity, Lang defLang) {
-        Lang lang = entity.getLang();
-        if (lang==null)
-            lang = defLang;
-
+    public DocMeteringReadingHeader translate(DocMeteringReadingHeader entity, Lang lang) {
         DocMeteringReadingHeaderTranslate translate = entity.getTranslations().get(lang);
         if (translate==null)
             translate = entity.getTranslations().get(defLang);
@@ -25,4 +22,7 @@ public class DocMeteringReadingHeaderTranslatorImpl implements Translator<DocMet
 
         return entity;
     }
+
+    @Inject
+    private Lang defLang;
 }

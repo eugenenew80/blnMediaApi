@@ -43,7 +43,7 @@ public class DocMeteringReadingHeaderMapperImpl implements EntityMapper<DocMeter
     private void addTranslation(DocMeteringReadingHeader entity) {
         Lang lang = entity.getLang();
         if (lang==null)
-            lang = Lang.RU;
+            lang = defLang;
 
         DocMeteringReadingHeaderTranslate translate = new DocMeteringReadingHeaderTranslate();
         translate.setLang(lang);
@@ -68,4 +68,7 @@ public class DocMeteringReadingHeaderMapperImpl implements EntityMapper<DocMeter
 
     @Inject
     private DocMeteringReadingHeaderService headerService;
+
+    @Inject
+    private Lang defLang;
 }

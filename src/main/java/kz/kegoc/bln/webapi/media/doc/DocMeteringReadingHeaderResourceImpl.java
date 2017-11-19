@@ -28,10 +28,11 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class DocMeteringReadingHeaderResourceImpl {
-	private Lang defLang = Lang.RU;
 
 	@GET 
-	public Response getAll(@QueryParam("name") String name) {		
+	public Response getAll(@QueryParam("name") String name, @QueryParam("lang") Lang lang) {
+		final Lang userLang = (lang!=null ? lang : defLang);
+
 		Query query = QueryImpl.builder()			
 			.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
 			.setOrderBy("t.id")
@@ -39,7 +40,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 		
 		List<DocMeteringReadingHeaderDto> list = service.find(query)
 			.stream()
-			.map(it -> translator.translate(it, defLang))
+			.map(it -> translator.translate(it, userLang))
 			.map(it-> dtoMapper.map(it, DocMeteringReadingHeaderDto.class))
 			.collect(Collectors.toList());
 		
@@ -51,22 +52,26 @@ public class DocMeteringReadingHeaderResourceImpl {
 	
 	@GET 
 	@Path("/{id : \\d+}") 
-	public Response getById(@PathParam("id") Long id) {
+	public Response getById(@PathParam("id") Long id, @QueryParam("lang") Lang lang) {
+		final Lang userLang = (lang!=null ? lang : defLang);
 		DocMeteringReadingHeader entity = service.findById(id);
 		return Response.ok()
-			.entity(dtoMapper.map(translator.translate(entity, defLang), DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(entity, userLang), DocMeteringReadingHeaderDto.class))
 			.build();		
 	}
 
 	
 	@POST
 	public Response create(DocMeteringReadingHeaderDto entityDto) {
+		if (entityDto.getLang()==null)
+			entityDto.setLang(defLang);
+
 		DocMeteringReadingHeader entity = dtoMapper.map(entityDto, DocMeteringReadingHeader.class);
 		entity = entityMapper.map(entity);
 		DocMeteringReadingHeader newEntity = service.create(entity);
 
 		return Response.ok()
-			.entity(dtoMapper.map(translator.translate(newEntity, defLang), DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), DocMeteringReadingHeaderDto.class))
 			.build();
 	}
 	
@@ -74,12 +79,15 @@ public class DocMeteringReadingHeaderResourceImpl {
 	@PUT 
 	@Path("{id : \\d+}") 
 	public Response update(@PathParam("id") Long id, DocMeteringReadingHeaderDto entityDto ) {
+		if (entityDto.getLang()==null)
+			entityDto.setLang(defLang);
+
 		DocMeteringReadingHeader entity = dtoMapper.map(entityDto, DocMeteringReadingHeader.class);
 		entity = entityMapper.map(entity);
 		DocMeteringReadingHeader newEntity = service.update(entity);
 
 		return Response.ok()
-			.entity(dtoMapper.map(translator.translate(newEntity, defLang), DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), DocMeteringReadingHeaderDto.class))
 			.build();
 	}
 	
@@ -113,4 +121,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 
 	@Inject
 	private Translator<DocMeteringReadingHeader> translator;
+
+	@Inject
+	private Lang defLang;
 }

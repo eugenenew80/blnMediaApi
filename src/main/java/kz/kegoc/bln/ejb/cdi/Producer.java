@@ -9,6 +9,7 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.*;
+import kz.kegoc.bln.entity.media.Lang;
 import kz.kegoc.bln.entity.media.data.DayMeteringBalance;
 import kz.kegoc.bln.entity.media.data.DayMeteringFlow;
 import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
@@ -166,17 +167,23 @@ public class Producer {
 		mapper = new DozerBeanMapper();
 		mapper.setMappingFiles(Arrays.asList(
 			"mapping/MappingConfig.xml",
-				"mapping/oper/default/GroupDto.xml",
-				"mapping/oper/default/GroupMeteringPointDto.xml",
-				"mapping/oper/default/DocTypeDto.xml",
-                "mapping/oper/default/DocMeteringReadingHeaderDto.xml",
-                "mapping/oper/default/DocMeteringReadingLineDto.xml",
-				"mapping/oper/default/DocMeterReplacingHeaderDto.xml",
-				"mapping/oper/default/DocMeterReplacingLineDto.xml",
-				"mapping/oper/default/DocUnderAccountingHeaderDto.xml",
-				"mapping/oper/default/DocUnderAccountingMeasLineDto.xml",
-				"mapping/oper/default/DocUnderAccountingCalcLineDto.xml"
+				"mapping/doc/default/GroupDto.xml",
+				"mapping/doc/default/GroupMeteringPointDto.xml",
+				"mapping/doc/default/DocTypeDto.xml",
+				"mapping/doc/default/DocMeteringReadingHeaderDto.xml",
+				"mapping/doc/default/DocMeteringReadingLineDto.xml",
+				"mapping/doc/default/DocMeterReplacingHeaderDto.xml",
+				"mapping/doc/default/DocMeterReplacingLineDto.xml",
+				"mapping/doc/default/DocUnderAccountingHeaderDto.xml",
+				"mapping/doc/default/DocUnderAccountingMeasLineDto.xml",
+				"mapping/doc/default/DocUnderAccountingCalcLineDto.xml"
 		));
 		return mapper;
+	}
+
+
+	@Produces
+	public Lang defLang() {
+		return Lang.RU;
 	}
 }
