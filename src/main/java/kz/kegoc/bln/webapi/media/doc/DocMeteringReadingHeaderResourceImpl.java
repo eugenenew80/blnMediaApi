@@ -45,8 +45,8 @@ public class DocMeteringReadingHeaderResourceImpl {
 			.collect(Collectors.toList());
 		
 		return Response.ok()
-				.entity(new GenericEntity<Collection<DocMeteringReadingHeaderDto>>(list){})
-				.build();
+			.entity(new GenericEntity<Collection<DocMeteringReadingHeaderDto>>(list){})
+			.build();
 	}
 	
 	

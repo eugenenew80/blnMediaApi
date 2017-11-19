@@ -2,6 +2,7 @@ package kz.kegoc.bln.entity.media.doc.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import kz.kegoc.bln.entity.media.Lang;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 public class DocMeterReplacingHeaderDto {
     private Long id;
     private String name;
+    private Lang lang;
     private LocalDate docDate;
     private Long meteringPointId;
     private String meteringPointCode;

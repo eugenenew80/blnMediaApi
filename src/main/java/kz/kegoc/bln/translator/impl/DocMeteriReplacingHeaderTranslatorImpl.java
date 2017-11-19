@@ -1,0 +1,27 @@
+package kz.kegoc.bln.translator.impl;
+
+import kz.kegoc.bln.entity.media.Lang;
+import kz.kegoc.bln.entity.media.doc.DocMeterReplacingHeader;
+import kz.kegoc.bln.entity.media.doc.translate.DocMeterReplacingHeaderTranslate;
+import kz.kegoc.bln.translator.Translator;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+
+@Stateless
+public class DocMeteriReplacingHeaderTranslatorImpl implements Translator<DocMeterReplacingHeader> {
+    public DocMeterReplacingHeader translate(DocMeterReplacingHeader entity, Lang lang) {
+        entity.setLang(lang);
+
+        DocMeterReplacingHeaderTranslate translate = entity.getTranslations().get(lang);
+        if (translate==null)
+            translate = entity.getTranslations().get(defLang);
+
+        if (translate!=null)
+            entity.setName(translate.getName());
+
+        return entity;
+    }
+
+    @Inject
+    private Lang defLang;
+}
