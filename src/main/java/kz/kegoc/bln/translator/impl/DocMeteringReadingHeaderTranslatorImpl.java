@@ -11,14 +11,14 @@ import javax.inject.Inject;
 @Stateless
 public class DocMeteringReadingHeaderTranslatorImpl implements Translator<DocMeteringReadingHeader> {
     public DocMeteringReadingHeader translate(DocMeteringReadingHeader entity, Lang lang) {
+        entity.setLang(lang);
+
         DocMeteringReadingHeaderTranslate translate = entity.getTranslations().get(lang);
         if (translate==null)
             translate = entity.getTranslations().get(defLang);
 
-        if (translate!=null) {
-            entity.setLang(translate.getLang());
+        if (translate!=null)
             entity.setName(translate.getName());
-        }
 
         return entity;
     }
