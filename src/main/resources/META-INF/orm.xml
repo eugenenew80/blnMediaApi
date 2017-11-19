@@ -742,7 +742,7 @@
 				<generated-value strategy="SEQUENCE" generator="media_doc_under_accounting_headers_gen" />
 				<sequence-generator
 						name="media_doc_under_accounting_headers_gen"
-						sequence-name="apps.media_doc_under_accounting_headers_gen_s"
+						sequence-name="apps.media_doc_under_accounting_headers_s"
 						allocation-size="1"
 				/>
 			</id>

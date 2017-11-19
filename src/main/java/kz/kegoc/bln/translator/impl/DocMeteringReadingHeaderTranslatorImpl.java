@@ -13,6 +13,9 @@ public class DocMeteringReadingHeaderTranslatorImpl implements Translator<DocMet
     public DocMeteringReadingHeader translate(DocMeteringReadingHeader entity, Lang lang) {
         entity.setLang(lang);
 
+        if (entity.getTranslations()==null)
+            return entity;
+
         DocMeteringReadingHeaderTranslate translate = entity.getTranslations().get(lang);
         if (translate==null)
             translate = entity.getTranslations().get(defLang);

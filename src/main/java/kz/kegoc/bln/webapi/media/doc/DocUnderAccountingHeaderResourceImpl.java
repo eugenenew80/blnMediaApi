@@ -2,14 +2,13 @@ package kz.kegoc.bln.webapi.media.doc;
 
 import kz.kegoc.bln.entity.media.Lang;
 import kz.kegoc.bln.entity.media.doc.DocUnderAccountingHeader;
-import kz.kegoc.bln.entity.media.doc.DocType;
 import kz.kegoc.bln.entity.media.doc.dto.DocUnderAccountingHeaderDto;
+import kz.kegoc.bln.mapper.EntityMapper;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
 import kz.kegoc.bln.service.media.doc.DocUnderAccountingHeaderService;
-import kz.kegoc.bln.service.media.doc.DocTypeService;
 import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 
@@ -68,10 +67,9 @@ public class DocUnderAccountingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocUnderAccountingHeader entity = dtoMapper.map(entityDto, DocUnderAccountingHeader.class);
-		DocType docType = docTypeService.findById(3l);
-		entity.setDocType(docType);
-
+		entity = entityMapper.map(entity);
 		DocUnderAccountingHeader newEntity = service.create(entity);
+
 		return Response.ok()
 			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), DocUnderAccountingHeaderDto.class))
 			.build();
@@ -84,7 +82,10 @@ public class DocUnderAccountingHeaderResourceImpl {
 		if (entityDto.getLang()==null)
 			entityDto.setLang(defLang);
 
-		DocUnderAccountingHeader newEntity = service.update(dtoMapper.map(entityDto, DocUnderAccountingHeader.class));
+		DocUnderAccountingHeader entity = dtoMapper.map(entityDto, DocUnderAccountingHeader.class);
+		entity = entityMapper.map(entity);
+		DocUnderAccountingHeader newEntity = service.update(entity);
+
 		return Response.ok()
 			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), DocUnderAccountingHeaderDto.class))
 			.build();
@@ -115,9 +116,6 @@ public class DocUnderAccountingHeaderResourceImpl {
 	private DocUnderAccountingHeaderService service;
 
 	@Inject
-	private DocTypeService docTypeService;
-
-	@Inject
 	private DocUnderAccountingMeasLineResourceImpl measLineResource;
 
 	@Inject
@@ -125,6 +123,9 @@ public class DocUnderAccountingHeaderResourceImpl {
 
 	@Inject
 	private DozerBeanMapper dtoMapper;
+
+	@Inject
+	private EntityMapper<DocUnderAccountingHeader> entityMapper;
 
 	@Inject
 	private Translator<DocUnderAccountingHeader> translator;

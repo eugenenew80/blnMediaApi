@@ -12,6 +12,9 @@ public class DocUnderAccountingHeaderTranslatorImpl implements Translator<DocUnd
     public DocUnderAccountingHeader translate(DocUnderAccountingHeader entity, Lang lang) {
         entity.setLang(lang);
 
+        if (entity.getTranslations()==null)
+            return entity;
+
         DocUnderAccountingHeaderTranslate translate = entity.getTranslations().get(lang);
         if (translate==null)
             translate = entity.getTranslations().get(defLang);
