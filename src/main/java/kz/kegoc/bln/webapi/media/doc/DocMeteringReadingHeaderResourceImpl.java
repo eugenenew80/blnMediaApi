@@ -54,6 +54,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 	@Path("/{id : \\d+}") 
 	public Response getById(@PathParam("id") Long id, @QueryParam("lang") Lang lang) {
 		final Lang userLang = (lang!=null ? lang : defLang);
+
 		DocMeteringReadingHeader entity = service.findById(id);
 		return Response.ok()
 			.entity(dtoMapper.map(translator.translate(entity, userLang), DocMeteringReadingHeaderDto.class))
