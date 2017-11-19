@@ -9,54 +9,52 @@ import kz.kegoc.bln.service.media.doc.DocTypeService;
 import kz.kegoc.bln.service.media.doc.GroupService;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 @Stateless
 public class DocMeteringReadingHeaderMapperImpl implements EntityMapper<DocMeteringReadingHeader> {
     public DocMeteringReadingHeader map(DocMeteringReadingHeader entity) {
-
         if (entity.getDocType()==null)
             entity.setDocType(docTypeService.findByCode("DocMeteringReading"));
-
-        if (entity.getId()!=null) {
-            DocMeteringReadingHeader curEntity = headerService.findById(entity.getId());
-            entity.setLines(curEntity.getLines());
-            entity.setTranslations(curEntity.getTranslations());
-        }
-
-        if (entity.getTranslations()==null)
-            entity.setTranslations(new HashMap<>());
-
-        if (entity.getLines()==null)
-            entity.setLines(new ArrayList<>());
 
         if (entity.getGroup()!=null)
             entity.setGroup(groupService.findById(entity.getGroup().getId()));
 
-        addTranslation(entity);
+        if (entity.getId()!=null) {
+            DocMeteringReadingHeader curEntity = headerService.findById(entity.getId());
+            if (entity.getLines()==null)
+                entity.setLines(curEntity.getLines());
 
-        return entity;
+            if (entity.getTranslations()==null)
+                entity.setTranslations(curEntity.getTranslations());
+        }
+
+        return translate(entity);
     }
 
 
-    private void addTranslation(DocMeteringReadingHeader entity) {
+    private DocMeteringReadingHeader translate(DocMeteringReadingHeader entity) {
         Lang lang = entity.getLang();
         if (lang==null)
             lang = defLang;
 
-        DocMeteringReadingHeaderTranslate translate = new DocMeteringReadingHeaderTranslate();
-        translate.setLang(lang);
-        translate.setHeader(entity);
-        translate.setName(entity.getName());
+        if (entity.getTranslations()==null)
+            entity.setTranslations(new HashMap<>());
 
         DocMeteringReadingHeaderTranslate curTranslate = entity.getTranslations()
             .get(lang);
 
         if (curTranslate!=null)
-            curTranslate.setName(translate.getName());
-        else
+            curTranslate.setName(entity.getName());
+        else {
+            DocMeteringReadingHeaderTranslate translate = new DocMeteringReadingHeaderTranslate();
+            translate.setLang(lang);
+            translate.setHeader(entity);
+            translate.setName(entity.getName());
             entity.getTranslations().put(lang, translate);
+        }
+
+        return entity;
     }
 
 

@@ -16,33 +16,22 @@ import javax.inject.Inject;
 @Stateless
 public class DocMeterReplacingHeaderMapperImpl implements EntityMapper<DocMeterReplacingHeader> {
     public DocMeterReplacingHeader map(DocMeterReplacingHeader entity) {
-        DocType docType = docTypeService.findByCode("DocMeterReplacing");
-        entity.setDocType(docType);
+        if (entity.getDocDate()==null)
+            entity.setDocType(docTypeService.findByCode("DocMeterReplacing"));
 
-        if (entity.getMeteringPoint()==null || entity.getMeteringPoint().getId()==null)
-            entity.setMeteringPoint(null);
-        else {
-            MeteringPoint meteringPoint = meteringPointService.findById(entity.getMeteringPoint().getId());
-            entity.setMeteringPoint(meteringPoint);
-        }
+        if (entity.getMeteringPoint()!=null)
+            entity.setMeteringPoint(meteringPointService.findById(entity.getMeteringPoint().getId()));
 
-        if (entity.getOldMeter()==null || entity.getOldMeter().getId()==null)
-            entity.setOldMeter(null);
-        else {
-            Meter oldMeter = meterService.findById(entity.getOldMeter().getId());
-            entity.setOldMeter(oldMeter);
-        }
+        if (entity.getOldMeter()!=null)
+            entity.setOldMeter(meterService.findById(entity.getOldMeter().getId()));
 
-        if (entity.getNewMeter()==null || entity.getNewMeter().getId()==null)
-            entity.setNewMeter(null);
-        else {
-            Meter newMeter = meterService.findById(entity.getNewMeter().getId());
-            entity.setNewMeter(newMeter);
-        }
+        if (entity.getNewMeter()!=null)
+            entity.setNewMeter(meterService.findById(entity.getNewMeter().getId()));
 
-        if (entity.getLines()==null && entity.getId()!=null) {
+        if (entity.getId()!=null) {
             DocMeterReplacingHeader header = headerService.findById(entity.getId());
-            entity.setLines(header.getLines());
+            if (entity.getLines()==null)
+                entity.setLines(header.getLines());
         }
 
         return entity;

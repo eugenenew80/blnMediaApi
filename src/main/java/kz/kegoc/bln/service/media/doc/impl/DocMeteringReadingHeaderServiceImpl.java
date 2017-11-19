@@ -36,8 +36,7 @@ public class DocMeteringReadingHeaderServiceImpl
 
     public DocMeteringReadingHeader create(DocMeteringReadingHeader entity) {
         entity.setLines(createLines(entity));
-        DocMeteringReadingHeader newEntity = super.create(entity);
-        return super.update(newEntity);
+        return super.create(entity);
     }
 
 
@@ -119,9 +118,6 @@ public class DocMeteringReadingHeaderServiceImpl
 
     @Inject
     private MeteringDataService<DayMeteringBalance> dayMeteringBalanceService;
-
-    @Inject
-    private DocMeteringReadingLineService lineService;
 
     @Inject @ParamCodes
     private BiMap<String, String> paramCodes;

@@ -13,8 +13,6 @@ public class DocUnderAccountingHeaderDto {
     private Long id;
     private String name;
     private LocalDate docDate;
-    private Long docTypeId;
-    private String docTypeName;
     private Long meteringPointId;
     private String meteringPointCode;
     private String meteringPointExternalCode;

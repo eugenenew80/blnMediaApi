@@ -8,16 +8,6 @@
     <class-b>kz.kegoc.bln.entity.media.doc.dto.DocMeteringReadingHeaderDto</class-b>
 
     <field>
-      <a>docType.id</a>
-      <b>docTypeId</b>
-    </field>
-
-    <field>
-      <a>docType.name</a>
-      <b>docTypeName</b>
-    </field>
-
-    <field>
       <a>group.id</a>
       <b>groupId</b>
     </field>

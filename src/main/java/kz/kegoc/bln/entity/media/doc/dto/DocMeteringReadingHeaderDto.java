@@ -16,8 +16,6 @@ public class DocMeteringReadingHeaderDto  {
     private String name;
     private Lang lang;
     private LocalDate docDate;
-    private Long docTypeId;
-    private String docTypeName;
     private Long groupId;
     private String groupName;
     private LocalDateTime startDate;

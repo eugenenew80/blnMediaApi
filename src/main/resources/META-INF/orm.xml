@@ -485,7 +485,7 @@
 
 			<one-to-many name="lines" mapped-by="header" orphan-removal="true" >
 				<cascade>
-					<cascade-persist/>
+					<cascade-all/>
 				</cascade>
 			</one-to-many>
 
@@ -496,7 +496,7 @@
 				</cascade>
 			</one-to-many>
 			
-			<transient name="name"/>
+			<transient name="name" />
 			<transient name="lang"/>
 		</attributes>
 	</entity>

@@ -68,5 +68,15 @@
 	            schemaName="apps"
 	            sequenceName="media_doc_metering_reading_headers_tl_s"
 	            startValue="1"/>
-	</changeSet>	
+	</changeSet>
+
+    <changeSet id="media-eug-118" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <dropColumn columnName="name" schemaName="apps" tableName="media_doc_metering_reading_headers"/>
+        <rollback>
+            <addColumn schemaName="apps" tableName="media_doc_metering_reading_headers">
+                <column name="name" type="varchar(100)"/>
+            </addColumn>
+        </rollback>
+    </changeSet>
+
 </databaseChangeLog>
