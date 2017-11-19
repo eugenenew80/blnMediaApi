@@ -14,7 +14,7 @@ import kz.kegoc.bln.service.media.oper.GroupService;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Stateless
-@Path("/media/mediaGroup")
+@Path("/impl/mediaGroup")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class GroupResourceImpl {

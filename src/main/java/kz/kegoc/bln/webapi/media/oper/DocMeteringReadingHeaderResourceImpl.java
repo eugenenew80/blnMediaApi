@@ -9,7 +9,7 @@ import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
 import kz.kegoc.bln.service.media.oper.DocMeteringReadingHeaderService;
-import kz.kegoc.bln.translation.Translator;
+import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Stateless
-@Path("/media/mediaDocMeteringReadingHeader")
+@Path("/impl/mediaDocMeteringReadingHeader")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class DocMeteringReadingHeaderResourceImpl {

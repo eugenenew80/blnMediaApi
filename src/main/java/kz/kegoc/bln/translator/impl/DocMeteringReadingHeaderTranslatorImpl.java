@@ -1,14 +1,14 @@
-package kz.kegoc.bln.translation.media;
+package kz.kegoc.bln.translator.impl;
 
 import kz.kegoc.bln.entity.media.oper.DocMeteringReadingHeader;
 import kz.kegoc.bln.entity.media.oper.translate.DocMeteringReadingHeaderTranslate;
 import kz.kegoc.bln.entity.media.raw.Lang;
-import kz.kegoc.bln.translation.Translator;
+import kz.kegoc.bln.translator.Translator;
 
 import javax.ejb.Stateless;
 
 @Stateless
-public class DocMeteringReadingHeaderTranslator implements Translator<DocMeteringReadingHeader> {
+public class DocMeteringReadingHeaderTranslatorImpl implements Translator<DocMeteringReadingHeader> {
     public DocMeteringReadingHeader translate(DocMeteringReadingHeader entity, Lang defLang) {
         Lang lang = entity.getLang();
         if (lang==null)

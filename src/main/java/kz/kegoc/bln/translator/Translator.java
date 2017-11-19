@@ -1,4 +1,4 @@
-package kz.kegoc.bln.translation;
+package kz.kegoc.bln.translator;
 
 import kz.kegoc.bln.entity.common.HasLang;
 import kz.kegoc.bln.entity.media.raw.Lang;

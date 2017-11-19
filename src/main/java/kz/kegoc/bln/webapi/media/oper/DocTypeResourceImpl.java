@@ -14,7 +14,7 @@ import kz.kegoc.bln.service.media.oper.DocTypeService;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Stateless
-@Path("/media/mediaDocType")
+@Path("/impl/mediaDocType")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class DocTypeResourceImpl {

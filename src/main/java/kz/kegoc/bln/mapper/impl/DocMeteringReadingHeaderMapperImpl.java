@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Stateless
-public class DocMeteringReadingHeaderMapper implements EntityMapper<DocMeteringReadingHeader> {
+public class DocMeteringReadingHeaderMapperImpl implements EntityMapper<DocMeteringReadingHeader> {
     public DocMeteringReadingHeader map(DocMeteringReadingHeader entity) {
 
         if (entity.getDocType()==null)

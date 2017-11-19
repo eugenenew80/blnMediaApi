@@ -14,7 +14,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 @Stateless
-public class DocMeterReplacingHeaderMapper implements EntityMapper<DocMeterReplacingHeader> {
+public class DocMeterReplacingHeaderMapperImpl implements EntityMapper<DocMeterReplacingHeader> {
     public DocMeterReplacingHeader map(DocMeterReplacingHeader entity) {
         DocType docType = docTypeService.findByCode("DocMeterReplacing");
         entity.setDocType(docType);

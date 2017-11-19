@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Stateless
-@Path("/media/mediaDocUnderAccountingHeader")
+@Path("/impl/mediaDocUnderAccountingHeader")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class DocUnderAccountingHeaderResourceImpl {
