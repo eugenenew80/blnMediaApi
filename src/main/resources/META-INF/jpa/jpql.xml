@@ -32,12 +32,12 @@
     </named-query>
 
 
-    <named-query name="HourMeteringFlowRaw.findByEntity">
+    <named-query name="HourMeteringFlow.findByEntity">
         <query>
             select
             	t
             from
-                HourMeteringFlowRaw t
+                HourMeteringFlow t
             where
             	    t.externalCode=:externalCode
             	and t.meteringDate=:meteringDate
@@ -49,32 +49,32 @@
         </query>
     </named-query>
 
-    <named-query name="DayMeteringBalanceRaw.findAll">
+    <named-query name="DayMeteringBalance.findAll">
         <query>
             select
                 t
             from
-                DayMeteringBalanceRaw t
+                DayMeteringBalance t
         </query>
     </named-query>
 
-    <named-query name="DayMeteringBalanceRaw.findByExternalCode">
+    <named-query name="DayMeteringBalance.findByExternalCode">
         <query>
             select
                 t
             from
-                DayMeteringBalanceRaw t
+                DayMeteringBalance t
             where
                 t.externalCode=:externalCode
         </query>
     </named-query>
 
-    <named-query name="DayMeteringBalanceRaw.findByEntity">
+    <named-query name="DayMeteringBalance.findByEntity">
         <query>
             select
             	t
             from
-            	DayMeteringBalanceRaw t
+            	DayMeteringBalance t
             where
             	    t.externalCode=:externalCode
             	and t.meteringDate=:meteringDate
@@ -86,12 +86,12 @@
     </named-query>
 
 
-    <named-query name="DayMeteringBalanceRaw.findReadyData">
+    <named-query name="DayMeteringBalance.findReadyData">
         <query>
             select
                 t
             from
-                DayMeteringBalanceRaw t
+                DayMeteringBalance t
             where
                     t.meteringPoint.id=:meteringPointId
                 and t.meteringDate=:meteringDate

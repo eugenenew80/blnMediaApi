@@ -3,7 +3,7 @@ package kz.kegoc.bln.gateway.emcos.impl;
 import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.media.*;
-import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalance;
 import kz.kegoc.bln.entity.media.raw.LastLoadInfo;
 import kz.kegoc.bln.gateway.emcos.EmcosBalanceGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
@@ -60,7 +60,7 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
         return this;
     }
 
-    public List<DayMeteringBalanceRaw> request() {
+    public List<DayMeteringBalance> request() {
         logger.info("EmcosBalanceGatewayImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
@@ -72,7 +72,7 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
 
         lastLoadInfoList = lastLoadInfoService.findAll();
 
-        List<DayMeteringBalanceRaw> list;
+        List<DayMeteringBalance> list;
         try {
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
@@ -134,7 +134,7 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
         return body;
     }
     
-    private List<DayMeteringBalanceRaw> parseAnswer(String answer) throws Exception {
+    private List<DayMeteringBalance> parseAnswer(String answer) throws Exception {
         logger.info("EmcosBalanceGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
@@ -150,7 +150,7 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
             .getFirstChild()
             .getChildNodes();
 
-        List<DayMeteringBalanceRaw> list = new ArrayList<>();
+        List<DayMeteringBalance> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -194,7 +194,7 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
             return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
     }
     
-    private DayMeteringBalanceRaw parseNode(Node node) {
+    private DayMeteringBalance parseNode(Node node) {
         String externalCode = node.getAttributes()
             .getNamedItem("PPOINT_CODE")
             .getNodeValue() ;
@@ -219,7 +219,7 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        DayMeteringBalanceRaw balance = new DayMeteringBalanceRaw();
+        DayMeteringBalance balance = new DayMeteringBalance();
         balance.setExternalCode(externalCode);
         balance.setMeteringDate(date.atStartOfDay());
         balance.setDataSource(DataSource.EMCOS);

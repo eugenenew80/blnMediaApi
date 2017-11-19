@@ -9,10 +9,10 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.*;
-import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw;
-import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalance;
+import kz.kegoc.bln.entity.media.raw.DayMeteringFlow;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlow;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringFlow;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 
@@ -33,10 +33,10 @@ import java.util.Map;
 @ApplicationScoped
 public class Producer {
 	private RedissonClient redissonClient = null;
-	private RBlockingQueue<HourMeteringFlowRaw> hourMeteringFlowQueue = null;
-	private RBlockingQueue<DayMeteringFlowRaw> dayMeteringFlowQueue = null;
-	private RBlockingQueue<MonthMeteringFlowRaw> monthMeteringFlowQueue = null;
-	private RBlockingQueue<DayMeteringBalanceRaw> dayMeteringBalanceQueue  = null;
+	private RBlockingQueue<HourMeteringFlow> hourMeteringFlowQueue = null;
+	private RBlockingQueue<DayMeteringFlow> dayMeteringFlowQueue = null;
+	private RBlockingQueue<MonthMeteringFlow> monthMeteringFlowQueue = null;
+	private RBlockingQueue<DayMeteringBalance> dayMeteringBalanceQueue  = null;
 	private RList<EmcosPointCfg> emcosPointCfgList  = null;
 	private DozerBeanMapper mapper = null;
 
@@ -60,7 +60,7 @@ public class Producer {
 
 
 	@Produces
-	public RBlockingQueue<HourMeteringFlowRaw> createHourMeteringDataQueue() {
+	public RBlockingQueue<HourMeteringFlow> createHourMeteringDataQueue() {
 		if (hourMeteringFlowQueue !=null)
 			return hourMeteringFlowQueue;
 
@@ -71,7 +71,7 @@ public class Producer {
 
 
 	@Produces
-	public RBlockingQueue<DayMeteringFlowRaw> createDayMeteringDataQueue() {
+	public RBlockingQueue<DayMeteringFlow> createDayMeteringDataQueue() {
 		if (dayMeteringFlowQueue !=null)
 			return dayMeteringFlowQueue;
 
@@ -82,7 +82,7 @@ public class Producer {
 
 
 	@Produces
-	public RBlockingQueue<MonthMeteringFlowRaw> createMonthMeteringDataQueue() {
+	public RBlockingQueue<MonthMeteringFlow> createMonthMeteringDataQueue() {
 		if (monthMeteringFlowQueue !=null)
 			return monthMeteringFlowQueue;
 
@@ -93,7 +93,7 @@ public class Producer {
 
 
 	@Produces
-	public RBlockingQueue<DayMeteringBalanceRaw> createDayMeteringBalanceQueue() {
+	public RBlockingQueue<DayMeteringBalance> createDayMeteringBalanceQueue() {
 		if (dayMeteringBalanceQueue!=null)
 			return dayMeteringBalanceQueue;
 

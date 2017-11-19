@@ -10,7 +10,7 @@ import javax.validation.Validator;
 import org.apache.commons.lang3.tuple.Pair;
 
 import kz.kegoc.bln.entity.media.raw.LastLoadInfo;
-import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalance;
 import kz.kegoc.bln.gateway.emcos.MinuteMeteringFlow;
 import kz.kegoc.bln.repository.media.raw.LastLoadInfoRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
@@ -53,8 +53,8 @@ public class LastLoadInfoServiceImpl extends AbstractEntityService<LastLoadInfo>
 		}
 	}	
 
-	public void updateLastBalanceLoadDate(List<DayMeteringBalanceRaw> meteringBalance) {		
-		Map<Pair<String, String>, List<DayMeteringBalanceRaw>> map = meteringBalance
+	public void updateLastBalanceLoadDate(List<DayMeteringBalance> meteringBalance) {
+		Map<Pair<String, String>, List<DayMeteringBalance>> map = meteringBalance
 				.stream()
 				.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getParamCode())));		
 			

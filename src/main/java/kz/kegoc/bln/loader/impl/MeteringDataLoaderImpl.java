@@ -5,10 +5,10 @@ import javax.ejb.Singleton;
 import javax.inject.Inject;
 
 import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
-import kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw;
-import kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalance;
+import kz.kegoc.bln.entity.media.raw.DayMeteringFlow;
+import kz.kegoc.bln.entity.media.raw.HourMeteringFlow;
+import kz.kegoc.bln.entity.media.raw.MonthMeteringFlow;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 
 @Singleton
@@ -23,14 +23,14 @@ public class MeteringDataLoaderImpl implements MeteringDataLoader<Metering> {
 	}
 
 	@Inject
-	private MeteringDataLoader<DayMeteringBalanceRaw> dayMeteringBalanceLoader;
+	private MeteringDataLoader<DayMeteringBalance> dayMeteringBalanceLoader;
 
 	@Inject
-	private MeteringDataLoader<DayMeteringFlowRaw> dayMeteringDataLoader;
+	private MeteringDataLoader<DayMeteringFlow> dayMeteringDataLoader;
 
 	@Inject
-	private MeteringDataLoader<HourMeteringFlowRaw> hourMeteringDataLoader;
+	private MeteringDataLoader<HourMeteringFlow> hourMeteringDataLoader;
 
 	@Inject
-	private MeteringDataLoader<MonthMeteringFlowRaw> monthMeteringDataLoader;
+	private MeteringDataLoader<MonthMeteringFlow> monthMeteringDataLoader;
 }

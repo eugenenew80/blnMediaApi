@@ -1,7 +1,7 @@
 package kz.kegoc.bln.ejb.interceptor;
 
-import kz.kegoc.bln.producer.emcos.EmcosMeteringRawProducer;
-import kz.kegoc.bln.producer.file.FileMeteringRawProducer;
+import kz.kegoc.bln.producer.emcos.EmcosMeteringDataProducer;
+import kz.kegoc.bln.producer.file.FileMeteringDataProducer;
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -17,9 +17,9 @@ public class ProducerInterceptor {
 
         Class<?> aClass = ctx.getTarget().getClass();
         boolean flag = true;
-        if (aClass == FileMeteringRawProducer.class)
+        if (aClass == FileMeteringDataProducer.class)
             flag = fileProducer;
-        else if (aClass == EmcosMeteringRawProducer.class)
+        else if (aClass == EmcosMeteringDataProducer.class)
             flag = emcosProducer;
         
         if (flag) return ctx.proceed();

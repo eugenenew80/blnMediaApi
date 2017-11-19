@@ -86,15 +86,15 @@
 	</entity>
 	
 	
-	<entity class="kz.kegoc.bln.entity.media.raw.HourMeteringFlowRaw">
-		<table name="media_hour_metering_data_raw" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.raw.HourMeteringFlow">
+		<table name="media_hour_metering_flow" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_hour_metering_data_raw_gen" />
+				<generated-value strategy="SEQUENCE" generator="media_hour_metering_flow_gen" />
 				<sequence-generator
-						name="media_hour_metering_data_raw_gen"
-						sequence-name="apps.media_hour_metering_data_raw_s"
+						name="media_hour_metering_flow_gen"
+						sequence-name="apps.media_hour_metering_flow_s"
 						allocation-size="1"
 				/>
 			</id>
@@ -151,15 +151,15 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringFlowRaw">
-		<table name="media_day_metering_data_raw" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringFlow">
+		<table name="media_day_metering_flow" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_day_metering_data_raw_gen" />
+        		<generated-value strategy="SEQUENCE" generator="media_day_metering_flow_gen" />
         		<sequence-generator
-        			name="media_day_metering_data_raw_gen"
-        			sequence-name="apps.media_day_metering_data_raw_s"
+        			name="media_day_metering_flow_gen"
+        			sequence-name="apps.media_day_metering_flow_s"
 					allocation-size="1"
         		/>				
 			</id>
@@ -207,15 +207,15 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.raw.MonthMeteringFlowRaw">
-		<table name="media_month_metering_data_raw" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.raw.MonthMeteringFlow">
+		<table name="media_month_metering_flow" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_month_metering_data_raw_gen" />
+        		<generated-value strategy="SEQUENCE" generator="media_month_metering_flow_gen" />
         		<sequence-generator
-        			name="media_month_metering_data_raw_gen"
-        			sequence-name="apps.media_month_metering_data_raw_s"
+        			name="media_month_metering_flow_gen"
+        			sequence-name="apps.media_month_metering_flow_s"
 					allocation-size="1"
         		/>
 			</id>
@@ -272,15 +272,15 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw">
-		<table name="media_day_metering_balance_raw" schema="apps"/>
+	<entity class="kz.kegoc.bln.entity.media.raw.DayMeteringBalance">
+		<table name="media_day_metering_balance" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_day_metering_balance_raw_gen" />
+				<generated-value strategy="SEQUENCE" generator="media_day_metering_balance_gen" />
 				<sequence-generator
-						name="media_day_metering_balance_raw_gen"
-						sequence-name="apps.media_day_metering_balance_raw_s"
+						name="media_day_metering_balance_gen"
+						sequence-name="apps.media_day_metering_balance_s"
 						allocation-size="1"
 				/>
 			</id>

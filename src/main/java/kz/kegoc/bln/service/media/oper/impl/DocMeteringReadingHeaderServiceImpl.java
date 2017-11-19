@@ -8,12 +8,12 @@ import kz.kegoc.bln.entity.media.oper.DocMeteringReadingHeader;
 import kz.kegoc.bln.entity.media.oper.DocMeteringReadingLine;
 import kz.kegoc.bln.entity.media.oper.Group;
 import kz.kegoc.bln.entity.media.oper.GroupMeteringPoint;
-import kz.kegoc.bln.entity.media.raw.DayMeteringBalanceRaw;
+import kz.kegoc.bln.entity.media.raw.DayMeteringBalance;
 import kz.kegoc.bln.repository.media.oper.DocMeteringReadingHeaderRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.media.oper.DocMeteringReadingHeaderService;
 import kz.kegoc.bln.service.media.oper.DocMeteringReadingLineService;
-import kz.kegoc.bln.service.media.raw.MeteringDataRawService;
+import kz.kegoc.bln.service.media.raw.MeteringDataService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -87,13 +87,13 @@ public class DocMeteringReadingHeaderServiceImpl
                 docLine.setEndBalance(0d);
                 docLine.setDataSource(DataSource.NOT_SET);
 
-                List<DayMeteringBalanceRaw> dayBalanceList = dayMeteringBalanceService.findReadyData(
+                List<DayMeteringBalance> dayBalanceList = dayMeteringBalanceService.findReadyData(
                     docLine.getMeteringPoint().getId(),
                     header.getStartDate(),
                     params.get(docLine.getParamCode())
                 );
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {
-                    DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
+                    DayMeteringBalance dayBalance = dayBalanceList.get(0);
                     docLine.setStartBalance(dayBalance.getVal());
                     docLine.setDataSource(dayBalance.getDataSource());
                 }
@@ -104,7 +104,7 @@ public class DocMeteringReadingHeaderServiceImpl
                     params.get(docLine.getParamCode())
                 );
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {
-                    DayMeteringBalanceRaw dayBalance = dayBalanceList.get(0);
+                    DayMeteringBalance dayBalance = dayBalanceList.get(0);
                     docLine.setEndBalance(dayBalance.getVal());
                     docLine.setDataSource(dayBalance.getDataSource());
                 }
@@ -118,7 +118,7 @@ public class DocMeteringReadingHeaderServiceImpl
 
 
     @Inject
-    private MeteringDataRawService<DayMeteringBalanceRaw> dayMeteringBalanceService;
+    private MeteringDataService<DayMeteringBalance> dayMeteringBalanceService;
 
     @Inject
     private DocMeteringReadingLineService lineService;
