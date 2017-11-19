@@ -2,12 +2,14 @@ package kz.kegoc.bln.webapi.media.oper;
 
 import kz.kegoc.bln.entity.media.oper.DocMeteringReadingHeader;
 import kz.kegoc.bln.entity.media.oper.dto.DocMeteringReadingHeaderDto;
+import kz.kegoc.bln.entity.media.raw.Lang;
 import kz.kegoc.bln.mapper.EntityMapper;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
 import kz.kegoc.bln.service.media.oper.DocMeteringReadingHeaderService;
+import kz.kegoc.bln.translation.Translator;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;
@@ -26,6 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public class DocMeteringReadingHeaderResourceImpl {
+	private Lang defLang = Lang.RU;
 
 	@GET 
 	public Response getAll(@QueryParam("name") String name) {		
@@ -36,7 +39,8 @@ public class DocMeteringReadingHeaderResourceImpl {
 		
 		List<DocMeteringReadingHeaderDto> list = service.find(query)
 			.stream()
-			.map( it-> dtoMapper.map(it, DocMeteringReadingHeaderDto.class) )
+			.map(it -> translator.translate(it, defLang))
+			.map(it-> dtoMapper.map(it, DocMeteringReadingHeaderDto.class))
 			.collect(Collectors.toList());
 		
 		return Response.ok()
@@ -50,7 +54,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 	public Response getById(@PathParam("id") Long id) {
 		DocMeteringReadingHeader entity = service.findById(id);
 		return Response.ok()
-			.entity(dtoMapper.map(entity, DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(entity, defLang), DocMeteringReadingHeaderDto.class))
 			.build();		
 	}
 
@@ -62,7 +66,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 		DocMeteringReadingHeader newEntity = service.create(entity);
 
 		return Response.ok()
-			.entity(dtoMapper.map(newEntity, DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, defLang), DocMeteringReadingHeaderDto.class))
 			.build();
 	}
 	
@@ -75,7 +79,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 		DocMeteringReadingHeader newEntity = service.update(entity);
 
 		return Response.ok()
-			.entity(dtoMapper.map(newEntity, DocMeteringReadingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, defLang), DocMeteringReadingHeaderDto.class))
 			.build();
 	}
 	
@@ -106,4 +110,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 
 	@Inject
 	private EntityMapper<DocMeteringReadingHeader> entityMapper;
+
+	@Inject
+	private Translator<DocMeteringReadingHeader> translator;
 }
