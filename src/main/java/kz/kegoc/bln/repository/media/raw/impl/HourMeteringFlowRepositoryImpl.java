@@ -15,7 +15,7 @@ public class HourMeteringFlowRepositoryImpl
 
 	public HourMeteringFlow selectByEntity(HourMeteringFlow entity) {
 		return
-			getEntityManager().createNamedQuery("HourMeteringFlowRaw.findByEntity", HourMeteringFlow.class)
+			getEntityManager().createNamedQuery("HourMeteringFlow.findByEntity", HourMeteringFlow.class)
 				.setParameter("externalCode", 	entity.getExternalCode())
 				.setParameter("meteringDate", 	entity.getMeteringDate())
 				.setParameter("hour", 			entity.getHour())

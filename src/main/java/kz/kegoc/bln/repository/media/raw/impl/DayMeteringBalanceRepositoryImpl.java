@@ -21,7 +21,7 @@ public class DayMeteringBalanceRepositoryImpl
 
 	public DayMeteringBalance selectByEntity(DayMeteringBalance entity) {
 		return
-			getEntityManager().createNamedQuery("DayMeteringBalanceRaw.findByEntity", DayMeteringBalance.class)
+			getEntityManager().createNamedQuery("DayMeteringBalance.findByEntity", DayMeteringBalance.class)
 				.setParameter("externalCode", 	entity.getExternalCode())
 				.setParameter("meteringDate", 	entity.getMeteringDate())
 				.setParameter("unitCode", 		entity.getUnitCode())
@@ -36,7 +36,7 @@ public class DayMeteringBalanceRepositoryImpl
 
 	public List selectReadyData(Long meteringPointId, LocalDateTime meteringDate, String paramCode) {
 		return
-			getEntityManager().createNamedQuery("DayMeteringBalanceRaw.findReadyData", DayMeteringBalance.class)
+			getEntityManager().createNamedQuery("DayMeteringBalance.findReadyData", DayMeteringBalance.class)
 				.setParameter("meteringPointId", meteringPointId)
 				.setParameter("meteringDate", 	meteringDate)
 				.setParameter("paramCode", 		paramCode)
