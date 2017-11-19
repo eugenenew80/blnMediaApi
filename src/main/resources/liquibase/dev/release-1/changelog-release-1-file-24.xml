@@ -314,20 +314,29 @@
     </changeSet>
 
     <changeSet id="media-eug-102" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <renameColumn
+                      columnDataType="varchar(15)"
+                      newColumnName="data_source"
+                      oldColumnName="data_source_code"
+                      schemaName="apps"
+                      tableName="media_doc_metering_reading_lines"/>
+    </changeSet>
+
+    <changeSet id="media-eug-103" logicalFilePath="path-independent" author="eugene" context="postgres">
         <renameTable
                      newTableName="media_hour_metering_flow"
                      oldTableName="media_hour_metering_data_raw"
                      schemaName="apps"/>
     </changeSet>
 
-    <changeSet id="media-eug-103" logicalFilePath="path-independent" author="eugene" context="postgres">
+    <changeSet id="media-eug-104" logicalFilePath="path-independent" author="eugene" context="postgres">
         <renameTable
                      newTableName="media_day_metering_flow"
                      oldTableName="media_day_metering_data_raw"
                      schemaName="apps"/>
     </changeSet>
 
-    <changeSet id="media-eug-104" logicalFilePath="path-independent" author="eugene" context="postgres">
+    <changeSet id="media-eug-105" logicalFilePath="path-independent" author="eugene" context="postgres">
         <renameTable
                      newTableName="media_month_metering_flow"
                      oldTableName="media_month_metering_data_raw"
@@ -335,69 +344,38 @@
     </changeSet>
 
 
-    <changeSet id="media-eug-105" logicalFilePath="path-independent" author="eugene" context="postgres">
+    <changeSet id="media-eug-106" logicalFilePath="path-independent" author="eugene" context="postgres">
         <renameTable
                 newTableName="media_day_metering_balance"
                 oldTableName="media_day_metering_balance_raw"
                 schemaName="apps"/>
     </changeSet>
 
-    <changeSet id="media-eug-106" logicalFilePath="path-independent" author="eugene" context="postgres">
+    <changeSet id="media-eug-107" logicalFilePath="path-independent" author="eugene" context="postgres">
         <sql dbms="postgresql">ALTER SEQUENCE  apps.media_day_metering_balance_raw_s RENAME TO media_day_metering_balance_s;</sql>
         <rollback>
             <sql dbms="postgresql">ALTER SEQUENCE apps.media_day_metering_balance_s RENAME TO media_day_metering_balance_raw_s;</sql>
         </rollback>
     </changeSet>
 
-    <changeSet id="media-eug-107" logicalFilePath="path-independent" author="eugene" context="postgres">
+    <changeSet id="media-eug-108" logicalFilePath="path-independent" author="eugene" context="postgres">
         <sql dbms="postgresql">ALTER SEQUENCE  apps.media_hour_metering_data_raw_s RENAME TO media_hour_metering_flow_s;</sql>
         <rollback>
             <sql dbms="postgresql">ALTER SEQUENCE  apps.media_hour_metering_flow_s RENAME TO media_hour_metering_data_raw_s;</sql>
         </rollback>
     </changeSet>
 
-    <changeSet id="media-eug-108" logicalFilePath="path-independent" author="eugene" context="postgres">
+    <changeSet id="media-eug-109" logicalFilePath="path-independent" author="eugene" context="postgres">
         <sql dbms="postgresql">ALTER SEQUENCE  apps.media_day_metering_data_raw_s RENAME TO media_day_metering_flow_s;</sql>
         <rollback>
             <sql dbms="postgresql">ALTER SEQUENCE  apps.media_day_metering_flow_s RENAME TO media_day_metering_data_raw_s;</sql>
         </rollback>
     </changeSet>
 
-    <changeSet id="media-eug-109" logicalFilePath="path-independent" author="eugene" context="postgres">
+    <changeSet id="media-eug-110" logicalFilePath="path-independent" author="eugene" context="postgres">
         <sql dbms="postgresql">ALTER SEQUENCE  apps.media_month_metering_data_raw_s RENAME TO media_month_metering_flow_s;</sql>
         <rollback>
             <sql dbms="postgresql">ALTER SEQUENCE  apps.media_month_metering_flow_s RENAME TO media_month_metering_data_raw_s;</sql>
         </rollback>
     </changeSet>
-
-
-    <changeSet id="media-eug-110" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <sql dbms="oracle">RENAME apps.media_day_metering_balance_raw_s TO media_day_metering_balance_s;</sql>
-        <rollback>
-            <sql dbms="oracle">RENAME apps.media_day_metering_balance_s TO media_day_metering_balance_raw_s;</sql>
-        </rollback>
-    </changeSet>
-
-    <changeSet id="media-eug-111" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <sql dbms="oracle">RENAME apps.media_hour_metering_data_raw_s TO media_hour_metering_flow_s;</sql>
-        <rollback>
-            <sql dbms="oracle">RENAME apps.media_hour_metering_flow_s TO media_hour_metering_data_raw_s;</sql>
-        </rollback>
-    </changeSet>
-
-    <changeSet id="media-eug-112" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <sql dbms="oracle">RENAME apps.media_day_metering_data_raw_s TO media_day_metering_flow_s;</sql>
-        <rollback>
-            <sql dbms="oracle">RENAME apps.media_day_metering_flow_s TO media_day_metering_data_raw_s;</sql>
-        </rollback>
-    </changeSet>
-
-    <changeSet id="media-eug-113" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <sql dbms="oracle">RENAME apps.media_month_metering_data_raw_s TO media_month_metering_flow_s;</sql>
-        <rollback>
-            <sql dbms="oracle">RENAME apps.media_month_metering_flow_s TO media_month_metering_data_raw_s;</sql>
-        </rollback>
-    </changeSet>
-
-
 </databaseChangeLog>

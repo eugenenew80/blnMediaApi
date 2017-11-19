@@ -561,7 +561,7 @@
 			</basic>
 
 			<basic name="dataSource">
-				<column name="data_source_code"  />
+				<column name="data_source"  />
 				<enumerated>STRING</enumerated>
 			</basic>
 
