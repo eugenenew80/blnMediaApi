@@ -1,24 +1,19 @@
 package kz.kegoc.bln.entity.media.doc;
 
-import kz.kegoc.bln.entity.common.HasId;
-import kz.kegoc.bln.entity.dict.Meter;
-import kz.kegoc.bln.entity.dict.MeteringPoint;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
+import kz.kegoc.bln.entity.common.*;
+import kz.kegoc.bln.entity.dict.*;
+import kz.kegoc.bln.entity.media.Lang;
+import kz.kegoc.bln.entity.media.doc.translate.DocUnderAccountingHeaderTranslate;
+import lombok.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-
+import java.time.*;
+import java.util.*;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class DocUnderAccountingHeader implements HasId {
+public class DocUnderAccountingHeader implements HasId, HasName, HasLang, HasDates {
     private Long id;
-
-    @NotNull @Size(max = 100)
+    private Lang lang;
     private String name;
 
     @NotNull
@@ -37,4 +32,5 @@ public class DocUnderAccountingHeader implements HasId {
     private LocalDateTime lastUpdateDate;
     private List<DocUnderAccountingMeasLine> measLines;
     private List<DocUnderAccountingCalcLine> calcLines;
+    private Map<Lang, DocUnderAccountingHeaderTranslate> translations;
 }

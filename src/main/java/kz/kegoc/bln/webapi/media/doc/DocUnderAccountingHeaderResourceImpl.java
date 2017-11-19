@@ -1,5 +1,6 @@
 package kz.kegoc.bln.webapi.media.doc;
 
+import kz.kegoc.bln.entity.media.Lang;
 import kz.kegoc.bln.entity.media.doc.DocUnderAccountingHeader;
 import kz.kegoc.bln.entity.media.doc.DocType;
 import kz.kegoc.bln.entity.media.doc.dto.DocUnderAccountingHeaderDto;
@@ -9,6 +10,7 @@ import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
 import kz.kegoc.bln.service.media.doc.DocUnderAccountingHeaderService;
 import kz.kegoc.bln.service.media.doc.DocTypeService;
+import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;
@@ -29,7 +31,9 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 public class DocUnderAccountingHeaderResourceImpl {
 
 	@GET
-	public Response getAll(@QueryParam("name") String name) {
+	public Response getAll(@QueryParam("name") String name, @QueryParam("lang") Lang lang) {
+		final Lang userLang = (lang!=null ? lang : defLang);
+
 		Query query = QueryImpl.builder()
 			.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
 			.setOrderBy("t.id")
@@ -37,6 +41,7 @@ public class DocUnderAccountingHeaderResourceImpl {
 
 		List<DocUnderAccountingHeaderDto> list = service.find(query)
 			.stream()
+			.map(it -> translator.translate(it, userLang))
 			.map( it-> dtoMapper.map(it, DocUnderAccountingHeaderDto.class) )
 			.collect(Collectors.toList());
 
@@ -48,23 +53,27 @@ public class DocUnderAccountingHeaderResourceImpl {
 	
 	@GET 
 	@Path("/{id : \\d+}") 
-	public Response getById(@PathParam("id") Long id) {
+	public Response getById(@PathParam("id") Long id, @QueryParam("lang") Lang lang) {
+		final Lang userLang = (lang!=null ? lang : defLang);
 		DocUnderAccountingHeader entity = service.findById(id);
 		return Response.ok()
-			.entity(dtoMapper.map(entity, DocUnderAccountingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(entity, userLang), DocUnderAccountingHeaderDto.class))
 			.build();		
 	}
 	
 
 	@POST
 	public Response create(DocUnderAccountingHeaderDto entityDto) {
+		if (entityDto.getLang()==null)
+			entityDto.setLang(defLang);
+
 		DocUnderAccountingHeader entity = dtoMapper.map(entityDto, DocUnderAccountingHeader.class);
 		DocType docType = docTypeService.findById(3l);
 		entity.setDocType(docType);
 
 		DocUnderAccountingHeader newEntity = service.create(entity);
 		return Response.ok()
-			.entity(dtoMapper.map(newEntity, DocUnderAccountingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), DocUnderAccountingHeaderDto.class))
 			.build();
 	}
 	
@@ -72,9 +81,12 @@ public class DocUnderAccountingHeaderResourceImpl {
 	@PUT 
 	@Path("{id : \\d+}") 
 	public Response update(@PathParam("id") Long id, DocUnderAccountingHeaderDto entityDto ) {
+		if (entityDto.getLang()==null)
+			entityDto.setLang(defLang);
+
 		DocUnderAccountingHeader newEntity = service.update(dtoMapper.map(entityDto, DocUnderAccountingHeader.class));
 		return Response.ok()
-			.entity(dtoMapper.map(newEntity, DocUnderAccountingHeaderDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), DocUnderAccountingHeaderDto.class))
 			.build();
 	}
 	
@@ -113,4 +125,10 @@ public class DocUnderAccountingHeaderResourceImpl {
 
 	@Inject
 	private DozerBeanMapper dtoMapper;
+
+	@Inject
+	private Translator<DocUnderAccountingHeader> translator;
+
+	@Inject
+	private Lang defLang;
 }

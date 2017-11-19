@@ -775,11 +775,65 @@
 				<join-column name="meter_id"/>
 			</many-to-one>
 
-			<one-to-many name="measLines" mapped-by="header" orphan-removal="true" />
-			<one-to-many name="calcLines" mapped-by="header" orphan-removal="true" />
+			<one-to-many name="measLines" mapped-by="header" orphan-removal="true">
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
+
+			<one-to-many name="calcLines" mapped-by="header" orphan-removal="true">
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
+
+			<one-to-many name="translations" mapped-by="header" orphan-removal="true">
+				<map-key name="lang"/>
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
+
+			<transient name="name"/>
+			<transient name="lang"/>
 		</attributes>
 	</entity>
 
+	<entity class="kz.kegoc.bln.entity.media.doc.translate.DocUnderAccountingHeaderTranslate">
+		<table name="media_doc_under_accounting_headers_tl" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_under_accounting_headers_tl_gen" />
+				<sequence-generator
+						name="media_doc_under_accounting_headers_tl_gen"
+						sequence-name="apps.media_doc_under_accounting_headers_tl_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="lang">
+				<column name="lang"  />
+				<enumerated>STRING</enumerated>
+			</basic>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="header">
+				<join-column name="header_id"/>
+			</many-to-one>
+		</attributes>
+	</entity>
 
 	<entity class="kz.kegoc.bln.entity.media.doc.DocUnderAccountingMeasLine">
 		<table name="media_doc_under_accounting_meas_lines" schema="apps"/>
