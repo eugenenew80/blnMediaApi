@@ -5,10 +5,10 @@ import javax.ejb.Singleton;
 import javax.inject.Inject;
 
 import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.entity.media.raw.DayMeteringBalance;
-import kz.kegoc.bln.entity.media.raw.DayMeteringFlow;
-import kz.kegoc.bln.entity.media.raw.HourMeteringFlow;
-import kz.kegoc.bln.entity.media.raw.MonthMeteringFlow;
+import kz.kegoc.bln.entity.media.data.DayMeteringBalance;
+import kz.kegoc.bln.entity.media.data.DayMeteringFlow;
+import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
+import kz.kegoc.bln.entity.media.data.MonthMeteringFlow;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 
 @Singleton

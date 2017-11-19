@@ -1,9 +1,9 @@
 package kz.kegoc.bln.loader.impl;
 
-import kz.kegoc.bln.entity.media.raw.HourMeteringFlow;
+import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
 import kz.kegoc.bln.loader.AbstractMeteringDataLoader;
 import kz.kegoc.bln.loader.MeteringDataLoader;
-import kz.kegoc.bln.service.media.raw.MeteringDataService;
+import kz.kegoc.bln.service.media.data.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

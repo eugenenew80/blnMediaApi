@@ -1,7 +1,7 @@
 package kz.kegoc.bln.loader;
 
 import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.service.media.raw.MeteringDataService;
+import kz.kegoc.bln.service.media.data.MeteringDataService;
 import org.redisson.api.RBlockingQueue;
 import java.util.ArrayList;
 import java.util.List;

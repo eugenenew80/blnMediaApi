@@ -1,6 +1,6 @@
 package kz.kegoc.bln.queue.impl;
 
-import kz.kegoc.bln.entity.media.raw.HourMeteringFlow;
+import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
 import kz.kegoc.bln.queue.AbstractMeteringDataQueue;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import java.util.concurrent.BlockingQueue;

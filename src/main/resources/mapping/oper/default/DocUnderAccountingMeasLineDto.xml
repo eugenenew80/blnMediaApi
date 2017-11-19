@@ -4,8 +4,8 @@
           xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
   <mapping>
-      <class-a>kz.kegoc.bln.entity.media.oper.DocUnderAccountingMeasLine</class-a>
-      <class-b>kz.kegoc.bln.entity.media.oper.dto.DocUnderAccountingMeasLineDto</class-b>
+      <class-a>kz.kegoc.bln.entity.media.doc.DocUnderAccountingMeasLine</class-a>
+      <class-b>kz.kegoc.bln.entity.media.doc.dto.DocUnderAccountingMeasLineDto</class-b>
       <field>
           <a>header.id</a>
           <b>headerId</b>

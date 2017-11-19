@@ -2,13 +2,13 @@ package kz.kegoc.bln.mapper.impl;
 
 import kz.kegoc.bln.entity.dict.Meter;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
-import kz.kegoc.bln.entity.media.oper.DocMeterReplacingHeader;
-import kz.kegoc.bln.entity.media.oper.DocType;
+import kz.kegoc.bln.entity.media.doc.DocMeterReplacingHeader;
+import kz.kegoc.bln.entity.media.doc.DocType;
 import kz.kegoc.bln.mapper.EntityMapper;
 import kz.kegoc.bln.service.dict.MeterService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
-import kz.kegoc.bln.service.media.oper.DocMeterReplacingHeaderService;
-import kz.kegoc.bln.service.media.oper.DocTypeService;
+import kz.kegoc.bln.service.media.doc.DocMeterReplacingHeaderService;
+import kz.kegoc.bln.service.media.doc.DocTypeService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

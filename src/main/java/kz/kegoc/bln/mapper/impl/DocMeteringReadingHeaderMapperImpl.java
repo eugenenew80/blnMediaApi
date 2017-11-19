@@ -1,12 +1,12 @@
 package kz.kegoc.bln.mapper.impl;
 
-import kz.kegoc.bln.entity.media.oper.DocMeteringReadingHeader;
-import kz.kegoc.bln.entity.media.oper.translate.DocMeteringReadingHeaderTranslate;
-import kz.kegoc.bln.entity.media.raw.Lang;
+import kz.kegoc.bln.entity.media.doc.DocMeteringReadingHeader;
+import kz.kegoc.bln.entity.media.doc.translate.DocMeteringReadingHeaderTranslate;
+import kz.kegoc.bln.entity.media.Lang;
 import kz.kegoc.bln.mapper.EntityMapper;
-import kz.kegoc.bln.service.media.oper.DocMeteringReadingHeaderService;
-import kz.kegoc.bln.service.media.oper.DocTypeService;
-import kz.kegoc.bln.service.media.oper.GroupService;
+import kz.kegoc.bln.service.media.doc.DocMeteringReadingHeaderService;
+import kz.kegoc.bln.service.media.doc.DocTypeService;
+import kz.kegoc.bln.service.media.doc.GroupService;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.ArrayList;

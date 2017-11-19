@@ -4,8 +4,8 @@
           xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
   <mapping>
-    <class-a>kz.kegoc.bln.entity.media.oper.GroupMeteringPoint</class-a>
-    <class-b>kz.kegoc.bln.entity.media.oper.dto.GroupMeteringPointDto</class-b>
+    <class-a>kz.kegoc.bln.entity.media.doc.GroupMeteringPoint</class-a>
+    <class-b>kz.kegoc.bln.entity.media.doc.dto.GroupMeteringPointDto</class-b>
 
      <field>
        <a>group.id</a>

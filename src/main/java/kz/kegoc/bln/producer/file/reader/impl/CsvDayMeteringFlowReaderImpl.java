@@ -2,7 +2,7 @@ package kz.kegoc.bln.producer.file.reader.impl;
 
 import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.raw.DayMeteringFlow;
+import kz.kegoc.bln.entity.media.data.DayMeteringFlow;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.CSV;
