@@ -1,5 +1,7 @@
 package kz.kegoc.bln.entity.media.raw;
 
+import kz.kegoc.bln.entity.dict.Meter;
+import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.media.DataSource;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +15,8 @@ import kz.kegoc.bln.entity.media.Metering;
 @EqualsAndHashCode(of= {"id"})
 public class HourMeteringFlowRaw implements Metering {
 	private Long id;
+	private MeteringPoint meteringPoint;
+	private Meter meter;
 	private LocalDate meteringDate;
 	private Integer hour;
 	private String externalCode;

@@ -2,6 +2,8 @@ package kz.kegoc.bln.entity.media.raw;
 
 import java.time.LocalDateTime;
 
+import kz.kegoc.bln.entity.dict.Meter;
+import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.media.DataSource;
 import kz.kegoc.bln.entity.media.DataStatus;
 import kz.kegoc.bln.entity.media.Metering;
@@ -12,6 +14,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of= {"id"})
 public class MonthMeteringFlowRaw implements Metering {
 	private Long id;
+	private MeteringPoint meteringPoint;
+	private Meter meter;
 	private Short year;
 	private Short month;
 	private String externalCode;
