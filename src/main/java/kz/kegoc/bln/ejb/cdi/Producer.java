@@ -184,6 +184,6 @@ public class Producer {
 
 	@Produces
 	public Lang defLang() {
-		return Lang.RU;
+		return Lang.KZ;
 	}
 }

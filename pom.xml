@@ -170,13 +170,6 @@
 		    <scope>provided</scope>
 		</dependency>
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.2.11.Final</version>
-            <scope>provided</scope>
-        </dependency>
-
 
         <!-- Prod dependencies  -->
 
@@ -204,13 +197,13 @@
             <artifactId>dozer</artifactId>
             <version>5.4.0</version>
         </dependency>
-		
+
 		<dependency>
 		    <groupId>redis.clients</groupId>
 		    <artifactId>jedis</artifactId>
 		    <version>2.9.0</version>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>org.redisson</groupId>
 		    <artifactId>redisson</artifactId>
@@ -241,14 +234,14 @@
         </dependency>
 
         <!-- Test dependencies  -->
-		
+
 		<dependency>
 		    <groupId>org.postgresql</groupId>
 		    <artifactId>postgresql</artifactId>
 		    <version>42.1.4</version>
 		    <scope>test</scope>
 		</dependency>
-    
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -283,38 +276,40 @@
             <version>2.17.0</version>
             <scope>test</scope>
         </dependency>
-                
+
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
             <version>9.2.3.v20140905</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
             <version>9.2.3.v20140905</version>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>4.3.7.Final</version>
+            <version>5.0.11.Final</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.3.7.Final</version>
+            <version>5.0.11.Final</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.0.11.Final</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
