@@ -55,17 +55,7 @@ public class GroupResourceImpl {
 			.build();		
 	}
 	
-	
-	@GET
-	@Path("/byName/{name}")
-	public Response getByName(@PathParam("name") String name) {		
-		Group entity = service.findByName(name);
-		return Response.ok()
-			.entity(dtoMapper.map(entity, GroupDto.class))
-			.build();
-	}
 
-	
 	@POST
 	public Response create(GroupDto entityDto) {
 		if (entityDto.getLang()==null)

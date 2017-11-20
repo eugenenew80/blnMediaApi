@@ -6,6 +6,10 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import kz.kegoc.bln.entity.media.Lang;
+import kz.kegoc.bln.mapper.EntityMapper;
+import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.doc.DocType;
 import kz.kegoc.bln.entity.media.doc.dto.DocTypeDto;
@@ -20,7 +24,9 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class DocTypeResourceImpl {
 
 	@GET 
-	public Response getAll(@QueryParam("name") String name) {		
+	public Response getAll(@QueryParam("name") String name, @QueryParam("lang") Lang lang) {
+		final Lang userLang = (lang!=null ? lang : defLang);
+
 		Query query = QueryImpl.builder()			
 			.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
 			.setOrderBy("t.id")
@@ -28,7 +34,8 @@ public class DocTypeResourceImpl {
 		
 		List<DocTypeDto> list = service.find(query)
 			.stream()
-			.map( it-> mapper.map(it, DocTypeDto.class) )
+			.map(it -> translator.translate(it, userLang))
+			.map( it-> dtoMapper.map(it, DocTypeDto.class) )
 			.collect(Collectors.toList());
 		
 		return Response.ok()
@@ -39,29 +46,27 @@ public class DocTypeResourceImpl {
 	
 	@GET 
 	@Path("/{id : \\d+}") 
-	public Response getById(@PathParam("id") Long id) {
+	public Response getById(@PathParam("id") Long id, @QueryParam("lang") Lang lang) {
+		final Lang userLang = (lang!=null ? lang : defLang);
+
 		DocType entity = service.findById(id);
 		return Response.ok()
-			.entity(mapper.map(entity, DocTypeDto.class))
+			.entity(dtoMapper.map(translator.translate(entity, userLang), DocTypeDto.class))
 			.build();		
 	}
 	
-	
-	@GET
-	@Path("/byName/{name}")
-	public Response getByName(@PathParam("name") String name) {		
-		DocType entity = service.findByName(name);
-		return Response.ok()
-			.entity(mapper.map(entity, DocTypeDto.class))
-			.build();
-	}
 
-	
 	@POST
 	public Response create(DocTypeDto entityDto) {
-		DocType newEntity = service.create(mapper.map(entityDto, DocType.class));	
+		if (entityDto.getLang()==null)
+			entityDto.setLang(defLang);
+
+		DocType entity = dtoMapper.map(entityDto, DocType.class);
+		entity = entityMapper.map(entity);
+		DocType newEntity = service.create(entity);
+
 		return Response.ok()
-			.entity(mapper.map(newEntity, DocTypeDto.class))
+			.entity(dtoMapper.map(newEntity, DocTypeDto.class))
 			.build();
 	}
 	
@@ -69,9 +74,15 @@ public class DocTypeResourceImpl {
 	@PUT 
 	@Path("{id : \\d+}") 
 	public Response update(@PathParam("id") Long id, DocTypeDto entityDto ) {
-		DocType newEntity = service.update(mapper.map(entityDto, DocType.class)); 
+		if (entityDto.getLang()==null)
+			entityDto.setLang(defLang);
+
+		DocType entity = dtoMapper.map(entityDto, DocType.class);
+		entity = entityMapper.map(entity);
+		DocType newEntity = service.update(entity);
+
 		return Response.ok()
-			.entity(mapper.map(newEntity, DocTypeDto.class))
+			.entity(dtoMapper.map(newEntity, DocTypeDto.class))
 			.build();
 	}
 	
@@ -84,11 +95,20 @@ public class DocTypeResourceImpl {
 			.build();
 	}
 
-	
-	
+
 	@Inject
 	private DocTypeService service;
 
 	@Inject
-	private DozerBeanMapper mapper;
+	private DozerBeanMapper dtoMapper;
+
+	@Inject
+	private EntityMapper<DocType> entityMapper;
+
+	@Inject
+	private Translator<DocType> translator;
+
+	@Inject
+	private Lang defLang;
+
 }

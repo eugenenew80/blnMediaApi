@@ -18,7 +18,7 @@ public class EjbExceptionMapperImpl implements ExceptionMapper<EJBException> {
     @Override
     public Response toResponse(EJBException exc) {
 		if (exc.getCause()!=null) {
-			/*
+
 			if (exc.getCause() instanceof RollbackException) {
 				Throwable appExc =  exc.getCause().getCause().getCause().getCause();
 				//System.out.println("QQQQQ EjbExceptionMapperImpl " + appExc.getClass());
@@ -28,7 +28,7 @@ public class EjbExceptionMapperImpl implements ExceptionMapper<EJBException> {
 					.entity(new ErrorMessage("tx-exception", appExc.getMessage()))
 					.build();
 			}
-			*/
+
 
 			if (exc.getCause() instanceof SQLGrammarException) {
 				Throwable appExc =  exc.getCause().getCause();

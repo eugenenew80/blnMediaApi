@@ -375,7 +375,7 @@
 			</id>
 
 			<basic name="name">
-				<column name="name" updatable="false" insertable="false" />
+				<column name="name" updatable="false" />
 			</basic>
 
 			<basic name="createDate">
@@ -495,8 +495,61 @@
 			</basic>
 
 			<basic name="name">
+				<column name="name" updatable="false" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<one-to-many name="translations" mapped-by="docType" orphan-removal="true">
+				<map-key name="lang"/>
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
+
+			<transient name="lang"/>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.media.doc.translate.DocTypeTranslate">
+		<table name="media_doc_types_tl" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_doc_types_tl_gen" />
+				<sequence-generator
+						name="media_doc_types_tl_gen"
+						sequence-name="apps.media_doc_types_tl_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="lang">
+				<column name="lang"  />
+				<enumerated>STRING</enumerated>
+			</basic>
+
+			<basic name="name">
 				<column name="name" />
 			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="docType">
+				<join-column name="doc_type_id"/>
+			</many-to-one>
 		</attributes>
 	</entity>
 
@@ -804,10 +857,6 @@
 						allocation-size="1"
 				/>
 			</id>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
 
 			<basic name="docDate">
 				<column name="doc_date" />
