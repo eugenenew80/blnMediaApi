@@ -8,6 +8,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
 import kz.kegoc.bln.entity.media.Lang;
+import kz.kegoc.bln.mapper.EntityMapper;
 import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.doc.Group;
@@ -34,7 +35,7 @@ public class GroupResourceImpl {
 		List<GroupDto> list = service.find(query)
 			.stream()
 			.map(it -> translator.translate(it, userLang))
-			.map(it-> mapper.map(it, GroupDto.class) )
+			.map(it-> dtoMapper.map(it, GroupDto.class) )
 			.collect(Collectors.toList());
 		
 		return Response.ok()
@@ -50,7 +51,7 @@ public class GroupResourceImpl {
 
 		Group entity = service.findById(id);
 		return Response.ok()
-			.entity(mapper.map(translator.translate(entity, userLang), GroupDto.class))
+			.entity(dtoMapper.map(translator.translate(entity, userLang), GroupDto.class))
 			.build();		
 	}
 	
@@ -60,7 +61,7 @@ public class GroupResourceImpl {
 	public Response getByName(@PathParam("name") String name) {		
 		Group entity = service.findByName(name);
 		return Response.ok()
-			.entity(mapper.map(entity, GroupDto.class))
+			.entity(dtoMapper.map(entity, GroupDto.class))
 			.build();
 	}
 
@@ -70,9 +71,12 @@ public class GroupResourceImpl {
 		if (entityDto.getLang()==null)
 			entityDto.setLang(defLang);
 
-		Group newEntity = service.create(mapper.map(entityDto, Group.class));	
+		Group entity = dtoMapper.map(entityDto, Group.class);
+		entity = entityMapper.map(entity);
+		Group newEntity = service.create(entity);
+
 		return Response.ok()
-			.entity(mapper.map(translator.translate(newEntity, entityDto.getLang()), GroupDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), GroupDto.class))
 			.build();
 	}
 	
@@ -83,9 +87,12 @@ public class GroupResourceImpl {
 		if (entityDto.getLang()==null)
 			entityDto.setLang(defLang);
 
-		Group newEntity = service.update(mapper.map(entityDto, Group.class)); 
+		Group entity = dtoMapper.map(entityDto, Group.class);
+		entity = entityMapper.map(entity);
+		Group newEntity = service.update(entity);
+
 		return Response.ok()
-			.entity(mapper.map(translator.translate(newEntity, entityDto.getLang()), GroupDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), GroupDto.class))
 			.build();
 	}
 	
@@ -112,7 +119,10 @@ public class GroupResourceImpl {
 	private GroupMeteringPointResourceImpl groupMeteringPointResource;
 	
 	@Inject
-	private DozerBeanMapper mapper;
+	private DozerBeanMapper dtoMapper;
+
+	@Inject
+	private EntityMapper<Group> entityMapper;
 
 	@Inject
 	private Translator<Group> translator;

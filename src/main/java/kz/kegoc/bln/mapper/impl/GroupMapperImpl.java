@@ -15,6 +15,9 @@ public class GroupMapperImpl implements EntityMapper<Group> {
         if (entity.getId()!=null) {
             Group curEntity = groupService.findById(entity.getId());
 
+            if (entity.getMeteringPoints()==null)
+                entity.setMeteringPoints(curEntity.getMeteringPoints());
+
             if (entity.getTranslations()==null)
                 entity.setTranslations(curEntity.getTranslations());
         }
