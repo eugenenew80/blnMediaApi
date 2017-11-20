@@ -14,6 +14,6 @@ public class DocUnderAccountingCalcLineDto {
     private String paramCode;
     private LocalDateTime turnOnTime;
     private LocalDateTime turnOffTime;
-    private Double downTime;
+    private Double downtime;
     private Double value;
 }

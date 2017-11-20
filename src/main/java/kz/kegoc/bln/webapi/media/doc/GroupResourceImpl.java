@@ -6,6 +6,9 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+
+import kz.kegoc.bln.entity.media.Lang;
+import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.media.doc.Group;
 import kz.kegoc.bln.entity.media.doc.dto.GroupDto;
@@ -20,7 +23,9 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class GroupResourceImpl {
 
 	@GET 
-	public Response getAll(@QueryParam("name") String name) {		
+	public Response getAll(@QueryParam("name") String name, @QueryParam("lang") Lang lang) {
+		final Lang userLang = (lang!=null ? lang : defLang);
+
 		Query query = QueryImpl.builder()			
 			.setParameter("name", isNotEmpty(name) ? new MyQueryParam("name", name + "%", ConditionType.LIKE) : null)
 			.setOrderBy("t.id")
@@ -28,7 +33,8 @@ public class GroupResourceImpl {
 		
 		List<GroupDto> list = service.find(query)
 			.stream()
-			.map( it-> mapper.map(it, GroupDto.class) )
+			.map(it -> translator.translate(it, userLang))
+			.map(it-> mapper.map(it, GroupDto.class) )
 			.collect(Collectors.toList());
 		
 		return Response.ok()
@@ -39,10 +45,12 @@ public class GroupResourceImpl {
 	
 	@GET 
 	@Path("/{id : \\d+}") 
-	public Response getById(@PathParam("id") Long id) {
+	public Response getById(@PathParam("id") Long id, @QueryParam("lang") Lang lang) {
+		final Lang userLang = (lang!=null ? lang : defLang);
+
 		Group entity = service.findById(id);
 		return Response.ok()
-			.entity(mapper.map(entity, GroupDto.class))
+			.entity(mapper.map(translator.translate(entity, userLang), GroupDto.class))
 			.build();		
 	}
 	
@@ -59,9 +67,12 @@ public class GroupResourceImpl {
 	
 	@POST
 	public Response create(GroupDto entityDto) {
+		if (entityDto.getLang()==null)
+			entityDto.setLang(defLang);
+
 		Group newEntity = service.create(mapper.map(entityDto, Group.class));	
 		return Response.ok()
-			.entity(mapper.map(newEntity, GroupDto.class))
+			.entity(mapper.map(translator.translate(newEntity, entityDto.getLang()), GroupDto.class))
 			.build();
 	}
 	
@@ -69,9 +80,12 @@ public class GroupResourceImpl {
 	@PUT 
 	@Path("{id : \\d+}") 
 	public Response update(@PathParam("id") Long id, GroupDto entityDto ) {
+		if (entityDto.getLang()==null)
+			entityDto.setLang(defLang);
+
 		Group newEntity = service.update(mapper.map(entityDto, Group.class)); 
 		return Response.ok()
-			.entity(mapper.map(newEntity, GroupDto.class))
+			.entity(mapper.map(translator.translate(newEntity, entityDto.getLang()), GroupDto.class))
 			.build();
 	}
 	
@@ -99,4 +113,10 @@ public class GroupResourceImpl {
 	
 	@Inject
 	private DozerBeanMapper mapper;
+
+	@Inject
+	private Translator<Group> translator;
+
+	@Inject
+	private Lang defLang;
 }

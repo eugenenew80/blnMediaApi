@@ -375,10 +375,68 @@
 			</id>
 
 			<basic name="name">
+				<column name="name" updatable="false" insertable="false" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<one-to-many name="meteringPoints" mapped-by="group" orphan-removal="true">
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
+
+			<one-to-many name="translations" mapped-by="group" orphan-removal="true">
+				<map-key name="lang"/>
+				<cascade>
+					<cascade-all/>
+				</cascade>
+			</one-to-many>
+
+			<transient name="lang" />
+		</attributes>
+	</entity>
+
+
+	<entity class="kz.kegoc.bln.entity.media.doc.translate.GroupTranslate">
+		<table name="media_groups_tl" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_groups_tl_gen" />
+				<sequence-generator
+						name="media_groups_tl_gen"
+						sequence-name="apps.media_groups_tl_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="lang">
+				<column name="lang"  />
+				<enumerated>STRING</enumerated>
+			</basic>
+
+			<basic name="name">
 				<column name="name" />
 			</basic>
-			
-			<one-to-many name="meteringPoints" mapped-by="group" orphan-removal="true" />
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="group">
+				<join-column name="group_id"/>
+			</many-to-one>
 		</attributes>
 	</entity>
 

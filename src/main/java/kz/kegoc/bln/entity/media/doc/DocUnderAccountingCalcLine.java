@@ -18,10 +18,10 @@ public class DocUnderAccountingCalcLine implements HasId {
     private String paramCode;
 
     @NotNull
-    private LocalDateTime turnOnTime;
+    private LocalDateTime turnOffTime;
 
     @NotNull
-    private LocalDateTime turnOffTime;
+    private LocalDateTime turnOnTime;
 
     private Double downtime;
     private Double value;
