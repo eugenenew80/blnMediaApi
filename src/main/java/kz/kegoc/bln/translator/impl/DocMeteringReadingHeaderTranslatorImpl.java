@@ -3,6 +3,7 @@ package kz.kegoc.bln.translator.impl;
 import kz.kegoc.bln.entity.media.doc.DocMeteringReadingHeader;
 import kz.kegoc.bln.entity.media.doc.translate.DocMeteringReadingHeaderTranslate;
 import kz.kegoc.bln.entity.media.Lang;
+import kz.kegoc.bln.entity.media.doc.translate.GroupTranslate;
 import kz.kegoc.bln.translator.Translator;
 
 import javax.ejb.Stateless;
@@ -22,6 +23,15 @@ public class DocMeteringReadingHeaderTranslatorImpl implements Translator<DocMet
 
         if (translate!=null)
             entity.setName(translate.getName());
+
+        if (entity.getGroup()!=null && entity.getGroup().getTranslations()!=null) {
+            GroupTranslate groupTranslate = entity.getGroup().getTranslations().get(lang);
+            if (groupTranslate == null)
+                groupTranslate = entity.getGroup().getTranslations().get(defLang);
+
+            if (groupTranslate != null)
+                entity.getGroup().setName(groupTranslate.getName());
+        }
 
         return entity;
     }
