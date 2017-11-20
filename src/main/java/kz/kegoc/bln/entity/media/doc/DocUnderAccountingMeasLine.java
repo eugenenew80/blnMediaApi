@@ -13,7 +13,7 @@ public class DocUnderAccountingMeasLine implements HasId {
     private Long id;
 
     @NotNull
-    private DocMeterReplacingHeader header;
+    private DocUnderAccountingHeader header;
 
     @NotNull
     private String paramCode;
