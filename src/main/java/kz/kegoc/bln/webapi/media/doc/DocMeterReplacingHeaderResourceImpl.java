@@ -67,7 +67,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocMeterReplacingHeader entity = dtoMapper.map(entityDto, DocMeterReplacingHeader.class);
-		entity = entityMapper.addDependencies(entity);
+		entity = entityHelperService.addDependencies(entity);
 		DocMeterReplacingHeader newEntity = service.create(entity);
 
 		return Response.ok()
@@ -83,7 +83,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocMeterReplacingHeader entity = dtoMapper.map(entityDto, DocMeterReplacingHeader.class);
-		entity = entityMapper.addDependencies(entity);
+		entity = entityHelperService.addDependencies(entity);
 		DocMeterReplacingHeader newEntity = service.update(entity);
 
 		return Response.ok()
@@ -117,7 +117,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private EntityHelperService<DocMeterReplacingHeader> entityMapper;
+	private EntityHelperService<DocMeterReplacingHeader> entityHelperService;
 
 	@Inject
 	private Translator<DocMeterReplacingHeader> translator;

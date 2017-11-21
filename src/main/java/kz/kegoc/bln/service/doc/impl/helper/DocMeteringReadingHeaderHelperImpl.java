@@ -38,7 +38,7 @@ public class DocMeteringReadingHeaderHelperImpl implements EntityHelperService<D
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());
 
-        DocMeteringReadingHeaderTranslate translate = new DocMeteringReadingHeaderTranslate();
+        DocMeteringReadingHeaderTranslate translate = entity.getTranslations().getOrDefault(lang, new DocMeteringReadingHeaderTranslate());
         translate.setLang(lang);
         translate.setHeader(entity);
         translate.setName(entity.getName());

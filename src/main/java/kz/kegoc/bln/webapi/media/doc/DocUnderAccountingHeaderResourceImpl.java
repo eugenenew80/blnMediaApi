@@ -67,7 +67,7 @@ public class DocUnderAccountingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocUnderAccountingHeader entity = dtoMapper.map(entityDto, DocUnderAccountingHeader.class);
-		entity = entityMapper.addDependencies(entity);
+		entity = entityHelperService.addDependencies(entity);
 		DocUnderAccountingHeader newEntity = service.create(entity);
 
 		return Response.ok()
@@ -83,7 +83,7 @@ public class DocUnderAccountingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocUnderAccountingHeader entity = dtoMapper.map(entityDto, DocUnderAccountingHeader.class);
-		entity = entityMapper.addDependencies(entity);
+		entity = entityHelperService.addDependencies(entity);
 		DocUnderAccountingHeader newEntity = service.update(entity);
 
 		return Response.ok()
@@ -125,7 +125,7 @@ public class DocUnderAccountingHeaderResourceImpl {
 	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private EntityHelperService<DocUnderAccountingHeader> entityMapper;
+	private EntityHelperService<DocUnderAccountingHeader> entityHelperService;
 
 	@Inject
 	private Translator<DocUnderAccountingHeader> translator;

@@ -30,7 +30,7 @@ public class GroupHelperImpl implements EntityHelperService<Group> {
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());
 
-        GroupTranslate translate = new GroupTranslate();
+        GroupTranslate translate = entity.getTranslations().getOrDefault(lang, new GroupTranslate());
         translate.setLang(lang);
         translate.setGroup(entity);
         translate.setName(entity.getName());

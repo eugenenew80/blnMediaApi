@@ -46,7 +46,7 @@ public class DocUnderAccountingHeaderHelperImpl implements EntityHelperService<D
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());
 
-        DocUnderAccountingHeaderTranslate translate = new DocUnderAccountingHeaderTranslate();
+        DocUnderAccountingHeaderTranslate translate = entity.getTranslations().getOrDefault(lang, new DocUnderAccountingHeaderTranslate());
         translate.setLang(lang);
         translate.setHeader(entity);
         translate.setName(entity.getName());

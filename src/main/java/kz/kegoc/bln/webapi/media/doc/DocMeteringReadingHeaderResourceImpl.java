@@ -68,7 +68,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocMeteringReadingHeader entity = dtoMapper.map(entityDto, DocMeteringReadingHeader.class);
-		entity = entityMapper.addDependencies(entity);
+		entity = entityHelperService.addDependencies(entity);
 		DocMeteringReadingHeader newEntity = service.create(entity);
 
 		return Response.ok()
@@ -84,7 +84,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocMeteringReadingHeader entity = dtoMapper.map(entityDto, DocMeteringReadingHeader.class);
-		entity = entityMapper.addDependencies(entity);
+		entity = entityHelperService.addDependencies(entity);
 		DocMeteringReadingHeader newEntity = service.update(entity);
 
 		return Response.ok()
@@ -118,7 +118,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private EntityHelperService<DocMeteringReadingHeader> entityMapper;
+	private EntityHelperService<DocMeteringReadingHeader> entityHelperService;
 
 	@Inject
 	private Translator<DocMeteringReadingHeader> translator;

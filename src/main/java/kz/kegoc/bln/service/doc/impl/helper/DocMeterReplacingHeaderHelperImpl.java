@@ -45,7 +45,7 @@ public class DocMeterReplacingHeaderHelperImpl implements EntityHelperService<Do
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());
 
-        DocMeterReplacingHeaderTranslate translate = new DocMeterReplacingHeaderTranslate();
+        DocMeterReplacingHeaderTranslate translate = entity.getTranslations().getOrDefault(lang, new DocMeterReplacingHeaderTranslate());
         translate.setLang(lang);
         translate.setHeader(entity);
         translate.setName(entity.getName());

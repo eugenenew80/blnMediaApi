@@ -62,7 +62,7 @@ public class GroupResourceImpl {
 			entityDto.setLang(defLang);
 
 		Group entity = dtoMapper.map(entityDto, Group.class);
-		entity = entityMapper.addDependencies(entity);
+		entity = helperService.addDependencies(entity);
 		Group newEntity = service.create(entity);
 
 		return Response.ok()
@@ -78,7 +78,7 @@ public class GroupResourceImpl {
 			entityDto.setLang(defLang);
 
 		Group entity = dtoMapper.map(entityDto, Group.class);
-		entity = entityMapper.addDependencies(entity);
+		entity = helperService.addDependencies(entity);
 		Group newEntity = service.update(entity);
 
 		return Response.ok()
@@ -112,7 +112,7 @@ public class GroupResourceImpl {
 	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private EntityHelperService<Group> entityMapper;
+	private EntityHelperService<Group> helperService;
 
 	@Inject
 	private Translator<Group> translator;
