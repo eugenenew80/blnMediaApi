@@ -6,9 +6,6 @@ import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.media.DataSource;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -38,9 +35,8 @@ public class DocMeteringReadingLine implements HasId {
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
 
-    @PreUpdate
-    @PrePersist
-    private void prePersist() {
+
+    public DocMeteringReadingLine calcFlow() {
         if (getMeteringPoint().getMeteringPointType().getCode().equals("01")) {
             if (getStartBalance() == null)
                 setStartBalance(0d);
@@ -55,5 +51,7 @@ public class DocMeteringReadingLine implements HasId {
             setStartBalance(null);
             setEndBalance(null);
         }
+
+        return this;
     }
 }

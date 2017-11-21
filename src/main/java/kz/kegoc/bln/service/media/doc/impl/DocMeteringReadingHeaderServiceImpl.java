@@ -12,7 +12,6 @@ import kz.kegoc.bln.entity.media.data.DayMeteringBalance;
 import kz.kegoc.bln.repository.media.doc.DocMeteringReadingHeaderRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.media.doc.DocMeteringReadingHeaderService;
-import kz.kegoc.bln.service.media.doc.DocMeteringReadingLineService;
 import kz.kegoc.bln.service.media.data.MeteringDataService;
 
 import javax.ejb.Stateless;
@@ -36,13 +35,20 @@ public class DocMeteringReadingHeaderServiceImpl
 
     public DocMeteringReadingHeader create(DocMeteringReadingHeader entity) {
         entity.setLines(createLines(entity));
+        entity.getLines().stream().forEach(DocMeteringReadingLine::calcFlow);
         return super.create(entity);
+    }
+
+
+    @Override
+    public DocMeteringReadingHeader update(DocMeteringReadingHeader entity) {
+        entity.getLines().stream().forEach(DocMeteringReadingLine::calcFlow);
+        return super.update(entity);
     }
 
 
     public List<DocMeteringReadingLine> createLines(DocMeteringReadingHeader header) {
         Group group = header.getGroup();
-
         List<DocMeteringReadingLine> lines =
             group.getMeteringPoints().stream()
                 .map(GroupMeteringPoint::getMeteringPoint)
@@ -72,13 +78,11 @@ public class DocMeteringReadingHeaderServiceImpl
 
     public List<DocMeteringReadingLine> autoFill(Long headerId) {
         DocMeteringReadingHeader header = findById(headerId);
-
         Map<String, String> params = new HashMap<>();
         params.put("A+", "AB+");
         params.put("A-", "AB-");
         params.put("R+", "RB+");
         params.put("R-", "RB-");
-
 
         List<DocMeteringReadingLine> lines = header.getLines().stream()
             .map(docLine -> {
@@ -94,7 +98,7 @@ public class DocMeteringReadingHeaderServiceImpl
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {
                     DayMeteringBalance dayBalance = dayBalanceList.get(0);
                     docLine.setStartBalance(dayBalance.getVal());
-                    docLine.setDataSource(DataSource.EMCOS);
+                    docLine.setDataSource(dayBalance.getDataSource());
                 }
 
                 dayBalanceList = dayMeteringBalanceService.findReadyData(
@@ -105,10 +109,9 @@ public class DocMeteringReadingHeaderServiceImpl
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {
                     DayMeteringBalance dayBalance = dayBalanceList.get(0);
                     docLine.setEndBalance(dayBalance.getVal());
-                    docLine.setDataSource(DataSource.EMCOS);
+                    docLine.setDataSource(dayBalance.getDataSource());
                 }
-
-                return docLine;
+                return docLine.calcFlow();
             })
             .collect(Collectors.toList());
 

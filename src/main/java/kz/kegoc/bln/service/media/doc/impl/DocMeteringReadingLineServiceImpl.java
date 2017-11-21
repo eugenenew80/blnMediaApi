@@ -17,4 +17,12 @@ public class DocMeteringReadingLineServiceImpl
     public DocMeteringReadingLineServiceImpl(DocMeteringReadingLineRepository repository, Validator validator) {
         super(repository, validator);
     }
+
+    public DocMeteringReadingLine create(DocMeteringReadingLine entity) {
+	    return super.create(entity.calcFlow());
+    }
+
+    public DocMeteringReadingLine update(DocMeteringReadingLine entity) {
+        return super.update(entity.calcFlow());
+    }
 }
