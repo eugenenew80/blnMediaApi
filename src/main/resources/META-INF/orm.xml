@@ -375,7 +375,7 @@
 			</id>
 
 			<basic name="name">
-				<column name="name" updatable="false" />
+				<column name="name" insertable="false" updatable="false" />
 			</basic>
 
 			<basic name="createDate">
@@ -495,7 +495,7 @@
 			</basic>
 
 			<basic name="name">
-				<column name="name" updatable="false" />
+				<column name="name" insertable="false" updatable="false" />
 			</basic>
 
 			<basic name="createDate">

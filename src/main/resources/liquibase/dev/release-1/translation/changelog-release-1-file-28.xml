@@ -71,7 +71,6 @@
 	</changeSet>
 
     <changeSet id="media-eug-130" logicalFilePath="path-independent" author="eugene" context="postgres">
-
         <addColumn schemaName="apps" tableName="media_groups">
             <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE">
                 <constraints nullable="true"/>
@@ -90,4 +89,9 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="media-eug-131" logicalFilePath="path-independent" author="eugene" context="postgres">
+        <dropNotNullConstraint columnDataType="varchar(100)" columnName="name" schemaName="apps" tableName="media_groups"/>
+    </changeSet>
+
 </databaseChangeLog>
