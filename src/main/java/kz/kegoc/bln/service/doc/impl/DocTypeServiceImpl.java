@@ -19,11 +19,11 @@ public class DocTypeServiceImpl extends AbstractEntityService<DocType>
     }
 
     public DocType create(DocType entity) {
-        return super.create(entityMapper.addDependencies(entity));
+        return super.create(entityMapper.addTranslation(entityMapper.addDependencies(entity)));
     }
 
     public DocType update(DocType entity) {
-        return super.update(entityMapper.addDependencies(entity));
+        return super.update(entityMapper.addTranslation(entityMapper.addDependencies(entity)));
     }
 
     @Inject
