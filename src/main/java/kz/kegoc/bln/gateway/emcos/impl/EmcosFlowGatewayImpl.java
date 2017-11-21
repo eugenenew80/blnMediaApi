@@ -4,14 +4,15 @@ import com.google.common.collect.BiMap;
 
 import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
-import kz.kegoc.bln.entity.media.*;
-import kz.kegoc.bln.entity.media.data.LastLoadInfo;
+import kz.kegoc.bln.entity.common.DataSource;
+import kz.kegoc.bln.entity.common.DataStatus;
+import kz.kegoc.bln.entity.data.LastLoadInfo;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosFlowGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 import kz.kegoc.bln.gateway.emcos.MinuteMeteringFlow;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
-import kz.kegoc.bln.service.media.data.LastLoadInfoService;
+import kz.kegoc.bln.service.data.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.*;

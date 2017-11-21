@@ -4,8 +4,8 @@
           xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
   <mapping>
-    <class-a>kz.kegoc.bln.entity.media.doc.DocMeteringReadingLine</class-a>
-    <class-b>kz.kegoc.bln.entity.media.doc.dto.DocMeteringReadingLineDto</class-b>
+    <class-a>kz.kegoc.bln.entity.doc.DocMeteringReadingLine</class-a>
+    <class-b>kz.kegoc.bln.entity.doc.dto.DocMeteringReadingLineDto</class-b>
 
       <field>
           <a>header.id</a>

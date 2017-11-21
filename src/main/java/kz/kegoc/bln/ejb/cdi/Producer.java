@@ -9,11 +9,11 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.*;
-import kz.kegoc.bln.entity.media.Lang;
-import kz.kegoc.bln.entity.media.data.DayMeteringBalance;
-import kz.kegoc.bln.entity.media.data.DayMeteringFlow;
-import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
-import kz.kegoc.bln.entity.media.data.MonthMeteringFlow;
+import kz.kegoc.bln.entity.common.Lang;
+import kz.kegoc.bln.entity.data.DayMeteringBalance;
+import kz.kegoc.bln.entity.data.DayMeteringFlow;
+import kz.kegoc.bln.entity.data.HourMeteringFlow;
+import kz.kegoc.bln.entity.data.MonthMeteringFlow;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 

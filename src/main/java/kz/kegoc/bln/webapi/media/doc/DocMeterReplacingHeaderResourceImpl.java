@@ -1,14 +1,14 @@
 package kz.kegoc.bln.webapi.media.doc;
 
-import kz.kegoc.bln.entity.media.Lang;
-import kz.kegoc.bln.entity.media.doc.DocMeterReplacingHeader;
-import kz.kegoc.bln.entity.media.doc.dto.DocMeterReplacingHeaderDto;
-import kz.kegoc.bln.mapper.EntityMapper;
+import kz.kegoc.bln.entity.common.Lang;
+import kz.kegoc.bln.entity.doc.DocMeterReplacingHeader;
+import kz.kegoc.bln.entity.doc.dto.DocMeterReplacingHeaderDto;
+import kz.kegoc.bln.service.common.EntityHelperService;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
-import kz.kegoc.bln.service.media.doc.DocMeterReplacingHeaderService;
+import kz.kegoc.bln.service.doc.DocMeterReplacingHeaderService;
 import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 
@@ -67,7 +67,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocMeterReplacingHeader entity = dtoMapper.map(entityDto, DocMeterReplacingHeader.class);
-		entity = entityMapper.map(entity);
+		entity = entityMapper.addDependencies(entity);
 		DocMeterReplacingHeader newEntity = service.create(entity);
 
 		return Response.ok()
@@ -83,7 +83,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocMeterReplacingHeader entity = dtoMapper.map(entityDto, DocMeterReplacingHeader.class);
-		entity = entityMapper.map(entity);
+		entity = entityMapper.addDependencies(entity);
 		DocMeterReplacingHeader newEntity = service.update(entity);
 
 		return Response.ok()
@@ -117,7 +117,7 @@ public class DocMeterReplacingHeaderResourceImpl {
 	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private EntityMapper<DocMeterReplacingHeader> entityMapper;
+	private EntityHelperService<DocMeterReplacingHeader> entityMapper;
 
 	@Inject
 	private Translator<DocMeterReplacingHeader> translator;

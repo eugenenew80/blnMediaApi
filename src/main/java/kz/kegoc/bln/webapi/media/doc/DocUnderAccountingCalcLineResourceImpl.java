@@ -1,9 +1,9 @@
 package kz.kegoc.bln.webapi.media.doc;
 
-import kz.kegoc.bln.entity.media.doc.DocUnderAccountingCalcLine;
-import kz.kegoc.bln.entity.media.doc.dto.DocUnderAccountingCalcLineDto;
-import kz.kegoc.bln.service.media.doc.DocUnderAccountingHeaderService;
-import kz.kegoc.bln.service.media.doc.DocUnderAccountingCalcLineService;
+import kz.kegoc.bln.entity.doc.DocUnderAccountingCalcLine;
+import kz.kegoc.bln.entity.doc.dto.DocUnderAccountingCalcLineDto;
+import kz.kegoc.bln.service.doc.DocUnderAccountingHeaderService;
+import kz.kegoc.bln.service.doc.DocUnderAccountingCalcLineService;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;

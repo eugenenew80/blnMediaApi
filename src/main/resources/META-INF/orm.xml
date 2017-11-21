@@ -86,7 +86,7 @@
 	</entity>
 	
 	
-	<entity class="kz.kegoc.bln.entity.media.data.HourMeteringFlow">
+	<entity class="kz.kegoc.bln.entity.data.HourMeteringFlow">
 		<table name="media_hour_metering_flow" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -151,7 +151,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.data.DayMeteringFlow">
+	<entity class="kz.kegoc.bln.entity.data.DayMeteringFlow">
 		<table name="media_day_metering_flow" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -207,7 +207,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.data.MonthMeteringFlow">
+	<entity class="kz.kegoc.bln.entity.data.MonthMeteringFlow">
 		<table name="media_month_metering_flow" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -272,7 +272,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.data.DayMeteringBalance">
+	<entity class="kz.kegoc.bln.entity.data.DayMeteringBalance">
 		<table name="media_day_metering_balance" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -333,7 +333,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.data.LastLoadInfo">
+	<entity class="kz.kegoc.bln.entity.data.LastLoadInfo">
 		<table name="media_last_load_info" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -361,7 +361,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.doc.Group">
+	<entity class="kz.kegoc.bln.entity.doc.Group">
 		<table name="media_groups" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -404,7 +404,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.doc.translate.GroupTranslate">
+	<entity class="kz.kegoc.bln.entity.doc.translate.GroupTranslate">
 		<table name="media_groups_tl" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -441,7 +441,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.doc.GroupMeteringPoint">
+	<entity class="kz.kegoc.bln.entity.doc.GroupMeteringPoint">
 		<table name="media_group_metering_points" schema="apps" />
 		<attributes>
 			<id name="id">
@@ -477,7 +477,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.doc.DocType">
+	<entity class="kz.kegoc.bln.entity.doc.DocType">
 		<table name="media_doc_types" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -517,7 +517,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.translate.DocTypeTranslate">
+	<entity class="kz.kegoc.bln.entity.doc.translate.DocTypeTranslate">
 		<table name="media_doc_types_tl" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -553,7 +553,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.DocMeteringReadingHeader">
+	<entity class="kz.kegoc.bln.entity.doc.DocMeteringReadingHeader">
 		<table name="media_doc_metering_reading_headers" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -613,7 +613,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.doc.translate.DocMeteringReadingHeaderTranslate">
+	<entity class="kz.kegoc.bln.entity.doc.translate.DocMeteringReadingHeaderTranslate">
 		<table name="media_doc_metering_reading_headers_tl" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -649,7 +649,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.DocMeteringReadingLine">
+	<entity class="kz.kegoc.bln.entity.doc.DocMeteringReadingLine">
 		<table name="media_doc_metering_reading_lines" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -710,7 +710,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.DocMeterReplacingHeader">
+	<entity class="kz.kegoc.bln.entity.doc.DocMeterReplacingHeader">
 		<table name="media_doc_meter_replacing_headers" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -769,7 +769,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.translate.DocMeterReplacingHeaderTranslate">
+	<entity class="kz.kegoc.bln.entity.doc.translate.DocMeterReplacingHeaderTranslate">
 		<table name="media_doc_meter_replacing_headers_tl" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -805,7 +805,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.DocMeterReplacingLine">
+	<entity class="kz.kegoc.bln.entity.doc.DocMeterReplacingLine">
 		<table name="media_doc_meter_replacing_lines" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -845,7 +845,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.media.doc.DocUnderAccountingHeader">
+	<entity class="kz.kegoc.bln.entity.doc.DocUnderAccountingHeader">
 		<table name="media_doc_under_accounting_headers" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -906,7 +906,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.translate.DocUnderAccountingHeaderTranslate">
+	<entity class="kz.kegoc.bln.entity.doc.translate.DocUnderAccountingHeaderTranslate">
 		<table name="media_doc_under_accounting_headers_tl" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -942,7 +942,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.DocUnderAccountingMeasLine">
+	<entity class="kz.kegoc.bln.entity.doc.DocUnderAccountingMeasLine">
 		<table name="media_doc_under_accounting_meas_lines" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -981,7 +981,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.media.doc.DocUnderAccountingCalcLine">
+	<entity class="kz.kegoc.bln.entity.doc.DocUnderAccountingCalcLine">
 		<table name="media_doc_under_accounting_calc_lines" schema="apps"/>
 		<attributes>
 			<id name="id">

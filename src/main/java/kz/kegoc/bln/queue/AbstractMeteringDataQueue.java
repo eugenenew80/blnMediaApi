@@ -1,6 +1,6 @@
 package kz.kegoc.bln.queue;
 
-import kz.kegoc.bln.entity.media.Metering;
+import kz.kegoc.bln.entity.common.Metering;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 

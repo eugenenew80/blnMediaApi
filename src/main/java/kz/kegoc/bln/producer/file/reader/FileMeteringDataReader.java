@@ -1,6 +1,6 @@
 package kz.kegoc.bln.producer.file.reader;
 
-import kz.kegoc.bln.entity.media.Metering;
+import kz.kegoc.bln.entity.common.Metering;
 
 import javax.ejb.Local;
 import java.nio.file.Path;

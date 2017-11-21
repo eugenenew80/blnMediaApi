@@ -1,14 +1,14 @@
 package kz.kegoc.bln.webapi.media.doc;
 
-import kz.kegoc.bln.entity.media.doc.DocMeteringReadingHeader;
-import kz.kegoc.bln.entity.media.doc.dto.DocMeteringReadingHeaderDto;
-import kz.kegoc.bln.entity.media.Lang;
-import kz.kegoc.bln.mapper.EntityMapper;
+import kz.kegoc.bln.entity.doc.DocMeteringReadingHeader;
+import kz.kegoc.bln.entity.doc.dto.DocMeteringReadingHeaderDto;
+import kz.kegoc.bln.entity.common.Lang;
+import kz.kegoc.bln.service.common.EntityHelperService;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
-import kz.kegoc.bln.service.media.doc.DocMeteringReadingHeaderService;
+import kz.kegoc.bln.service.doc.DocMeteringReadingHeaderService;
 import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 
@@ -68,7 +68,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocMeteringReadingHeader entity = dtoMapper.map(entityDto, DocMeteringReadingHeader.class);
-		entity = entityMapper.map(entity);
+		entity = entityMapper.addDependencies(entity);
 		DocMeteringReadingHeader newEntity = service.create(entity);
 
 		return Response.ok()
@@ -84,7 +84,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocMeteringReadingHeader entity = dtoMapper.map(entityDto, DocMeteringReadingHeader.class);
-		entity = entityMapper.map(entity);
+		entity = entityMapper.addDependencies(entity);
 		DocMeteringReadingHeader newEntity = service.update(entity);
 
 		return Response.ok()
@@ -118,7 +118,7 @@ public class DocMeteringReadingHeaderResourceImpl {
 	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private EntityMapper<DocMeteringReadingHeader> entityMapper;
+	private EntityHelperService<DocMeteringReadingHeader> entityMapper;
 
 	@Inject
 	private Translator<DocMeteringReadingHeader> translator;

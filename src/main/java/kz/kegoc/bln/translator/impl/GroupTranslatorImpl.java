@@ -1,8 +1,8 @@
 package kz.kegoc.bln.translator.impl;
 
-import kz.kegoc.bln.entity.media.Lang;
-import kz.kegoc.bln.entity.media.doc.Group;
-import kz.kegoc.bln.entity.media.doc.translate.GroupTranslate;
+import kz.kegoc.bln.entity.common.Lang;
+import kz.kegoc.bln.entity.doc.Group;
+import kz.kegoc.bln.entity.doc.translate.GroupTranslate;
 import kz.kegoc.bln.translator.Translator;
 
 import javax.ejb.Stateless;

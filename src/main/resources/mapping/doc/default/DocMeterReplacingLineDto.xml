@@ -4,8 +4,8 @@
           xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
   <mapping>
-    <class-a>kz.kegoc.bln.entity.media.doc.DocMeterReplacingLine</class-a>
-    <class-b>kz.kegoc.bln.entity.media.doc.dto.DocMeterReplacingLineDto</class-b>
+    <class-a>kz.kegoc.bln.entity.doc.DocMeterReplacingLine</class-a>
+    <class-b>kz.kegoc.bln.entity.doc.dto.DocMeterReplacingLineDto</class-b>
       <field>
           <a>header.id</a>
           <b>headerId</b>

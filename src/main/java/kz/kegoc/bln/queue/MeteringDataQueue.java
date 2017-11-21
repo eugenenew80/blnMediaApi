@@ -1,6 +1,6 @@
 package kz.kegoc.bln.queue;
 
-import kz.kegoc.bln.entity.media.Metering;
+import kz.kegoc.bln.entity.common.Metering;
 
 import javax.ejb.Local;
 import java.util.List;

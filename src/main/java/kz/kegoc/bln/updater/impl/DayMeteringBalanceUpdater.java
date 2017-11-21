@@ -1,14 +1,14 @@
 package kz.kegoc.bln.updater.impl;
 
 import kz.kegoc.bln.entity.dict.MeteringPoint;
-import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.data.DayMeteringBalance;
+import kz.kegoc.bln.entity.common.DataStatus;
+import kz.kegoc.bln.entity.data.DayMeteringBalance;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
 import kz.kegoc.bln.repository.common.query.QueryImpl;
 import kz.kegoc.bln.service.dict.MeteringPointService;
-import kz.kegoc.bln.service.media.data.MeteringDataService;
+import kz.kegoc.bln.service.data.MeteringDataService;
 import kz.kegoc.bln.updater.MeteringDataUpdater;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;

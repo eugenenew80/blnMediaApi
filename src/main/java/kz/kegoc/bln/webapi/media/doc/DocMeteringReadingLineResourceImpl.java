@@ -1,10 +1,10 @@
 package kz.kegoc.bln.webapi.media.doc;
 
-import kz.kegoc.bln.entity.media.DataSource;
-import kz.kegoc.bln.entity.media.doc.DocMeteringReadingLine;
-import kz.kegoc.bln.entity.media.doc.dto.DocMeteringReadingLineDto;
-import kz.kegoc.bln.service.media.doc.DocMeteringReadingHeaderService;
-import kz.kegoc.bln.service.media.doc.DocMeteringReadingLineService;
+import kz.kegoc.bln.entity.common.DataSource;
+import kz.kegoc.bln.entity.doc.DocMeteringReadingLine;
+import kz.kegoc.bln.entity.doc.dto.DocMeteringReadingLineDto;
+import kz.kegoc.bln.service.doc.DocMeteringReadingHeaderService;
+import kz.kegoc.bln.service.doc.DocMeteringReadingLineService;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;

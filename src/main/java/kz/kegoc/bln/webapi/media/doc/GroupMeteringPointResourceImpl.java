@@ -6,11 +6,11 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import kz.kegoc.bln.entity.media.doc.GroupMeteringPoint;
-import kz.kegoc.bln.service.media.doc.GroupMeteringPointService;
+import kz.kegoc.bln.entity.doc.GroupMeteringPoint;
+import kz.kegoc.bln.service.doc.GroupMeteringPointService;
 import org.dozer.DozerBeanMapper;
-import kz.kegoc.bln.entity.media.doc.dto.GroupMeteringPointDto;
-import kz.kegoc.bln.service.media.doc.GroupService;;
+import kz.kegoc.bln.entity.doc.dto.GroupMeteringPointDto;
+import kz.kegoc.bln.service.doc.GroupService;;
 
 @Stateless
 @Produces({ "application/xml", "application/json" })

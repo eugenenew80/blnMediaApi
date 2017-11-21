@@ -4,11 +4,11 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 
-import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.entity.media.data.DayMeteringBalance;
-import kz.kegoc.bln.entity.media.data.DayMeteringFlow;
-import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
-import kz.kegoc.bln.entity.media.data.MonthMeteringFlow;
+import kz.kegoc.bln.entity.common.Metering;
+import kz.kegoc.bln.entity.data.DayMeteringBalance;
+import kz.kegoc.bln.entity.data.DayMeteringFlow;
+import kz.kegoc.bln.entity.data.HourMeteringFlow;
+import kz.kegoc.bln.entity.data.MonthMeteringFlow;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 
 @Singleton

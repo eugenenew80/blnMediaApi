@@ -6,8 +6,8 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.entity.media.data.DayMeteringBalance;
-import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
+import kz.kegoc.bln.entity.data.DayMeteringBalance;
+import kz.kegoc.bln.entity.data.HourMeteringFlow;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
 

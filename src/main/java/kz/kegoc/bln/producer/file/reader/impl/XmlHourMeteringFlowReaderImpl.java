@@ -1,8 +1,8 @@
 package kz.kegoc.bln.producer.file.reader.impl;
 
-import kz.kegoc.bln.entity.media.DataSource;
-import kz.kegoc.bln.entity.media.DataStatus;
-import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
+import kz.kegoc.bln.entity.common.DataSource;
+import kz.kegoc.bln.entity.common.DataStatus;
+import kz.kegoc.bln.entity.data.HourMeteringFlow;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.XML;

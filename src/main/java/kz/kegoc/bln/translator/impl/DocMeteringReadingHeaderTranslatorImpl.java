@@ -1,9 +1,9 @@
 package kz.kegoc.bln.translator.impl;
 
-import kz.kegoc.bln.entity.media.doc.DocMeteringReadingHeader;
-import kz.kegoc.bln.entity.media.doc.Group;
-import kz.kegoc.bln.entity.media.doc.translate.DocMeteringReadingHeaderTranslate;
-import kz.kegoc.bln.entity.media.Lang;
+import kz.kegoc.bln.entity.doc.DocMeteringReadingHeader;
+import kz.kegoc.bln.entity.doc.Group;
+import kz.kegoc.bln.entity.doc.translate.DocMeteringReadingHeaderTranslate;
+import kz.kegoc.bln.entity.common.Lang;
 import kz.kegoc.bln.translator.Translator;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

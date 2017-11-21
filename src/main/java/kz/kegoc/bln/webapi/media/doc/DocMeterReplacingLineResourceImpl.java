@@ -1,9 +1,9 @@
 package kz.kegoc.bln.webapi.media.doc;
 
-import kz.kegoc.bln.entity.media.doc.DocMeterReplacingLine;
-import kz.kegoc.bln.entity.media.doc.dto.DocMeterReplacingLineDto;
-import kz.kegoc.bln.service.media.doc.DocMeterReplacingHeaderService;
-import kz.kegoc.bln.service.media.doc.DocMeterReplacingLineService;
+import kz.kegoc.bln.entity.doc.DocMeterReplacingLine;
+import kz.kegoc.bln.entity.doc.dto.DocMeterReplacingLineDto;
+import kz.kegoc.bln.service.doc.DocMeterReplacingHeaderService;
+import kz.kegoc.bln.service.doc.DocMeterReplacingLineService;
 import org.dozer.DozerBeanMapper;
 
 import javax.ejb.Stateless;

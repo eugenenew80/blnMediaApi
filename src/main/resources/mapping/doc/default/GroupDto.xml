@@ -4,7 +4,7 @@
           xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
   <mapping>
-    <class-a>kz.kegoc.bln.entity.media.doc.Group</class-a>
-    <class-b>kz.kegoc.bln.entity.media.doc.dto.GroupDto</class-b>
+    <class-a>kz.kegoc.bln.entity.doc.Group</class-a>
+    <class-b>kz.kegoc.bln.entity.doc.dto.GroupDto</class-b>
   </mapping> 
 </mappings> 

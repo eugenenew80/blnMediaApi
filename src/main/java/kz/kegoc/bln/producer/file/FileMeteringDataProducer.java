@@ -2,10 +2,10 @@ package kz.kegoc.bln.producer.file;
 
 import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.ejb.cdi.annotation.MeteringDataPath;
-import kz.kegoc.bln.entity.media.Metering;
-import kz.kegoc.bln.entity.media.data.DayMeteringFlow;
-import kz.kegoc.bln.entity.media.data.HourMeteringFlow;
-import kz.kegoc.bln.entity.media.data.MonthMeteringFlow;
+import kz.kegoc.bln.entity.common.Metering;
+import kz.kegoc.bln.entity.data.DayMeteringFlow;
+import kz.kegoc.bln.entity.data.HourMeteringFlow;
+import kz.kegoc.bln.entity.data.MonthMeteringFlow;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.ejb.cdi.annotation.CSV;

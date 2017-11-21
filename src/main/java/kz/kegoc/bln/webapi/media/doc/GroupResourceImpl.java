@@ -7,14 +7,14 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-import kz.kegoc.bln.entity.media.Lang;
-import kz.kegoc.bln.mapper.EntityMapper;
+import kz.kegoc.bln.entity.common.Lang;
+import kz.kegoc.bln.service.common.EntityHelperService;
 import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
-import kz.kegoc.bln.entity.media.doc.Group;
-import kz.kegoc.bln.entity.media.doc.dto.GroupDto;
+import kz.kegoc.bln.entity.doc.Group;
+import kz.kegoc.bln.entity.doc.dto.GroupDto;
 import kz.kegoc.bln.repository.common.query.*;
-import kz.kegoc.bln.service.media.doc.GroupService;
+import kz.kegoc.bln.service.doc.GroupService;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Stateless
@@ -62,7 +62,7 @@ public class GroupResourceImpl {
 			entityDto.setLang(defLang);
 
 		Group entity = dtoMapper.map(entityDto, Group.class);
-		entity = entityMapper.map(entity);
+		entity = entityMapper.addDependencies(entity);
 		Group newEntity = service.create(entity);
 
 		return Response.ok()
@@ -78,7 +78,7 @@ public class GroupResourceImpl {
 			entityDto.setLang(defLang);
 
 		Group entity = dtoMapper.map(entityDto, Group.class);
-		entity = entityMapper.map(entity);
+		entity = entityMapper.addDependencies(entity);
 		Group newEntity = service.update(entity);
 
 		return Response.ok()
@@ -112,7 +112,7 @@ public class GroupResourceImpl {
 	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private EntityMapper<Group> entityMapper;
+	private EntityHelperService<Group> entityMapper;
 
 	@Inject
 	private Translator<Group> translator;

@@ -1,8 +1,8 @@
 package kz.kegoc.bln.translator.impl;
 
-import kz.kegoc.bln.entity.media.Lang;
-import kz.kegoc.bln.entity.media.doc.DocMeterReplacingHeader;
-import kz.kegoc.bln.entity.media.doc.translate.DocMeterReplacingHeaderTranslate;
+import kz.kegoc.bln.entity.common.Lang;
+import kz.kegoc.bln.entity.doc.DocMeterReplacingHeader;
+import kz.kegoc.bln.entity.doc.translate.DocMeterReplacingHeaderTranslate;
 import kz.kegoc.bln.translator.Translator;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

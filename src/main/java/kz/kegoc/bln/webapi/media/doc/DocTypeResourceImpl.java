@@ -7,14 +7,13 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 
-import kz.kegoc.bln.entity.media.Lang;
-import kz.kegoc.bln.mapper.EntityMapper;
+import kz.kegoc.bln.entity.common.Lang;
 import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
-import kz.kegoc.bln.entity.media.doc.DocType;
-import kz.kegoc.bln.entity.media.doc.dto.DocTypeDto;
+import kz.kegoc.bln.entity.doc.DocType;
+import kz.kegoc.bln.entity.doc.dto.DocTypeDto;
 import kz.kegoc.bln.repository.common.query.*;
-import kz.kegoc.bln.service.media.doc.DocTypeService;
+import kz.kegoc.bln.service.doc.DocTypeService;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Stateless
@@ -61,10 +60,7 @@ public class DocTypeResourceImpl {
 		if (entityDto.getLang()==null)
 			entityDto.setLang(defLang);
 
-		DocType entity = dtoMapper.map(entityDto, DocType.class);
-		entity = entityMapper.map(entity);
-		DocType newEntity = service.create(entity);
-
+		DocType newEntity = service.create(dtoMapper.map(entityDto, DocType.class));
 		return Response.ok()
 			.entity(dtoMapper.map(newEntity, DocTypeDto.class))
 			.build();
@@ -77,10 +73,7 @@ public class DocTypeResourceImpl {
 		if (entityDto.getLang()==null)
 			entityDto.setLang(defLang);
 
-		DocType entity = dtoMapper.map(entityDto, DocType.class);
-		entity = entityMapper.map(entity);
-		DocType newEntity = service.update(entity);
-
+		DocType newEntity = service.update(dtoMapper.map(entityDto, DocType.class));
 		return Response.ok()
 			.entity(dtoMapper.map(newEntity, DocTypeDto.class))
 			.build();
@@ -103,12 +96,8 @@ public class DocTypeResourceImpl {
 	private DozerBeanMapper dtoMapper;
 
 	@Inject
-	private EntityMapper<DocType> entityMapper;
-
-	@Inject
 	private Translator<DocType> translator;
 
 	@Inject
 	private Lang defLang;
-
 }

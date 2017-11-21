@@ -6,13 +6,13 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
-import kz.kegoc.bln.entity.media.data.DayMeteringBalance;
+import kz.kegoc.bln.entity.data.DayMeteringBalance;
 import kz.kegoc.bln.gateway.emcos.EmcosBalanceGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
-import kz.kegoc.bln.service.media.data.LastLoadInfoService;
+import kz.kegoc.bln.service.data.LastLoadInfoService;
 
 @Stateless
 public class EmcosDayMeteringBalanceReader implements EmcosMeteringDataReader<DayMeteringBalance> {
