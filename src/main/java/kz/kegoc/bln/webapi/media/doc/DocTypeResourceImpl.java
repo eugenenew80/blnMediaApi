@@ -62,7 +62,7 @@ public class DocTypeResourceImpl {
 
 		DocType newEntity = service.create(dtoMapper.map(entityDto, DocType.class));
 		return Response.ok()
-			.entity(dtoMapper.map(newEntity, DocTypeDto.class))
+			.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), DocTypeDto.class))
 			.build();
 	}
 	
@@ -75,7 +75,7 @@ public class DocTypeResourceImpl {
 
 		DocType newEntity = service.update(dtoMapper.map(entityDto, DocType.class));
 		return Response.ok()
-			.entity(dtoMapper.map(newEntity, DocTypeDto.class))
+				.entity(dtoMapper.map(translator.translate(newEntity, entityDto.getLang()), DocTypeDto.class))
 			.build();
 	}
 	
