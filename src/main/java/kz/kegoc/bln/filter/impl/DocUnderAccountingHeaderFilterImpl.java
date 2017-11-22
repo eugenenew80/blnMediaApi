@@ -14,7 +14,7 @@ import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class DocUnderAccountingHeaderHelperImpl implements Filter<DocUnderAccountingHeader> {
+public class DocUnderAccountingHeaderFilterImpl implements Filter<DocUnderAccountingHeader> {
     public DocUnderAccountingHeader filter(DocUnderAccountingHeader entity) {
         if (entity.getDocType()==null)
             entity.setDocType(docTypeService.findByCode("DocUnderAccounting"));

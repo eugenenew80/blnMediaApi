@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class DocMeterReplacingHeaderHelperImpl implements Filter<DocMeterReplacingHeader> {
+public class DocMeterReplacingHeaderFilterImpl implements Filter<DocMeterReplacingHeader> {
     public DocMeterReplacingHeader filter(DocMeterReplacingHeader entity) {
         if (entity.getDocType()==null)
             entity.setDocType(docTypeService.findByCode("DocMeterReplacing"));

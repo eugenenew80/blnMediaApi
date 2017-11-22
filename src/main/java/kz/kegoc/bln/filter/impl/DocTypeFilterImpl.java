@@ -1,47 +1,42 @@
 package kz.kegoc.bln.filter.impl;
 
 import kz.kegoc.bln.entity.common.Lang;
-import kz.kegoc.bln.entity.doc.Group;
-import kz.kegoc.bln.entity.doc.translate.GroupTranslate;
+import kz.kegoc.bln.entity.doc.DocType;
+import kz.kegoc.bln.entity.doc.translate.DocTypeTranslate;
+import kz.kegoc.bln.service.doc.DocTypeService;
 import kz.kegoc.bln.filter.Filter;
-import kz.kegoc.bln.service.doc.GroupService;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class GroupHelperImpl implements Filter<Group> {
-    public Group filter(Group entity) {
+public class DocTypeFilterImpl implements Filter<DocType> {
+    public DocType filter(DocType entity) {
         if (entity.getId()!=null) {
-            Group curEntity = groupService.findById(entity.getId());
-
-            if (entity.getMeteringPoints()==null)
-                entity.setMeteringPoints(curEntity.getMeteringPoints());
+            DocType curEntity = docTypeService.findById(entity.getId());
 
             if (entity.getTranslations()==null)
                 entity.setTranslations(curEntity.getTranslations());
         }
-
         return translate(entity);
     }
 
-    private Group translate(Group entity) {
+    private DocType translate(DocType entity) {
         Lang lang = entity.getLang()!=null ? entity.getLang() : defLang;
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());
 
-        GroupTranslate translate = entity.getTranslations().getOrDefault(lang, new GroupTranslate());
+        DocTypeTranslate translate = entity.getTranslations().getOrDefault(lang, new DocTypeTranslate());
         translate.setLang(lang);
-        translate.setGroup(entity);
+        translate.setDocType(entity);
         translate.setName(entity.getName());
         entity.getTranslations().put(lang, translate);
 
         return entity;
     }
 
-
     @Inject
-    private GroupService groupService;
+    private DocTypeService docTypeService;
 
     @Inject
     private Lang defLang;

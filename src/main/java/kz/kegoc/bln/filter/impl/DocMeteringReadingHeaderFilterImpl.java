@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class DocMeteringReadingHeaderHelperImpl implements Filter<DocMeteringReadingHeader> {
+public class DocMeteringReadingHeaderFilterImpl implements Filter<DocMeteringReadingHeader> {
     public DocMeteringReadingHeader filter(DocMeteringReadingHeader entity) {
         if (entity.getDocType()==null)
             entity.setDocType(docTypeService.findByCode("DocMeteringReading"));
