@@ -2,7 +2,6 @@ package kz.kegoc.bln.service.common;
 
 import java.time.*;
 import java.util.*;
-import javax.inject.Inject;
 import javax.validation.*;
 import kz.kegoc.bln.entity.common.HasDates;
 import kz.kegoc.bln.entity.common.HasId;
@@ -24,7 +23,13 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
         this(repository);
         this.validator = validator;
     }
-    
+
+    public AbstractEntityService(Repository<T> repository, Validator validator, Filter<T> prePersistFilter) {
+        this(repository);
+        this.validator = validator;
+		this.prePersistFilter = prePersistFilter;
+    }
+
         
 	public List<T> findAll() {
 		if (repository==null)
@@ -106,6 +111,9 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 			throw new ValidationException(violation.getPropertyPath() + ": " + violation.getMessage());
 		}
 
+		if (prePersistFilter !=null)
+			entity = prePersistFilter.filter(entity);
+
 		return repository.insert(entity);
 	}
 
@@ -132,6 +140,9 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 			throw new ValidationException(violation.getPropertyPath() + ": " + violation.getMessage());
 		}
 
+		if (prePersistFilter !=null)
+			entity = prePersistFilter.filter(entity);
+
 		return repository.update(entity);
 	}
 
@@ -147,12 +158,8 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 		
 		return repository.delete(entityId); 
 	}	
-	
-	
-	public void setRepository(Repository<T> repository) { 
-		this.repository = repository; 
-	}	
-	
-	@Inject protected Repository<T> repository;	
-	@Inject protected Validator validator;
+
+	protected Repository<T> repository;
+	private Validator validator;
+	private Filter<T> prePersistFilter;
 }

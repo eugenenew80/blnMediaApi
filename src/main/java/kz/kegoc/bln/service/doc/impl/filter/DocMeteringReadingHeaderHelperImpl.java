@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.doc.impl.helper;
+package kz.kegoc.bln.service.doc.impl.filter;
 
 import kz.kegoc.bln.entity.doc.DocMeteringReadingHeader;
 import kz.kegoc.bln.entity.doc.translate.DocMeteringReadingHeaderTranslate;

@@ -22,6 +22,4 @@ public interface EntityService<T extends HasId> {
 	T update(T entity);
 
     boolean delete(Long entityId);
-    
-    void setRepository(Repository<T> repository);
 }

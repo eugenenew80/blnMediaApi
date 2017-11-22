@@ -1,38 +1,36 @@
-package kz.kegoc.bln.service.doc.impl.helper;
+package kz.kegoc.bln.service.doc.impl.filter;
 
 import kz.kegoc.bln.entity.common.Lang;
-import kz.kegoc.bln.entity.doc.DocUnderAccountingHeader;
-import kz.kegoc.bln.entity.doc.translate.DocUnderAccountingHeaderTranslate;
+import kz.kegoc.bln.entity.doc.DocMeterReplacingHeader;
+import kz.kegoc.bln.entity.doc.translate.DocMeterReplacingHeaderTranslate;
 import kz.kegoc.bln.service.common.EntityHelperService;
 import kz.kegoc.bln.service.dict.MeterService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
-import kz.kegoc.bln.service.doc.DocUnderAccountingHeaderService;
+import kz.kegoc.bln.service.doc.DocMeterReplacingHeaderService;
 import kz.kegoc.bln.service.doc.DocTypeService;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class DocUnderAccountingHeaderHelperImpl implements EntityHelperService<DocUnderAccountingHeader> {
-    public DocUnderAccountingHeader addDependencies(DocUnderAccountingHeader entity) {
+public class DocMeterReplacingHeaderHelperImpl implements EntityHelperService<DocMeterReplacingHeader> {
+    public DocMeterReplacingHeader addDependencies(DocMeterReplacingHeader entity) {
         if (entity.getDocType()==null)
-            entity.setDocType(docTypeService.findByCode("DocUnderAccounting"));
+            entity.setDocType(docTypeService.findByCode("DocMeterReplacing"));
 
         if (entity.getMeteringPoint()!=null)
             entity.setMeteringPoint(meteringPointService.findById(entity.getMeteringPoint().getId()));
 
-        if (entity.getMeter()!=null)
-            entity.setMeter(meterService.findById(entity.getMeter().getId()));
+        if (entity.getOldMeter()!=null)
+            entity.setOldMeter(meterService.findById(entity.getOldMeter().getId()));
 
+        if (entity.getNewMeter()!=null)
+            entity.setNewMeter(meterService.findById(entity.getNewMeter().getId()));
 
         if (entity.getId()!=null) {
-            DocUnderAccountingHeader curEntity = headerService.findById(entity.getId());
-            if (entity.getMeasLines()==null)
-                entity.setMeasLines(curEntity.getMeasLines());
-
-            if (entity.getCalcLines()==null)
-                entity.setCalcLines(curEntity.getCalcLines());
+            DocMeterReplacingHeader curEntity = headerService.findById(entity.getId());
+            if (entity.getLines()==null)
+                entity.setLines(curEntity.getLines());
 
             if (entity.getTranslations()==null)
                 entity.setTranslations(curEntity.getTranslations());
@@ -41,12 +39,13 @@ public class DocUnderAccountingHeaderHelperImpl implements EntityHelperService<D
         return addTranslation(entity);
     }
 
-    public DocUnderAccountingHeader addTranslation(DocUnderAccountingHeader entity) {
+
+    public DocMeterReplacingHeader addTranslation(DocMeterReplacingHeader entity) {
         Lang lang = entity.getLang()!=null ? entity.getLang() : defLang;
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());
 
-        DocUnderAccountingHeaderTranslate translate = entity.getTranslations().getOrDefault(lang, new DocUnderAccountingHeaderTranslate());
+        DocMeterReplacingHeaderTranslate translate = entity.getTranslations().getOrDefault(lang, new DocMeterReplacingHeaderTranslate());
         translate.setLang(lang);
         translate.setHeader(entity);
         translate.setName(entity.getName());
@@ -57,7 +56,7 @@ public class DocUnderAccountingHeaderHelperImpl implements EntityHelperService<D
 
 
     @Inject
-    private DocUnderAccountingHeaderService headerService;
+    private DocMeterReplacingHeaderService headerService;
 
     @Inject
     private DocTypeService docTypeService;
