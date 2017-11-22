@@ -1,6 +1,7 @@
 package kz.kegoc.bln.service.doc.impl;
 
 import kz.kegoc.bln.entity.doc.DocMeterReplacingHeader;
+import kz.kegoc.bln.filter.Filter;
 import kz.kegoc.bln.repository.doc.DocMeterReplacingHeaderRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.doc.DocMeterReplacingHeaderService;
@@ -15,7 +16,7 @@ public class DocMeterReplacingHeaderServiceImpl
                 implements DocMeterReplacingHeaderService {
 
 	@Inject
-    public DocMeterReplacingHeaderServiceImpl(DocMeterReplacingHeaderRepository repository, Validator validator) {
-        super(repository, validator);
+    public DocMeterReplacingHeaderServiceImpl(DocMeterReplacingHeaderRepository repository, Validator validator, Filter<DocMeterReplacingHeader> prePersistFilter) {
+        super(repository, validator, prePersistFilter);
     }
 }

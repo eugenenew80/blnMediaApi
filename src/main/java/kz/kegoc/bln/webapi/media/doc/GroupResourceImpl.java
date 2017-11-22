@@ -6,9 +6,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import kz.kegoc.bln.entity.common.Lang;
-import kz.kegoc.bln.service.common.EntityHelperService;
 import kz.kegoc.bln.translator.Translator;
 import org.dozer.DozerBeanMapper;
 import kz.kegoc.bln.entity.doc.Group;
@@ -62,7 +60,6 @@ public class GroupResourceImpl {
 			entityDto.setLang(defLang);
 
 		Group entity = dtoMapper.map(entityDto, Group.class);
-		entity = helperService.addDependencies(entity);
 		Group newEntity = service.create(entity);
 
 		return Response.ok()
@@ -78,7 +75,6 @@ public class GroupResourceImpl {
 			entityDto.setLang(defLang);
 
 		Group entity = dtoMapper.map(entityDto, Group.class);
-		entity = helperService.addDependencies(entity);
 		Group newEntity = service.update(entity);
 
 		return Response.ok()
@@ -110,9 +106,6 @@ public class GroupResourceImpl {
 	
 	@Inject
 	private DozerBeanMapper dtoMapper;
-
-	@Inject
-	private EntityHelperService<Group> helperService;
 
 	@Inject
 	private Translator<Group> translator;

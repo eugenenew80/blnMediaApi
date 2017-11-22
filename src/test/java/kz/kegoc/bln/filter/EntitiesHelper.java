@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.doc.impl.filter;
+package kz.kegoc.bln.filter;
 
 import java.util.*;
 

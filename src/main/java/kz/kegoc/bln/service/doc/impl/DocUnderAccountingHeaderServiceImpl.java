@@ -1,6 +1,7 @@
 package kz.kegoc.bln.service.doc.impl;
 
 import kz.kegoc.bln.entity.doc.DocUnderAccountingHeader;
+import kz.kegoc.bln.filter.Filter;
 import kz.kegoc.bln.repository.doc.DocUnderAccountingHeaderRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.doc.DocUnderAccountingHeaderService;
@@ -15,7 +16,7 @@ public class DocUnderAccountingHeaderServiceImpl
                 implements DocUnderAccountingHeaderService {
 
 	@Inject
-    public DocUnderAccountingHeaderServiceImpl(DocUnderAccountingHeaderRepository repository, Validator validator) {
-        super(repository, validator);
+    public DocUnderAccountingHeaderServiceImpl(DocUnderAccountingHeaderRepository repository, Validator validator, Filter<DocUnderAccountingHeader> prePersistFilter) {
+        super(repository, validator, prePersistFilter);
     }
 }

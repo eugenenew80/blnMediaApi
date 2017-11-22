@@ -9,6 +9,7 @@ import kz.kegoc.bln.entity.doc.DocMeteringReadingLine;
 import kz.kegoc.bln.entity.doc.Group;
 import kz.kegoc.bln.entity.doc.GroupMeteringPoint;
 import kz.kegoc.bln.entity.data.DayMeteringBalance;
+import kz.kegoc.bln.filter.Filter;
 import kz.kegoc.bln.repository.doc.DocMeteringReadingHeaderRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.doc.DocMeteringReadingHeaderService;
@@ -28,22 +29,14 @@ public class DocMeteringReadingHeaderServiceImpl
         implements DocMeteringReadingHeaderService {
 
 	@Inject
-    public DocMeteringReadingHeaderServiceImpl(DocMeteringReadingHeaderRepository repository, Validator validator) {
-        super(repository, validator);
+    public DocMeteringReadingHeaderServiceImpl(DocMeteringReadingHeaderRepository repository, Validator validator, Filter<DocMeteringReadingHeader> prePersisitFilter) {
+        super(repository, validator, prePersisitFilter);
     }
 
 
     public DocMeteringReadingHeader create(DocMeteringReadingHeader entity) {
         entity.setLines(createLines(entity));
-        entity.getLines().stream().forEach(DocMeteringReadingLine::calcFlow);
         return super.create(entity);
-    }
-
-
-    @Override
-    public DocMeteringReadingHeader update(DocMeteringReadingHeader entity) {
-        entity.getLines().stream().forEach(DocMeteringReadingLine::calcFlow);
-        return super.update(entity);
     }
 
 

@@ -1,4 +1,4 @@
-package kz.kegoc.bln.service.common;
+package kz.kegoc.bln.filter;
 
 import kz.kegoc.bln.entity.common.HasId;
 

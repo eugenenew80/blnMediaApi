@@ -1,17 +1,17 @@
-package kz.kegoc.bln.service.doc.impl.filter;
+package kz.kegoc.bln.filter.impl;
 
 import kz.kegoc.bln.entity.common.Lang;
 import kz.kegoc.bln.entity.doc.Group;
 import kz.kegoc.bln.entity.doc.translate.GroupTranslate;
-import kz.kegoc.bln.service.common.EntityHelperService;
+import kz.kegoc.bln.filter.Filter;
 import kz.kegoc.bln.service.doc.GroupService;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class GroupHelperImpl implements EntityHelperService<Group> {
-    public Group addDependencies(Group entity) {
+public class GroupHelperImpl implements Filter<Group> {
+    public Group filter(Group entity) {
         if (entity.getId()!=null) {
             Group curEntity = groupService.findById(entity.getId());
 
@@ -22,10 +22,10 @@ public class GroupHelperImpl implements EntityHelperService<Group> {
                 entity.setTranslations(curEntity.getTranslations());
         }
 
-        return addTranslation(entity);
+        return translate(entity);
     }
 
-    public Group addTranslation(Group entity) {
+    private Group translate(Group entity) {
         Lang lang = entity.getLang()!=null ? entity.getLang() : defLang;
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());

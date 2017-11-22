@@ -1,9 +1,9 @@
-package kz.kegoc.bln.service.doc.impl.filter;
+package kz.kegoc.bln.filter.impl;
 
 import kz.kegoc.bln.entity.common.Lang;
 import kz.kegoc.bln.entity.doc.DocUnderAccountingHeader;
 import kz.kegoc.bln.entity.doc.translate.DocUnderAccountingHeaderTranslate;
-import kz.kegoc.bln.service.common.EntityHelperService;
+import kz.kegoc.bln.filter.Filter;
 import kz.kegoc.bln.service.dict.MeterService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
 import kz.kegoc.bln.service.doc.DocUnderAccountingHeaderService;
@@ -14,8 +14,8 @@ import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class DocUnderAccountingHeaderHelperImpl implements EntityHelperService<DocUnderAccountingHeader> {
-    public DocUnderAccountingHeader addDependencies(DocUnderAccountingHeader entity) {
+public class DocUnderAccountingHeaderHelperImpl implements Filter<DocUnderAccountingHeader> {
+    public DocUnderAccountingHeader filter(DocUnderAccountingHeader entity) {
         if (entity.getDocType()==null)
             entity.setDocType(docTypeService.findByCode("DocUnderAccounting"));
 
@@ -38,11 +38,11 @@ public class DocUnderAccountingHeaderHelperImpl implements EntityHelperService<D
                 entity.setTranslations(curEntity.getTranslations());
         }
 
-        return addTranslation(entity);
+        return translate(entity);
     }
 
 
-    public DocUnderAccountingHeader addTranslation(DocUnderAccountingHeader entity) {
+    private DocUnderAccountingHeader translate(DocUnderAccountingHeader entity) {
         Lang lang = entity.getLang()!=null ? entity.getLang() : defLang;
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());

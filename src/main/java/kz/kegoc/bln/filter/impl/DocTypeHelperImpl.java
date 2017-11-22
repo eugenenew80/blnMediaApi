@@ -1,10 +1,10 @@
-package kz.kegoc.bln.service.doc.impl.filter;
+package kz.kegoc.bln.filter.impl;
 
 import kz.kegoc.bln.entity.common.Lang;
 import kz.kegoc.bln.entity.doc.DocType;
 import kz.kegoc.bln.entity.doc.translate.DocTypeTranslate;
-import kz.kegoc.bln.service.common.Filter;
 import kz.kegoc.bln.service.doc.DocTypeService;
+import kz.kegoc.bln.filter.Filter;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.util.HashMap;

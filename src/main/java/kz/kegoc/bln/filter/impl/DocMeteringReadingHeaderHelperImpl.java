@@ -1,9 +1,9 @@
-package kz.kegoc.bln.service.doc.impl.filter;
+package kz.kegoc.bln.filter.impl;
 
 import kz.kegoc.bln.entity.doc.DocMeteringReadingHeader;
 import kz.kegoc.bln.entity.doc.translate.DocMeteringReadingHeaderTranslate;
 import kz.kegoc.bln.entity.common.Lang;
-import kz.kegoc.bln.service.common.EntityHelperService;
+import kz.kegoc.bln.filter.Filter;
 import kz.kegoc.bln.service.doc.DocMeteringReadingHeaderService;
 import kz.kegoc.bln.service.doc.DocTypeService;
 import kz.kegoc.bln.service.doc.GroupService;
@@ -12,8 +12,8 @@ import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class DocMeteringReadingHeaderHelperImpl implements EntityHelperService<DocMeteringReadingHeader> {
-    public DocMeteringReadingHeader addDependencies(DocMeteringReadingHeader entity) {
+public class DocMeteringReadingHeaderHelperImpl implements Filter<DocMeteringReadingHeader> {
+    public DocMeteringReadingHeader filter(DocMeteringReadingHeader entity) {
         if (entity.getDocType()==null)
             entity.setDocType(docTypeService.findByCode("DocMeteringReading"));
 
@@ -29,11 +29,11 @@ public class DocMeteringReadingHeaderHelperImpl implements EntityHelperService<D
                 entity.setTranslations(curEntity.getTranslations());
         }
 
-        return addTranslation(entity);
+        return translate(entity);
     }
 
 
-    public DocMeteringReadingHeader addTranslation(DocMeteringReadingHeader entity) {
+    private DocMeteringReadingHeader translate(DocMeteringReadingHeader entity) {
         Lang lang = entity.getLang()!=null ? entity.getLang() : defLang;
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());

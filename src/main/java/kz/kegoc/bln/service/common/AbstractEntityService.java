@@ -8,6 +8,7 @@ import kz.kegoc.bln.entity.common.HasId;
 import kz.kegoc.bln.exception.EntityNotFoundException;
 import kz.kegoc.bln.exception.InvalidArgumentException;
 import kz.kegoc.bln.exception.RepositoryNotFoundException;
+import kz.kegoc.bln.filter.Filter;
 import kz.kegoc.bln.repository.common.Repository;
 import kz.kegoc.bln.repository.common.query.Query;
 
@@ -101,15 +102,15 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 		
 		if (entity.getId()!=null)
 			throw new InvalidArgumentException(entity);
-			
+
+		if (prePersistFilter !=null)
+			entity = prePersistFilter.filter(entity);
+
 		if (entity instanceof HasDates)
 			((HasDates) entity).setCreateDate(LocalDateTime.now());
 
 		if (validator!=null)
 			validate(entity);
-
-		if (prePersistFilter !=null)
-			entity = prePersistFilter.filter(entity);
 
 		return repository.insert(entity);
 	}
@@ -125,6 +126,9 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 		if (entity.getId()==null) 
 			throw new InvalidArgumentException(entity);
 
+		if (prePersistFilter !=null)
+			entity = prePersistFilter.filter(entity);
+
 		T currentEntity = findById(entity.getId());
 		if (entity instanceof HasDates) {
 			((HasDates) entity).setCreateDate( ((HasDates)currentEntity).getCreateDate() );
@@ -133,9 +137,6 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 
 		if (validator!=null)
 			validate(entity);
-
-		if (prePersistFilter !=null)
-			entity = prePersistFilter.filter(entity);
 
 		return repository.update(entity);
 	}

@@ -3,7 +3,6 @@ package kz.kegoc.bln.webapi.media.doc;
 import kz.kegoc.bln.entity.common.Lang;
 import kz.kegoc.bln.entity.doc.DocUnderAccountingHeader;
 import kz.kegoc.bln.entity.doc.dto.DocUnderAccountingHeaderDto;
-import kz.kegoc.bln.service.common.EntityHelperService;
 import kz.kegoc.bln.repository.common.query.ConditionType;
 import kz.kegoc.bln.repository.common.query.MyQueryParam;
 import kz.kegoc.bln.repository.common.query.Query;
@@ -67,7 +66,6 @@ public class DocUnderAccountingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocUnderAccountingHeader entity = dtoMapper.map(entityDto, DocUnderAccountingHeader.class);
-		entity = entityHelperService.addDependencies(entity);
 		DocUnderAccountingHeader newEntity = service.create(entity);
 
 		return Response.ok()
@@ -83,7 +81,6 @@ public class DocUnderAccountingHeaderResourceImpl {
 			entityDto.setLang(defLang);
 
 		DocUnderAccountingHeader entity = dtoMapper.map(entityDto, DocUnderAccountingHeader.class);
-		entity = entityHelperService.addDependencies(entity);
 		DocUnderAccountingHeader newEntity = service.update(entity);
 
 		return Response.ok()
@@ -123,9 +120,6 @@ public class DocUnderAccountingHeaderResourceImpl {
 
 	@Inject
 	private DozerBeanMapper dtoMapper;
-
-	@Inject
-	private EntityHelperService<DocUnderAccountingHeader> entityHelperService;
 
 	@Inject
 	private Translator<DocUnderAccountingHeader> translator;

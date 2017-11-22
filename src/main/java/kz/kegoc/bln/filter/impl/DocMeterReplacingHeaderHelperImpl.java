@@ -1,9 +1,9 @@
-package kz.kegoc.bln.service.doc.impl.filter;
+package kz.kegoc.bln.filter.impl;
 
 import kz.kegoc.bln.entity.common.Lang;
 import kz.kegoc.bln.entity.doc.DocMeterReplacingHeader;
 import kz.kegoc.bln.entity.doc.translate.DocMeterReplacingHeaderTranslate;
-import kz.kegoc.bln.service.common.EntityHelperService;
+import kz.kegoc.bln.filter.Filter;
 import kz.kegoc.bln.service.dict.MeterService;
 import kz.kegoc.bln.service.dict.MeteringPointService;
 import kz.kegoc.bln.service.doc.DocMeterReplacingHeaderService;
@@ -13,8 +13,8 @@ import javax.inject.Inject;
 import java.util.HashMap;
 
 @Stateless
-public class DocMeterReplacingHeaderHelperImpl implements EntityHelperService<DocMeterReplacingHeader> {
-    public DocMeterReplacingHeader addDependencies(DocMeterReplacingHeader entity) {
+public class DocMeterReplacingHeaderHelperImpl implements Filter<DocMeterReplacingHeader> {
+    public DocMeterReplacingHeader filter(DocMeterReplacingHeader entity) {
         if (entity.getDocType()==null)
             entity.setDocType(docTypeService.findByCode("DocMeterReplacing"));
 
@@ -36,11 +36,11 @@ public class DocMeterReplacingHeaderHelperImpl implements EntityHelperService<Do
                 entity.setTranslations(curEntity.getTranslations());
         }
 
-        return addTranslation(entity);
+        return translate(entity);
     }
 
 
-    public DocMeterReplacingHeader addTranslation(DocMeterReplacingHeader entity) {
+    private DocMeterReplacingHeader translate(DocMeterReplacingHeader entity) {
         Lang lang = entity.getLang()!=null ? entity.getLang() : defLang;
         if (entity.getTranslations()==null)
             entity.setTranslations(new HashMap<>());
