@@ -105,11 +105,8 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 		if (entity instanceof HasDates)
 			((HasDates) entity).setCreateDate(LocalDateTime.now());
 
-		Set<ConstraintViolation<T>> violations =  validator.validate(entity);
-		if (violations.size()>0) {			
-			ConstraintViolation<T> violation = violations.iterator().next();		
-			throw new ValidationException(violation.getPropertyPath() + ": " + violation.getMessage());
-		}
+		if (validator!=null)
+			validate(entity);
 
 		if (prePersistFilter !=null)
 			entity = prePersistFilter.filter(entity);
@@ -134,11 +131,8 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 			((HasDates) entity).setLastUpdateDate(LocalDateTime.now());
 		}
 
-		Set<ConstraintViolation<T>> violations =  validator.validate(entity);
-		if (violations.size()>0) {			
-			ConstraintViolation<T> violation = violations.iterator().next();
-			throw new ValidationException(violation.getPropertyPath() + ": " + violation.getMessage());
-		}
+		if (validator!=null)
+			validate(entity);
 
 		if (prePersistFilter !=null)
 			entity = prePersistFilter.filter(entity);
@@ -158,6 +152,15 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 		
 		return repository.delete(entityId); 
 	}	
+
+
+	private void validate(T entity) {
+		Set<ConstraintViolation<T>> violations =  validator.validate(entity);
+		if (violations.size()>0) {
+			ConstraintViolation<T> violation = violations.iterator().next();
+			throw new ValidationException(violation.getPropertyPath() + ": " + violation.getMessage());
+		}
+	}
 
 	protected Repository<T> repository;
 	private Validator validator;
