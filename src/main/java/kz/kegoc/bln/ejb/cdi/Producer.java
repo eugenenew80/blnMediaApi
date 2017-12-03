@@ -9,6 +9,7 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.*;
+import kz.kegoc.bln.entity.adm.User;
 import kz.kegoc.bln.entity.common.Lang;
 import kz.kegoc.bln.entity.data.DayMeteringBalance;
 import kz.kegoc.bln.entity.data.DayMeteringFlow;
@@ -21,6 +22,7 @@ import org.dozer.DozerBeanMapper;
 import org.redisson.Redisson;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RList;
+import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.Config;
@@ -34,6 +36,7 @@ import java.util.Map;
 @ApplicationScoped
 public class Producer {
 	private RedissonClient redissonClient = null;
+	private RMapCache<String, User> sessions  = null;
 	private RBlockingQueue<HourMeteringFlow> hourMeteringFlowQueue = null;
 	private RBlockingQueue<DayMeteringFlow> dayMeteringFlowQueue = null;
 	private RBlockingQueue<MonthMeteringFlow> monthMeteringFlowQueue = null;
@@ -57,6 +60,17 @@ public class Producer {
 
 		redissonClient = Redisson.create(config);
 		return redissonClient;
+	}
+
+
+	@Produces
+	public RMapCache<String, User> createSessions() {
+		if (sessions!=null)
+			return sessions;
+
+		createRedissonClient();
+		sessions = redissonClient.getMapCache("sessions");
+		return sessions;
 	}
 
 
