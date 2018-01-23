@@ -14,7 +14,7 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
     	<skipTests>true</skipTests>
     </properties>
-  		
+
     <build>
         <finalName>blnMediaApi</finalName>
         <plugins>
@@ -25,17 +25,17 @@
                 <inherited>true</inherited>
                 <configuration>
                     <source>1.8</source>
-                    <target>1.8</target>				    
-				    <annotationProcessorPaths>
-				        **<path>
-				            <groupId>org.projectlombok</groupId>
-				            <artifactId>lombok</artifactId>
-				            <version>1.16.8</version>				        
-				        </path>**
-				    </annotationProcessorPaths>                    
+                    <target>1.8</target>
+                    <annotationProcessorPaths>
+                        **<path>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>1.16.8</version>
+                    </path>**
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -47,22 +47,30 @@
                     </includes>
                 </configuration>
             </plugin>
-                    
+
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>3.5.3</version>
-                
+
                 <configuration>
-                  <changeLogFile>
+                    <changeLogFile>
                         ${basedir}/src/main/resources/liquibase/${scripts}/changelog.xml
-                  </changeLogFile>
-                  
-                  <driver>${driver}</driver>
-                  <url>${url}</url>
-                  <username>${username}</username>
-                  <password>${password}</password>              
-                </configuration>                
+                    </changeLogFile>
+
+                    <driver>${driver}</driver>
+                    <url>${url}</url>
+                    <username>${username}</username>
+                    <password>${password}</password>
+                </configuration>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-oracle</artifactId>
+                        <version>3.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
@@ -82,37 +90,35 @@
 
     <profiles>
         <profile>
-            <id>dev</id>            
-            
+            <id>dev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
-            </activation>           
+            </activation>
 
             <properties>
-				<driver>org.postgresql.Driver</driver>
-				<url>jdbc:postgresql://localhost:5432/bln_dev</url>
-				<username>postgres</username>
-				<password>1</password>
-				<scripts>dev</scripts>
-				<skipTests>true</skipTests>
+                <driver>oracle.jdbc.OracleDriver</driver>
+                <url>jdbc:oracle:thin:@localhost:1521:BLNDEV</url>
+                <username>system</username>
+                <password>q1w2e3r4T5</password>
+                <scripts>dev</scripts>
+                <skipTests>true</skipTests>
 
-                <wildfly-server>10.9.44.240</wildfly-server>
+                <wildfly-server>10.9.44.241</wildfly-server>
                 <wildfly-port>9990</wildfly-port>
                 <wildfly-user>admin</wildfly-user>
                 <wildfly-password>1</wildfly-password>
             </properties>
-        </profile>      
-        
+        </profile>
+
         <profile>
-            <id>test</id>
-            
+            <id>localDev</id>
             <properties>
                 <driver>org.postgresql.Driver</driver>
-                <url>jdbc:postgresql://localhost:5432/bln_test</url>
+                <url>jdbc:postgresql://localhost:5432/bln_dev</url>
                 <username>postgres</username>
                 <password>1</password>
-                <scripts>test</scripts>
-				<skipTests>false</skipTests>
+                <scripts>dev</scripts>
+                <skipTests>true</skipTests>
 
                 <wildfly-server>localhost</wildfly-server>
                 <wildfly-port>9990</wildfly-port>

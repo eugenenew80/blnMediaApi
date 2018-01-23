@@ -5,5 +5,7 @@ public enum DataSource {
 	CSV,
 	XML,
 	EMCOS,
-	DOC
+	DOC,
+	OIC,
+	SCADA
 }
