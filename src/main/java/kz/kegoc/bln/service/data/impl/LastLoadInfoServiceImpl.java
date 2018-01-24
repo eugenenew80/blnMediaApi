@@ -41,8 +41,8 @@ public class LastLoadInfoServiceImpl extends AbstractEntityService<LastLoadInfo>
 			LastLoadInfo l = lastLoadInfoRepository.findByExternalCodeAndParamCode(pair.getLeft(), pair.getRight());
 			if (l==null) {
 				l = new LastLoadInfo();
-				l.setExternalCode(pair.getLeft());
-				l.setParamCode(pair.getRight());
+				l.setSourceMeteringPointCode(pair.getLeft());
+				l.setSourceParamCode(pair.getRight());
 			}
 			l.setLastLoadDate(lastDataLoadDate);
 
@@ -56,12 +56,12 @@ public class LastLoadInfoServiceImpl extends AbstractEntityService<LastLoadInfo>
 	public void updateLastBalanceLoadDate(List<DayMeteringBalance> meteringBalance) {
 		Map<Pair<String, String>, List<DayMeteringBalance>> map = meteringBalance
 				.stream()
-				.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getParamCode())));		
+				.collect(groupingBy(m -> Pair.of(m.getSourceMeteringPointCode(), m.getSourceParamCode())));
 			
 		for (Pair<String, String> pair : map.keySet()) {
 			LocalDateTime lastBalanceLoadDate = map.get(pair)
 				.stream()
-				.filter(p -> p.getExternalCode().equals(pair.getLeft()) && p.getParamCode().equals(pair.getRight()))
+				.filter(p -> p.getSourceMeteringPointCode().equals(pair.getLeft()) && p.getSourceParamCode().equals(pair.getRight()))
 				.map(p -> p.getMeteringDate())
 				.max(LocalDateTime::compareTo)
 				.orElse(null);
@@ -69,8 +69,8 @@ public class LastLoadInfoServiceImpl extends AbstractEntityService<LastLoadInfo>
 			LastLoadInfo l = lastLoadInfoRepository.findByExternalCodeAndParamCode(pair.getLeft(), pair.getRight());
 			if (l==null) {
 				l = new LastLoadInfo();
-				l.setExternalCode(pair.getLeft());
-				l.setParamCode(pair.getRight());
+				l.setSourceMeteringPointCode(pair.getLeft());
+				l.setSourceParamCode(pair.getRight());
 			}
 			l.setLastLoadDate(lastBalanceLoadDate);
 

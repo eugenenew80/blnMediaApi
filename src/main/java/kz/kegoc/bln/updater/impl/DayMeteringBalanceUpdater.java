@@ -27,7 +27,7 @@ public class DayMeteringBalanceUpdater implements MeteringDataUpdater<DayMeterin
 
         service.find(query).stream()
             .forEach(t -> {
-                MeteringPoint meteringPoint = meteringPointService.findByExternalCode(t.getExternalCode());
+                MeteringPoint meteringPoint = meteringPointService.findByExternalCode(t.getSourceParamCode());
                 if (meteringPoint!=null) {
                     t.setStatus(DataStatus.OK);
                     t.setMeteringPoint(meteringPoint);

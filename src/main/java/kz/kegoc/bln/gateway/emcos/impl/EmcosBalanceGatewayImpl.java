@@ -172,7 +172,7 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
 
     private String serializePointCfg(EmcosPointCfg pointCfg) {
         LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-            .filter(t -> t.getExternalCode().equals(pointCfg.getPointCode()) && t.getParamCode().equals(pointCfg.getParamCode()) )
+            .filter(t -> t.getSourceMeteringPointCode().equals(pointCfg.getPointCode()) && t.getSourceParamCode().equals(pointCfg.getParamCode()) )
             .findFirst()
             .orElse(null);
 
@@ -221,12 +221,12 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
             val = Double.parseDouble(valStr);
 
         DayMeteringBalance balance = new DayMeteringBalance();
-        balance.setExternalCode(externalCode);
+        balance.setSourceMeteringPointCode(externalCode);
         balance.setMeteringDate(date.atStartOfDay());
-        balance.setDataSource(DataSource.EMCOS);
+        balance.setDataSourceCode(DataSource.EMCOS);
         balance.setStatus(DataStatus.RAW);
-        balance.setUnitCode(emcosParamUnits.get(emcosParamCode));
-        balance.setParamCode(paramCodes.inverse().get(emcosParamCode));
+        balance.setSourceUnitCode(emcosParamUnits.get(emcosParamCode));
+        balance.setSourceParamCode(paramCodes.inverse().get(emcosParamCode));
         balance.setVal(val);
 
         return balance;

@@ -70,12 +70,12 @@ public class CsvDayMeteringFlowReaderImpl implements FileMeteringDataReader<DayM
 
         DayMeteringFlow d = new DayMeteringFlow();
         d.setMeteringDate(LocalDate.parse(data[0], DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        d.setExternalCode(data[1]);
-        d.setParamCode(data[2]);
-        d.setUnitCode(data[3]);
+        d.setSourceMeteringPointCode(data[1]);
+        d.setSourceParamCode(data[2]);
+        d.setSourceUnitCode(data[3]);
         d.setVal(Double.parseDouble(data[4]) );
         d.setStatus(DataStatus.RAW);
-        d.setDataSource(DataSource.CSV);
+        d.setDataSourceCode(DataSource.CSV);
         return d;
     }
 

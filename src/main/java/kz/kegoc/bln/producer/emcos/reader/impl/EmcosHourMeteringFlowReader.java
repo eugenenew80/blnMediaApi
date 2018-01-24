@@ -55,14 +55,14 @@ public class EmcosHourMeteringFlowReader implements EmcosMeteringDataReader<Hour
 			
 			for (Integer hour : mapHourMeteringData.keySet()) {
 				HourMeteringFlow h = new HourMeteringFlow();
-				h.setExternalCode(pair.getLeft());
+				h.setSourceMeteringPointCode(pair.getLeft());
 				h.setMeteringDate(pair.getRight());
 				h.setHour(hour);
 				
 				h.setStatus( mapHourMeteringData.get(hour).get(0).getStatus() );
-				h.setDataSource( mapHourMeteringData.get(hour).get(0).getDataSource() );
-				h.setParamCode( mapHourMeteringData.get(hour).get(0).getParamCode() );
-				h.setUnitCode( mapHourMeteringData.get(hour).get(0).getUnitCode() );
+				h.setDataSourceCode( mapHourMeteringData.get(hour).get(0).getDataSource() );
+				h.setSourceParamCode( mapHourMeteringData.get(hour).get(0).getParamCode() );
+				h.setSourceUnitCode( mapHourMeteringData.get(hour).get(0).getUnitCode() );
 				h.setVal(mapHourMeteringData.get(hour).stream().mapToDouble(m -> m.getVal()).sum());
 				hourMeteringData.add(h);
 			}

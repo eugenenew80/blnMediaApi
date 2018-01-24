@@ -14,15 +14,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of= {"id"})
 public class DayMeteringFlow implements Metering {
 	private Long id;
+	private DataSource dataSourceCode;
+	private String sourceMeteringPointCode;
+	private String sourceParamCode;
+	private String sourceUnitCode;
+	private LocalDate meteringDate;
+	private Double val;
 	private MeteringPoint meteringPoint;
 	private Meter meter;
-	private LocalDate meteringDate;
-	private String externalCode;
-	private String paramCode;
-	private String unitCode;
-	private DataSource dataSource;
 	private DataStatus status;
-	private Double val;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
 }

@@ -5,9 +5,8 @@ import lombok.*;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class Meter implements HasId, HasCode, HasName {
+public class Meter implements HasId, HasName {
 	private Long id;
-	private String code;
 	private String name;
 	private String serialNumber;
 }

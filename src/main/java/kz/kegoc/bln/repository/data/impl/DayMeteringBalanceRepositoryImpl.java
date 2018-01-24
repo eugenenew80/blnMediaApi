@@ -22,12 +22,12 @@ public class DayMeteringBalanceRepositoryImpl
 	public DayMeteringBalance selectByEntity(DayMeteringBalance entity) {
 		return
 			getEntityManager().createNamedQuery("DayMeteringBalance.findByEntity", DayMeteringBalance.class)
-				.setParameter("externalCode", 	entity.getExternalCode())
-				.setParameter("meteringDate", 	entity.getMeteringDate())
-				.setParameter("unitCode", 		entity.getUnitCode())
-				.setParameter("dataSource", 		entity.getDataSource())
-				.setParameter("paramCode", 		entity.getParamCode())
-				.setParameter("status", 			entity.getStatus())
+				.setParameter("sourceMeteringPointCode", entity.getSourceMeteringPointCode())
+				.setParameter("meteringDate", 			entity.getMeteringDate())
+				.setParameter("sourceUnitCode", 			entity.getSourceUnitCode())
+				.setParameter("dataSourceCode", 			entity.getDataSourceCode())
+				.setParameter("sourceParamCode", 		entity.getSourceParamCode())
+				.setParameter("status", 					entity.getStatus())
 			.getResultList()
 				.stream()
 				.findFirst()

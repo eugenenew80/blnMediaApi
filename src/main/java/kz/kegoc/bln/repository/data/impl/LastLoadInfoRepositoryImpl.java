@@ -18,8 +18,8 @@ public class LastLoadInfoRepositoryImpl extends AbstractRepository<LastLoadInfo>
 	public LastLoadInfo findByExternalCodeAndParamCode(String externalCode, String paramCode) {
 		return
 			getEntityManager().createNamedQuery("LastLoadInfo.findByExternalCodeAndParamCode", LastLoadInfo.class)
-				.setParameter("externalCode", externalCode)
-				.setParameter("paramCode", paramCode)
+				.setParameter("sourceMeteringPointCode", externalCode)
+				.setParameter("sourceParamCode", paramCode)
 				.getResultList()
 				.stream()
 				.findFirst()

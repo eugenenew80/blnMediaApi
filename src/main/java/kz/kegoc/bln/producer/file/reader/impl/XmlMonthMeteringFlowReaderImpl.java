@@ -73,13 +73,13 @@ public class XmlMonthMeteringFlowReaderImpl implements FileMeteringDataReader<Mo
 					d.setMonth(Short.parseShort(nodeAttr.getNodeValue()));
 					break;
 				case "code":
-					d.setExternalCode(nodeAttr.getNodeValue());
+					d.setSourceMeteringPointCode(nodeAttr.getNodeValue());
 					break;
 				case "paramCode":
-					d.setParamCode(nodeAttr.getNodeValue());
+					d.setSourceParamCode(nodeAttr.getNodeValue());
 					break;
 				case "unitCode":
-					d.setUnitCode(nodeAttr.getNodeValue());
+					d.setSourceUnitCode(nodeAttr.getNodeValue());
 					break;
 				case "val":
 					d.setVal(Double.parseDouble(nodeAttr.getNodeValue()));
@@ -87,7 +87,7 @@ public class XmlMonthMeteringFlowReaderImpl implements FileMeteringDataReader<Mo
 			}
 		}
 		d.setStatus(DataStatus.RAW);
-		d.setDataSource(DataSource.XML);
+		d.setDataSourceCode(DataSource.XML);
 		
 		return d;
 	}

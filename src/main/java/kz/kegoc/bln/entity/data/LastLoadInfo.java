@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class LastLoadInfo implements HasId {
     private Long id;
-    private String externalCode;
-    private String paramCode;
+    private String sourceMeteringPointCode;
+    private String sourceParamCode;
     private LocalDateTime lastLoadDate;
 }

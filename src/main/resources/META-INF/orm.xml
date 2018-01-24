@@ -58,10 +58,6 @@
 				<column name="name" />
 			</basic>
 
-			<basic name="code">
-				<column name="code" />
-			</basic>
-
 			<basic name="serialNumber">
 				<column name="serial_number" />
 			</basic>
@@ -99,12 +95,12 @@
 				/>
 			</id>
 
-			<basic name="externalCode">
-				<column name="external_code" />
+			<basic name="sourceMeteringPointCode">
+				<column name="source_metering_point_code" />
 			</basic>
 
-			<basic name="paramCode">
-				<column name="param_code" />
+			<basic name="sourceParamCode">
+				<column name="source_param_code" />
 			</basic>
 
 			<basic name="meteringDate">
@@ -115,8 +111,8 @@
 				<column name="hour" />
 			</basic>
 
-			<basic name="unitCode">
-				<column name="unit_code" />
+			<basic name="sourceUnitCode">
+				<column name="source_unit_code" />
 			</basic>
 
 			<basic name="val">
@@ -128,8 +124,8 @@
 				<enumerated>ORDINAL</enumerated>
 			</basic>
 
-			<basic name="dataSource">
-				<column name="data_source" />
+			<basic name="dataSourceCode">
+				<column name="data_source_code" />
 				<enumerated>STRING</enumerated>
 			</basic>
 
@@ -164,28 +160,28 @@
         		/>				
 			</id>
 
-      		<basic name="externalCode">
-      			<column name="external_code" />
+      		<basic name="sourceMeteringPointCode">
+      			<column name="source_metering_point_code" />
       		</basic>
       		
-      		<basic name="paramCode">
-      			<column name="param_code" />
+      		<basic name="sourceParamCode">
+      			<column name="source_param_code" />
       		</basic>
 
       		<basic name="meteringDate">
       			<column name="metering_date" />
       		</basic>
       		
-      		<basic name="unitCode">
-      			<column name="unit_code" />
+      		<basic name="sourceUnitCode">
+      			<column name="source_unit_code" />
       		</basic>
       		      		
       		<basic name="val">
       			<column name="val" />
       		</basic>   
       		
-      		<basic name="dataSource">
-      			<column name="data_source" />
+      		<basic name="dataSourceCode">
+      			<column name="data_source_code" />
 				<enumerated>STRING</enumerated>
       		</basic>
       		
@@ -220,12 +216,12 @@
         		/>
 			</id>
 
-      		<basic name="externalCode">
-      			<column name="external_code" />
+      		<basic name="sourceMeteringPointCode">
+      			<column name="source_metering_point_code" />
       		</basic>
 
-      		<basic name="paramCode">
-      			<column name="param_code" />
+      		<basic name="sourceParamCode">
+      			<column name="source_param_code" />
       		</basic>
 
 			<basic name="year">
@@ -236,7 +232,7 @@
 				<column name="metering_month" />
 			</basic>
 
-      		<basic name="unitCode">
+      		<basic name="sourceUnitCode">
       			<column name="unit_code" />
       		</basic>
 
@@ -249,8 +245,8 @@
       			<enumerated>ORDINAL</enumerated>
       		</basic>
 
-      		<basic name="dataSource">
-      			<column name="data_source" />
+      		<basic name="dataSourceCode">
+      			<column name="data_source_code" />
 				<enumerated>STRING</enumerated>
       		</basic>
       		
@@ -285,28 +281,28 @@
 				/>
 			</id>
 
-			<basic name="externalCode">
-				<column name="external_code" />
+			<basic name="sourceMeteringPointCode">
+				<column name="source_metering_point_code" />
 			</basic>
 
-			<basic name="paramCode">
-				<column name="param_code" />
+			<basic name="sourceParamCode">
+				<column name="source_param_code" />
 			</basic>
 
 			<basic name="meteringDate">
 				<column name="metering_date" />
 			</basic>
 
-			<basic name="unitCode">
-				<column name="unit_code" />
+			<basic name="sourceUnitCode">
+				<column name="source_unit_code" />
 			</basic>
 
 			<basic name="val">
 				<column name="val" />
 			</basic>
 
-			<basic name="dataSource">
-				<column name="data_source" />
+			<basic name="dataSourceCode">
+				<column name="data_source_code" />
 				<enumerated>STRING</enumerated>
 			</basic>
 
@@ -346,12 +342,12 @@
         		/>				
 			</id>
 
-			<basic name="externalCode">
-				<column name="external_code" />
+			<basic name="sourceMeteringPointCode">
+				<column name="source_metering_point_code" />
 			</basic>
 			
-      		<basic name="paramCode">
-      			<column name="param_code" />
+      		<basic name="sourceParamCode">
+      			<column name="source_param_code" />
       		</basic>
       					
 			<basic name="lastLoadDate">

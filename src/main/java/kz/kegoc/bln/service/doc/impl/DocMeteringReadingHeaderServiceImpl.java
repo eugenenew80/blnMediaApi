@@ -91,7 +91,7 @@ public class DocMeteringReadingHeaderServiceImpl
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {
                     DayMeteringBalance dayBalance = dayBalanceList.get(0);
                     docLine.setStartBalance(dayBalance.getVal());
-                    docLine.setDataSource(dayBalance.getDataSource());
+                    docLine.setDataSource(dayBalance.getDataSourceCode());
                 }
 
                 dayBalanceList = dayMeteringBalanceService.findReadyData(
@@ -102,7 +102,7 @@ public class DocMeteringReadingHeaderServiceImpl
                 if (dayBalanceList != null && dayBalanceList.size() > 0) {
                     DayMeteringBalance dayBalance = dayBalanceList.get(0);
                     docLine.setEndBalance(dayBalance.getVal());
-                    docLine.setDataSource(dayBalance.getDataSource());
+                    docLine.setDataSource(dayBalance.getDataSourceCode());
                 }
                 return docLine.calcFlow();
             })

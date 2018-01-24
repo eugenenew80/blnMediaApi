@@ -1,7 +1,6 @@
 package kz.kegoc.bln.entity.data;
 
 import java.time.LocalDateTime;
-
 import kz.kegoc.bln.entity.dict.Meter;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.common.DataSource;
@@ -14,16 +13,16 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of= {"id"})
 public class MonthMeteringFlow implements Metering {
 	private Long id;
-	private MeteringPoint meteringPoint;
-	private Meter meter;
+	private DataSource dataSourceCode;
+	private String sourceMeteringPointCode;
+	private String sourceParamCode;
+	private String sourceUnitCode;
 	private Short year;
 	private Short month;
-	private String externalCode;
-	private String paramCode;
-	private String unitCode;
-	private DataSource dataSource;
-	private DataStatus status;
 	private Double val;
+	private MeteringPoint meteringPoint;
+	private Meter meter;
+	private DataStatus status;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
 }

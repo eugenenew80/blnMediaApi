@@ -26,8 +26,8 @@
             from
                 LastLoadInfo t
             where
-            	    t.externalCode=:externalCode
-            	and t.paramCode=:paramCode
+            	    t.sourceMeteringPointCode=:sourceMeteringPointCode
+            	and t.sourceParamCode=:sourceParamCode
         </query>
     </named-query>
 
@@ -39,13 +39,13 @@
             from
                 HourMeteringFlow t
             where
-            	    t.externalCode=:externalCode
+            	    t.sourceMeteringPointCode=:sourceMeteringPointCode
             	and t.meteringDate=:meteringDate
             	and t.hour=:hour
-            	and t.dataSource=:dataSource
+            	and t.dataSourceCode=:dataSourceCode
             	and t.status=:status
-            	and t.unitCode=:unitCode
-            	and t.paramCode=:paramCode
+            	and t.sourceUnitCode=:sourceUnitCode
+            	and t.sourceParamCode=:sourceParamCode
         </query>
     </named-query>
 
@@ -65,7 +65,7 @@
             from
                 DayMeteringBalance t
             where
-                t.externalCode=:externalCode
+                t.sourceMeteringPointCode=:sourceMeteringPointCode
         </query>
     </named-query>
 
@@ -76,12 +76,12 @@
             from
             	DayMeteringBalance t
             where
-            	    t.externalCode=:externalCode
+            	    t.sourceMeteringPointCode=:sourceMeteringPointCode
             	and t.meteringDate=:meteringDate
-            	and t.dataSource=:dataSource
+            	and t.dataSourceCode=:dataSourceCode
             	and t.status=:status
-            	and t.unitCode=:unitCode
-            	and t.paramCode=:paramCode
+            	and t.sourceUnitCode=:sourceUnitCode
+            	and t.sourceParamCode=:sourceParamCode
         </query>
     </named-query>
 
@@ -96,7 +96,7 @@
                     t.meteringPoint.id=:meteringPointId
                 and t.meteringDate=:meteringDate
                 and t.status=:status
-                and t.paramCode=:paramCode
+                and t.sourceParamCode=:sourceParamCode
         </query>
     </named-query>
 

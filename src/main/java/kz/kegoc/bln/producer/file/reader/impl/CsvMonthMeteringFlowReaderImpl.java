@@ -68,12 +68,12 @@ public class CsvMonthMeteringFlowReaderImpl implements FileMeteringDataReader<Mo
 		MonthMeteringFlow d = new MonthMeteringFlow();
 		d.setYear( Short.parseShort(data[0]));
 		d.setMonth( Short.parseShort(data[1]));
-		d.setExternalCode(data[2]);
-		d.setParamCode(data[3]);
-		d.setUnitCode(data[4]);
+		d.setSourceMeteringPointCode(data[2]);
+		d.setSourceParamCode(data[3]);
+		d.setSourceUnitCode(data[4]);
 		d.setVal( Double.parseDouble(data[5]) );
 		d.setStatus(DataStatus.RAW);
-		d.setDataSource(DataSource.CSV);
+		d.setDataSourceCode(DataSource.CSV);
 
 		return d;
 	}

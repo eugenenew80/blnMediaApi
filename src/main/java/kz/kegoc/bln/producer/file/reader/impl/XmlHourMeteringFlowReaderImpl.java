@@ -75,13 +75,13 @@ public class XmlHourMeteringFlowReaderImpl implements FileMeteringDataReader<Hou
 					d.setHour(Integer.parseInt(nodeAttr.getNodeValue()));
 					break;
 				case "code":
-					d.setExternalCode(nodeAttr.getNodeValue());
+					d.setSourceMeteringPointCode(nodeAttr.getNodeValue());
 					break;
 				case "paramCode":
-					d.setParamCode(nodeAttr.getNodeValue());
+					d.setSourceParamCode(nodeAttr.getNodeValue());
 					break;
 				case "unitCode":
-					d.setUnitCode(nodeAttr.getNodeValue());
+					d.setSourceUnitCode(nodeAttr.getNodeValue());
 					break;
 				case "val":
 					d.setVal(Double.parseDouble(nodeAttr.getNodeValue()));
@@ -89,7 +89,7 @@ public class XmlHourMeteringFlowReaderImpl implements FileMeteringDataReader<Hou
 			}
 		}
 		d.setStatus(DataStatus.RAW);
-		d.setDataSource(DataSource.XML);
+		d.setDataSourceCode(DataSource.XML);
 		
 		return d;
 	}

@@ -171,7 +171,7 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
 
     private String serializePointCfg(EmcosPointCfg emcosCfg) {
     	LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-    		.filter(t -> t.getExternalCode().equals(emcosCfg.getPointCode()) && t.getParamCode().equals(emcosCfg.getParamCode()) )
+    		.filter(t -> t.getSourceMeteringPointCode().equals(emcosCfg.getPointCode()) && t.getSourceParamCode().equals(emcosCfg.getParamCode()) )
     		.findFirst()
     		.orElse(null);
 
