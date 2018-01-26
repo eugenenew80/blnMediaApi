@@ -43,7 +43,7 @@ public class EmcosHourMeteringFlowReader implements EmcosMeteringDataReader<Hour
 	private List<HourMeteringFlow> buildHourMeteringData(List<MinuteMeteringFlow> minuteMeteringData) {
 		Map<Pair<String, LocalDate>, List<MinuteMeteringFlow>> mapDayMeteringData = minuteMeteringData
 			.stream()
-			.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getMeteringDate().toLocalDate())));
+			.collect(groupingBy(m -> Pair.of(m.getSourceMeteringPointCode(), m.getMeteringDate().toLocalDate())));
 			
 		List<HourMeteringFlow> hourMeteringData = new ArrayList<>();
 		for (Pair<String, LocalDate> pair : mapDayMeteringData.keySet()) {
@@ -58,11 +58,11 @@ public class EmcosHourMeteringFlowReader implements EmcosMeteringDataReader<Hour
 				h.setSourceMeteringPointCode(pair.getLeft());
 				h.setMeteringDate(pair.getRight());
 				h.setHour(hour);
-				
 				h.setStatus( mapHourMeteringData.get(hour).get(0).getStatus() );
-				h.setDataSourceCode( mapHourMeteringData.get(hour).get(0).getDataSource() );
-				h.setSourceParamCode( mapHourMeteringData.get(hour).get(0).getParamCode() );
-				h.setSourceUnitCode( mapHourMeteringData.get(hour).get(0).getUnitCode() );
+				h.setDataSourceCode( mapHourMeteringData.get(hour).get(0).getDataSourceCode() );
+				h.setParamCode( mapHourMeteringData.get(hour).get(0).getParamCode() );
+				h.setSourceParamCode(mapHourMeteringData.get(hour).get(0).getSourceParamCode());
+				h.setSourceUnitCode( mapHourMeteringData.get(hour).get(0).getSourceUnitCode() );
 				h.setVal(mapHourMeteringData.get(hour).stream().mapToDouble(m -> m.getVal()).sum());
 				hourMeteringData.add(h);
 			}

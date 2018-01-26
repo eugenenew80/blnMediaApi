@@ -226,7 +226,8 @@ public class EmcosBalanceGatewayImpl implements EmcosBalanceGateway {
         balance.setDataSourceCode(DataSource.EMCOS);
         balance.setStatus(DataStatus.RAW);
         balance.setSourceUnitCode(emcosParamUnits.get(emcosParamCode));
-        balance.setSourceParamCode(paramCodes.inverse().get(emcosParamCode));
+        balance.setSourceParamCode(emcosParamCode);
+        balance.setParamCode(paramCodes.inverse().get(emcosParamCode));
         balance.setVal(val);
 
         return balance;

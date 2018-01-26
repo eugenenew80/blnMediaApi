@@ -46,6 +46,27 @@
 		</attributes>
 	</entity>
 
+	<entity class="kz.kegoc.bln.entity.dict.Unit">
+		<table name="dict_units" schema="apps" />
+		<attributes>
+			<id name="id">
+				<column name="id" />
+			</id>
+
+			<basic name="code">
+				<column name="code" />
+			</basic>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="shortName">
+				<column name="short_name" />
+			</basic>
+		</attributes>
+	</entity>
+
 
 	<entity class="kz.kegoc.bln.entity.dict.Meter">
 		<table name="dict_meters" schema="apps"/>
@@ -129,6 +150,10 @@
 				<enumerated>STRING</enumerated>
 			</basic>
 
+			<basic name="paramCode">
+				<column name="param_code" />
+			</basic>
+
 			<basic name="createDate">
 				<column name="create_date" />
 			</basic>
@@ -136,6 +161,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="unit">
+				<join-column name="unit_id"/>
+			</many-to-one>
 
 			<many-to-one name="meteringPoint">
 				<join-column name="metering_point_id"/>
@@ -184,7 +213,11 @@
       			<column name="data_source_code" />
 				<enumerated>STRING</enumerated>
       		</basic>
-      		
+
+			<basic name="paramCode">
+				<column name="param_code" />
+			</basic>
+
 			<basic name="createDate">
 				<column name="create_date" />
 			</basic>      		       		    		      		
@@ -192,6 +225,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="unit">
+				<join-column name="unit_id"/>
+			</many-to-one>
 
 			<many-to-one name="meteringPoint">
 				<join-column name="metering_point_id"/>
@@ -249,6 +286,10 @@
       			<column name="data_source_code" />
 				<enumerated>STRING</enumerated>
       		</basic>
+
+			<basic name="paramCode">
+				<column name="param_code" />
+			</basic>
       		
 			<basic name="createDate">
 				<column name="create_date" />
@@ -257,6 +298,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="unit">
+				<join-column name="unit_id"/>
+			</many-to-one>
 
 			<many-to-one name="meteringPoint">
 				<join-column name="metering_point_id"/>
@@ -285,8 +330,8 @@
 				<column name="source_metering_point_code" />
 			</basic>
 
-			<basic name="sourceParamCode">
-				<column name="source_param_code" />
+			<basic name="paramCode">
+				<column name="param_code" />
 			</basic>
 
 			<basic name="meteringDate">
@@ -306,6 +351,10 @@
 				<enumerated>STRING</enumerated>
 			</basic>
 
+			<basic name="sourceParamCode">
+				<column name="source_param_code" />
+			</basic>
+
 			<basic name="status">
 				<column name="status" />
 				<enumerated>ORDINAL</enumerated>
@@ -318,6 +367,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="unit">
+				<join-column name="unit_id"/>
+			</many-to-one>
 
 			<many-to-one name="meteringPoint">
 				<join-column name="metering_point_id"/>

@@ -8,10 +8,11 @@ import java.time.LocalDateTime;
 @Data
 public class MinuteMeteringFlow {
 	private LocalDateTime meteringDate;
-	private String externalCode;
+	private String sourceMeteringPointCode;
+	private String sourceParamCode;
+	private String sourceUnitCode;
+	private DataSource dataSourceCode;
 	private String paramCode;
-	private String unitCode;
-	private DataSource dataSource;
 	private DataStatus status;
 	private Double val;
 }

@@ -6,6 +6,7 @@ import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.common.DataSource;
 import kz.kegoc.bln.entity.common.DataStatus;
 import kz.kegoc.bln.entity.common.Metering;
+import kz.kegoc.bln.entity.dict.Unit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,6 +24,8 @@ public class MonthMeteringFlow implements Metering {
 	private MeteringPoint meteringPoint;
 	private Meter meter;
 	private DataStatus status;
+	private String paramCode;
+	private Unit unit;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
 }

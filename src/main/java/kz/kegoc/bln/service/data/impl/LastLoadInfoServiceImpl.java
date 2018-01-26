@@ -28,12 +28,12 @@ public class LastLoadInfoServiceImpl extends AbstractEntityService<LastLoadInfo>
 	public void updateLastDataLoadDate(List<MinuteMeteringFlow> minuteMeteringData) {
 		Map<Pair<String, String>, List<MinuteMeteringFlow>> map = minuteMeteringData
 			.stream()
-			.collect(groupingBy(m -> Pair.of(m.getExternalCode(), m.getParamCode())));		
+			.collect(groupingBy(m -> Pair.of(m.getSourceMeteringPointCode(), m.getParamCode())));
 		
 		for (Pair<String, String> pair : map.keySet()) {
 			LocalDateTime lastDataLoadDate = map.get(pair)
 				.stream()
-				.filter(p -> p.getExternalCode().equals(pair.getLeft()) && p.getParamCode().equals(pair.getRight()))
+				.filter(p -> p.getSourceMeteringPointCode().equals(pair.getLeft()) && p.getParamCode().equals(pair.getRight()))
 				.map(p -> p.getMeteringDate())
 				.max(LocalDateTime::compareTo)
 				.orElse(null);
