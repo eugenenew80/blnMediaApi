@@ -7,9 +7,9 @@ import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.data.MeteringReadingRaw;
-import kz.kegoc.bln.gateway.emcos.EmcosBalanceGateway;
-import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
-import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
+import kz.kegoc.bln.gateway.emcos.MeteringReadingRawGateway;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfgGateway;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
@@ -19,7 +19,7 @@ public class MeteringReadingReader implements EmcosMeteringDataReader<MeteringRe
 
 	public void read() {
 		LocalDateTime requestedTime = buildRequestedDateTime();
-		List<EmcosPointCfg> pointsCfg = emcosCfgGateway.request();
+		List<MeteringPointCfg> pointsCfg = emcosCfgGateway.request();
 
 		paramCodes.keySet().stream()
 			.filter( p -> p.contains("B") ).forEach(p -> {
@@ -49,10 +49,10 @@ public class MeteringReadingReader implements EmcosMeteringDataReader<MeteringRe
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private EmcosCfgGateway emcosCfgGateway;
+	private MeteringPointCfgGateway emcosCfgGateway;
 
 	@Inject
-	private EmcosBalanceGateway emcosBalanceGateway;
+	private MeteringReadingRawGateway emcosBalanceGateway;
 
 	@Inject @ParamCodes
 	private BiMap<String, String> paramCodes;

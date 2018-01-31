@@ -3,9 +3,9 @@ package kz.kegoc.bln.producer.file;
 import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.ejb.cdi.annotation.MeteringDataPath;
 import kz.kegoc.bln.entity.common.Metering;
-import kz.kegoc.bln.entity.data.MeasData;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.producer.MeteringDataProducer;
+import kz.kegoc.bln.entity.data.MeasDataRaw;
+import kz.kegoc.bln.producer.DataProducer;
 import kz.kegoc.bln.ejb.cdi.annotation.CSV;
 import kz.kegoc.bln.ejb.cdi.annotation.XML;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
@@ -25,7 +25,7 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 @Singleton
-public class FileMeteringDataProducer implements MeteringDataProducer {
+public class FileMeteringDataProducer implements DataProducer {
 	private Map<String, FileMeteringDataReader<? extends Metering>> mapReaders = new HashMap<>();
 
 	@PostConstruct
@@ -75,10 +75,10 @@ public class FileMeteringDataProducer implements MeteringDataProducer {
 
 
 	@Inject @CSV
-	private FileMeteringDataReader<MeasData> csvHourMeteringDataRawReader;
+	private FileMeteringDataReader<MeasDataRaw> csvHourMeteringDataRawReader;
 
 	@Inject @XML
-	private FileMeteringDataReader<MeasData> xmlHourMeteringDataRawReader;
+	private FileMeteringDataReader<MeasDataRaw> xmlHourMeteringDataRawReader;
 
 	@Inject @MeteringDataPath
 	private String dir;

@@ -1,17 +1,13 @@
 package kz.kegoc.bln.gateway.emcos.impl;
 
-import com.google.common.collect.BiMap;
-
 import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.common.DataSource;
-import kz.kegoc.bln.entity.common.DataStatus;
-import kz.kegoc.bln.entity.common.IntervalType;
+import kz.kegoc.bln.entity.data.MeteringReadingRaw;
 import kz.kegoc.bln.entity.data.LastLoadInfo;
-import kz.kegoc.bln.gateway.emcos.EmcosConfig;
-import kz.kegoc.bln.gateway.emcos.EmcosFlowGateway;
-import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
-import kz.kegoc.bln.entity.data.MeasDataRaw;
+import kz.kegoc.bln.gateway.emcos.MeteringReadingRawGateway;
+import kz.kegoc.bln.gateway.emcos.ServerConfig;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
@@ -20,8 +16,7 @@ import org.slf4j.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
-
-import javax.ejb.*;
+import javax.ejb.Singleton;
 import javax.inject.Inject;
 import java.io.StringReader;
 import java.net.URL;
@@ -29,56 +24,55 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.*;
+import java.util.stream.*;
+import com.google.common.collect.BiMap;
+import static java.util.Collections.emptyList;
 
 @Singleton
-public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
-    private static final Logger logger = LoggerFactory.getLogger(EmcosFlowGatewayImpl.class);
+public class MeteringReadingRawGatewayImpl implements MeteringReadingRawGateway {
+    private static final Logger logger = LoggerFactory.getLogger(MeteringReadingRawGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
-
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    
     private List<LastLoadInfo> lastLoadInfoList;
-    private List<EmcosPointCfg> pointsCfg;
+    private List<MeteringPointCfg> pointsCfg;
     private String paramCode;
     private String emcosParamCode;
     private LocalDateTime requestedTime;
 
-    public EmcosFlowGateway cfg(List<EmcosPointCfg> pointsCfg) {
+    public MeteringReadingRawGateway cfg(List<MeteringPointCfg> pointsCfg) {
         this.pointsCfg = pointsCfg;
         return this;
     }
 
-    public EmcosFlowGateway requestedTime(LocalDateTime requestedTime) {
+    public MeteringReadingRawGateway requestedTime(LocalDateTime requestedTime) {
         this.requestedTime = requestedTime;
         return this;
     }
 
-    public EmcosFlowGateway paramCode(String paramCode) {
+    public MeteringReadingRawGateway paramCode(String paramCode) {
         this.paramCode = paramCode;
         this.emcosParamCode = paramCodes.get(paramCode);
         return this;
     }
 
-
-    public List<MeasDataRaw> request() {
-        logger.info("EmcosFlowGatewayImpl.request started");
+    public List<MeteringReadingRaw> request() {
+        logger.info("MeteringReadingRawGatewayImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
 
         if (pointsCfg==null || pointsCfg.isEmpty()) {
-            logger.warn("List of points is empty, EmcosFlowGatewayImpl.request interrupted");
+            logger.warn("List of points is empty, MeteringReadingRawGatewayImpl.request interrupted");
             return emptyList();
         }
-        
-        this.lastLoadInfoList = lastLoadInfoService.findAll();
 
-        List<MeasDataRaw> list;
+        lastLoadInfoList = lastLoadInfoService.findAll();
+
+        List<MeteringReadingRaw> list;
         try {
-            logger.info("Send http request for metering data...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, EmcosFlowGatewayImpl.request interrupted");
+                logger.info("Request body is empty, MeteringReadingRawGatewayImpl.request interrupted");
                 return emptyList();
             }
 
@@ -90,19 +84,19 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("EmcosFlowGatewayImpl.request competed");
+            logger.info("MeteringReadingRawGatewayImpl.request succesfully completed");
         }
 
         catch (Exception e) {
             list = emptyList();
-            logger.error("EmcosFlowGatewayImpl.request failed: " + e.toString());
+            logger.error("MeteringReadingRawGatewayImpl.request failed: " + e.toString());
         }
 
         return list;
     }
 
     private String buildBody() {
-    	logger.debug("EmcosFlowGatewayImpl.buildBody started");
+        logger.debug("MeteringReadingRawGatewayImpl.buildBody started");
 
         String strPoints = pointsCfg.stream()
     		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
@@ -112,7 +106,7 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
         logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, EmcosFlowGatewayImpl.buildBody interrupted");
+            logger.debug("List of points is empty, MeteringReadingRawGatewayImpl.buildBody interrupted");
             return "";
         }
 
@@ -130,14 +124,14 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
         String body = templateRegistry.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.trace("body for request metering data: " + body);
+        logger.trace("body for request balances: " + body);
 
-        logger.debug("EmcosFlowGatewayImpl.buildBody completed");
+        logger.debug("MeteringReadingRawGatewayImpl.buildBody completed");
         return body;
     }
-
-    private List<MeasDataRaw> parseAnswer(String answer) throws Exception {
-    	logger.info("EmcosFlowGatewayImpl.parseAnswer started");
+    
+    private List<MeteringReadingRaw> parseAnswer(String answer) throws Exception {
+        logger.info("MeteringReadingRawGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -152,54 +146,51 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
             .getFirstChild()
             .getChildNodes();
 
-        List<MeasDataRaw> list = new ArrayList<>();
+        List<MeteringReadingRaw> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW") {
                     	logger.debug("row: " + (j+1));
-                        list.add(parseNode(rowData.item(j)));
+                    	list.add(parseNode(rowData.item(j)));
                     }
                 }
             }
         }
         logger.debug("convert xml to list completed");
         
-        logger.info("EmcosFlowGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("MeteringReadingRawGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
+    
 
-    private String serializePointCfg(EmcosPointCfg emcosCfg) {
-    	LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-    		.filter(t -> t.getSourceMeteringPointCode().equals(emcosCfg.getPointCode()) && t.getSourceParamCode().equals(emcosCfg.getParamCode()) )
-    		.findFirst()
-    		.orElse(null);
+    private String serializePointCfg(MeteringPointCfg pointCfg) {
+        LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
+            .filter(t -> t.getSourceMeteringPointCode().equals(pointCfg.getPointCode()) && t.getSourceParamCode().equals(pointCfg.getParamCode()) )
+            .findFirst()
+            .orElse(null);
 
         LocalDateTime startTime = buildStartTime(lastLoadInfo);
         if (startTime.isEqual(requestedTime) || startTime.isAfter(requestedTime))
             return "";
 
         return ""
-		        + "<ROW PPOINT_CODE=\"" + emcosCfg.getPointCode() + "\" "
-		        + "PML_ID=\"" + emcosCfg.getEmcosParamCode() + "\" "
-		        + "PBT=\"" + startTime.format(timeFormatter) + "\" "
-		        + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
-    }
+                + "<ROW PPOINT_CODE=\"" + pointCfg.getPointCode() + "\" "
+                + "PML_ID=\"" + pointCfg.getEmcosParamCode() + "\" "
+                + "PBT=\"" + startTime.format(timeFormatter) + "\" "
+                + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
+    }    
+
 
     private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-        LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
-        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
-            LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
-            startTime = lastLoadDate.getMinute() < 45
-                    ? lastLoadDate.truncatedTo(ChronoUnit.HOURS)
-                    : lastLoadDate.plusMinutes(15);
-        }
-
-        return startTime;
+        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
+            return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
+        else
+            return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
     }
-
-    private MeasDataRaw parseNode(Node node) {
+    
+    private MeteringReadingRaw parseNode(Node node) {
         String externalCode = node.getAttributes()
             .getNamedItem("PPOINT_CODE")
             .getNodeValue() ;
@@ -208,15 +199,13 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
             .getNamedItem("PML_ID")
             .getNodeValue() ;
         
-        LocalDateTime time = null;
-        String timeStr = node.getAttributes()
+        LocalDate date = null;
+        String dateStr = node.getAttributes()
             .getNamedItem("PBT")
             .getNodeValue() ;
 
-        if (timeStr!=null) {
-            if (timeStr.indexOf("T")<0) timeStr = timeStr+"T00:00:00000";
-            time = LocalDateTime.parse(timeStr, timeFormatter);
-        }
+        if (dateStr!=null) 
+            date = LocalDate.parse(dateStr, dateFormatter);
 
         Double val = null;
         String valStr = node.getAttributes()
@@ -226,15 +215,15 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        MeasDataRaw data = new MeasDataRaw();
-        data.setSourceMeteringPointCode(externalCode);
-        data.setMeasDate(time);
-        data.setDataSourceCode(DataSource.EMCOS);
-        data.setSourceUnitCode(emcosParamUnits.get(emcosParamCode));
-        data.setSourceParamCode(emcosParamCode);
-        data.setVal(val);
-        
-        return data;
+        MeteringReadingRaw balance = new MeteringReadingRaw();
+        balance.setSourceMeteringPointCode(externalCode);
+        balance.setMeteringDate(date.atStartOfDay());
+        balance.setDataSourceCode(DataSource.EMCOS);
+        balance.setSourceUnitCode(emcosParamUnits.get(emcosParamCode));
+        balance.setSourceParamCode(emcosParamCode);
+        balance.setVal(val);
+
+        return balance;
     }
 
 
@@ -245,7 +234,7 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
     private TemplateRegistry templateRegistry;
 
     @Inject
-    private EmcosConfig config;
+    private ServerConfig config;
 
     @Inject @ParamCodes
     private BiMap<String, String> paramCodes;

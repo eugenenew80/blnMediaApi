@@ -6,7 +6,7 @@ import org.redisson.api.RBlockingQueue;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractMeteringDataLoader<T extends Metering> implements MeteringDataLoader<T> {
+public abstract class AbstractMeteringDataLoader<T extends Metering> implements DataLoader<T> {
 
 	public AbstractMeteringDataLoader(MeteringDataService<T> service, RBlockingQueue<T> queue) {
 		this.service = service;

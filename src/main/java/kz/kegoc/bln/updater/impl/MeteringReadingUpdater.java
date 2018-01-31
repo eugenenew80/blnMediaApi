@@ -1,5 +1,6 @@
 package kz.kegoc.bln.updater.impl;
 
+import kz.kegoc.bln.entity.data.MeteringReadingRaw;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
 import kz.kegoc.bln.entity.common.DataStatus;
 import kz.kegoc.bln.entity.data.MeteringReading;
@@ -20,6 +21,7 @@ public class MeteringReadingUpdater implements MeteringDataUpdater<MeteringReadi
 
     @Schedule(minute = "*/5", hour = "*", persistent = false)
     public void update() {
+        /*
         Query query = QueryImpl.builder()
             .setParameter("status", new MyQueryParam("status", DataStatus.RAW, ConditionType.EQUALS))
             .setOrderBy("t.id")
@@ -39,10 +41,11 @@ public class MeteringReadingUpdater implements MeteringDataUpdater<MeteringReadi
 
                 service.update(t);
             });
+        */
     }
 
     @Inject
-    private MeteringDataService<MeteringReading> service;
+    private MeteringDataService<MeteringReadingRaw> service;
 
     @Inject
     private MeteringPointService meteringPointService;

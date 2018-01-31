@@ -2,7 +2,7 @@ package kz.kegoc.bln.producer.file.reader.impl;
 
 import kz.kegoc.bln.entity.common.DataSource;
 import kz.kegoc.bln.entity.common.DataStatus;
-import kz.kegoc.bln.entity.data.MeasData;
+import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.XML;
@@ -23,11 +23,11 @@ import java.util.List;
 
 @Stateless
 @XML
-public class XmlMeasDataReaderImpl implements FileMeteringDataReader<MeasData> {
+public class XmlMeasDataReaderImpl implements FileMeteringDataReader<MeasDataRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(XmlMeasDataReaderImpl.class);
 
 	@Inject
-	public XmlMeasDataReaderImpl(MeteringDataQueue<MeasData> service) {
+	public XmlMeasDataReaderImpl(MeteringDataQueue<MeasDataRaw> service) {
 		this.queue = service;
 	}
 
@@ -49,7 +49,7 @@ public class XmlMeasDataReaderImpl implements FileMeteringDataReader<MeasData> {
 		logger.debug("Reading file content competed");
 
 		logger.debug("Parsing file content started");
-		List<MeasData> list = new ArrayList<>();
+		List<MeasDataRaw> list = new ArrayList<>();
 		for (int i=0; i<doc.getDocumentElement().getChildNodes().getLength(); i++) {
 			Node nodeRow = doc.getDocumentElement().getChildNodes().item(i);
 			if (nodeRow.getNodeName().equals("row")) 
@@ -63,8 +63,8 @@ public class XmlMeasDataReaderImpl implements FileMeteringDataReader<MeasData> {
 	}
 	
 	
-	private MeasData convert(Node node) {
-		MeasData d = new MeasData();
+	private MeasDataRaw convert(Node node) {
+		MeasDataRaw d = new MeasDataRaw();
 
 		for (int i=0; i< node.getAttributes().getLength(); i++) {
 			Node nodeAttr = node.getAttributes().item(i);
@@ -86,11 +86,10 @@ public class XmlMeasDataReaderImpl implements FileMeteringDataReader<MeasData> {
 					break;					
 			}
 		}
-		d.setStatus(DataStatus.RAW);
 		d.setDataSourceCode(DataSource.XML);
 		
 		return d;
 	}
 
-	private MeteringDataQueue<MeasData> queue;
+	private MeteringDataQueue<MeasDataRaw> queue;
 }

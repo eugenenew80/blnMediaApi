@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(of= {"pointCode", "emcosParamCode"})
-public class EmcosPointCfg {
+public class MeteringPointCfg {
 	String pointCode;
 	String emcosParamCode;
 	String paramCode;

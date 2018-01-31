@@ -2,7 +2,7 @@ package kz.kegoc.bln.producer.file.reader.impl;
 
 import kz.kegoc.bln.entity.common.DataSource;
 import kz.kegoc.bln.entity.common.DataStatus;
-import kz.kegoc.bln.entity.data.MeasData;
+import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import kz.kegoc.bln.ejb.cdi.annotation.CSV;
@@ -24,11 +24,11 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
 @Stateless @CSV
-public class CsvMeasDataReaderImpl implements FileMeteringDataReader<MeasData> {
+public class CsvMeasDataReaderImpl implements FileMeteringDataReader<MeasDataRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(CsvMeasDataReaderImpl.class);
 
 	@Inject
-	public CsvMeasDataReaderImpl(MeteringDataQueue<MeasData> service) {
+	public CsvMeasDataReaderImpl(MeteringDataQueue<MeasDataRaw> service) {
 		this.queue =service;
 	}
 
@@ -39,7 +39,7 @@ public class CsvMeasDataReaderImpl implements FileMeteringDataReader<MeasData> {
 		List<String> strs = readFile(path);
 
 		logger.debug("Parsing file content started");
-		List<MeasData> list = IntStream.range(1, strs.size())
+		List<MeasDataRaw> list = IntStream.range(1, strs.size())
 			.mapToObj(i -> strs.get(i))
 			.map(this::convert)
 			.collect(toList());
@@ -65,19 +65,18 @@ public class CsvMeasDataReaderImpl implements FileMeteringDataReader<MeasData> {
 		return strs;
 	}
 
-	private MeasData convert(String s) {
+	private MeasDataRaw convert(String s) {
 		String[] data = s.split(";");
-		MeasData d = new MeasData();
+		MeasDataRaw d = new MeasDataRaw();
 		d.setMeasDate(LocalDateTime.parse(data[0], DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")));
 		d.setSourceMeteringPointCode(data[2]);
 		d.setSourceParamCode(data[3]);
 		d.setSourceUnitCode(data[4]);
 		d.setVal( Double.parseDouble(data[5]) );
-		d.setStatus(DataStatus.RAW);
 		d.setDataSourceCode(DataSource.CSV);
 
 		return d;
 	}
 
-	private MeteringDataQueue<MeasData> queue;
+	private MeteringDataQueue<MeasDataRaw> queue;
 }

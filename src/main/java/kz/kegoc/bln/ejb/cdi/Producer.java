@@ -15,8 +15,8 @@ import kz.kegoc.bln.entity.data.MeasData;
 import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.entity.data.MeteringReading;
 import kz.kegoc.bln.entity.data.MeteringReadingRaw;
-import kz.kegoc.bln.gateway.emcos.EmcosConfig;
-import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
+import kz.kegoc.bln.gateway.emcos.ServerConfig;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 
 import org.dozer.DozerBeanMapper;
 import org.redisson.Redisson;
@@ -42,7 +42,7 @@ public class Producer {
 	private RBlockingQueue<MeteringReadingRaw> meteringReadingRawQueue = null;
 	private RBlockingQueue<MeasData> hourMeteringFlowQueue = null;
 	private RBlockingQueue<MeteringReading> dayMeteringBalanceQueue  = null;
-	private RList<EmcosPointCfg> emcosPointCfgList  = null;
+	private RList<MeteringPointCfg> emcosPointCfgList  = null;
 
 	private DozerBeanMapper mapper = null;
 
@@ -118,7 +118,7 @@ public class Producer {
 
 
 	@Produces
-	public RList<EmcosPointCfg> createEmcosPointCfgList() {
+	public RList<MeteringPointCfg> createEmcosPointCfgList() {
 		if (emcosPointCfgList!=null)
 			return emcosPointCfgList;
 
@@ -167,8 +167,8 @@ public class Producer {
 	}
 
 	@Produces
-	public EmcosConfig defaultEmcosConfig() {
-		return EmcosConfig.defaultEmcosServer().build();
+	public ServerConfig defaultEmcosConfig() {
+		return ServerConfig.defaultEmcosServer().build();
 	}
 
 

@@ -3,9 +3,9 @@ package kz.kegoc.bln.gateway.emcos.impl;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableList;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
-import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
-import kz.kegoc.bln.gateway.emcos.EmcosConfig;
-import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfgGateway;
+import kz.kegoc.bln.gateway.emcos.ServerConfig;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 
 import org.apache.commons.codec.binary.Base64;
@@ -26,12 +26,12 @@ import java.util.concurrent.TimeUnit;
 
 @ConcurrencyManagement(ConcurrencyManagementType.CONTAINER)
 @Singleton
-public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
-    private static final Logger logger = LoggerFactory.getLogger(EmcosCfgGatewayImpl.class);
+public class MeteringPointCfgGatewayImpl implements MeteringPointCfgGateway {
+    private static final Logger logger = LoggerFactory.getLogger(MeteringPointCfgGatewayImpl.class);
 
     @Lock(LockType.WRITE)
-    public List<EmcosPointCfg> request()  {
-        logger.info("EmcosCfgGatewayImpl.request started");
+    public List<MeteringPointCfg> request()  {
+        logger.info("MeteringPointCfgGatewayImpl.request started");
 
         if (pointsCfg==null || pointsCfg.isEmpty()) {
             logger.info("List of points not found in cache");
@@ -45,10 +45,10 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
 
                 pointsCfg.addAll(parseAnswer(answer));
                 pointsCfg.expire(1, TimeUnit.HOURS);
-                logger.info("EmcosCfgGatewayImpl.request successfully completed");
+                logger.info("MeteringPointCfgGatewayImpl.request successfully completed");
             }
             catch (Exception e) {
-                logger.error("EmcosCfgGatewayImpl.request failed: " + e.toString());
+                logger.error("MeteringPointCfgGatewayImpl.request failed: " + e.toString());
             }
         }
 
@@ -56,7 +56,7 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
     }
 
     private String buildBody() {
-        logger.debug("EmcosCfgGatewayImpl.buildBody started");
+        logger.debug("MeteringPointCfgGatewayImpl.buildBody started");
 
         String data = templateRegistry.getTemplate("EMCOS_REQCFG_DATA")
         	.replace("#points#", "");
@@ -74,12 +74,12 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
         logger.trace("body: " + body);
 
-        logger.debug("EmcosCfgGatewayImpl.buildBody completed");
+        logger.debug("MeteringPointCfgGatewayImpl.buildBody completed");
         return body;
     }
     
-    private List<EmcosPointCfg> parseAnswer(String answer) throws Exception {
-        logger.info("EmcosCfgGatewayImpl.parseAnswer started");
+    private List<MeteringPointCfg> parseAnswer(String answer) throws Exception {
+        logger.info("MeteringPointCfgGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -94,14 +94,14 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
             .getFirstChild()
             .getChildNodes();    	
         
-        List<EmcosPointCfg> list = new ArrayList<>();
+        List<MeteringPointCfg> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW") {
                     	logger.debug("row: " + (j+1));
-                        EmcosPointCfg pointCfg = parseNode(rowData.item(j));
+                        MeteringPointCfg pointCfg = parseNode(rowData.item(j));
                         if (StringUtils.isNotEmpty(pointCfg.getParamCode()))
                             list.add(pointCfg);
                     }
@@ -110,12 +110,12 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
         }
         logger.debug("convert xml to list completed");
         
-        logger.info("EmcosCfgGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("MeteringPointCfgGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 
-    private EmcosPointCfg parseNode(Node node) {
-        EmcosPointCfg pointCfg = new EmcosPointCfg();
+    private MeteringPointCfg parseNode(Node node) {
+        MeteringPointCfg pointCfg = new MeteringPointCfg();
 
         String pointCode = node.getAttributes()
             .getNamedItem("POINT_CODE")
@@ -144,11 +144,11 @@ public class EmcosCfgGatewayImpl implements EmcosCfgGateway {
     private TemplateRegistry templateRegistry;
 
     @Inject
-    private EmcosConfig config;
+    private ServerConfig config;
 
     @Inject @ParamCodes
     private BiMap<String, String> paramCodes;
 
     @Inject
-    private RList<EmcosPointCfg> pointsCfg;
+    private RList<MeteringPointCfg> pointsCfg;
 }

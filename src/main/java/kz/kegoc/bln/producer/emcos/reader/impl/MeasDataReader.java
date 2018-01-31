@@ -7,23 +7,21 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
-import kz.kegoc.bln.entity.data.MeasData;
-import kz.kegoc.bln.gateway.emcos.EmcosCfgGateway;
-import kz.kegoc.bln.gateway.emcos.EmcosFlowGateway;
-import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfgGateway;
+import kz.kegoc.bln.gateway.emcos.MeasDataRawGateway;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
-import org.apache.commons.lang3.tuple.Pair;
 import kz.kegoc.bln.queue.MeteringDataQueue;
 import static java.util.stream.Collectors.groupingBy;
 
 @Stateless
-public class MeasDataReader implements EmcosMeteringDataReader<MeasData> {
+public class MeasDataReader implements EmcosMeteringDataReader<MeasDataRaw> {
 
 	public void read() {
 		LocalDateTime requestedTime = buildRequestedTime();
-		List<EmcosPointCfg> pointsCfg = emcosCfgGateway.request();
+		List<MeteringPointCfg> pointsCfg = emcosCfgGateway.request();
 
 		paramCodes.keySet().stream()
 			.filter( p -> !p.contains("B") ).forEach(p -> {
@@ -88,10 +86,10 @@ public class MeasDataReader implements EmcosMeteringDataReader<MeasData> {
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private EmcosCfgGateway emcosCfgGateway;
+	private MeteringPointCfgGateway emcosCfgGateway;
 
 	@Inject
-	private EmcosFlowGateway emcosDataGateway;
+	private MeasDataRawGateway emcosDataGateway;
 
 	@Inject @ParamCodes
 	private BiMap<String, String> paramCodes;

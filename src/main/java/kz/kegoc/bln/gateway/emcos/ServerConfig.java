@@ -2,13 +2,13 @@ package kz.kegoc.bln.gateway.emcos;
 
 import lombok.Getter;
 
-public class EmcosConfig {
+public class ServerConfig {
     @Getter private final String url;
     @Getter private final String user;
     @Getter private final Boolean isPacked;
     @Getter private final String attType;
 
-    private EmcosConfig(Builder builder) {
+    private ServerConfig(Builder builder) {
         url = builder.url;
         user = builder.user;
         isPacked = builder.isPacked;
@@ -50,8 +50,8 @@ public class EmcosConfig {
             return this;
         }
 
-        public EmcosConfig build() {
-            return new EmcosConfig(this);
+        public ServerConfig build() {
+            return new ServerConfig(this);
         }
     }
 }

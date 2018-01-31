@@ -4,6 +4,6 @@ import javax.ejb.Local;
 import java.util.List;
 
 @Local
-public interface EmcosCfgGateway {
-    List<EmcosPointCfg> request();
+public interface MeteringPointCfgGateway {
+    List<MeteringPointCfg> request();
 }
