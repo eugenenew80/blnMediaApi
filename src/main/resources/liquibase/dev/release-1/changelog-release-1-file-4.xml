@@ -7,41 +7,10 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
     <changeSet id="media-eug-10" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <comment>Creating table: media_last_load_info</comment>
-        <createTable tableName="media_last_load_info" schemaName="apps">            
-            <column name="id" type="number">
-                <constraints nullable="false"/>
-            </column>            
-            
-            <column name="external_code" type="varchar(18)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="param_code" type="varchar(4)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="last_load_date" type="TIMESTAMP WITHOUT TIME ZONE">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
+        <createIndex indexName="idx_media_metering_reading_1" schemaName="apps" tableName="media_metering_reading">
+            <column name="source_metering_point_code"   type="varchar(18)"/>
+            <column name="metering_date"                type="TIMESTAMP WITHOUT TIME ZONE" />
+            <column name="source_param_code"            type="varchar(4)" />
+        </createIndex>
     </changeSet>
-
-	<changeSet id="media-eug-11" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating primary key for table: media_last_load_info</comment>
-	    <addPrimaryKey 
-	            columnNames="id"
-	            constraintName="pk_media_last_load_info"
-	            schemaName="apps"
-	            tableName="media_last_load_info"/>
-	</changeSet>
-	
-	<changeSet id="media-eug-12" logicalFilePath="path-independent" author="eugene" context="postgres">
-	    <comment>Creating sequence for table: media_last_load_info</comment>
-	    <createSequence 
-	            incrementBy="1"
-	            schemaName="apps"
-	            sequenceName="media_last_load_info_s"
-	            startValue="1"/>
-	</changeSet>		
 </databaseChangeLog>

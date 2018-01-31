@@ -6,7 +6,6 @@ import javax.ws.rs.core.*;
 import kz.kegoc.bln.ejb.jackson.ObjectMapperContextResolver;
 import kz.kegoc.bln.webapi.exception.mapper.*;
 import kz.kegoc.bln.webapi.filters.BasicAuthFilter;
-import kz.kegoc.bln.webapi.media.doc.*;
 
 @ApplicationPath("/webapi")
 public class JaxRsConfig extends Application {
@@ -14,13 +13,6 @@ public class JaxRsConfig extends Application {
 	@Override
 	public Set<Class<?>> getClasses() {
 		final Set<Class<?>> resources = new HashSet<Class<?>>();
-
-		resources.add(GroupResourceImpl.class);
-		resources.add(GroupMeteringPointResourceImpl.class);
-		resources.add(DocTypeResourceImpl.class);
-		resources.add(DocMeteringReadingHeaderResourceImpl.class);
-		resources.add(DocMeterReplacingHeaderResourceImpl.class);
-		resources.add(DocUnderAccountingHeaderResourceImpl.class);
 
 		resources.add(BasicAuthFilter.class);
 		resources.add(RepositryNotFoundExceptionMapperImpl.class);

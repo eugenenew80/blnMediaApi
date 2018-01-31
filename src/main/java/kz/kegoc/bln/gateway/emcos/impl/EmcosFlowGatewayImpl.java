@@ -6,11 +6,12 @@ import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.common.DataSource;
 import kz.kegoc.bln.entity.common.DataStatus;
+import kz.kegoc.bln.entity.common.IntervalType;
 import kz.kegoc.bln.entity.data.LastLoadInfo;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosFlowGateway;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
-import kz.kegoc.bln.gateway.emcos.MinuteMeteringFlow;
+import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
@@ -60,7 +61,7 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
     }
 
 
-    public List<MinuteMeteringFlow> request() {
+    public List<MeasDataRaw> request() {
         logger.info("EmcosFlowGatewayImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
@@ -72,7 +73,7 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
         
         this.lastLoadInfoList = lastLoadInfoService.findAll();
 
-        List<MinuteMeteringFlow> list;
+        List<MeasDataRaw> list;
         try {
             logger.info("Send http request for metering data...");
             String body = buildBody();
@@ -135,7 +136,7 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
         return body;
     }
 
-    private List<MinuteMeteringFlow> parseAnswer(String answer) throws Exception {
+    private List<MeasDataRaw> parseAnswer(String answer) throws Exception {
     	logger.info("EmcosFlowGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
@@ -151,7 +152,7 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
             .getFirstChild()
             .getChildNodes();
 
-        List<MinuteMeteringFlow> list = new ArrayList<>();
+        List<MeasDataRaw> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -198,7 +199,7 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
         return startTime;
     }
 
-    private MinuteMeteringFlow parseNode(Node node) {
+    private MeasDataRaw parseNode(Node node) {
         String externalCode = node.getAttributes()
             .getNamedItem("PPOINT_CODE")
             .getNodeValue() ;
@@ -225,14 +226,12 @@ public class EmcosFlowGatewayImpl implements EmcosFlowGateway {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        MinuteMeteringFlow data = new MinuteMeteringFlow();
+        MeasDataRaw data = new MeasDataRaw();
         data.setSourceMeteringPointCode(externalCode);
-        data.setMeteringDate(time);
+        data.setMeasDate(time);
         data.setDataSourceCode(DataSource.EMCOS);
-        data.setParamCode(emcosParamCode);
-        data.setStatus(DataStatus.RAW);
         data.setSourceUnitCode(emcosParamUnits.get(emcosParamCode));
-        data.setSourceParamCode(paramCodes.inverse().get(emcosParamCode));
+        data.setSourceParamCode(emcosParamCode);
         data.setVal(val);
         
         return data;

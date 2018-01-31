@@ -31,109 +31,101 @@
         </query>
     </named-query>
 
-
-    <named-query name="HourMeteringFlow.findByEntity">
-        <query>
-            select
-            	t
-            from
-                HourMeteringFlow t
-            where
-            	    t.sourceMeteringPointCode=:sourceMeteringPointCode
-            	and t.meteringDate=:meteringDate
-            	and t.hour=:hour
-            	and t.dataSourceCode=:dataSourceCode
-            	and t.status=:status
-            	and t.sourceUnitCode=:sourceUnitCode
-            	and t.sourceParamCode=:sourceParamCode
-        </query>
-    </named-query>
-
-    <named-query name="DayMeteringBalance.findAll">
+    <named-query name="MeasDataRaw.findByEntity">
         <query>
             select
                 t
             from
-                DayMeteringBalance t
+                MeasDataRaw t
+            where
+                    t.sourceMeteringPointCode=:sourceMeteringPointCode
+                and t.measDate=:measDate
+                and t.dataSourceCode=:dataSourceCode
+                and t.sourceUnitCode=:sourceUnitCode
+                and t.sourceParamCode=:sourceParamCode
         </query>
     </named-query>
 
-    <named-query name="DayMeteringBalance.findByExternalCode">
+    <named-query name="MeteringReadingRaw.findByEntity">
         <query>
             select
                 t
             from
-                DayMeteringBalance t
+                MeteringReadingRaw t
             where
-                t.sourceMeteringPointCode=:sourceMeteringPointCode
-        </query>
-    </named-query>
-
-    <named-query name="DayMeteringBalance.findByEntity">
-        <query>
-            select
-            	t
-            from
-            	DayMeteringBalance t
-            where
-            	    t.sourceMeteringPointCode=:sourceMeteringPointCode
-            	and t.meteringDate=:meteringDate
-            	and t.dataSourceCode=:dataSourceCode
-            	and t.status=:status
-            	and t.sourceUnitCode=:sourceUnitCode
-            	and t.sourceParamCode=:sourceParamCode
-        </query>
-    </named-query>
-
-
-    <named-query name="DayMeteringBalance.findReadyData">
-        <query>
-            select
-                t
-            from
-                DayMeteringBalance t
-            where
-                    t.meteringPoint.id=:meteringPointId
+                    t.sourceMeteringPointCode=:sourceMeteringPointCode
                 and t.meteringDate=:meteringDate
-                and t.status=:status
+                and t.dataSourceCode=:dataSourceCode
+                and t.sourceUnitCode=:sourceUnitCode
                 and t.sourceParamCode=:sourceParamCode
         </query>
     </named-query>
 
 
-    <named-query name="Group.findAll">
-		<query>
-			select t from Group t order by t.id
-		</query>
-	</named-query>
-
-	<named-query name="DocType.findAll">
-		<query>
-			select t from DocType t order by t.id
-		</query>
-	</named-query>
-
-	<named-query name="DocType.findByCode">
-		<query>
-			select t from DocType t where t.code=:code
-		</query>
-	</named-query>
-
-    <named-query name="DocMeteringReadingHeader.findAll">
+    <named-query name="MeasData.findByEntity">
         <query>
-            select t from DocMeteringReadingHeader t order by t.id
+            select
+            	t
+            from
+                MeasData t
+            where
+            	    t.sourceMeteringPointCode=:sourceMeteringPointCode
+            	and t.measDate=:measDate
+            	and t.dataSourceCode=:dataSourceCode
+            	and t.status=:status
+            	and t.sourceUnitCode=:sourceUnitCode
+            	and t.sourceParamCode=:sourceParamCode
         </query>
     </named-query>
 
-    <named-query name="DocMeterReplacingHeader.findAll">
+    <named-query name="MeteringReading.findAll">
         <query>
-            select t from DocMeterReplacingHeader t order by t.id
+            select
+                t
+            from
+                MeteringReading t
         </query>
     </named-query>
 
-    <named-query name="DocUnderAccountingHeader.findAll">
+    <named-query name="MeteringReading.findByExternalCode">
         <query>
-            select t from DocUnderAccountingHeader t order by t.id
+            select
+                t
+            from
+                MeteringReading t
+            where
+                t.sourceMeteringPointCode=:sourceMeteringPointCode
+        </query>
+    </named-query>
+
+    <named-query name="MeteringReading.findByEntity">
+        <query>
+            select
+            	t
+            from
+                MeteringReading t
+            where
+            	    t.sourceMeteringPointCode=:sourceMeteringPointCode
+            	and t.meteringDate=:meteringDate
+            	and t.dataSourceCode=:dataSourceCode
+            	and t.status=:status
+            	and t.sourceUnitCode=:sourceUnitCode
+            	and t.sourceParamCode=:sourceParamCode
+        </query>
+    </named-query>
+
+
+    <named-query name="MeteringReading.findReadyData">
+        <query>
+            select
+                t
+            from
+                MeteringReading t
+            where
+                    t.meteringPoint.id=:meteringPointId
+                and t.meteringDate=:meteringDate
+                and t.status=:status
+                and t.sourceParamCode=:sourceParamCode
         </query>
     </named-query>
 </entity-mappings>

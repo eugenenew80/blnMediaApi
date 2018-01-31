@@ -5,10 +5,9 @@ import javax.ejb.Singleton;
 import javax.inject.Inject;
 
 import kz.kegoc.bln.entity.common.Metering;
-import kz.kegoc.bln.entity.data.DayMeteringBalance;
-import kz.kegoc.bln.entity.data.DayMeteringFlow;
-import kz.kegoc.bln.entity.data.HourMeteringFlow;
-import kz.kegoc.bln.entity.data.MonthMeteringFlow;
+import kz.kegoc.bln.entity.data.MeasData;
+import kz.kegoc.bln.entity.data.MeasDataRaw;
+import kz.kegoc.bln.entity.data.MeteringReading;
 import kz.kegoc.bln.loader.MeteringDataLoader;
 
 @Singleton
@@ -16,21 +15,17 @@ public class MeteringDataLoaderImpl implements MeteringDataLoader<Metering> {
 
 	@Schedule(second = "*/5", minute = "*", hour = "*", persistent = false)
 	public void load() {
-		hourMeteringDataLoader.load();
-		dayMeteringDataLoader.load();
-		monthMeteringDataLoader.load();
-		dayMeteringBalanceLoader.load();
+		measDataRawLoader.load();
+		measDataLoader.load();
+		meteringReadingMeteringDataLoader.load();
 	}
 
 	@Inject
-	private MeteringDataLoader<DayMeteringBalance> dayMeteringBalanceLoader;
+	private MeteringDataLoader<MeteringReading> meteringReadingMeteringDataLoader;
 
 	@Inject
-	private MeteringDataLoader<DayMeteringFlow> dayMeteringDataLoader;
+	private MeteringDataLoader<MeasData> measDataLoader;
 
 	@Inject
-	private MeteringDataLoader<HourMeteringFlow> hourMeteringDataLoader;
-
-	@Inject
-	private MeteringDataLoader<MonthMeteringFlow> monthMeteringDataLoader;
+	private MeteringDataLoader<MeasDataRaw> measDataRawLoader;
 }

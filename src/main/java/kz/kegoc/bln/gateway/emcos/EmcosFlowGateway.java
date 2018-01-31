@@ -1,5 +1,7 @@
 package kz.kegoc.bln.gateway.emcos;
 
+import kz.kegoc.bln.entity.data.MeasDataRaw;
+
 import javax.ejb.Local;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,5 +14,5 @@ public interface EmcosFlowGateway {
 
     EmcosFlowGateway paramCode(String paramCode);
 
-    List<MinuteMeteringFlow> request();
+    List<MeasDataRaw> request();
 }

@@ -7,11 +7,12 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
+
+import kz.kegoc.bln.entity.data.MeteringReadingRaw;
 import org.apache.commons.lang3.tuple.Pair;
 
 import kz.kegoc.bln.entity.data.LastLoadInfo;
-import kz.kegoc.bln.entity.data.DayMeteringBalance;
-import kz.kegoc.bln.gateway.emcos.MinuteMeteringFlow;
+import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.repository.data.LastLoadInfoRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
@@ -25,16 +26,16 @@ public class LastLoadInfoServiceImpl extends AbstractEntityService<LastLoadInfo>
         this.lastLoadInfoRepository = repository;
     }
 
-	public void updateLastDataLoadDate(List<MinuteMeteringFlow> minuteMeteringData) {
-		Map<Pair<String, String>, List<MinuteMeteringFlow>> map = minuteMeteringData
+	public void updateLastDataLoadDate(List<MeasDataRaw> minuteMeteringData) {
+		Map<Pair<String, String>, List<MeasDataRaw>> map = minuteMeteringData
 			.stream()
-			.collect(groupingBy(m -> Pair.of(m.getSourceMeteringPointCode(), m.getParamCode())));
+			.collect(groupingBy(m -> Pair.of(m.getSourceMeteringPointCode(), m.getSourceParamCode())));
 		
 		for (Pair<String, String> pair : map.keySet()) {
 			LocalDateTime lastDataLoadDate = map.get(pair)
 				.stream()
-				.filter(p -> p.getSourceMeteringPointCode().equals(pair.getLeft()) && p.getParamCode().equals(pair.getRight()))
-				.map(p -> p.getMeteringDate())
+				.filter(p -> p.getSourceMeteringPointCode().equals(pair.getLeft()) && p.getSourceParamCode().equals(pair.getRight()))
+				.map(p -> p.getMeasDate())
 				.max(LocalDateTime::compareTo)
 				.orElse(null);
 			
@@ -53,8 +54,8 @@ public class LastLoadInfoServiceImpl extends AbstractEntityService<LastLoadInfo>
 		}
 	}	
 
-	public void updateLastBalanceLoadDate(List<DayMeteringBalance> meteringBalance) {
-		Map<Pair<String, String>, List<DayMeteringBalance>> map = meteringBalance
+	public void updateLastBalanceLoadDate(List<MeteringReadingRaw> meteringBalance) {
+		Map<Pair<String, String>, List<MeteringReadingRaw>> map = meteringBalance
 				.stream()
 				.collect(groupingBy(m -> Pair.of(m.getSourceMeteringPointCode(), m.getSourceParamCode())));
 			

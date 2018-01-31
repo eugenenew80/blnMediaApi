@@ -1,7 +1,6 @@
 package kz.kegoc.bln.gateway.emcos;
 
-import kz.kegoc.bln.entity.data.DayMeteringBalance;
-
+import kz.kegoc.bln.entity.data.MeteringReadingRaw;
 import javax.ejb.Local;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,5 +13,5 @@ public interface EmcosBalanceGateway {
 
     EmcosBalanceGateway paramCode(String paramCode);
 
-    List<DayMeteringBalance> request();
+    List<MeteringReadingRaw> request();
 }

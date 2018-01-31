@@ -11,10 +11,10 @@ import com.google.common.collect.HashBiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.*;
 import kz.kegoc.bln.entity.adm.User;
 import kz.kegoc.bln.entity.common.Lang;
-import kz.kegoc.bln.entity.data.DayMeteringBalance;
-import kz.kegoc.bln.entity.data.DayMeteringFlow;
-import kz.kegoc.bln.entity.data.HourMeteringFlow;
-import kz.kegoc.bln.entity.data.MonthMeteringFlow;
+import kz.kegoc.bln.entity.data.MeasData;
+import kz.kegoc.bln.entity.data.MeasDataRaw;
+import kz.kegoc.bln.entity.data.MeteringReading;
+import kz.kegoc.bln.entity.data.MeteringReadingRaw;
 import kz.kegoc.bln.gateway.emcos.EmcosConfig;
 import kz.kegoc.bln.gateway.emcos.EmcosPointCfg;
 
@@ -36,12 +36,14 @@ import java.util.Map;
 @ApplicationScoped
 public class Producer {
 	private RedissonClient redissonClient = null;
+
 	private RMapCache<String, User> sessions  = null;
-	private RBlockingQueue<HourMeteringFlow> hourMeteringFlowQueue = null;
-	private RBlockingQueue<DayMeteringFlow> dayMeteringFlowQueue = null;
-	private RBlockingQueue<MonthMeteringFlow> monthMeteringFlowQueue = null;
-	private RBlockingQueue<DayMeteringBalance> dayMeteringBalanceQueue  = null;
+	private RBlockingQueue<MeasDataRaw> measDataRawQueue = null;
+	private RBlockingQueue<MeteringReadingRaw> meteringReadingRawQueue = null;
+	private RBlockingQueue<MeasData> hourMeteringFlowQueue = null;
+	private RBlockingQueue<MeteringReading> dayMeteringBalanceQueue  = null;
 	private RList<EmcosPointCfg> emcosPointCfgList  = null;
+
 	private DozerBeanMapper mapper = null;
 
 	@Produces
@@ -73,9 +75,28 @@ public class Producer {
 		return sessions;
 	}
 
+	@Produces
+	public RBlockingQueue<MeasDataRaw> createMeasDataRawQueue() {
+		if (measDataRawQueue !=null)
+			return measDataRawQueue;
+
+		createRedissonClient();
+		measDataRawQueue = redissonClient.getBlockingQueue("measDataRaw");
+		return measDataRawQueue;
+	}
 
 	@Produces
-	public RBlockingQueue<HourMeteringFlow> createHourMeteringDataQueue() {
+	public RBlockingQueue<MeteringReadingRaw> createMeteringReadingRawQueue() {
+		if (meteringReadingRawQueue !=null)
+			return meteringReadingRawQueue;
+
+		createRedissonClient();
+		meteringReadingRawQueue = redissonClient.getBlockingQueue("meteringReadingRaw");
+		return meteringReadingRawQueue;
+	}
+
+	@Produces
+	public RBlockingQueue<MeasData> createHourMeteringDataQueue() {
 		if (hourMeteringFlowQueue !=null)
 			return hourMeteringFlowQueue;
 
@@ -86,29 +107,7 @@ public class Producer {
 
 
 	@Produces
-	public RBlockingQueue<DayMeteringFlow> createDayMeteringDataQueue() {
-		if (dayMeteringFlowQueue !=null)
-			return dayMeteringFlowQueue;
-
-		createRedissonClient();
-		dayMeteringFlowQueue = redissonClient.getBlockingQueue("dayMeteringFlow");
-		return dayMeteringFlowQueue;
-	}
-
-
-	@Produces
-	public RBlockingQueue<MonthMeteringFlow> createMonthMeteringDataQueue() {
-		if (monthMeteringFlowQueue !=null)
-			return monthMeteringFlowQueue;
-
-		createRedissonClient();
-		monthMeteringFlowQueue = redissonClient.getBlockingQueue("monthMeteringFlow");
-		return monthMeteringFlowQueue;
-	}
-
-
-	@Produces
-	public RBlockingQueue<DayMeteringBalance> createDayMeteringBalanceQueue() {
+	public RBlockingQueue<MeteringReading> createDayMeteringBalanceQueue() {
 		if (dayMeteringBalanceQueue!=null)
 			return dayMeteringBalanceQueue;
 

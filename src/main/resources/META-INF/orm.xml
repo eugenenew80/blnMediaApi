@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_1.xsd">
-
 	<entity class="kz.kegoc.bln.entity.dict.MeteringPoint">
 		<table name="dict_metering_points" schema="apps"/>
 		<attributes>
@@ -101,17 +100,65 @@
 			</many-to-one>
 		</attributes>
 	</entity>
-	
-	
-	<entity class="kz.kegoc.bln.entity.data.HourMeteringFlow">
-		<table name="media_hour_metering_flow" schema="apps"/>
+
+
+	<entity class="kz.kegoc.bln.entity.data.MeasDataRaw">
+		<table name="media_meas_data_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_hour_metering_flow_gen" />
+				<generated-value strategy="SEQUENCE" generator="media_meas_data_raw_gen" />
 				<sequence-generator
-						name="media_hour_metering_flow_gen"
-						sequence-name="apps.media_hour_metering_flow_s"
+						name="media_meas_data_raw_gen"
+						sequence-name="apps.media_meas_data_raw_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="sourceMeteringPointCode">
+				<column name="source_metering_point_code" />
+			</basic>
+
+			<basic name="sourceParamCode">
+				<column name="source_param_code" />
+			</basic>
+
+			<basic name="measDate">
+				<column name="meas_date" />
+			</basic>
+
+			<basic name="sourceUnitCode">
+				<column name="source_unit_code" />
+			</basic>
+
+			<basic name="val">
+				<column name="val" />
+			</basic>
+
+			<basic name="dataSourceCode">
+				<column name="data_source_code" />
+				<enumerated>STRING</enumerated>
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.MeteringReadingRaw">
+		<table name="media_metering_reading_raw" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_metering_reading_raw_gen" />
+				<sequence-generator
+						name="media_metering_reading_raw_gen"
+						sequence-name="apps.media_metering_reading_raw_s"
 						allocation-size="1"
 				/>
 			</id>
@@ -128,8 +175,53 @@
 				<column name="metering_date" />
 			</basic>
 
-			<basic name="hour">
-				<column name="hour" />
+			<basic name="sourceUnitCode">
+				<column name="source_unit_code" />
+			</basic>
+
+			<basic name="val">
+				<column name="val" />
+			</basic>
+
+			<basic name="dataSourceCode">
+				<column name="data_source_code" />
+				<enumerated>STRING</enumerated>
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+		</attributes>
+	</entity>
+
+
+	<entity class="kz.kegoc.bln.entity.data.MeasData">
+		<table name="media_meas_data" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_meas_data_gen" />
+				<sequence-generator
+						name="media_meas_data_gen"
+						sequence-name="apps.media_meas_data_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="sourceMeteringPointCode">
+				<column name="source_metering_point_code" />
+			</basic>
+
+			<basic name="sourceParamCode">
+				<column name="source_param_code" />
+			</basic>
+
+			<basic name="measDate">
+				<column name="meas_date" />
 			</basic>
 
 			<basic name="sourceUnitCode">
@@ -138,6 +230,11 @@
 
 			<basic name="val">
 				<column name="val" />
+			</basic>
+
+			<basic name="intervalType">
+				<column name="interval_type" />
+				<enumerated>STRING</enumerated>
 			</basic>
 
 			<basic name="status">
@@ -176,152 +273,16 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.DayMeteringFlow">
-		<table name="media_day_metering_flow" schema="apps"/>
+
+	<entity class="kz.kegoc.bln.entity.data.MeteringReading">
+		<table name="media_metering_reading" schema="apps"/>
 		<attributes>
 			<id name="id">
 				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_day_metering_flow_gen" />
-        		<sequence-generator
-        			name="media_day_metering_flow_gen"
-        			sequence-name="apps.media_day_metering_flow_s"
-					allocation-size="1"
-        		/>				
-			</id>
-
-      		<basic name="sourceMeteringPointCode">
-      			<column name="source_metering_point_code" />
-      		</basic>
-      		
-      		<basic name="sourceParamCode">
-      			<column name="source_param_code" />
-      		</basic>
-
-      		<basic name="meteringDate">
-      			<column name="metering_date" />
-      		</basic>
-      		
-      		<basic name="sourceUnitCode">
-      			<column name="source_unit_code" />
-      		</basic>
-      		      		
-      		<basic name="val">
-      			<column name="val" />
-      		</basic>   
-      		
-      		<basic name="dataSourceCode">
-      			<column name="data_source_code" />
-				<enumerated>STRING</enumerated>
-      		</basic>
-
-			<basic name="paramCode">
-				<column name="param_code" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>      		       		    		      		
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="unit">
-				<join-column name="unit_id"/>
-			</many-to-one>
-
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id"/>
-			</many-to-one>
-
-			<many-to-one name="meter">
-				<join-column name="meter_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.data.MonthMeteringFlow">
-		<table name="media_month_metering_flow" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_month_metering_flow_gen" />
-        		<sequence-generator
-        			name="media_month_metering_flow_gen"
-        			sequence-name="apps.media_month_metering_flow_s"
-					allocation-size="1"
-        		/>
-			</id>
-
-      		<basic name="sourceMeteringPointCode">
-      			<column name="source_metering_point_code" />
-      		</basic>
-
-      		<basic name="sourceParamCode">
-      			<column name="source_param_code" />
-      		</basic>
-
-			<basic name="year">
-				<column name="metering_year" />
-			</basic>
-
-			<basic name="month">
-				<column name="metering_month" />
-			</basic>
-
-      		<basic name="sourceUnitCode">
-      			<column name="unit_code" />
-      		</basic>
-
-      		<basic name="val">
-      			<column name="val" />
-      		</basic>
-
-      		<basic name="status">
-      			<column name="status" />
-      			<enumerated>ORDINAL</enumerated>
-      		</basic>
-
-      		<basic name="dataSourceCode">
-      			<column name="data_source_code" />
-				<enumerated>STRING</enumerated>
-      		</basic>
-
-			<basic name="paramCode">
-				<column name="param_code" />
-			</basic>
-      		
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>      		       		    		      		
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="unit">
-				<join-column name="unit_id"/>
-			</many-to-one>
-
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id"/>
-			</many-to-one>
-
-			<many-to-one name="meter">
-				<join-column name="meter_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.data.DayMeteringBalance">
-		<table name="media_day_metering_balance" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_day_metering_balance_gen" />
+				<generated-value strategy="SEQUENCE" generator="media_metering_reading_gen" />
 				<sequence-generator
-						name="media_day_metering_balance_gen"
-						sequence-name="apps.media_day_metering_balance_s"
+						name="media_metering_reading_gen"
+						sequence-name="apps.media_metering_reading_s"
 						allocation-size="1"
 				/>
 			</id>
@@ -353,6 +314,11 @@
 
 			<basic name="sourceParamCode">
 				<column name="source_param_code" />
+			</basic>
+
+			<basic name="intervalType">
+				<column name="interval_type" />
+				<enumerated>STRING</enumerated>
 			</basic>
 
 			<basic name="status">
@@ -406,674 +372,6 @@
 			<basic name="lastLoadDate">
 				<column name="last_load_date" />
 			</basic>
-		</attributes>
-	</entity>
-
-
-	<entity class="kz.kegoc.bln.entity.doc.Group">
-		<table name="media_groups" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_groups_gen" />
-				<sequence-generator
-						name="media_groups_gen"
-						sequence-name="apps.media_groups_s"
-						allocation-size="1"
-				/>				
-			</id>
-
-			<basic name="name">
-				<column name="name" insertable="false" updatable="false" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<one-to-many name="meteringPoints" mapped-by="group" orphan-removal="true">
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<one-to-many name="translations" mapped-by="group" orphan-removal="true">
-				<map-key name="lang"/>
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<transient name="lang" />
-		</attributes>
-	</entity>
-
-
-	<entity class="kz.kegoc.bln.entity.doc.translate.GroupTranslate">
-		<table name="media_groups_tl" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_groups_tl_gen" />
-				<sequence-generator
-						name="media_groups_tl_gen"
-						sequence-name="apps.media_groups_tl_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="lang">
-				<column name="lang"  />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="group">
-				<join-column name="group_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-
-	<entity class="kz.kegoc.bln.entity.doc.GroupMeteringPoint">
-		<table name="media_group_metering_points" schema="apps" />
-		<attributes>
-			<id name="id">
-				<column name="id" />
-        		<generated-value strategy="SEQUENCE" generator="media_group_metering_points_gen" />
-        		<sequence-generator
-        			name="media_group_metering_points_gen"
-        			sequence-name="apps.media_group_metering_points_s"
-					allocation-size="1"
-        		/>				
-			</id>
-
-      		<basic name="listOrder">
-      			<column name="list_order" />
-      		</basic>
-      					
-      		<basic name="startDate">
-      			<column name="start_date" />
-      		</basic>
-
-      		<basic name="endDate">
-      			<column name="end_date" />
-      		</basic>
-      		
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id" />	
-			</many-to-one>  
-
-			<many-to-one name="group">
-				<join-column name="group_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-
-	<entity class="kz.kegoc.bln.entity.doc.DocType">
-		<table name="media_doc_types" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_types_gen" />
-				<sequence-generator
-						name="media_doc_types_gen"
-						sequence-name="apps.media_doc_types_s"
-						allocation-size="1"
-				/>				
-			</id>
-
-			<basic name="code">
-				<column name="code" />
-			</basic>
-
-			<basic name="name">
-				<column name="name" insertable="false" updatable="false" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<one-to-many name="translations" mapped-by="docType" orphan-removal="true">
-				<map-key name="lang"/>
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<transient name="lang"/>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.translate.DocTypeTranslate">
-		<table name="media_doc_types_tl" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_types_tl_gen" />
-				<sequence-generator
-						name="media_doc_types_tl_gen"
-						sequence-name="apps.media_doc_types_tl_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="lang">
-				<column name="lang"  />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="docType">
-				<join-column name="doc_type_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.DocMeteringReadingHeader">
-		<table name="media_doc_metering_reading_headers" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_headers_gen" />
-				<sequence-generator
-						name="media_doc_metering_reading_headers_gen"
-						sequence-name="apps.media_doc_metering_reading_headers_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="docDate">
-				<column name="doc_date" />
-			</basic>
-
-			<basic name="startDate">
-				<column name="start_date" />
-			</basic>
-
-			<basic name="endDate">
-				<column name="end_date" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="docType">
-				<join-column name="doc_type_id"/>
-			</many-to-one>
-
-			<many-to-one name="group">
-				<join-column name="group_id"/>
-			</many-to-one>
-
-			<one-to-many name="lines" mapped-by="header" orphan-removal="true" >
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<one-to-many name="translations" mapped-by="header" orphan-removal="true">
-				<map-key name="lang"/>
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-			
-			<transient name="name"/>
-			<transient name="lang"/>
-		</attributes>
-	</entity>
-
-
-	<entity class="kz.kegoc.bln.entity.doc.translate.DocMeteringReadingHeaderTranslate">
-		<table name="media_doc_metering_reading_headers_tl" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_headers_tl_gen" />
-				<sequence-generator
-						name="media_doc_metering_reading_headers_tl_gen"
-						sequence-name="apps.media_doc_metering_reading_headers_tl_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="lang">
-				<column name="lang"  />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="header">
-				<join-column name="header_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.DocMeteringReadingLine">
-		<table name="media_doc_metering_reading_lines" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_metering_reading_lines_gen" />
-				<sequence-generator
-						name="media_doc_metering_reading_lines_gen"
-						sequence-name="apps.media_doc_metering_reading_lines_s"
-						allocation-size="1"
-				/>
-			</id>
-
-
-			<basic name="paramCode">
-				<column name="param_code" />
-			</basic>
-
-			<basic name="unitCode">
-				<column name="unit_code" />
-			</basic>
-
-			<basic name="dataSource">
-				<column name="data_source"  />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="startBalance">
-				<column name="start_balance" />
-			</basic>
-
-			<basic name="endBalance">
-				<column name="end_balance" />
-			</basic>
-
-			<basic name="flow">
-				<column name="flow" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="header">
-				<join-column name="header_id"/>
-			</many-to-one>
-
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id"/>
-			</many-to-one>
-
-			<many-to-one name="meter">
-				<join-column name="meter_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.DocMeterReplacingHeader">
-		<table name="media_doc_meter_replacing_headers" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_meter_replacing_headers_gen" />
-				<sequence-generator
-						name="media_doc_meter_replacing_headers_gen"
-						sequence-name="apps.media_doc_meter_replacing_headers_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="docDate">
-				<column name="doc_date" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="docType">
-				<join-column name="doc_type_id"/>
-			</many-to-one>
-
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id"/>
-			</many-to-one>
-
-			<many-to-one name="oldMeter">
-				<join-column name="old_meter_id"/>
-			</many-to-one>
-
-			<many-to-one name="newMeter">
-				<join-column name="new_meter_id"/>
-			</many-to-one>
-
-			<one-to-many name="lines" mapped-by="header" orphan-removal="true" >
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<one-to-many name="translations" mapped-by="header" orphan-removal="true">
-				<map-key name="lang"/>
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<transient name="name"/>
-			<transient name="lang"/>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.translate.DocMeterReplacingHeaderTranslate">
-		<table name="media_doc_meter_replacing_headers_tl" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_meter_replacing_headers_tl_gen" />
-				<sequence-generator
-					name="media_doc_meter_replacing_headers_tl_gen"
-					sequence-name="apps.media_doc_meter_replacing_headers_tl_s"
-					allocation-size="1"
-				/>
-			</id>
-
-			<basic name="lang">
-				<column name="lang"  />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="header">
-				<join-column name="header_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.DocMeterReplacingLine">
-		<table name="media_doc_meter_replacing_lines" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_meter_replacing_lines_gen" />
-				<sequence-generator
-						name="media_doc_meter_replacing_lines_gen"
-						sequence-name="apps.media_doc_meter_replacing_lines_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="paramCode">
-				<column name="param_code" />
-			</basic>
-
-			<basic name="oldBalance">
-				<column name="old_balance" />
-			</basic>
-
-			<basic name="newBalance">
-				<column name="new_balance" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="header">
-				<join-column name="header_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-
-	<entity class="kz.kegoc.bln.entity.doc.DocUnderAccountingHeader">
-		<table name="media_doc_under_accounting_headers" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_under_accounting_headers_gen" />
-				<sequence-generator
-						name="media_doc_under_accounting_headers_gen"
-						sequence-name="apps.media_doc_under_accounting_headers_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="docDate">
-				<column name="doc_date" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="docType">
-				<join-column name="doc_type_id"/>
-			</many-to-one>
-
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id"/>
-			</many-to-one>
-
-			<many-to-one name="meter">
-				<join-column name="meter_id"/>
-			</many-to-one>
-
-			<one-to-many name="measLines" mapped-by="header" orphan-removal="true">
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<one-to-many name="calcLines" mapped-by="header" orphan-removal="true">
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<one-to-many name="translations" mapped-by="header" orphan-removal="true">
-				<map-key name="lang"/>
-				<cascade>
-					<cascade-all/>
-				</cascade>
-			</one-to-many>
-
-			<transient name="name"/>
-			<transient name="lang"/>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.translate.DocUnderAccountingHeaderTranslate">
-		<table name="media_doc_under_accounting_headers_tl" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_under_accounting_headers_tl_gen" />
-				<sequence-generator
-						name="media_doc_under_accounting_headers_tl_gen"
-						sequence-name="apps.media_doc_under_accounting_headers_tl_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="lang">
-				<column name="lang"  />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="header">
-				<join-column name="header_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.DocUnderAccountingMeasLine">
-		<table name="media_doc_under_accounting_meas_lines" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_under_accounting_meas_lines_gen" />
-				<sequence-generator
-						name="media_doc_under_accounting_meas_lines_gen"
-						sequence-name="apps.media_doc_under_accounting_meas_lines_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="paramCode">
-				<column name="param_code" />
-			</basic>
-
-			<basic name="measTime">
-				<column name="meas_time" />
-			</basic>
-
-			<basic name="value">
-				<column name="value" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="header">
-				<join-column name="header_id"/>
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.doc.DocUnderAccountingCalcLine">
-		<table name="media_doc_under_accounting_calc_lines" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_doc_under_accounting_calc_lines_gen" />
-				<sequence-generator
-						name="media_doc_under_accounting_calc_lines_gen"
-						sequence-name="apps.media_doc_under_accounting_calc_lines_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="paramCode">
-				<column name="param_code" />
-			</basic>
-
-			<basic name="turnOnTime">
-				<column name="turn_on_time" />
-			</basic>
-
-			<basic name="turnOffTime">
-				<column name="turn_off_time" />
-			</basic>
-
-			<basic name="downtime">
-				<column name="downtime" />
-			</basic>
-
-			<basic name="value">
-				<column name="value" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="header">
-				<join-column name="header_id"/>
-			</many-to-one>
 		</attributes>
 	</entity>
 </entity-mappings>

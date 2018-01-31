@@ -3,11 +3,12 @@ package kz.kegoc.bln.producer.emcos;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
+
+import kz.kegoc.bln.entity.data.MeteringReading;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.entity.data.DayMeteringBalance;
-import kz.kegoc.bln.entity.data.HourMeteringFlow;
+import kz.kegoc.bln.entity.data.MeasData;
 import kz.kegoc.bln.producer.MeteringDataProducer;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
 
@@ -19,8 +20,8 @@ public class EmcosMeteringDataProducer implements MeteringDataProducer {
 	@Schedule(minute = "*/30", hour = "*", persistent = false)
 	public void execute() {
 		try {
-			emcosDayMeteringBalanceReader.read();
-			emcosHourMeteringDataReader.read();
+			emcosMeteringReadingReader.read();
+			emcosMeasDataReader.read();
 		}
 		
 		catch (Exception e) {
@@ -29,8 +30,8 @@ public class EmcosMeteringDataProducer implements MeteringDataProducer {
     }
 
 	@Inject
-	private EmcosMeteringDataReader<HourMeteringFlow> emcosHourMeteringDataReader;
+	private EmcosMeteringDataReader<MeasData> emcosMeasDataReader;
 	
 	@Inject
-	private EmcosMeteringDataReader<DayMeteringBalance> emcosDayMeteringBalanceReader;
+	private EmcosMeteringDataReader<MeteringReading> emcosMeteringReadingReader;
 }
