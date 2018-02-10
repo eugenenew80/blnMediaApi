@@ -4,7 +4,10 @@ import com.google.common.collect.BiMap;
 
 import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
-import kz.kegoc.bln.entity.common.DataSource;
+import kz.kegoc.bln.entity.common.DataStatus;
+import kz.kegoc.bln.entity.common.InputMethod;
+import kz.kegoc.bln.entity.common.ReceivingMethod;
+import kz.kegoc.bln.entity.common.SourceSystem;
 import kz.kegoc.bln.entity.data.LastLoadInfo;
 import kz.kegoc.bln.gateway.emcos.ServerConfig;
 import kz.kegoc.bln.gateway.emcos.MeasDataRawGateway;
@@ -170,7 +173,7 @@ public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
 
     private String serializePointCfg(MeteringPointCfg emcosCfg) {
     	LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-    		.filter(t -> t.getSourceMeteringPointCode().equals(emcosCfg.getPointCode()) && t.getSourceParamCode().equals(emcosCfg.getParamCode()) )
+    		.filter(t -> t.getSourceMeteringPointCode().equals(emcosCfg.getPointCode()) && t.getSourceParamCode().equals(emcosCfg.getEmcosParamCode()) )
     		.findFirst()
     		.orElse(null);
 
@@ -227,7 +230,11 @@ public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
         MeasDataRaw data = new MeasDataRaw();
         data.setSourceMeteringPointCode(externalCode);
         data.setMeasDate(time);
-        data.setDataSourceCode(DataSource.EMCOS);
+        data.setSourceSystemCode(SourceSystem.EMCOS);
+        data.setStatus(DataStatus.TMP);
+        data.setInterval(900);
+        data.setInputMethod(InputMethod.AUTO);
+        data.setReceivingMethod(ReceivingMethod.AUTO);
         data.setSourceUnitCode(emcosParamUnits.get(emcosParamCode));
         data.setSourceParamCode(emcosParamCode);
         data.setVal(val);

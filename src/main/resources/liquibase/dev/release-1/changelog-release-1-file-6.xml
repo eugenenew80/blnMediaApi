@@ -13,6 +13,10 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="source_system_code" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="source_metering_point_code" type="varchar(18)">
                 <constraints nullable="true"/>
             </column>
@@ -25,7 +29,7 @@
                 <constraints nullable="false"/>
             </column>
                         
-            <column name="metering_date" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="metering_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
                 <constraints nullable="false"/>
             </column>
 
@@ -33,15 +37,23 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="data_source_code" type="varchar(15)">
+            <column name="status" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="input_method" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="receiving_method" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
                 <constraints nullable="true"/>
             </column>
             
-            <column name="last_update_date" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="last_update_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
                 <constraints nullable="true"/>
             </column>                       
         </createTable>

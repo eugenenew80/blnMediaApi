@@ -57,7 +57,7 @@
                     <changeLogFile>
                         ${basedir}/src/main/resources/liquibase/${scripts}/changelog.xml
                     </changeLogFile>
-
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                     <driver>${driver}</driver>
                     <url>${url}</url>
                     <username>${username}</username>
@@ -97,13 +97,13 @@
 
             <properties>
                 <driver>oracle.jdbc.OracleDriver</driver>
-                <url>jdbc:oracle:thin:@localhost:1521:BLNDEV</url>
-                <username>system</username>
-                <password>q1w2e3r4T5</password>
+                <url>jdbc:oracle:thin:@10.9.50.151:1521:orcl12c</url>
+                <username>apps</username>
+                <password>apps</password>
                 <scripts>dev</scripts>
                 <skipTests>true</skipTests>
 
-                <wildfly-server>10.9.44.241</wildfly-server>
+                <wildfly-server>localhost</wildfly-server>
                 <wildfly-port>9990</wildfly-port>
                 <wildfly-user>admin</wildfly-user>
                 <wildfly-password>1</wildfly-password>
@@ -121,6 +121,24 @@
                 <skipTests>true</skipTests>
 
                 <wildfly-server>localhost</wildfly-server>
+                <wildfly-port>9990</wildfly-port>
+                <wildfly-user>admin</wildfly-user>
+                <wildfly-password>1</wildfly-password>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>prod</id>
+
+            <properties>
+                <driver>oracle.jdbc.OracleDriver</driver>
+                <url>jdbc:oracle:thin:@localhost:1521:BLNDEV</url>
+                <username>system</username>
+                <password>q1w2e3r4T5</password>
+                <scripts>dev</scripts>
+                <skipTests>true</skipTests>
+
+                <wildfly-server>10.9.44.241</wildfly-server>
                 <wildfly-port>9990</wildfly-port>
                 <wildfly-user>admin</wildfly-user>
                 <wildfly-password>1</wildfly-password>
@@ -328,5 +346,14 @@
             <version>4.3.7.Final</version>
             <scope>provided</scope>
         </dependency>
+
+
+        <!-- ojdbc8.jar -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>12.2.0.1</version>
+        </dependency>
+
     </dependencies>
 </project>

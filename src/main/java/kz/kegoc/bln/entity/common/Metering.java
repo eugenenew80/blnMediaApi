@@ -1,8 +1,8 @@
 package kz.kegoc.bln.entity.common;
 
 public interface Metering extends HasId, HasDates {
-    DataSource getDataSourceCode();
-    void setDataSourceCode(DataSource dataSourceCode);
+    SourceSystem getSourceSystemCode();
+    void setSourceSystemCode(SourceSystem sourceSystemCode);
     
 	String getSourceParamCode();
     void setSourceParamCode(String sourceParamCode);

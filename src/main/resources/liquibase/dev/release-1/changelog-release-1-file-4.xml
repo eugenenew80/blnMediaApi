@@ -9,7 +9,7 @@
     <changeSet id="media-eug-10" logicalFilePath="path-independent" author="eugene" context="postgres">
         <createIndex indexName="idx_media_metering_reading_1" schemaName="apps" tableName="media_metering_reading">
             <column name="source_metering_point_code"   type="varchar(18)"/>
-            <column name="metering_date"                type="TIMESTAMP WITHOUT TIME ZONE" />
+            <column name="metering_date"                type="TIMESTAMP WITH LOCAL TIME ZONE" />
             <column name="source_param_code"            type="varchar(4)" />
         </createIndex>
     </changeSet>

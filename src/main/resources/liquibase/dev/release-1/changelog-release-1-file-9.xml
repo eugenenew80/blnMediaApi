@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="media-eug-25" logicalFilePath="path-independent" author="eugene">
+        <comment>Creating table: media_work_list_headers</comment>
+        <createTable tableName="media_work_list_headers" schemaName="apps">
+            <column name="id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_system_code" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="direction" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="config_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_active" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number" remarks="Автор">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+	<changeSet id="media-eug-26" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating primary key for table: media_work_list_headers</comment>
+	    <addPrimaryKey 
+	            columnNames="id"
+	            constraintName="pk_media_work_list_headers"
+	            schemaName="apps"
+	            tableName="media_work_list_headers"/>
+	</changeSet>
+	
+	<changeSet id="media-eug-27" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating sequence for table: media_work_list_headers</comment>
+	    <createSequence 
+	            incrementBy="1"
+	            schemaName="apps"
+	            sequenceName="media_work_list_headers_s"
+	            startValue="2"/>
+	</changeSet>
+
+    <changeSet id="media-eug-28" logicalFilePath="path-independent" author="eugene">
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="1" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Юж. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="1" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="2" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Акмол. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="2" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="3" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Алм. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="3" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="4" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Акт. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="4" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="5" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Вост. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="5" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="6" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Сарб. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="6" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="7" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Центр. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="7" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="8" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Сев. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="8" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="9" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Зап. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="IMPORT" />
+            <column name="config_id" type="number" value="9" />
+            <column name="is_active" type="number" value="1" />
+        </insert>
+
+        <rollback/>
+    </changeSet>
+</databaseChangeLog>

@@ -7,11 +7,16 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
     <changeSet id="media-eug-1" logicalFilePath="path-independent" author="eugene">
-        <comment>Creating table: media_day_metering_flow</comment>
-        <createTable tableName="media_meas_data" schemaName="apps">
+        <comment>Creating table: media_power_consumption</comment>
+        <createTable tableName="media_power_consumption" schemaName="apps">
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="source_system_code" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="source_metering_point_code" type="varchar(18)">
                 <constraints nullable="true"/>
             </column>
@@ -24,32 +29,36 @@
                 <constraints nullable="false"/>
             </column>
                         
-            <column name="meas_date" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="meas_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
                 <constraints nullable="false"/>
-            </column>
-
-            <column name="interval_type" type="varchar(4)">
-                <constraints nullable="true"/>
             </column>
 
             <column name="val" type="number">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="status" type="number">
+            <column name="status" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="data_source_code" type="varchar(15)">
+            <column name="param_id" type="number">
                 <constraints nullable="false"/>
-            </column>
-
-            <column name="param_code" type="varchar(4)">
-                <constraints nullable="true"/>
             </column>
 
             <column name="unit_id" type="number" >
                 <constraints nullable="true"/>
+            </column>
+
+            <column name="interval" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="input_method" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="receiving_method" type="varchar(20)">
+                <constraints nullable="false"/>
             </column>
 
             <column name="metering_point_id" type="number" >
@@ -60,31 +69,43 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="version" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
                 <constraints nullable="true"/>
             </column>
             
-            <column name="last_update_date" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="last_update_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
                 <constraints nullable="true"/>
-            </column>                                   
+            </column>
+
+            <column name="create_by" type="number" remarks="Автор">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
 
 	<changeSet id="media-eug-2" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating primary key for table: media_meas_data</comment>
+	    <comment>Creating primary key for table: media_power_consumption</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_meas_data"
+	            constraintName="pk_media_power_consumption"
 	            schemaName="apps"
-	            tableName="media_meas_data"/>
+	            tableName="media_power_consumption"/>
 	</changeSet>
 
 	<changeSet id="media-eug-3" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating sequence for table: media_meas_data</comment>
+	    <comment>Creating sequence for table: media_power_consumption</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_meas_data_s"
+	            sequenceName="media_power_consumption_s"
 	            startValue="1"/>
 	</changeSet>
 </databaseChangeLog>

@@ -2,7 +2,10 @@ package kz.kegoc.bln.gateway.emcos.impl;
 
 import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
-import kz.kegoc.bln.entity.common.DataSource;
+import kz.kegoc.bln.entity.common.DataStatus;
+import kz.kegoc.bln.entity.common.InputMethod;
+import kz.kegoc.bln.entity.common.ReceivingMethod;
+import kz.kegoc.bln.entity.common.SourceSystem;
 import kz.kegoc.bln.entity.data.MeteringReadingRaw;
 import kz.kegoc.bln.entity.data.LastLoadInfo;
 import kz.kegoc.bln.gateway.emcos.MeteringReadingRawGateway;
@@ -167,7 +170,7 @@ public class MeteringReadingRawGatewayImpl implements MeteringReadingRawGateway 
 
     private String serializePointCfg(MeteringPointCfg pointCfg) {
         LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-            .filter(t -> t.getSourceMeteringPointCode().equals(pointCfg.getPointCode()) && t.getSourceParamCode().equals(pointCfg.getParamCode()) )
+            .filter(t -> t.getSourceMeteringPointCode().equals(pointCfg.getPointCode()) && t.getSourceParamCode().equals(pointCfg.getEmcosParamCode()) )
             .findFirst()
             .orElse(null);
 
@@ -218,7 +221,10 @@ public class MeteringReadingRawGatewayImpl implements MeteringReadingRawGateway 
         MeteringReadingRaw balance = new MeteringReadingRaw();
         balance.setSourceMeteringPointCode(externalCode);
         balance.setMeteringDate(date.atStartOfDay());
-        balance.setDataSourceCode(DataSource.EMCOS);
+        balance.setSourceSystemCode(SourceSystem.EMCOS);
+        balance.setStatus(DataStatus.TMP);
+        balance.setInputMethod(InputMethod.AUTO);
+        balance.setReceivingMethod(ReceivingMethod.AUTO);
         balance.setSourceUnitCode(emcosParamUnits.get(emcosParamCode));
         balance.setSourceParamCode(emcosParamCode);
         balance.setVal(val);

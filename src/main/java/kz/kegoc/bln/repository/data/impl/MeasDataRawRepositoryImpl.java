@@ -19,7 +19,7 @@ public class MeasDataRawRepositoryImpl
 				.setParameter("sourceMeteringPointCode", entity.getSourceMeteringPointCode())
 				.setParameter("measDate", 				entity.getMeasDate())
 				.setParameter("sourceUnitCode", 			entity.getSourceUnitCode())
-				.setParameter("dataSourceCode", 			entity.getDataSourceCode())
+				.setParameter("sourceSystemCode", 		entity.getSourceSystemCode())
 				.setParameter("sourceParamCode", 		entity.getSourceParamCode())
 			.getResultList()
 				.stream()

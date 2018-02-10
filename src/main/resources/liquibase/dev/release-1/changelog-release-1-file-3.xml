@@ -21,7 +21,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="last_load_date" type="TIMESTAMP WITHOUT TIME ZONE">
+            <column name="last_load_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
                 <constraints nullable="true"/>
             </column>
         </createTable>

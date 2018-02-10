@@ -1,7 +1,8 @@
 package kz.kegoc.bln.producer.file.reader.impl;
 
-import kz.kegoc.bln.entity.common.DataSource;
-import kz.kegoc.bln.entity.common.DataStatus;
+import kz.kegoc.bln.entity.common.InputMethod;
+import kz.kegoc.bln.entity.common.ReceivingMethod;
+import kz.kegoc.bln.entity.common.SourceSystem;
 import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
@@ -14,7 +15,6 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -73,7 +73,9 @@ public class CsvMeasDataReaderImpl implements FileMeteringDataReader<MeasDataRaw
 		d.setSourceParamCode(data[3]);
 		d.setSourceUnitCode(data[4]);
 		d.setVal( Double.parseDouble(data[5]) );
-		d.setDataSourceCode(DataSource.CSV);
+		d.setSourceSystemCode(SourceSystem.NOT_SET);
+		d.setInputMethod(InputMethod.FILE);
+		d.setReceivingMethod(ReceivingMethod.NOT_SET);
 
 		return d;
 	}

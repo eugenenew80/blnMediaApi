@@ -40,7 +40,7 @@
             where
                     t.sourceMeteringPointCode=:sourceMeteringPointCode
                 and t.measDate=:measDate
-                and t.dataSourceCode=:dataSourceCode
+                and t.sourceSystemCode=:sourceSystemCode
                 and t.sourceUnitCode=:sourceUnitCode
                 and t.sourceParamCode=:sourceParamCode
         </query>
@@ -55,7 +55,7 @@
             where
                     t.sourceMeteringPointCode=:sourceMeteringPointCode
                 and t.meteringDate=:meteringDate
-                and t.dataSourceCode=:dataSourceCode
+                and t.sourceSystemCode=:sourceSystemCode
                 and t.sourceUnitCode=:sourceUnitCode
                 and t.sourceParamCode=:sourceParamCode
         </query>
@@ -71,7 +71,7 @@
             where
             	    t.sourceMeteringPointCode=:sourceMeteringPointCode
             	and t.measDate=:measDate
-            	and t.dataSourceCode=:dataSourceCode
+            	and t.sourceSystemCode=:sourceSystemCode
             	and t.status=:status
             	and t.sourceUnitCode=:sourceUnitCode
             	and t.sourceParamCode=:sourceParamCode
@@ -107,7 +107,7 @@
             where
             	    t.sourceMeteringPointCode=:sourceMeteringPointCode
             	and t.meteringDate=:meteringDate
-            	and t.dataSourceCode=:dataSourceCode
+            	and t.sourceSystemCode=:sourceSystemCode
             	and t.status=:status
             	and t.sourceUnitCode=:sourceUnitCode
             	and t.sourceParamCode=:sourceParamCode

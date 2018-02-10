@@ -1,7 +1,8 @@
 package kz.kegoc.bln.producer.file.reader.impl;
 
-import kz.kegoc.bln.entity.common.DataSource;
-import kz.kegoc.bln.entity.common.DataStatus;
+import kz.kegoc.bln.entity.common.InputMethod;
+import kz.kegoc.bln.entity.common.ReceivingMethod;
+import kz.kegoc.bln.entity.common.SourceSystem;
 import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.producer.file.reader.FileMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
@@ -15,7 +16,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -86,7 +86,9 @@ public class XmlMeasDataReaderImpl implements FileMeteringDataReader<MeasDataRaw
 					break;					
 			}
 		}
-		d.setDataSourceCode(DataSource.XML);
+		d.setSourceSystemCode(SourceSystem.NOT_SET);
+		d.setInputMethod(InputMethod.FILE);
+		d.setReceivingMethod(ReceivingMethod.NOT_SET);
 		
 		return d;
 	}

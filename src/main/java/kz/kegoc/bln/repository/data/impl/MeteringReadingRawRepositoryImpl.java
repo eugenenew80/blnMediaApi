@@ -14,11 +14,11 @@ public class MeteringReadingRawRepositoryImpl
 
 	public MeteringReadingRaw selectByEntity(MeteringReadingRaw entity) {
 		return
-			getEntityManager().createNamedQuery("MeasDataRaw.findByEntity", MeteringReadingRaw.class)
+			getEntityManager().createNamedQuery("MeteringReadingRaw.findByEntity", MeteringReadingRaw.class)
 				.setParameter("sourceMeteringPointCode", entity.getSourceMeteringPointCode())
 				.setParameter("meteringDate", 			entity.getMeteringDate())
 				.setParameter("sourceUnitCode", 			entity.getSourceUnitCode())
-				.setParameter("dataSourceCode", 			entity.getDataSourceCode())
+				.setParameter("sourceSystemCode", 		entity.getSourceSystemCode())
 				.setParameter("sourceParamCode", 		entity.getSourceParamCode())
 			.getResultList()
 				.stream()

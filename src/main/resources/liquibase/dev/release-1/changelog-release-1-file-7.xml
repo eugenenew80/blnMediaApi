@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="media-eug-17" logicalFilePath="path-independent" author="eugene">
+        <comment>Creating table: media_parameters</comment>
+        <createTable tableName="media_parameters" schemaName="apps">
+            <column name="id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="code" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_param_code" type="varchar(10)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="source_unit_code" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="unit_id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="param_type" type="varchar(10)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number" remarks="Автор">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+	<changeSet id="media-eug-18" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating primary key for table: media_parameters</comment>
+	    <addPrimaryKey 
+	            columnNames="id"
+	            constraintName="pk_media_parameters"
+	            schemaName="apps"
+	            tableName="media_parameters"/>
+	</changeSet>
+	
+	<changeSet id="media-eug-19" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating sequence for table: media_parameters_raw</comment>
+	    <createSequence 
+	            incrementBy="1"
+	            schemaName="apps"
+	            sequenceName="media_parameters_s"
+	            startValue="9"/>
+	</changeSet>
+
+    <changeSet id="media-eug-20" logicalFilePath="path-independent" author="eugene">
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"   type="number" value="1" />
+            <column name="code" type="varchar(10)" value="A+" />
+            <column name="name" type="varchar(100)" value="Актив приём" />
+            <column name="source_param_code" type="varchar(10)" value="1040" />
+            <column name="source_unit_code" type="varchar(10)" value="kWh" />
+            <column name="unit_id" type="number" value="9" />
+            <column name="param_type" type="number" value="PC"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"   type="number" value="2" />
+            <column name="code" type="varchar(10)" value="A-" />
+            <column name="name" type="varchar(100)" value="Актив отдача" />
+            <column name="source_param_code" type="varchar(10)" value="1041" />
+            <column name="source_unit_code" type="varchar(10)" value="kWh" />
+            <column name="unit_id" type="number" value="9" />
+            <column name="param_type" type="number" value="PC"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"   type="number" value="3" />
+            <column name="code" type="varchar(10)" value="R+" />
+            <column name="name" type="varchar(100)" value="Реактив приём" />
+            <column name="source_param_code" type="varchar(10)" value="1042" />
+            <column name="source_unit_code" type="varchar(10)" value="kVarh" />
+            <column name="unit_id" type="number" value="14" />
+            <column name="param_type" type="number" value="PC"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"   type="number" value="4" />
+            <column name="code" type="varchar(10)" value="R-" />
+            <column name="name" type="varchar(100)" value="Реактив отдача" />
+            <column name="source_param_code" type="varchar(10)" value="1043" />
+            <column name="source_unit_code" type="varchar(10)" value="kVarh" />
+            <column name="unit_id" type="number" value="14" />
+            <column name="param_type" type="number" value="PC"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"   type="number" value="5" />
+            <column name="code" type="varchar(10)" value="A+" />
+            <column name="name" type="varchar(100)" value="Актив приём" />
+            <column name="source_param_code" type="varchar(10)" value="1498" />
+            <column name="source_unit_code" type="varchar(10)" value="kWh" />
+            <column name="unit_id" type="number" value="9" />
+            <column name="param_type" type="number" value="MR"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"   type="number" value="6" />
+            <column name="code" type="varchar(10)" value="A-" />
+            <column name="name" type="varchar(100)" value="Актив отдача" />
+            <column name="source_param_code" type="varchar(10)" value="1499" />
+            <column name="source_unit_code" type="varchar(10)" value="kWh" />
+            <column name="unit_id" type="number" value="9" />
+            <column name="param_type" type="number" value="MR"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"   type="number" value="7" />
+            <column name="code" type="varchar(10)" value="R+" />
+            <column name="name" type="varchar(100)" value="Реактив приём" />
+            <column name="source_param_code" type="varchar(10)" value="1500" />
+            <column name="source_unit_code" type="varchar(10)" value="kVarh" />
+            <column name="unit_id" type="number" value="14" />
+            <column name="param_type" type="number" value="MR"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"   type="number" value="8" />
+            <column name="code" type="varchar(10)" value="R-" />
+            <column name="name" type="varchar(100)" value="Реактив отдача" />
+            <column name="source_param_code" type="varchar(10)" value="1501" />
+            <column name="source_unit_code" type="varchar(10)" value="kVarh" />
+            <column name="unit_id" type="number" value="14" />
+            <column name="param_type" type="number" value="MR"/>
+        </insert>
+
+        <rollback/>
+    </changeSet>
+</databaseChangeLog>
