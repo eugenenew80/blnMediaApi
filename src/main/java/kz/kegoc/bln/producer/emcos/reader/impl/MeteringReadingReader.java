@@ -28,6 +28,7 @@ public class MeteringReadingReader implements EmcosMeteringDataReader<MeteringRe
 		System.out.println(header.getLines().size());
 
 
+
 		/*
 		LocalDateTime requestedTime = buildRequestedDateTime();
 		List<MeteringPointCfg> pointsCfg = emcosCfgGateway.request();
