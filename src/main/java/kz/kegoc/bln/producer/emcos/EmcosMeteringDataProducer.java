@@ -17,11 +17,11 @@ public class EmcosMeteringDataProducer implements DataProducer {
 	private static final Logger logger = LoggerFactory.getLogger(EmcosMeteringDataProducer.class);
 	
 	@ProducerMonitor
-	@Schedule(minute = "*/30", hour = "*", persistent = false)
+	@Schedule(minute = "*/1", hour = "*", persistent = false)
 	public void execute() {
 		try {
 			emcosMeteringReadingReader.read();
-			emcosMeasDataReader.read();
+			//emcosMeasDataReader.read();
 		}
 		
 		catch (Exception e) {

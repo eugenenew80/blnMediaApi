@@ -12,10 +12,6 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(of= {"id"})
 public class User implements HasId, HasName {
 	private Long id;
-
-	@NotNull @Size(max=30)
+	private String code;
 	private String name;
-
-	@NotNull @Size(max=100)
-	private String description;
 }

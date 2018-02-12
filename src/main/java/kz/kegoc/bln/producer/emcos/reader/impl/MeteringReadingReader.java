@@ -6,18 +6,29 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import com.google.common.collect.BiMap;
 import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
+import kz.kegoc.bln.entity.data.EmcosConfig;
 import kz.kegoc.bln.entity.data.MeteringReadingRaw;
+import kz.kegoc.bln.entity.data.WorkListHeader;
 import kz.kegoc.bln.gateway.emcos.MeteringReadingRawGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfgGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.producer.emcos.reader.EmcosMeteringDataReader;
 import kz.kegoc.bln.queue.MeteringDataQueue;
+import kz.kegoc.bln.service.data.EmcosConfigService;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
+import kz.kegoc.bln.service.data.WorkListHeaderService;
 
 @Stateless
 public class MeteringReadingReader implements EmcosMeteringDataReader<MeteringReadingRaw> {
 
 	public void read() {
+		WorkListHeader header = headerService.findById(1L);
+		System.out.println(header.getName());
+		System.out.println(header.getConfig().getUrl());
+		System.out.println(header.getLines().size());
+
+
+		/*
 		LocalDateTime requestedTime = buildRequestedDateTime();
 		List<MeteringPointCfg> pointsCfg = emcosCfgGateway.request();
 
@@ -34,6 +45,7 @@ public class MeteringReadingReader implements EmcosMeteringDataReader<MeteringRe
 					lastLoadInfoService.updateLastBalanceLoadDate(meteringBalance);
 				}
 			});
+		*/
     }
 
 	private LocalDateTime buildRequestedDateTime() {
@@ -56,4 +68,7 @@ public class MeteringReadingReader implements EmcosMeteringDataReader<MeteringRe
 
 	@Inject @ParamCodes
 	private BiMap<String, String> paramCodes;
+
+	@Inject
+	private WorkListHeaderService headerService;
 }

@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_1.xsd">
+	<entity class="kz.kegoc.bln.entity.adm.User">
+		<table name="adm_users" schema="apps" />
+		<attributes>
+			<id name="id">
+				<column name="id" />
+			</id>
+
+			<basic name="code">
+				<column name="code" />
+			</basic>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+		</attributes>
+	</entity>
+
 	<entity class="kz.kegoc.bln.entity.dict.MeteringPoint">
 		<table name="dict_metering_points" schema="apps"/>
 		<attributes>
@@ -419,6 +436,273 @@
       					
 			<basic name="lastLoadDate">
 				<column name="last_load_date" />
+			</basic>
+		</attributes>
+	</entity>
+
+
+	<entity class="kz.kegoc.bln.entity.data.Parameter">
+		<table name="media_parameters" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_parameters_gen" />
+				<sequence-generator
+						name="media_parameters_gen"
+						sequence-name="apps.media_parameters_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="code">
+				<column name="code" />
+			</basic>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="sourceParamCode">
+				<column name="source_param_code" />
+			</basic>
+
+			<basic name="paramType">
+				<column name="param_type" />
+			</basic>
+
+			<basic name="sourceUnitCode">
+				<column name="source_unit_code" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="unit">
+				<join-column name="unit_id"/>
+			</many-to-one>
+
+			<many-to-one name="createBy">
+				<join-column name="create_by" />
+			</many-to-one>
+
+			<many-to-one name="lastUpdateBy">
+				<join-column name="last_update_by" />
+			</many-to-one>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.EmcosConfig">
+		<table name="media_emcos_config" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_emcos_config_gen" />
+				<sequence-generator
+						name="media_emcos_config_gen"
+						sequence-name="apps.media_emcos_config_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="code">
+				<column name="code" />
+			</basic>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="url">
+				<column name="url" />
+			</basic>
+
+			<basic name="userName">
+				<column name="user_name" />
+			</basic>
+
+			<basic name="pwd">
+				<column name="pwd" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="createBy">
+				<join-column name="create_by" />
+			</many-to-one>
+
+			<many-to-one name="lastUpdateBy">
+				<join-column name="last_update_by" />
+			</many-to-one>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.WorkListHeader">
+		<table name="media_work_list_headers" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_work_list_headers_gen" />
+				<sequence-generator
+						name="media_work_list_headers_gen"
+						sequence-name="apps.media_work_list_headers_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="sourceSystemCode">
+				<column name="source_system_code" />
+			</basic>
+
+			<basic name="direction">
+				<column name="direction" />
+			</basic>
+
+			<basic name="active">
+				<column name="is_active" />
+				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="config">
+				<join-column name="config_id"/>
+			</many-to-one>
+
+			<many-to-one name="createBy">
+				<join-column name="create_by" />
+			</many-to-one>
+
+			<many-to-one name="lastUpdateBy">
+				<join-column name="last_update_by" />
+			</many-to-one>
+
+			<one-to-many name="lines" mapped-by="header" />
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.WorkListLine">
+		<table name="media_work_list_lines" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_work_list_lines_gen" />
+				<sequence-generator
+						name="media_work_list_lines_gen"
+						sequence-name="apps.media_work_list_lines_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="name">
+				<column name="name" />
+			</basic>
+
+			<basic name="sourceSystemCode">
+				<column name="source_system_code" />
+			</basic>
+
+			<basic name="direction">
+				<column name="direction" />
+			</basic>
+
+			<basic name="parameterAp">
+				<column name="is_parameter_ap" />
+				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
+			</basic>
+
+			<basic name="parameterAm">
+				<column name="is_parameter_am" />
+				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
+			</basic>
+
+			<basic name="parameterRp">
+				<column name="is_parameter_rp" />
+				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
+			</basic>
+
+			<basic name="parameterRm">
+				<column name="is_parameter_rm" />
+				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="header">
+				<join-column name="work_list_header_id"/>
+			</many-to-one>
+
+			<many-to-one name="meteringPoint">
+				<join-column name="metering_point_id"/>
+			</many-to-one>
+
+			<many-to-one name="createBy">
+				<join-column name="create_by" />
+			</many-to-one>
+
+			<many-to-one name="lastUpdateBy">
+				<join-column name="last_update_by" />
+			</many-to-one>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.EventLog">
+		<table name="media_event_log" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_event_log_gen" />
+				<sequence-generator
+						name="media_event_log_gen"
+						sequence-name="apps.media_event_log_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="source">
+				<column name="source" />
+			</basic>
+
+			<basic name="eventType">
+				<column name="event_type" />
+			</basic>
+
+			<basic name="code">
+				<column name="code" />
+			</basic>
+
+			<basic name="text">
+				<column name="text" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
 			</basic>
 		</attributes>
 	</entity>
