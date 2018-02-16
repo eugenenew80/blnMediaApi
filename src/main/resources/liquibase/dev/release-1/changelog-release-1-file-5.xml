@@ -5,10 +5,10 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
-    
-    <changeSet id="media-eug-11" logicalFilePath="path-independent" author="eugene">
-        <comment>Creating table: media_power_consumption_raw</comment>
-        <createTable tableName="media_power_consumption_raw" schemaName="apps">
+
+    <changeSet id="media-eug-14" logicalFilePath="path-independent" author="eugene">
+        <comment>Creating table: media_metering_reading_raw</comment>
+        <createTable tableName="media_metering_reading_raw" schemaName="apps">
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
@@ -29,7 +29,7 @@
                 <constraints nullable="false"/>
             </column>
                         
-            <column name="meas_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+            <column name="metering_date" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
 
@@ -41,10 +41,6 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="interval" type="number">
-                <constraints nullable="false"/>
-            </column>
-
             <column name="input_method" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
@@ -53,31 +49,43 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="create_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+            <column name="batch_id" type="number">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+            <column name="create_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            
+            <column name="last_update_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number">
                 <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-12" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating primary key for table: media_power_consumption_raw</comment>
+	<changeSet id="media-eug-15" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating primary key for table: media_metering_reading_raw</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_power_consumption_raw"
+	            constraintName="pk_media_metering_reading_raw"
 	            schemaName="apps"
-	            tableName="media_power_consumption_raw"/>
+	            tableName="media_metering_reading_raw"/>
 	</changeSet>
-
-	<changeSet id="media-eug-13" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating sequence for table: media_power_consumption_raw</comment>
+	
+	<changeSet id="media-eug-16" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating sequence for table: media_metering_reading_raw</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_power_consumption_raw_s"
+	            sequenceName="media_metering_reading_raw_s"
 	            startValue="1"/>
-	</changeSet>
+	</changeSet>	
 </databaseChangeLog>

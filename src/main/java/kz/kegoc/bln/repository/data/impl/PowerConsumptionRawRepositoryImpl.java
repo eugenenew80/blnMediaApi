@@ -1,6 +1,6 @@
 package kz.kegoc.bln.repository.data.impl;
 
-import kz.kegoc.bln.entity.data.MeasDataRaw;
+import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
 import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.data.MeteringDataRepository;
 
@@ -10,12 +10,12 @@ import java.util.List;
 
 @Stateless
 public class MeasDataRawRepositoryImpl
-	extends AbstractRepository<MeasDataRaw>
-		implements MeteringDataRepository<MeasDataRaw> {
+	extends AbstractRepository<PowerConsumptionRaw>
+		implements MeteringDataRepository<PowerConsumptionRaw> {
 
-	public MeasDataRaw selectByEntity(MeasDataRaw entity) {
+	public PowerConsumptionRaw selectByEntity(PowerConsumptionRaw entity) {
 		return
-			getEntityManager().createNamedQuery("MeasDataRaw.findByEntity", MeasDataRaw.class)
+			getEntityManager().createNamedQuery("PowerConsumptionRaw.findByEntity", PowerConsumptionRaw.class)
 				.setParameter("sourceMeteringPointCode", entity.getSourceMeteringPointCode())
 				.setParameter("measDate", 				entity.getMeasDate())
 				.setParameter("sourceUnitCode", 			entity.getSourceUnitCode())

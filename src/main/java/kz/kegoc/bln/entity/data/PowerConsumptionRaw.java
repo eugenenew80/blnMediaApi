@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class MeasDataRaw implements Metering  {
+public class PowerCosumptionRaw implements Metering  {
 	private Long id;
 	private SourceSystem sourceSystemCode;
 	private String sourceMeteringPointCode;

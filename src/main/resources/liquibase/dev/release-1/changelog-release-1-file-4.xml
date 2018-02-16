@@ -6,11 +6,90 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
-    <changeSet id="media-eug-10" logicalFilePath="path-independent" author="eugene" context="postgres">
-        <createIndex indexName="idx_media_metering_reading_1" schemaName="apps" tableName="media_metering_reading">
-            <column name="source_metering_point_code"   type="varchar(18)"/>
-            <column name="metering_date"                type="TIMESTAMP WITH LOCAL TIME ZONE" />
-            <column name="source_param_code"            type="varchar(4)" />
-        </createIndex>
+    <changeSet id="media-eug-11" logicalFilePath="path-independent" author="eugene">
+        <comment>Creating table: media_power_consumption_raw</comment>
+        <createTable tableName="media_power_consumption_raw" schemaName="apps">
+            <column name="id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_system_code" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_metering_point_code" type="varchar(18)">
+                <constraints nullable="true"/>
+            </column>
+            
+            <column name="source_param_code" type="varchar(4)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_unit_code" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+                        
+            <column name="metering_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="val" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="interval" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="input_method" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="receiving_method" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="batch_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
     </changeSet>
+
+	<changeSet id="media-eug-12" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating primary key for table: media_power_consumption_raw</comment>
+	    <addPrimaryKey 
+	            columnNames="id"
+	            constraintName="pk_media_power_consumption_raw"
+	            schemaName="apps"
+	            tableName="media_power_consumption_raw"/>
+	</changeSet>
+
+	<changeSet id="media-eug-13" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating sequence for table: media_power_consumption_raw</comment>
+	    <createSequence 
+	            incrementBy="1"
+	            schemaName="apps"
+	            sequenceName="media_power_consumption_raw_s"
+	            startValue="1"/>
+	</changeSet>
 </databaseChangeLog>

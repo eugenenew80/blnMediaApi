@@ -63,6 +63,7 @@ public class MeteringReadingRawGatewayImpl implements MeteringReadingRawGateway 
         logger.info("MeteringReadingRawGatewayImpl.request started");
         logger.info("Param: " + paramCode);
         logger.info("Time: " + requestedTime);
+        logger.info("size: " +  pointsCfg.size());
 
         if (pointsCfg==null || pointsCfg.isEmpty()) {
             logger.warn("List of points is empty, MeteringReadingRawGatewayImpl.request interrupted");
