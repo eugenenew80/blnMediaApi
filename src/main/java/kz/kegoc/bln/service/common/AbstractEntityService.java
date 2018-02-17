@@ -2,6 +2,8 @@ package kz.kegoc.bln.service.common;
 
 import java.time.*;
 import java.util.*;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.validation.*;
 import kz.kegoc.bln.entity.common.HasDates;
 import kz.kegoc.bln.entity.common.HasId;
@@ -84,8 +86,8 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 
 		return entity;
 	}
-	
-	
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public T create(T entity) {
 		if (repository==null)
 			throw new RepositoryNotFoundException();
@@ -105,7 +107,7 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 		return repository.insert(entity);
 	}
 
-	
+
 	public T update(T entity) {
 		if (repository==null)
 			throw new RepositoryNotFoundException();
@@ -128,7 +130,7 @@ public abstract class AbstractEntityService<T extends HasId> implements EntitySe
 		return repository.update(entity);
 	}
 
-	
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public boolean delete(Long entityId) {
 		if (repository==null)
 			throw new RepositoryNotFoundException();

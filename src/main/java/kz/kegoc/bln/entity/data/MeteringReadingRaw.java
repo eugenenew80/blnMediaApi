@@ -1,5 +1,6 @@
 package kz.kegoc.bln.entity.data;
 
+import kz.kegoc.bln.entity.adm.User;
 import kz.kegoc.bln.entity.common.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,7 @@ public class MeteringReadingRaw implements Metering  {
 	private InputMethod inputMethod;
 	private DataStatus status;
 	private Double val;
+	private Long batchId;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
 }

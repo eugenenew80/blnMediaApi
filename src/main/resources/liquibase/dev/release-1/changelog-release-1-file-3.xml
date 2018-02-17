@@ -6,7 +6,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
-    <changeSet id="media-eug-7" logicalFilePath="path-independent" author="eugene" context="postgres">
+    <changeSet id="media-eug-7" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_last_load_info</comment>
         <createTable tableName="media_last_load_info" schemaName="apps">            
             <column name="id" type="number">
@@ -21,13 +21,17 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="last_load_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+            <column name="last_load_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_batch_id" type="number">
                 <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-8" logicalFilePath="path-independent" author="eugene" context="postgres">
+	<changeSet id="media-eug-8" logicalFilePath="path-independent" author="eugene">
 	    <comment>Creating primary key for table: media_last_load_info</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
@@ -36,7 +40,7 @@
 	            tableName="media_last_load_info"/>
 	</changeSet>
 	
-	<changeSet id="media-eug-9" logicalFilePath="path-independent" author="eugene" context="postgres">
+	<changeSet id="media-eug-9" logicalFilePath="path-independent" author="eugene">
 	    <comment>Creating sequence for table: media_last_load_info</comment>
 	    <createSequence 
 	            incrementBy="1"

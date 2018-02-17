@@ -1,85 +1,68 @@
 package kz.kegoc.bln.gateway.emcos.impl;
 
-import com.google.common.collect.BiMap;
-
-import kz.kegoc.bln.ejb.cdi.annotation.EmcosParamUnits;
-import kz.kegoc.bln.ejb.cdi.annotation.ParamCodes;
 import kz.kegoc.bln.entity.common.DataStatus;
 import kz.kegoc.bln.entity.common.InputMethod;
 import kz.kegoc.bln.entity.common.ReceivingMethod;
 import kz.kegoc.bln.entity.common.SourceSystem;
-import kz.kegoc.bln.entity.data.LastLoadInfo;
-import kz.kegoc.bln.gateway.emcos.ServerConfig;
-import kz.kegoc.bln.gateway.emcos.MeasDataRawGateway;
+import kz.kegoc.bln.entity.data.EmcosConfig;
+import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
+import kz.kegoc.bln.gateway.emcos.PowerConsumptionGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
-import kz.kegoc.bln.entity.data.MeasDataRaw;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
-import kz.kegoc.bln.service.data.LastLoadInfoService;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
-
 import javax.ejb.*;
 import javax.inject.Inject;
 import java.io.StringReader;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static java.util.Collections.*;
+import static java.util.stream.Collectors.groupingBy;
 
 @Singleton
-public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
-    private static final Logger logger = LoggerFactory.getLogger(MeasDataRawGatewayImpl.class);
+public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
+    private static final Logger logger = LoggerFactory.getLogger(PowerConsumptionGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
+    private List<MeteringPointCfg> points;
+    private EmcosConfig config;
 
-    private List<LastLoadInfo> lastLoadInfoList;
-    private List<MeteringPointCfg> pointsCfg;
-    private String paramCode;
-    private String emcosParamCode;
-    private LocalDateTime requestedTime;
-
-    public MeasDataRawGateway cfg(List<MeteringPointCfg> pointsCfg) {
-        this.pointsCfg = pointsCfg;
+    public PowerConsumptionGateway points(List<MeteringPointCfg> points) {
+        this.points = points;
         return this;
     }
 
-    public MeasDataRawGateway requestedTime(LocalDateTime requestedTime) {
-        this.requestedTime = requestedTime;
+    public PowerConsumptionGateway config(EmcosConfig config) {
+        this.config = config;
         return this;
     }
 
-    public MeasDataRawGateway paramCode(String paramCode) {
-        this.paramCode = paramCode;
-        this.emcosParamCode = paramCodes.get(paramCode);
-        return this;
-    }
+    public List<PowerConsumptionRaw> request() {
+        logger.info("PowerConsumptionGatewayImpl.request started");
 
-
-    public List<MeasDataRaw> request() {
-        logger.info("MeasDataRawGatewayImpl.request started");
-        logger.info("Param: " + paramCode);
-        logger.info("Time: " + requestedTime);
-
-        if (pointsCfg==null || pointsCfg.isEmpty()) {
-            logger.warn("List of points is empty, MeasDataRawGatewayImpl.request interrupted");
+        if (config ==null) {
+            logger.warn("Config is empty, PowerConsumptionGatewayImpl.request stopped");
             return emptyList();
         }
-        
-        this.lastLoadInfoList = lastLoadInfoService.findAll();
 
-        List<MeasDataRaw> list;
+        if (points ==null || points.isEmpty()) {
+            logger.warn("List of points is empty, PowerConsumptionGatewayImpl.request stopped");
+            return emptyList();
+        }
+
+        List<PowerConsumptionRaw> list;
         try {
             logger.info("Send http request for metering data...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, MeasDataRawGatewayImpl.request interrupted");
+            	logger.info("Request body is empty, PowerConsumptionGatewayImpl.request stopped");
                 return emptyList();
             }
 
@@ -91,29 +74,28 @@ public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("MeasDataRawGatewayImpl.request competed");
+            logger.info("PowerConsumptionGatewayImpl.request competed");
         }
 
         catch (Exception e) {
             list = emptyList();
-            logger.error("MeasDataRawGatewayImpl.request failed: " + e.toString());
+            logger.error("PowerConsumptionGatewayImpl.request failed: " + e.toString());
         }
 
         return list;
     }
 
     private String buildBody() {
-    	logger.debug("MeasDataRawGatewayImpl.buildBody started");
+    	logger.debug("PowerConsumptionGatewayImpl.buildBody started");
 
-        String strPoints = pointsCfg.stream()
-    		.filter(p -> p.getEmcosParamCode().equals(emcosParamCode))
-            .map( p-> serializePointCfg(p))
+    	String strPoints = points.stream()
+            .map( p-> buildPoint(p))
             .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
         logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, MeasDataRawGatewayImpl.buildBody interrupted");
+        	logger.debug("List of points is empty, PowerConsumptionGatewayImpl.buildBody stopped");
             return "";
         }
 
@@ -122,10 +104,10 @@ public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
         logger.trace("data: " + data);
 
         String property = templateRegistry.getTemplate("EMCOS_REQML_PROPERTY")
-        	.replace("#user#", config.getUser())
-        	.replace("#isPacked#", config.getIsPacked().toString())
+        	.replace("#user#", config.getUserName())
+        	.replace("#isPacked#", "false")
         	.replace("#func#", "REQML")
-        	.replace("#attType#", config.getAttType());
+        	.replace("#attType#", "1");
         logger.trace("property: " + property);
 
         String body = templateRegistry.getTemplate("EMCOS_REQML_BODY")
@@ -133,12 +115,20 @@ public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
         logger.trace("body for request metering data: " + body);
 
-        logger.debug("MeasDataRawGatewayImpl.buildBody completed");
+        logger.debug("PowerConsumptionGatewayImpl.buildBody completed");
         return body;
     }
 
-    private List<MeasDataRaw> parseAnswer(String answer) throws Exception {
-    	logger.info("MeasDataRawGatewayImpl.parseAnswer started");
+    private String buildPoint(MeteringPointCfg point) {
+        return ""
+                + "<ROW PPOINT_CODE=\"" + point.getPointCode() + "\" "
+                + "PML_ID=\"" + point.getEmcosParamCode() + "\" "
+                + "PBT=\"" + point.getStartTime().format(timeFormatter) + "\" "
+                + "PET=\"" + point.getEndTime().format(timeFormatter) + "\" />";
+    }
+
+    private List<PowerConsumptionRaw> parseAnswer(String answer) throws Exception {
+    	logger.info("PowerConsumptionGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -153,7 +143,7 @@ public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
             .getFirstChild()
             .getChildNodes();
 
-        List<MeasDataRaw> list = new ArrayList<>();
+        List<PowerConsumptionRaw> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -166,51 +156,39 @@ public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
             }
         }
         logger.debug("convert xml to list completed");
-        
-        logger.info("MeasDataRawGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+
+        logger.debug("find unit codes for list started");
+        Map<Pair<String, String>, List<MeteringPointCfg>> map = points.stream()
+                .collect(groupingBy(p -> Pair.of(p.getEmcosParamCode(), p.getUnitCode())));
+
+        list.forEach(mr -> {
+            Pair<String, String> pair = map.keySet().stream()
+                .filter(p -> p.getLeft().equals(mr.getSourceParamCode()))
+                .findFirst()
+                .orElse(null);
+
+            if (pair!=null)
+                mr.setSourceUnitCode(pair.getRight());
+        });
+        logger.debug("find unit codes for list completed");
+
+        logger.info("PowerConsumptionGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 
-    private String serializePointCfg(MeteringPointCfg emcosCfg) {
-    	LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-    		.filter(t -> t.getSourceMeteringPointCode().equals(emcosCfg.getPointCode()) && t.getSourceParamCode().equals(emcosCfg.getEmcosParamCode()) )
-    		.findFirst()
-    		.orElse(null);
+    private PowerConsumptionRaw parseNode(Node node) {
+        NamedNodeMap attributes = node.getAttributes();
 
-        LocalDateTime startTime = buildStartTime(lastLoadInfo);
-        if (startTime.isEqual(requestedTime) || startTime.isAfter(requestedTime))
-            return "";
-
-        return ""
-		        + "<ROW PPOINT_CODE=\"" + emcosCfg.getPointCode() + "\" "
-		        + "PML_ID=\"" + emcosCfg.getEmcosParamCode() + "\" "
-		        + "PBT=\"" + startTime.format(timeFormatter) + "\" "
-		        + "PET=\"" + requestedTime.format(timeFormatter) + "\" />";
-    }
-
-    private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-        LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
-        if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
-            LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
-            startTime = lastLoadDate.getMinute() < 45
-                    ? lastLoadDate.truncatedTo(ChronoUnit.HOURS)
-                    : lastLoadDate.plusMinutes(15);
-        }
-
-        return startTime;
-    }
-
-    private MeasDataRaw parseNode(Node node) {
-        String externalCode = node.getAttributes()
+        String externalCode = attributes
             .getNamedItem("PPOINT_CODE")
             .getNodeValue() ;
 
-        String emcosParamCode = node.getAttributes()
+        String sourceParamCode = attributes
             .getNamedItem("PML_ID")
             .getNodeValue() ;
         
         LocalDateTime time = null;
-        String timeStr = node.getAttributes()
+        String timeStr = attributes
             .getNamedItem("PBT")
             .getNodeValue() ;
 
@@ -220,41 +198,27 @@ public class MeasDataRawGatewayImpl implements MeasDataRawGateway {
         }
 
         Double val = null;
-        String valStr = node.getAttributes()
+        String valStr = attributes
             .getNamedItem("PVAL")
             .getNodeValue();
 
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        MeasDataRaw data = new MeasDataRaw();
-        data.setSourceMeteringPointCode(externalCode);
-        data.setMeasDate(time);
-        data.setSourceSystemCode(SourceSystem.EMCOS);
-        data.setStatus(DataStatus.TMP);
-        data.setInterval(900);
-        data.setInputMethod(InputMethod.AUTO);
-        data.setReceivingMethod(ReceivingMethod.AUTO);
-        data.setSourceUnitCode(emcosParamUnits.get(emcosParamCode));
-        data.setSourceParamCode(emcosParamCode);
-        data.setVal(val);
+        PowerConsumptionRaw pc = new PowerConsumptionRaw();
+        pc.setSourceMeteringPointCode(externalCode);
+        pc.setMeteringDate(time);
+        pc.setSourceSystemCode(SourceSystem.EMCOS);
+        pc.setStatus(DataStatus.TMP);
+        pc.setInterval(900);
+        pc.setInputMethod(InputMethod.AUTO);
+        pc.setReceivingMethod(ReceivingMethod.AUTO);
+        pc.setSourceParamCode(sourceParamCode);
+        pc.setVal(val);
         
-        return data;
+        return pc;
     }
-
-
-    @Inject
-    private LastLoadInfoService lastLoadInfoService;
 
     @Inject
     private TemplateRegistry templateRegistry;
-
-    @Inject
-    private ServerConfig config;
-
-    @Inject @ParamCodes
-    private BiMap<String, String> paramCodes;
-
-    @Inject @EmcosParamUnits
-    private Map<String, String> emcosParamUnits;
 }

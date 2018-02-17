@@ -2,6 +2,9 @@ package kz.kegoc.bln.repository.data.impl;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
+
 import kz.kegoc.bln.entity.data.LastLoadInfo;
 import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.data.LastLoadInfoRepository;
@@ -15,14 +18,31 @@ public class LastLoadInfoRepositoryImpl extends AbstractRepository<LastLoadInfo>
 		setEntityManager(entityManager);
 	}
 
-	public LastLoadInfo findByExternalCodeAndParamCode(String externalCode, String paramCode) {
-		return
-			getEntityManager().createNamedQuery("LastLoadInfo.findByExternalCodeAndParamCode", LastLoadInfo.class)
-				.setParameter("sourceMeteringPointCode", externalCode)
-				.setParameter("sourceParamCode", paramCode)
-				.getResultList()
-				.stream()
-				.findFirst()
-				.orElse(null);
+	public void mrUpdateLastDate(Long batchId){
+		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.mr_last_load_info");
+		query.registerStoredProcedureParameter("p_batch_id", Long.class, ParameterMode.IN);
+		query.setParameter("p_batch_id", batchId);
+		query.execute();
+	}
+
+	public void pcUpdateLastDate(Long batchId){
+		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.pc_last_load_info");
+		query.registerStoredProcedureParameter("p_batch_id", Long.class, ParameterMode.IN);
+		query.setParameter("p_batch_id", batchId);
+		query.execute();
+	}
+
+	public void mrLoad(Long batchId){
+		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.mr_proc");
+		query.registerStoredProcedureParameter("p_batch_id", Long.class, ParameterMode.IN);
+		query.setParameter("p_batch_id", batchId);
+		query.execute();
+	}
+
+	public void pcLoad(Long batchId){
+		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.pc_proc");
+		query.registerStoredProcedureParameter("p_batch_id", Long.class, ParameterMode.IN);
+		query.setParameter("p_batch_id", batchId);
+		query.execute();
 	}
 }

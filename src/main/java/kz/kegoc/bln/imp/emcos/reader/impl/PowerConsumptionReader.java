@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.reader.impl;
+package kz.kegoc.bln.imp.emcos.reader.impl;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
@@ -9,14 +9,14 @@ import javax.inject.Inject;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.*;
 import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
-import kz.kegoc.bln.producer.emcos.reader.DataReader;
+import kz.kegoc.bln.imp.emcos.reader.Reader;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-public class PowerConsumptionReader implements DataReader<PowerConsumptionRaw> {
+public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(PowerConsumptionReader.class);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -59,10 +59,10 @@ public class PowerConsumptionReader implements DataReader<PowerConsumptionRaw> {
 				save(header, batch, pcList);
 
 				logger.info("Update last date");
-				lastLoadInfoService.pcUpdateLastDate();
+				lastLoadInfoService.pcUpdateLastDate(batch.getId());
 
 				logger.info("Transfer date");
-				lastLoadInfoService.pcLoad();
+				lastLoadInfoService.pcLoad(batch.getId());
 
 				end(header, batch, pcList);
 
@@ -78,6 +78,9 @@ public class PowerConsumptionReader implements DataReader<PowerConsumptionRaw> {
 		logger.info("Create new batch");
 		Batch batch = new Batch();
 		batch.setWorkListHeader(header);
+		batch.setSourceSystemCode("EMCOS");
+		batch.setDirection("IMPORT");
+		batch.setDataType("PC");
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
 		batchService.create(batch);

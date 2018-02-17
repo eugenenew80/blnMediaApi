@@ -10,6 +10,5 @@ import java.util.List;
 @Local
 public interface MeteringDataRepository<T extends Metering>  extends Repository<T> {
     T selectByEntity(T entity);
-
-    List selectReadyData(Long meteringPointId, LocalDateTime meteringDate, String paramCode);
+    void saveAll(List<T> list);
 }

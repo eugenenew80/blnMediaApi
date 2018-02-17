@@ -1,9 +1,9 @@
 package kz.kegoc.bln.service.data.impl;
 
-import kz.kegoc.bln.entity.data.EventLog;
-import kz.kegoc.bln.repository.data.EventLogRepository;
+import kz.kegoc.bln.entity.data.Batch;
+import kz.kegoc.bln.repository.data.BatchRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
-import kz.kegoc.bln.service.data.EventLogService;
+import kz.kegoc.bln.service.data.BatchService;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -11,13 +11,13 @@ import javax.validation.Validator;
 
 
 @Stateless
-public class EventLogServiceImpl extends AbstractEntityService<EventLog> implements EventLogService {
+public class BatchServiceImpl extends AbstractEntityService<Batch> implements BatchService {
 
 	@Inject
-    public EventLogServiceImpl(EventLogRepository repository, Validator validator) {
+    public BatchServiceImpl(BatchRepository repository, Validator validator) {
         super(repository, validator);
         this.repository = repository;
     }
 
-	private EventLogRepository repository;
+	private BatchRepository repository;
 }

@@ -32,6 +32,7 @@ public abstract class AbstractRepository<T extends HasId> implements Repository<
 
 	
 	public T selectById(Long entityId) {
+		em.getEntityManagerFactory().getCache().evict(clazz, entityId);
 		return em.find(clazz, entityId);
 	}
 

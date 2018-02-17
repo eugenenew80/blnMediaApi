@@ -17,19 +17,7 @@ public abstract class AbstractMeteringDataService<T extends Metering>
     }
 
 	public void saveAll(List<T> list) {
-    	list.stream().forEach(m -> {
-    		Metering meteringData = meteringDataRepository.selectByEntity(m);
-			if (meteringData==null) {
-				m.setCreateDate(LocalDateTime.now());
-				meteringDataRepository.insert(m);
-			}
-			else {
-				m.setId(meteringData.getId());
-				m.setCreateDate(meteringData.getCreateDate());
-				m.setLastUpdateDate(LocalDateTime.now());
-				meteringDataRepository.update(m);
-			}
-        });		
+		meteringDataRepository.saveAll(list);
 	}
 
 	private MeteringDataRepository<T> meteringDataRepository;

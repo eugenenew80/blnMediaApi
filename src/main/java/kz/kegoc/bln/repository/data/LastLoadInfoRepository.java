@@ -7,5 +7,8 @@ import javax.ejb.Local;
 
 @Local
 public interface LastLoadInfoRepository extends Repository<LastLoadInfo> {
-	LastLoadInfo findByExternalCodeAndParamCode(String externalCode, String paramCode);
+    void mrUpdateLastDate(Long batchId);
+    void pcUpdateLastDate(Long batchId);
+    void mrLoad(Long batchId);
+    void pcLoad(Long batchId);
 }

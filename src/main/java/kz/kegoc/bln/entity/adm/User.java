@@ -5,9 +5,6 @@ import kz.kegoc.bln.entity.common.HasName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 @Data
 @EqualsAndHashCode(of= {"id"})
 public class User implements HasId, HasName {

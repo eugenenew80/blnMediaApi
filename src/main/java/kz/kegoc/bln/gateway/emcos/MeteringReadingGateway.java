@@ -1,17 +1,16 @@
 package kz.kegoc.bln.gateway.emcos;
 
+import kz.kegoc.bln.entity.data.EmcosConfig;
 import kz.kegoc.bln.entity.data.MeteringReadingRaw;
+import kz.kegoc.bln.entity.data.Parameter;
 import javax.ejb.Local;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Local
-public interface MeteringReadingRawGateway {
-    MeteringReadingRawGateway cfg(List<MeteringPointCfg> pointsCfg);
+public interface MeteringReadingGateway {
+    MeteringReadingGateway config(EmcosConfig config);
 
-    MeteringReadingRawGateway requestedTime(LocalDateTime requestedTime);
-
-    MeteringReadingRawGateway paramCode(String paramCode);
+    MeteringReadingGateway points(List<MeteringPointCfg> points);
 
     List<MeteringReadingRaw> request();
 }

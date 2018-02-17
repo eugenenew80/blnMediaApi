@@ -1,4 +1,4 @@
-package kz.kegoc.bln.producer.emcos.reader.impl;
+package kz.kegoc.bln.imp.emcos.reader.impl;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
@@ -9,13 +9,13 @@ import javax.inject.Inject;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.MeteringReadingGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
-import kz.kegoc.bln.producer.emcos.reader.DataReader;
+import kz.kegoc.bln.imp.emcos.reader.Reader;
 import kz.kegoc.bln.service.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-public class MeteringReadingReader implements DataReader<MeteringReadingRaw> {
+public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(MeteringReadingReader.class);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -58,10 +58,10 @@ public class MeteringReadingReader implements DataReader<MeteringReadingRaw> {
 				save(header, batch, mrList);
 
 				logger.info("Update last date");
-				lastLoadInfoService.mrUpdateLastDate();
+				lastLoadInfoService.mrUpdateLastDate(batch.getId());
 
 				logger.info("Transfer date");
-				lastLoadInfoService.mrLoad();
+				lastLoadInfoService.mrLoad(batch.getId());
 
 				end(header, batch, mrList);
 
@@ -77,6 +77,9 @@ public class MeteringReadingReader implements DataReader<MeteringReadingRaw> {
 		logger.info("Create new batch");
 		Batch batch = new Batch();
 		batch.setWorkListHeader(header);
+		batch.setSourceSystemCode("EMCOS");
+		batch.setDirection("IMPORT");
+		batch.setDataType("MR");
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
 		batchService.create(batch);

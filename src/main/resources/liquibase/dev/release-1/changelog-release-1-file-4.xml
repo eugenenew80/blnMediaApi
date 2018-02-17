@@ -6,7 +6,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
-    <changeSet id="media-eug-11" logicalFilePath="path-independent" author="eugene">
+    <changeSet id="media-eug-10" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_power_consumption_raw</comment>
         <createTable tableName="media_power_consumption_raw" schemaName="apps">
             <column name="id" type="number">
@@ -75,7 +75,7 @@
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-12" logicalFilePath="path-independent" author="eugene">
+	<changeSet id="media-eug-11" logicalFilePath="path-independent" author="eugene">
 	    <comment>Creating primary key for table: media_power_consumption_raw</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
@@ -84,7 +84,7 @@
 	            tableName="media_power_consumption_raw"/>
 	</changeSet>
 
-	<changeSet id="media-eug-13" logicalFilePath="path-independent" author="eugene">
+	<changeSet id="media-eug-12" logicalFilePath="path-independent" author="eugene">
 	    <comment>Creating sequence for table: media_power_consumption_raw</comment>
 	    <createSequence 
 	            incrementBy="1"

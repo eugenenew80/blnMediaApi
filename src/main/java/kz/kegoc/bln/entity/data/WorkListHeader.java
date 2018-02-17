@@ -17,6 +17,8 @@ public class WorkListHeader implements HasId {
     private EmcosConfig config;
     private Boolean active;
     private List<WorkListLine> lines;
+    private Batch pcLastBatch;
+    private Batch mrLastBatch;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private User createBy;

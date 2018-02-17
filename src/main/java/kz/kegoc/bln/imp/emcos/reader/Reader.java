@@ -1,8 +1,8 @@
-package kz.kegoc.bln.producer.emcos.reader;
+package kz.kegoc.bln.imp.emcos.reader;
 
 import javax.ejb.Local;
 
 @Local
-public interface DataReader<T> {
+public interface Reader<T> {
     void read();
 }

@@ -29,7 +29,7 @@
                 <constraints nullable="false"/>
             </column>
                         
-            <column name="meas_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+            <column name="metering_date" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
 
@@ -73,19 +73,27 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="create_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+            <column name="batch_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="int_count" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP">
                 <constraints nullable="true"/>
             </column>
             
-            <column name="last_update_date" type="TIMESTAMP WITH LOCAL TIME ZONE">
+            <column name="last_update_date" type="TIMESTAMP">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="create_by" type="number" remarks="Автор">
+            <column name="create_by" type="number">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_by" type="number" remarks="Автор последнего обновления">
+            <column name="last_update_by" type="number">
                 <constraints nullable="true"/>
             </column>
         </createTable>

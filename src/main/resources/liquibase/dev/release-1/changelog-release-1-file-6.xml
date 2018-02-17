@@ -6,7 +6,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet id="media-eug-17" logicalFilePath="path-independent" author="eugene">
+    <changeSet id="media-eug-16" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_parameters</comment>
         <createTable tableName="media_parameters" schemaName="apps">
             <column name="id" type="number">
@@ -55,7 +55,7 @@
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-18" logicalFilePath="path-independent" author="eugene">
+	<changeSet id="media-eug-17" logicalFilePath="path-independent" author="eugene">
 	    <comment>Creating primary key for table: media_parameters</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
@@ -64,7 +64,7 @@
 	            tableName="media_parameters"/>
 	</changeSet>
 	
-	<changeSet id="media-eug-19" logicalFilePath="path-independent" author="eugene">
+	<changeSet id="media-eug-18" logicalFilePath="path-independent" author="eugene">
 	    <comment>Creating sequence for table: media_parameters_raw</comment>
 	    <createSequence 
 	            incrementBy="1"
@@ -73,7 +73,7 @@
 	            startValue="9"/>
 	</changeSet>
 
-    <changeSet id="media-eug-20" logicalFilePath="path-independent" author="eugene">
+    <changeSet id="media-eug-19" logicalFilePath="path-independent" author="eugene">
         <insert schemaName="apps"  tableName="media_parameters">
             <column name="id"   type="number" value="1" />
             <column name="code" type="varchar(10)" value="A+" />

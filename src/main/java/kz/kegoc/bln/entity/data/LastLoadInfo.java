@@ -10,4 +10,5 @@ public class LastLoadInfo implements HasId {
     private String sourceMeteringPointCode;
     private String sourceParamCode;
     private LocalDateTime lastLoadDate;
+    private Batch lastBatch;
 }

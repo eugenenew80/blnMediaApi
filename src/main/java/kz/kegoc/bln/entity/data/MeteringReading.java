@@ -2,6 +2,7 @@ package kz.kegoc.bln.entity.data;
 
 import java.time.*;
 
+import kz.kegoc.bln.entity.adm.User;
 import kz.kegoc.bln.entity.common.*;
 import kz.kegoc.bln.entity.dict.Meter;
 import kz.kegoc.bln.entity.dict.MeteringPoint;
@@ -27,6 +28,9 @@ public class MeteringReading implements Metering {
 	private DataStatus status;
 	private Long paramId;
 	private Unit unit;
+	private Batch batch;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
+	private User createBy;
+	private User lastUpdateBy;
 }

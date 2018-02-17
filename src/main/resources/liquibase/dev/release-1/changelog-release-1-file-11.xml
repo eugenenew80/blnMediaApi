@@ -6,7 +6,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet id="media-eug-36" logicalFilePath="path-independent" author="eugene">
+    <changeSet id="media-eug-34" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_event_log</comment>
         <createTable tableName="media_batches" schemaName="apps">
             <column name="id" type="number">
@@ -22,6 +22,10 @@
             </column>
 
             <column name="end_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="rec_count" type="number">
                 <constraints nullable="true"/>
             </column>
 
@@ -51,7 +55,7 @@
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-37" logicalFilePath="path-independent" author="eugene">
+	<changeSet id="media-eug-35" logicalFilePath="path-independent" author="eugene">
 	    <comment>Creating primary key for table: media_batches</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
@@ -60,7 +64,7 @@
 	            tableName="media_batches"/>
 	</changeSet>
 	
-	<changeSet id="media-eug-38" logicalFilePath="path-independent" author="eugene">
+	<changeSet id="media-eug-36" logicalFilePath="path-independent" author="eugene">
 	    <comment>Creating sequence for table: media_batches</comment>
 	    <createSequence 
 	            incrementBy="1"

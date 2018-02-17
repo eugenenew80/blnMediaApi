@@ -1,18 +1,16 @@
 package kz.kegoc.bln.gateway.emcos;
 
-import kz.kegoc.bln.entity.data.MeasDataRaw;
-
+import kz.kegoc.bln.entity.data.EmcosConfig;
+import kz.kegoc.bln.entity.data.Parameter;
+import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
 import javax.ejb.Local;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Local
-public interface MeasDataRawGateway {
-    MeasDataRawGateway cfg(List<MeteringPointCfg> pointsCfg);
+public interface PowerConsumptionGateway {
+    PowerConsumptionGateway config(EmcosConfig config);
 
-    MeasDataRawGateway requestedTime(LocalDateTime requestedTime);
+    PowerConsumptionGateway points(List<MeteringPointCfg> points);
 
-    MeasDataRawGateway paramCode(String paramCode);
-
-    List<MeasDataRaw> request();
+    List<PowerConsumptionRaw> request();
 }

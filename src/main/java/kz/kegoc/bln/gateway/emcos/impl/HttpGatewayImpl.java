@@ -14,7 +14,6 @@ import java.net.URL;
 
 public class HttpGatewayImpl implements HttpGateway {
 	private static Logger logger = LoggerFactory.getLogger(HttpGatewayImpl.class);
-
 	private final URL url;
 	private final String method;
 	private final String body;
@@ -71,8 +70,7 @@ public class HttpGatewayImpl implements HttpGateway {
 
         return answerData;
 	}
-    
-    
+
     public static class Builder {
     	private URL url;
     	private String method;

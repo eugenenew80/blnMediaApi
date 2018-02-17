@@ -31,15 +31,15 @@
         </query>
     </named-query>
 
-    <named-query name="MeasDataRaw.findByEntity">
+    <named-query name="PowerConsumptionRaw.findByEntity">
         <query>
             select
                 t
             from
-                MeasDataRaw t
+                PowerConsumptionRaw t
             where
                     t.sourceMeteringPointCode=:sourceMeteringPointCode
-                and t.measDate=:measDate
+                and t.meteringDate=:meteringDate
                 and t.sourceSystemCode=:sourceSystemCode
                 and t.sourceUnitCode=:sourceUnitCode
                 and t.sourceParamCode=:sourceParamCode
@@ -62,15 +62,15 @@
     </named-query>
 
 
-    <named-query name="MeasData.findByEntity">
+    <named-query name="PowerConsumption.findByEntity">
         <query>
             select
             	t
             from
-                MeasData t
+                PowerConsumption t
             where
             	    t.sourceMeteringPointCode=:sourceMeteringPointCode
-            	and t.measDate=:measDate
+            	and t.meteringDate=:meteringDate
             	and t.sourceSystemCode=:sourceSystemCode
             	and t.status=:status
             	and t.sourceUnitCode=:sourceUnitCode
@@ -114,18 +114,18 @@
         </query>
     </named-query>
 
-
-    <named-query name="MeteringReading.findReadyData">
+    <named-query name="Parameter.findAll">
         <query>
-            select
-                t
-            from
-                MeteringReading t
-            where
-                    t.meteringPoint.id=:meteringPointId
-                and t.meteringDate=:meteringDate
-                and t.status=:status
-                and t.sourceParamCode=:sourceParamCode
+            select t from Parameter t
         </query>
     </named-query>
+
+    <named-query name="WorkListHeader.findAll">
+        <query>
+            select t from WorkListHeader t
+        </query>
+    </named-query>
+
+
+
 </entity-mappings>
