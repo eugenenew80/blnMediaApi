@@ -34,7 +34,11 @@ public class HttpGatewayImpl implements HttpGateway {
 		try {
 			con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod(method);
+			con.setUseCaches(false);
+			con.setDoInput(true);
 			con.setDoOutput(true);
+			con.setConnectTimeout(99999999);
+			con.setReadTimeout(99999999);
 
 			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
 				wr.writeBytes(body);

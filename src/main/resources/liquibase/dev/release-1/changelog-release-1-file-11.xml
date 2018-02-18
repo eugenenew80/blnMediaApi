@@ -17,6 +17,18 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="source_system_code" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="direction" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="data_type" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="start_date" type="TIMESTAMP">
                 <constraints nullable="true"/>
             </column>
@@ -34,6 +46,14 @@
             </column>
 
             <column name="err_msg" type="varchar(300)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_last_date_update" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_load" type="number">
                 <constraints nullable="true"/>
             </column>
 

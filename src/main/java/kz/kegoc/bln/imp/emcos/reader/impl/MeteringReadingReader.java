@@ -60,7 +60,7 @@ public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
 				logger.info("Update last date");
 				lastLoadInfoService.mrUpdateLastDate(batch.getId());
 
-				logger.info("Transfer date");
+				logger.info("Transfer data");
 				lastLoadInfoService.mrLoad(batch.getId());
 
 				end(header, batch, mrList);
@@ -120,7 +120,7 @@ public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
 		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
 			return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
 		else
-			return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
+			return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay().minusDays(2);
 	}
 
 	private List<MeteringPointCfg> buidPoints(List<Parameter> params, List<WorkListLine> lines) {

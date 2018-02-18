@@ -21,7 +21,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="direction" type="varchar(100)">
+            <column name="direction" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
 

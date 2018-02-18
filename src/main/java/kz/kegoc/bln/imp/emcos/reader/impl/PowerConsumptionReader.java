@@ -15,6 +15,10 @@ import kz.kegoc.bln.service.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.IntStream.range;
+
 @Stateless
 public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(PowerConsumptionReader.class);
@@ -22,55 +26,73 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
 		List<Parameter> params = parameterService.findAll().stream()
-			.filter( p -> p.getParamType().equals("PC"))
-			.collect(Collectors.toList());
+				.filter( p -> p.getParamType().equals("PC"))
+				.collect(toList());
 
 		logger.info("PowerConsumptionReader.read started");
 		logger.info("Parameters: " + params.stream().map(Parameter::getCode).collect(Collectors.joining(", ")));
 
 		workListHeaderService.findAll().stream()
-			.filter(h -> h.getActive() && h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getConfig()!=null)
-			.forEach(header -> {
-				logger.info("Import data started");
-				logger.info("headerId: " + header.getId());
-				logger.info("url: " + header.getConfig().getUrl());
-				logger.info("user: " + header.getConfig().getUserName());
+				.filter(h -> h.getActive() && h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getConfig()!=null)
+				.forEach(header -> {
+					logger.info("Import data started");
+					logger.info("headerId: " + header.getId());
+					logger.info("url: " + header.getConfig().getUrl());
+					logger.info("user: " + header.getConfig().getUserName());
 
-				if (header.getLines().size()==0) {
-					logger.info("List of points is empty, import data stopped");
-					return;
-				}
+					if (header.getLines().size()==0) {
+						logger.info("List of points is empty, import data stopped");
+						return;
+					}
 
-				List<MeteringPointCfg> points = buidPoints(params, header.getLines());
-				if (points.size()==0) {
-					logger.info("Import data is not required, import data stopped");
-					return;
-				}
+					List<MeteringPointCfg> points = buidPoints(params, header.getLines());
+					if (points.size()==0) {
+						logger.info("Import data is not required, import data stopped");
+						return;
+					}
 
-				Batch batch = start(header);
+					Batch batch = start(header);
 
-				logger.info("Request data started");
-				List<PowerConsumptionRaw> pcList = powerConsumptionGateway
-					.config(header.getConfig())
-					.points(points)
-					.request();
-				logger.info("Request data completed");
+					final List<List<MeteringPointCfg>> groupsPoints = range(0, points.size())
+						.boxed()
+						.collect(groupingBy(index -> index / 400))
+						.values()
+						.stream()
+						.map(indices -> indices
+							.stream()
+							.map(points::get)
+							.collect(toList()))
+						.collect(toList());
 
-				save(header, batch, pcList);
+					Long recCount = 0l;
+					for (int i = 0; i < groupsPoints.size(); i++) {
+						List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
+						logger.info("group of points num: " + (i+1));
+						logger.info("group of points size: " + groupPoints.size());
 
-				logger.info("Update last date");
-				lastLoadInfoService.pcUpdateLastDate(batch.getId());
+						logger.info("Request data started");
+						List<PowerConsumptionRaw> pcList = powerConsumptionGateway
+							.config(header.getConfig())
+							.points(groupPoints)
+							.request();
+						logger.info("Request data completed");
 
-				logger.info("Transfer date");
-				lastLoadInfoService.pcLoad(batch.getId());
+						save(header, batch, pcList);
+						recCount = recCount + pcList.size();
+					}
 
-				end(header, batch, pcList);
+					logger.info("Update last date");
+					lastLoadInfoService.pcUpdateLastDate(batch.getId());
 
-				logger.info("Import data completed");
-			});
+					logger.info("Transfer data");
+					lastLoadInfoService.pcLoad(batch.getId());
+
+					end(header, batch, recCount);
+					logger.info("Import data completed");
+				});
 
 		logger.info("PowerConsumptionReader.read completed");
-    }
+	}
 
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -88,11 +110,11 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch end(WorkListHeader header, Batch batch, List<PowerConsumptionRaw> list) {
+	private Batch end(WorkListHeader header, Batch batch, Long recCount) {
 		logger.info("Update batch");
 		batch.setStatus("C");
 		batch.setEndDate(LocalDateTime.now());
-		batch.setRecCount((long)list.size());
+		batch.setRecCount(recCount);
 		batchService.update(batch);
 
 		logger.info("Update header");
@@ -103,7 +125,7 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    private void save(WorkListHeader header, Batch batch, List<PowerConsumptionRaw> list) {
+	private void save(WorkListHeader header, Batch batch, List<PowerConsumptionRaw> list) {
 		logger.info("Save data in db started");
 		Long batchId = batch.getId();
 		list.forEach(t -> t.setBatchId(batchId));
@@ -113,12 +135,12 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 
 	private LocalDateTime buildRequestedTime() {
 		return LocalDateTime.now(ZoneId.of("UTC+1"))
-			.minusMinutes(15)
-			.truncatedTo(ChronoUnit.HOURS);
+				.minusMinutes(15)
+				.truncatedTo(ChronoUnit.HOURS);
 	}
 
 	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-		LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
+		LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay().minusDays(2);
 		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
 			LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
 			startTime = lastLoadDate.getMinute() < 45
