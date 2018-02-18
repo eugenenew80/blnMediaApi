@@ -3,7 +3,6 @@ package kz.kegoc.bln.imp.emcos.reader.impl;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 import javax.ejb.*;
 import javax.inject.Inject;
 import kz.kegoc.bln.entity.data.*;
@@ -25,78 +24,73 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		List<Parameter> params = parameterService.findAll().stream()
-				.filter( p -> p.getParamType().equals("PC"))
-				.collect(toList());
-
 		logger.info("PowerConsumptionReader.read started");
-		logger.info("Parameters: " + params.stream().map(Parameter::getCode).collect(Collectors.joining(", ")));
 
 		workListHeaderService.findAll().stream()
-				.filter(h -> h.getActive() && h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getConfig()!=null)
-				.forEach(header -> {
-					logger.info("Import data started");
-					logger.info("headerId: " + header.getId());
-					logger.info("url: " + header.getConfig().getUrl());
-					logger.info("user: " + header.getConfig().getUserName());
+			.filter(h -> h.getActive() && h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getConfig()!=null)
+			.forEach(header -> {
+				logger.info("Import data started");
+				logger.info("headerId: " + header.getId());
+				logger.info("url: " + header.getConfig().getUrl());
+				logger.info("user: " + header.getConfig().getUserName());
 
-					if (header.getLines().size()==0) {
-						logger.info("List of points is empty, import data stopped");
-						return;
-					}
+				if (header.getLines().size()==0) {
+					logger.info("List of points is empty, import data stopped");
+					return;
+				}
 
-					List<MeteringPointCfg> points = buidPoints(params, header.getLines());
-					if (points.size()==0) {
-						logger.info("Import data is not required, import data stopped");
-						return;
-					}
+				List<MeteringPointCfg> points = buidPoints(header.getLines());
+				if (points.size()==0) {
+					logger.info("Import data is not required, import data stopped");
+					return;
+				}
 
-					Batch batch = start(header);
+				Batch batch = startBatch(header);
 
-					final List<List<MeteringPointCfg>> groupsPoints = range(0, points.size())
-						.boxed()
-						.collect(groupingBy(index -> index / 400))
-						.values()
+				final List<List<MeteringPointCfg>> groupsPoints = range(0, points.size())
+					.boxed()
+					.collect(groupingBy(index -> index / 400))
+					.values()
+					.stream()
+					.map(indices -> indices
 						.stream()
-						.map(indices -> indices
-							.stream()
-							.map(points::get)
-							.collect(toList()))
-						.collect(toList());
+						.map(points::get)
+						.collect(toList()))
+					.collect(toList());
 
-					Long recCount = 0l;
-					for (int i = 0; i < groupsPoints.size(); i++) {
-						List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
-						logger.info("group of points num: " + (i+1));
-						logger.info("group of points size: " + groupPoints.size());
+				Long recCount = 0l;
+				for (int i = 0; i < groupsPoints.size(); i++) {
+					List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
+					logger.info("group of points num: " + (i+1));
+					logger.info("group of points size: " + groupPoints.size());
 
-						logger.info("Request data started");
-						List<PowerConsumptionRaw> pcList = powerConsumptionGateway
-							.config(header.getConfig())
-							.points(groupPoints)
-							.request();
-						logger.info("Request data completed");
+					logger.info("Request data started");
+					List<PowerConsumptionRaw> pcList = powerConsumptionGateway
+						.config(header.getConfig())
+						.points(groupPoints)
+						.request();
+					logger.info("Request data completed");
 
-						save(header, batch, pcList);
-						recCount = recCount + pcList.size();
-					}
+					saveData(batch, pcList);
+					recCount = recCount + pcList.size();
+				}
 
-					logger.info("Update last date");
-					lastLoadInfoService.pcUpdateLastDate(batch.getId());
+				logger.info("Update last date");
+				lastLoadInfoService.pcUpdateLastDate(batch.getId());
 
-					logger.info("Transfer data");
-					lastLoadInfoService.pcLoad(batch.getId());
+				logger.info("Transfer data");
+				lastLoadInfoService.pcLoad(batch.getId());
 
-					end(header, batch, recCount);
-					logger.info("Import data completed");
-				});
+				endBatch(header, batch, recCount);
+				logger.info("Import data completed");
+			});
 
 		logger.info("PowerConsumptionReader.read completed");
 	}
 
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch start(WorkListHeader header) {
+	private Batch startBatch(WorkListHeader header) {
 		logger.info("Create new batch");
 		Batch batch = new Batch();
 		batch.setWorkListHeader(header);
@@ -110,7 +104,7 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch end(WorkListHeader header, Batch batch, Long recCount) {
+	private Batch endBatch(WorkListHeader header, Batch batch, Long recCount) {
 		logger.info("Update batch");
 		batch.setStatus("C");
 		batch.setEndDate(LocalDateTime.now());
@@ -125,18 +119,43 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private void save(WorkListHeader header, Batch batch, List<PowerConsumptionRaw> list) {
-		logger.info("Save data in db started");
-		Long batchId = batch.getId();
-		list.forEach(t -> t.setBatchId(batchId));
+	private void saveData(Batch batch, List<PowerConsumptionRaw> list) {
+		logger.info("Save power consumption data in database started");
+		list.forEach(t -> t.setBatchId(batch.getId()));
 		pcService.saveAll(list);
-		logger.info("Save data in db completed");
+		logger.info("Save power consumption data in database completed");
+	}
+
+	private List<MeteringPointCfg> buidPoints(List<WorkListLine> lines) {
+		List<LastLoadInfo> lastLoadInfoList = lastLoadInfoService.findAll();
+
+		List<MeteringPointCfg> points = new ArrayList<>();
+		for (WorkListLine line : lines) {
+			MeteringPointCfg mpc = new MeteringPointCfg();
+			mpc.setPointCode(line.getMeteringPoint().getExternalCode());
+			mpc.setParamCode(line.getParam().getCode());
+			mpc.setEmcosParamCode(line.getParam().getSourceParamCode());
+			mpc.setUnitCode(line.getParam().getSourceUnitCode());
+
+			LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
+				.filter(t -> t.getSourceMeteringPointCode().equals(mpc.getPointCode()) && t.getSourceParamCode().equals(mpc.getEmcosParamCode()))
+				.findFirst()
+				.orElse(null);
+
+			mpc.setStartTime(buildStartTime(lastLoadInfo));
+			mpc.setEndTime(buildRequestedTime());
+
+			if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
+				points.add(mpc);
+
+		}
+		return points;
 	}
 
 	private LocalDateTime buildRequestedTime() {
 		return LocalDateTime.now(ZoneId.of("UTC+1"))
-				.minusMinutes(15)
-				.truncatedTo(ChronoUnit.HOURS);
+					.minusMinutes(15)
+					.truncatedTo(ChronoUnit.HOURS);
 	}
 
 	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
@@ -149,33 +168,6 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 		}
 
 		return startTime;
-	}
-
-	private List<MeteringPointCfg> buidPoints(List<Parameter> params, List<WorkListLine> lines) {
-		List<LastLoadInfo> lastLoadInfoList = lastLoadInfoService.findAll();
-
-		List<MeteringPointCfg> points = new ArrayList<>();
-		for (Parameter param : params) {
-			for (WorkListLine line : lines) {
-				MeteringPointCfg mpc = new MeteringPointCfg();
-				mpc.setPointCode(line.getMeteringPoint().getExternalCode());
-				mpc.setParamCode(param.getCode());
-				mpc.setEmcosParamCode(param.getSourceParamCode());
-				mpc.setUnitCode(param.getSourceUnitCode());
-
-				LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-					.filter(t -> t.getSourceMeteringPointCode().equals(mpc.getPointCode()) && t.getSourceParamCode().equals(mpc.getEmcosParamCode()))
-					.findFirst()
-					.orElse(null);
-
-				mpc.setStartTime(buildStartTime(lastLoadInfo));
-				mpc.setEndTime(buildRequestedTime());
-
-				if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-					points.add(mpc);
-			}
-		}
-		return points;
 	}
 
 

@@ -674,26 +674,6 @@
 				<column name="direction" />
 			</basic>
 
-			<basic name="parameterAp">
-				<column name="is_parameter_ap" />
-				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
-			</basic>
-
-			<basic name="parameterAm">
-				<column name="is_parameter_am" />
-				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
-			</basic>
-
-			<basic name="parameterRp">
-				<column name="is_parameter_rp" />
-				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
-			</basic>
-
-			<basic name="parameterRm">
-				<column name="is_parameter_rm" />
-				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
-			</basic>
-
 			<basic name="createDate">
 				<column name="create_date" />
 			</basic>
@@ -701,6 +681,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="param">
+				<join-column name="param_id"/>
+			</many-to-one>
 
 			<many-to-one name="header">
 				<join-column name="work_list_header_id"/>
@@ -754,7 +738,6 @@
 			</basic>
 		</attributes>
 	</entity>
-
 
 
 	<entity class="kz.kegoc.bln.entity.data.Batch">

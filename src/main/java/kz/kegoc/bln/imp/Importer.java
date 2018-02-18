@@ -4,5 +4,5 @@ import javax.ejb.Local;
 
 @Local
 public interface Importer {
-	void execute();
+	void runImport();
 }

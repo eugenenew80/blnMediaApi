@@ -45,15 +45,15 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
     }
 
     public List<PowerConsumptionRaw> request() {
-        logger.info("PowerConsumptionGatewayImpl.request started");
+        logger.info("FtpGatewayImpl.request started");
 
         if (config ==null) {
-            logger.warn("Config is empty, PowerConsumptionGatewayImpl.request stopped");
+            logger.warn("Config is empty, FtpGatewayImpl.request stopped");
             return emptyList();
         }
 
         if (points ==null || points.isEmpty()) {
-            logger.warn("List of points is empty, PowerConsumptionGatewayImpl.request stopped");
+            logger.warn("List of points is empty, FtpGatewayImpl.request stopped");
             return emptyList();
         }
 
@@ -62,7 +62,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
             logger.info("Send http request for metering data...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, PowerConsumptionGatewayImpl.request stopped");
+            	logger.info("Request body is empty, FtpGatewayImpl.request stopped");
                 return emptyList();
             }
 
@@ -74,19 +74,19 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("PowerConsumptionGatewayImpl.request competed");
+            logger.info("FtpGatewayImpl.request competed");
         }
 
         catch (Exception e) {
             list = emptyList();
-            logger.error("PowerConsumptionGatewayImpl.request failed: " + e.toString());
+            logger.error("FtpGatewayImpl.request failed: " + e.toString());
         }
 
         return list;
     }
 
     private String buildBody() {
-    	logger.debug("PowerConsumptionGatewayImpl.buildBody started");
+    	logger.debug("FtpGatewayImpl.buildBody started");
 
     	String strPoints = points.stream()
             .map( p-> buildPoint(p))
@@ -95,7 +95,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, PowerConsumptionGatewayImpl.buildBody stopped");
+        	logger.debug("List of points is empty, FtpGatewayImpl.buildBody stopped");
             return "";
         }
 
@@ -115,7 +115,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
         logger.trace("body for request metering data: " + body);
 
-        logger.debug("PowerConsumptionGatewayImpl.buildBody completed");
+        logger.debug("FtpGatewayImpl.buildBody completed");
         return body;
     }
 
@@ -128,7 +128,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
     }
 
     private List<PowerConsumptionRaw> parseAnswer(String answer) throws Exception {
-    	logger.info("PowerConsumptionGatewayImpl.parseAnswer started");
+    	logger.info("FtpGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -172,7 +172,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         });
         logger.debug("find unit codes for list completed");
 
-        logger.info("PowerConsumptionGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("FtpGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 

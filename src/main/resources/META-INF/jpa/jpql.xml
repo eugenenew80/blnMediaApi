@@ -78,6 +78,18 @@
         </query>
     </named-query>
 
+    <named-query name="PowerConsumption.findByExternalCode">
+        <query>
+            select
+            	t
+            from
+                PowerConsumption t
+            where
+            	    t.sourceMeteringPointCode=:sourceMeteringPointCode
+            	and t.meteringDate between :meteringDateStart and :meteringDateEnd
+        </query>
+    </named-query>
+
     <named-query name="MeteringReading.findAll">
         <query>
             select

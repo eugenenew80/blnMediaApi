@@ -16,13 +16,13 @@ public class EmcosMeteringReadingImp implements Importer {
 	
 	@ProducerMonitor
 	@Schedule(minute = "30/60", hour = "*", persistent = false)
-	public void execute() {
+	public void runImport() {
 		try {
 			reader.read();
 		}
 		
 		catch (Exception e) {
-			logger.error("EmcosMeteringReadingImp.execute failed: " + e.getMessage());
+			logger.error("EmcosMeteringReadingImp.runImport failed: " + e.getMessage());
 		}
     }
 

@@ -13,10 +13,7 @@ public class WorkListLine implements HasId {
     private Long id;
     private WorkListHeader header;
     private MeteringPoint meteringPoint;
-    private Boolean parameterAp;
-    private Boolean parameterAm;
-    private Boolean parameterRp;
-    private Boolean parameterRm;
+    private Parameter param;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private User createBy;

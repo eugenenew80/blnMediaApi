@@ -21,19 +21,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="is_parameter_ap" type="number">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="is_parameter_am" type="number">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="is_parameter_rp" type="number">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="is_parameter_rm" type="number">
+            <column name="param_id" type="number">
                 <constraints nullable="false"/>
             </column>
 
