@@ -14,11 +14,10 @@ public class WorkListHeader implements HasId {
     private String name;
     private String sourceSystemCode;
     private String direction;
-    private EmcosConfig config;
+    private ConnectionConfig config;
     private Boolean active;
     private List<WorkListLine> lines;
-    private Batch pcLastBatch;
-    private Batch mrLastBatch;
+    private Batch batch;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private User createBy;

@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.emcos.reader.impl;
+package kz.kegoc.bln.imp.emcos.auto.impl;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
@@ -6,10 +6,9 @@ import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
 import kz.kegoc.bln.entity.data.*;
-import kz.kegoc.bln.gateway.emcos.*;
-import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
-import kz.kegoc.bln.imp.emcos.reader.Reader;
-import kz.kegoc.bln.service.data.LastLoadInfoService;
+import kz.kegoc.bln.gateway.emcos.MeteringReadingGateway;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
+import kz.kegoc.bln.imp.emcos.auto.Reader;
 import kz.kegoc.bln.service.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +18,12 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
 @Stateless
-public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
-	private static final Logger logger = LoggerFactory.getLogger(PowerConsumptionReader.class);
+public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
+	private static final Logger logger = LoggerFactory.getLogger(MeteringReadingReader.class);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		logger.info("PowerConsumptionReader.read started");
+		logger.info("MeteringReadingReader.read started");
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive() && h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getConfig()!=null)
@@ -39,7 +38,7 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 					return;
 				}
 
-				List<MeteringPointCfg> points = buidPoints(header.getLines());
+				List<MeteringPointCfg> points = buildPoints(header.getLines());
 				if (points.size()==0) {
 					logger.info("Import data is not required, import data stopped");
 					return;
@@ -58,6 +57,7 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 						.collect(toList()))
 					.collect(toList());
 
+
 				Long recCount = 0l;
 				for (int i = 0; i < groupsPoints.size(); i++) {
 					List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
@@ -65,38 +65,38 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 					logger.info("group of points size: " + groupPoints.size());
 
 					logger.info("Request data started");
-					List<PowerConsumptionRaw> pcList = powerConsumptionGateway
+					List<MeteringReadingRaw> mrList = meteringReadingGateway
 						.config(header.getConfig())
 						.points(groupPoints)
 						.request();
 					logger.info("Request data completed");
 
-					saveData(batch, pcList);
-					recCount = recCount + pcList.size();
+					saveData(batch, mrList);
+					recCount = recCount + mrList.size();
 				}
 
 				logger.info("Update last date");
-				lastLoadInfoService.pcUpdateLastDate(batch.getId());
+				lastLoadInfoService.mrUpdateLastDate(batch.getId());
 
 				logger.info("Transfer data");
-				lastLoadInfoService.pcLoad(batch.getId());
+				lastLoadInfoService.mrLoad(batch.getId());
 
 				endBatch(header, batch, recCount);
 				logger.info("Import data completed");
 			});
 
-		logger.info("PowerConsumptionReader.read completed");
-	}
+		logger.info("MeteringReadingReader.read completed");
+    }
 
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch startBatch(WorkListHeader header) {
+    private Batch startBatch(WorkListHeader header) {
 		logger.info("Create new batch");
 		Batch batch = new Batch();
 		batch.setWorkListHeader(header);
-		batch.setSourceSystemCode("EMCOS");
-		batch.setDirection("IMPORT");
-		batch.setDataType("PC");
+		batch.setSourceSystemCode(header.getSourceSystemCode());
+		batch.setDirection(header.getDirection());
+		batch.setParamType("MR");
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
 		batchService.create(batch);
@@ -104,34 +104,47 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch endBatch(WorkListHeader header, Batch batch, Long recCount) {
+	private Batch endBatch(WorkListHeader header, Batch batch, Long retCount) {
 		logger.info("Update batch");
 		batch.setStatus("C");
 		batch.setEndDate(LocalDateTime.now());
-		batch.setRecCount(recCount);
+		batch.setRecCount(retCount);
 		batchService.update(batch);
 
 		logger.info("Update header");
 		header = workListHeaderService.findById(header.getId());
-		header.setPcLastBatch(batch);
+		header.setBatch(batch);
 		workListHeaderService.update(header);
 		return batch;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private void saveData(Batch batch, List<PowerConsumptionRaw> list) {
-		logger.info("Save power consumption data in database started");
+	private void saveData(Batch batch, List<MeteringReadingRaw> list) {
+		logger.info("Save metering reading data in database started");
 		list.forEach(t -> t.setBatchId(batch.getId()));
-		pcService.saveAll(list);
-		logger.info("Save power consumption data in database completed");
+		mrService.saveAll(list);
+		logger.info("Save metering reading data in database completed");
 	}
 
-	private List<MeteringPointCfg> buidPoints(List<WorkListLine> lines) {
+    private LocalDateTime buildRequestedDateTime() {
+		return LocalDate.now(ZoneId.of("UTC+1"))
+					.plusDays(1)
+					.atStartOfDay();
+	}
+
+	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
+		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
+			return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
+		else
+			return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
+	}
+
+	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
 		List<LastLoadInfo> lastLoadInfoList = lastLoadInfoService.findAll();
 
-		List<MeteringPointCfg> points = new ArrayList<>();
+		List<MeteringPointCfg> points= new ArrayList<>();
 		lines.stream()
-			.filter(line -> line.getParam().getParamType().equals("PC"))
+			.filter(l -> l.getParam().getParamType().equals("MR"))
 			.forEach(line -> {
 				ParameterConf parameterConf = line.getParam().getConfs()
 					.stream()
@@ -141,11 +154,11 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 
 				if (parameterConf!=null) {
 					MeteringPointCfg mpc = new MeteringPointCfg();
-					mpc.setSourceParamCode(parameterConf.getSourceParamCode());
-					mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
-					mpc.setInterval(parameterConf.getInterval());
 					mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
 					mpc.setParamCode(line.getParam().getCode());
+					mpc.setSourceParamCode(parameterConf.getSourceParamCode());
+					mpc.setInterval(parameterConf.getInterval());
+					mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
 
 					LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
 						.filter(t -> t.getSourceMeteringPointCode().equals(mpc.getSourceMeteringPointCode()) && t.getSourceParamCode().equals(mpc.getSourceParamCode()))
@@ -153,7 +166,7 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 						.orElse(null);
 
 					mpc.setStartTime(buildStartTime(lastLoadInfo));
-					mpc.setEndTime(buildRequestedTime());
+					mpc.setEndTime(buildRequestedDateTime());
 					if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
 						points.add(mpc);
 				}
@@ -161,40 +174,19 @@ public class PowerConsumptionReader implements Reader<PowerConsumptionRaw> {
 		return points;
 	}
 
-	private LocalDateTime buildRequestedTime() {
-		return LocalDateTime.now(ZoneId.of("UTC+1"))
-				.minusMinutes(15)
-				.truncatedTo(ChronoUnit.HOURS);
-	}
-
-	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-		LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
-		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
-			LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
-			startTime = lastLoadDate.getMinute() < 45
-					? lastLoadDate.truncatedTo(ChronoUnit.HOURS)
-					: lastLoadDate.plusMinutes(15);
-		}
-
-		return startTime;
-	}
-
 
 	@Inject
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private PowerConsumptionGateway powerConsumptionGateway;
+	private MeteringReadingGateway meteringReadingGateway;
 
 	@Inject
 	private WorkListHeaderService workListHeaderService;
 
 	@Inject
-	private ParameterService parameterService;
-
-	@Inject
 	private BatchService batchService;
 
 	@Inject
-	private MeteringDataService<PowerConsumptionRaw> pcService;
+	private MeteringDataService<MeteringReadingRaw> mrService;
 }

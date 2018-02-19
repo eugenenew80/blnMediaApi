@@ -2,24 +2,21 @@ package kz.kegoc.bln.entity.data;
 
 import kz.kegoc.bln.entity.adm.User;
 import kz.kegoc.bln.entity.common.HasId;
+import kz.kegoc.bln.entity.dict.MeteringPoint;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class Batch implements HasId {
+public class UserTaskLine implements HasId {
     private Long id;
-    private WorkListHeader workListHeader;
-    private UserTaskHeader userTaskHeader;
-    private String sourceSystemCode;
-    private String direction;
-    private String paramType;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private Long recCount;
-    private String status;
-    private String errMsg;
+    private UserTaskHeader header;
+    private MeteringPoint meteringPoint;
+    private Parameter param;
+    private LocalDateTime startMeteringDate;
+    private LocalDateTime endMeteringDate;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private User createBy;

@@ -7,13 +7,21 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
     <changeSet id="media-eug-20" logicalFilePath="path-independent" author="eugene">
-        <comment>Creating table: media_emcos_config</comment>
-        <createTable tableName="media_emcos_config" schemaName="apps">
+        <comment>Creating table: media_connection_config</comment>
+        <createTable tableName="media_connection_config" schemaName="apps">
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
 
             <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_system_code" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="con_type" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
 
@@ -48,97 +56,125 @@
     </changeSet>
 
 	<changeSet id="media-eug-21" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating primary key for table: media_emcos_config</comment>
+	    <comment>Creating primary key for table: media_connection_config</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_emcos_config"
+	            constraintName="pk_media_connection_config"
 	            schemaName="apps"
-	            tableName="media_emcos_config"/>
+	            tableName="media_connection_config"/>
 	</changeSet>
 	
 	<changeSet id="media-eug-22" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating sequence for table: media_emcos_config</comment>
+	    <comment>Creating sequence for table: media_connection_config</comment>
 	    <createSequence 
 	            incrementBy="10"
 	            schemaName="apps"
-	            sequenceName="media_emcos_config_s"
-	            startValue="2"/>
+	            sequenceName="media_connection_config_s"
+	            startValue="11"/>
 	</changeSet>
 
     <changeSet id="media-eug-23" logicalFilePath="path-independent" author="eugene">
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="1" />
+            <column name="name" type="varchar(100)" value="Сервер EMCOS Юж. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Юж. МЭС" />
             <column name="url" type="varchar(300)" value="http://10.8.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="yug" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="2" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Акмол. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="url" type="varchar(300)" value="http://10.9.44.13/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="akmol" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="3" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Алм. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="url" type="varchar(300)" value="http://10.0.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="almaty" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="4" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Акт. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="url" type="varchar(300)" value="http://10.1.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="aktobe" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="5" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Вост. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="url" type="varchar(300)" value="http://10.3.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="vostok" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="6" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Сарб. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="url" type="varchar(300)" value="http://10.4.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="sarbay" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="7" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Центр. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="url" type="varchar(300)" value="http://10.5.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="central" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="8" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Сев. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="url" type="varchar(300)" value="http://10.6.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="sever" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
-        <insert schemaName="apps"  tableName="media_emcos_config">
+        <insert schemaName="apps"  tableName="media_connection_config">
             <column name="id" type="number" value="9" />
             <column name="name" type="varchar(100)" value="Сервер EMCOS Зап. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="SOAP" />
             <column name="url" type="varchar(300)" value="http://10.7.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
             <column name="user_name" type="varchar(20)" value="zapad" />
             <column name="pwd" type="varchar(20)" value="" />
         </insert>
 
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id" type="number" value="10" />
+            <column name="name" type="varchar(100)" value="Сервер FTP Акм. МЭС" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="con_type" type="varchar(20)" value="FTP" />
+            <column name="url" type="varchar(300)" value="ftp://10.7.144.11" />
+            <column name="user_name" type="varchar(20)" value="ftpuser" />
+            <column name="pwd" type="varchar(20)" value="ftpuser" />
+        </insert>
+
         <rollback/>
     </changeSet>
 </databaseChangeLog>
-

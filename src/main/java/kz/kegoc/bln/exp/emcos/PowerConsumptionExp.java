@@ -7,13 +7,12 @@ import kz.kegoc.bln.exp.emcos.sender.Sender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 
 @Singleton
-public class EmcosPowerConsumptionExp implements Exporter {
-    private static final Logger logger = LoggerFactory.getLogger(EmcosPowerConsumptionExp.class);
+public class PowerConsumptionExp implements Exporter {
+    private static final Logger logger = LoggerFactory.getLogger(PowerConsumptionExp.class);
 
     @ProducerMonitor
     //@Schedule(minute = "*/5", hour = "*", persistent = false)
@@ -23,7 +22,7 @@ public class EmcosPowerConsumptionExp implements Exporter {
         }
 
         catch (Exception e) {
-            logger.error("EmcosPowerConsumptionExp.runExport failed: " + e.getMessage());
+            logger.error("PowerConsumptionExp.runExport failed: " + e.getMessage());
         }
     }
 

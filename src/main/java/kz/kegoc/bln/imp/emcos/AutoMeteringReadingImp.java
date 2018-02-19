@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.imp.Importer;
-import kz.kegoc.bln.imp.emcos.reader.Reader;
+import kz.kegoc.bln.imp.emcos.auto.Reader;
 
 @Singleton
-public class EmcosMeteringReadingImp implements Importer {
-	private static final Logger logger = LoggerFactory.getLogger(EmcosMeteringReadingImp.class);
+public class AutoMeteringReadingImp implements Importer {
+	private static final Logger logger = LoggerFactory.getLogger(AutoMeteringReadingImp.class);
 	
 	@ProducerMonitor
 	@Schedule(minute = "*/30", hour = "*", persistent = false)
@@ -22,10 +22,9 @@ public class EmcosMeteringReadingImp implements Importer {
 		}
 		
 		catch (Exception e) {
-			logger.error("EmcosMeteringReadingImp.runImport failed: " + e.getMessage());
+			logger.error("AutoMeteringReadingImp.runImport failed: " + e.getMessage());
 		}
     }
-
 
 	@Inject
 	private Reader<MeteringReadingRaw> reader;

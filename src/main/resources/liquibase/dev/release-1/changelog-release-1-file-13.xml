@@ -184,7 +184,7 @@
         <insert schemaName="apps"  tableName="media_parameter_conf">
             <column name="id"                   type="number"       value="12" />
             <column name="param_id"             type="number"       value="1" />
-            <column name="source_system_code"   type="varchar(20)"  value="BEMS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
             <column name="source_param_code"    type="varchar(10)"  value="709" />
             <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
             <column name="source_unit_id"       type="number"       value="9" />
@@ -194,7 +194,7 @@
         <insert schemaName="apps"  tableName="media_parameter_conf">
             <column name="id"                   type="number"       value="13" />
             <column name="param_id"             type="number"       value="2" />
-            <column name="source_system_code"   type="varchar(20)"  value="BEMS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
             <column name="source_param_code"    type="varchar(10)" value="710" />
             <column name="source_unit_code"     type="varchar(10)" value="kWh" />
             <column name="source_unit_id"       type="number"       value="9" />

@@ -1,6 +1,7 @@
 package kz.kegoc.bln.ejb.interceptor;
 
-import kz.kegoc.bln.imp.emcos.EmcosMeteringReadingImp;
+import kz.kegoc.bln.imp.emcos.AutoMeteringReadingImp;
+
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
@@ -15,7 +16,7 @@ public class ProducerInterceptor {
 
         Class<?> aClass = ctx.getTarget().getClass();
         boolean flag = true;
-        if (aClass == EmcosMeteringReadingImp.class)
+        if (aClass == AutoMeteringReadingImp.class)
             flag = emcosProducer;
         
         if (flag) return ctx.proceed();

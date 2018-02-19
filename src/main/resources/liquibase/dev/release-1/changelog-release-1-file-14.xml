@@ -25,8 +25,20 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="status" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="config_id" type="number">
                 <constraints nullable="true"/>
+            </column>
+
+            <column name="batch_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_active" type="number">
+                <constraints nullable="false"/>
             </column>
 
             <column name="create_date" type="TIMESTAMP">

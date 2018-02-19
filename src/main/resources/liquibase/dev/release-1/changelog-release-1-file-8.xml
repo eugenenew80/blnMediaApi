@@ -33,11 +33,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="pc_last_batch_id" type="number">
-                <constraints nullable="true"/>
-            </column>
-
-            <column name="mr_last_batch_id" type="number">
+            <column name="batch_id" type="number">
                 <constraints nullable="true"/>
             </column>
 

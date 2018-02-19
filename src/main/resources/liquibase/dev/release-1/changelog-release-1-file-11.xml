@@ -17,6 +17,10 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="user_task_header_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="source_system_code" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
@@ -25,7 +29,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="data_type" type="varchar(20)">
+            <column name="param_type" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
 

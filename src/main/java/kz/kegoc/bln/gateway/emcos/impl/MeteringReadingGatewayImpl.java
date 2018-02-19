@@ -4,7 +4,7 @@ import kz.kegoc.bln.entity.common.DataStatus;
 import kz.kegoc.bln.entity.common.InputMethod;
 import kz.kegoc.bln.entity.common.ReceivingMethod;
 import kz.kegoc.bln.entity.common.SourceSystem;
-import kz.kegoc.bln.entity.data.EmcosConfig;
+import kz.kegoc.bln.entity.data.ConnectionConfig;
 import kz.kegoc.bln.entity.data.MeteringReadingRaw;
 import kz.kegoc.bln.gateway.emcos.MeteringReadingGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
@@ -33,14 +33,14 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     private List<MeteringPointCfg> points;
-    private EmcosConfig config;
+    private ConnectionConfig config;
 
     public MeteringReadingGateway points(List<MeteringPointCfg> points) {
         this.points = points;
         return this;
     }
 
-    public MeteringReadingGateway config(EmcosConfig config) {
+    public MeteringReadingGateway config(ConnectionConfig config) {
         this.config = config;
         return this;
     }

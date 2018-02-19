@@ -25,6 +25,14 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="start_metering_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="end_metering_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="create_date" type="TIMESTAMP">
                 <constraints nullable="true"/>
             </column>

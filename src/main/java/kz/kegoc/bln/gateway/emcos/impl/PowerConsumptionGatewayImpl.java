@@ -4,7 +4,7 @@ import kz.kegoc.bln.entity.common.DataStatus;
 import kz.kegoc.bln.entity.common.InputMethod;
 import kz.kegoc.bln.entity.common.ReceivingMethod;
 import kz.kegoc.bln.entity.common.SourceSystem;
-import kz.kegoc.bln.entity.data.EmcosConfig;
+import kz.kegoc.bln.entity.data.ConnectionConfig;
 import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
 import kz.kegoc.bln.gateway.emcos.PowerConsumptionGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
@@ -32,14 +32,14 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
     private static final Logger logger = LoggerFactory.getLogger(PowerConsumptionGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
     private List<MeteringPointCfg> points;
-    private EmcosConfig config;
+    private ConnectionConfig config;
 
     public PowerConsumptionGateway points(List<MeteringPointCfg> points) {
         this.points = points;
         return this;
     }
 
-    public PowerConsumptionGateway config(EmcosConfig config) {
+    public PowerConsumptionGateway config(ConnectionConfig config) {
         this.config = config;
         return this;
     }
