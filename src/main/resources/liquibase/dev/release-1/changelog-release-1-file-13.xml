@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="media-eug-39" logicalFilePath="path-independent" author="eugene">
+        <comment>Creating table: media_parameter_conf</comment>
+        <createTable tableName="media_parameter_conf" schemaName="apps">
+            <column name="id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="param_id" type="number">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_system_code" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_param_code" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_unit_code" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source_unit_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="interval" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number" remarks="Автор">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+	<changeSet id="media-eug-40" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating primary key for table: media_parameter_conf</comment>
+	    <addPrimaryKey 
+	            columnNames="id"
+	            constraintName="pk_media_parameter_conf"
+	            schemaName="apps"
+	            tableName="media_parameter_conf"/>
+	</changeSet>
+	
+	<changeSet id="media-eug-41" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating sequence for table: media_parameter_conf_raw</comment>
+	    <createSequence 
+	            incrementBy="1"
+	            schemaName="apps"
+	            sequenceName="media_parameter_conf_s"
+	            startValue="14"/>
+	</changeSet>
+
+    <changeSet id="media-eug-42" logicalFilePath="path-independent" author="eugene">
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="1" />
+            <column name="param_id"             type="number"       value="1" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1040" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+            <column name="interval"             type="number"       value="900" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="2" />
+            <column name="param_id"             type="number"       value="2" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1041" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+            <column name="interval"             type="number"       value="900" />
+
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="3" />
+            <column name="param_id"             type="number"       value="3" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1042" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kVarh" />
+            <column name="source_unit_id"       type="number"       value="14" />
+            <column name="interval"             type="number"       value="900" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="4" />
+            <column name="param_id"             type="number"       value="4" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1043" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kVarh" />
+            <column name="source_unit_id"       type="number"       value="14" />
+            <column name="interval"             type="number"       value="900" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="5" />
+            <column name="param_id"             type="number"       value="5" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1498" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="6" />
+            <column name="param_id"             type="number"       value="6" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1499" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="7" />
+            <column name="param_id"             type="number"       value="7" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1500" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kVarh" />
+            <column name="source_unit_id"       type="number"       value="14" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="8" />
+            <column name="param_id"             type="number"       value="8" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1501" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kVarh" />
+            <column name="source_unit_id"       type="number"       value="14" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="9" />
+            <column name="param_id"             type="number"       value="9" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="5330" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kV" />
+            <column name="source_unit_id"       type="number"       value="4" />
+            <column name="interval"             type="number"       value="180" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="10" />
+            <column name="param_id"             type="number"       value="10" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="5341" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kV" />
+            <column name="source_unit_id"       type="number"       value="4" />
+            <column name="interval"             type="number"       value="180" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="11" />
+            <column name="param_id"             type="number"       value="11" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="5352" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kV" />
+            <column name="source_unit_id"       type="number"       value="4" />
+            <column name="interval"             type="number"       value="180" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="12" />
+            <column name="param_id"             type="number"       value="1" />
+            <column name="source_system_code"   type="varchar(20)"  value="BEMS" />
+            <column name="source_param_code"    type="varchar(10)"  value="709" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+            <column name="interval"             type="number"       value="3600" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="13" />
+            <column name="param_id"             type="number"       value="2" />
+            <column name="source_system_code"   type="varchar(20)"  value="BEMS" />
+            <column name="source_param_code"    type="varchar(10)" value="710" />
+            <column name="source_unit_code"     type="varchar(10)" value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+            <column name="interval"             type="number"       value="3600" />
+        </insert>
+
+        <rollback/>
+    </changeSet>
+</databaseChangeLog>

@@ -66,9 +66,9 @@ public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
 
 					logger.info("Request data started");
 					List<MeteringReadingRaw> mrList = meteringReadingGateway
-							.config(header.getConfig())
-							.points(points)
-							.request();
+						.config(header.getConfig())
+						.points(groupPoints)
+						.request();
 					logger.info("Request data completed");
 
 					saveData(batch, mrList);
@@ -136,31 +136,41 @@ public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
 		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
 			return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
 		else
-			return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay().minusDays(2);
+			return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
 	}
 
 	private List<MeteringPointCfg> buidPoints(List<WorkListLine> lines) {
 		List<LastLoadInfo> lastLoadInfoList = lastLoadInfoService.findAll();
 
 		List<MeteringPointCfg> points= new ArrayList<>();
-		for (WorkListLine line : lines) {
-			MeteringPointCfg mpc = new MeteringPointCfg();
-			mpc.setPointCode(line.getMeteringPoint().getExternalCode());
-			mpc.setParamCode(line.getParam().getCode());
-			mpc.setEmcosParamCode(line.getParam().getSourceParamCode());
-			mpc.setUnitCode(line.getParam().getSourceUnitCode());
+		lines.stream()
+			.filter(l -> l.getParam().getParamType().equals("MR"))
+			.forEach(line -> {
+				ParameterConf parameterConf = line.getParam().getConfs()
+					.stream()
+					.filter(c -> c.getSourceSystemCode().equals("EMCOS"))
+					.findFirst()
+					.orElse(null);
 
-			LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-				.filter(t -> t.getSourceMeteringPointCode().equals(mpc.getPointCode()) && t.getSourceParamCode().equals(mpc.getEmcosParamCode()))
-				.findFirst()
-				.orElse(null);
+				if (parameterConf!=null) {
+					MeteringPointCfg mpc = new MeteringPointCfg();
+					mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
+					mpc.setParamCode(line.getParam().getCode());
+					mpc.setSourceParamCode(parameterConf.getSourceParamCode());
+					mpc.setInterval(parameterConf.getInterval());
+					mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
 
-			mpc.setStartTime(buildStartTime(lastLoadInfo));
-			mpc.setEndTime(buildRequestedDateTime());
+					LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
+						.filter(t -> t.getSourceMeteringPointCode().equals(mpc.getSourceMeteringPointCode()) && t.getSourceParamCode().equals(mpc.getSourceParamCode()))
+						.findFirst()
+						.orElse(null);
 
-			if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-				points.add(mpc);
-		}
+					mpc.setStartTime(buildStartTime(lastLoadInfo));
+					mpc.setEndTime(buildRequestedDateTime());
+					if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
+						points.add(mpc);
+				}
+			});
 		return points;
 	}
 

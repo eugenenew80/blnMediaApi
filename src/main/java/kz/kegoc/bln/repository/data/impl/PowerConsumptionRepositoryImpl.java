@@ -20,7 +20,7 @@ public class PowerConsumptionRepositoryImpl extends AbstractRepository<PowerCons
 	}
 
 	public List<PowerConsumption> selectByExternalCode(String externalCode, LocalDateTime meteringDateStart, LocalDateTime meteringDateEnd) {
-		return getEntityManager().createNamedQuery("PowerConsumption.findByEntity", PowerConsumption.class)
+		return getEntityManager().createNamedQuery("PowerConsumption.findByExternalCode", PowerConsumption.class)
 					.setParameter("sourceMeteringPointCode", 	externalCode)
 					.setParameter("meteringDateStart", 		meteringDateStart)
 					.setParameter("meteringDateEnd", 			meteringDateEnd)

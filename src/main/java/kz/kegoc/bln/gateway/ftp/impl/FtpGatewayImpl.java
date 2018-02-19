@@ -4,6 +4,8 @@ import kz.kegoc.bln.entity.data.PowerConsumption;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ejb.Singleton;
 import java.io.FileOutputStream;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class FtpGatewayImpl implements FtpGateway {
+    private static final Logger logger = LoggerFactory.getLogger(FtpGatewayImpl.class);
     private List<PowerConsumption> pcList;
     private List<String> mpCodesList;
 
@@ -33,7 +36,7 @@ public class FtpGatewayImpl implements FtpGateway {
         Workbook book = builWorkBook();
 
         try {
-            book.write(new FileOutputStream("qqq.xlsx"));
+            book.write(new FileOutputStream("qqq.xls"));
             book.close();
         }
         catch (IOException e) {
@@ -43,6 +46,8 @@ public class FtpGatewayImpl implements FtpGateway {
 
 
     private Workbook builWorkBook() {
+        logger.info("FtpGatewayImpl.builWorkBook");
+
         Workbook book = new HSSFWorkbook();
 
         CellStyle headerStyle = book.createCellStyle();
@@ -168,6 +173,7 @@ public class FtpGatewayImpl implements FtpGateway {
         sheet.autoSizeColumn(3);
         sheet.autoSizeColumn(4);
 
+        logger.info("FtpGatewayImpl.builWorkBook");
         return book;
     }
 

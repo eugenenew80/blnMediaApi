@@ -121,8 +121,8 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
 
     private String buildPoint(MeteringPointCfg point) {
         return ""
-                + "<ROW PPOINT_CODE=\"" + point.getPointCode() + "\" "
-                + "PML_ID=\"" + point.getEmcosParamCode() + "\" "
+                + "<ROW PPOINT_CODE=\"" + point.getSourceMeteringPointCode() + "\" "
+                + "PML_ID=\"" + point.getSourceParamCode() + "\" "
                 + "PBT=\"" + point.getStartTime().format(timeFormatter) + "\" "
                 + "PET=\"" + point.getEndTime().format(timeFormatter) + "\" />";
     }
@@ -158,17 +158,28 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         logger.debug("convert xml to list completed");
 
         logger.debug("find unit codes for list started");
-        Map<Pair<String, String>, List<MeteringPointCfg>> map = points.stream()
-                .collect(groupingBy(p -> Pair.of(p.getEmcosParamCode(), p.getUnitCode())));
+        Map<Pair<String, String>, List<MeteringPointCfg>> map1 = points.stream()
+                .collect(groupingBy(p -> Pair.of(p.getSourceParamCode(), p.getSourceUnitCode())));
+
+        Map<Pair<String, Integer>, List<MeteringPointCfg>> map2 = points.stream()
+                .collect(groupingBy(p -> Pair.of(p.getSourceParamCode(), p.getInterval())));
 
         list.forEach(mr -> {
-            Pair<String, String> pair = map.keySet().stream()
+            Pair<String, String> pair1 = map1.keySet().stream()
                 .filter(p -> p.getLeft().equals(mr.getSourceParamCode()))
                 .findFirst()
                 .orElse(null);
 
-            if (pair!=null)
-                mr.setSourceUnitCode(pair.getRight());
+            Pair<String, Integer> pair2 = map2.keySet().stream()
+                    .filter(p -> p.getLeft().equals(mr.getSourceParamCode()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (pair1!=null)
+                mr.setSourceUnitCode(pair1.getRight());
+
+            if (pair2!=null)
+                mr.setInterval(pair2.getRight());
         });
         logger.debug("find unit codes for list completed");
 
@@ -210,7 +221,6 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         pc.setMeteringDate(time);
         pc.setSourceSystemCode(SourceSystem.EMCOS);
         pc.setStatus(DataStatus.TMP);
-        pc.setInterval(900);
         pc.setInputMethod(InputMethod.AUTO);
         pc.setReceivingMethod(ReceivingMethod.AUTO);
         pc.setSourceParamCode(sourceParamCode);

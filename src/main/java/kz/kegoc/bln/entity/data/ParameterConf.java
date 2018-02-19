@@ -5,19 +5,19 @@ import kz.kegoc.bln.entity.common.HasId;
 import kz.kegoc.bln.entity.dict.Unit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
-public class Parameter implements HasId {
+public class ParameterConf implements HasId {
     private Long id;
-    private String code;
-    private String name;
-    private String shortName;
-    private Unit unit;
-    private String paramType;
-    private List<ParameterConf> confs;
+    private String sourceSystemCode;
+    private String sourceParamCode;
+    private String sourceUnitCode;
+    private Unit sourceUnit;
+    private Parameter param;
+    private Integer interval;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private User createBy;

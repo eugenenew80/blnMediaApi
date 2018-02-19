@@ -320,7 +320,7 @@
 			</basic>
 
 			<basic name="paramId">
-				<column name="paramId" />
+				<column name="param_id" />
 			</basic>
 
 			<basic name="createDate">
@@ -502,16 +502,12 @@
 				<column name="name" />
 			</basic>
 
-			<basic name="sourceParamCode">
-				<column name="source_param_code" />
+			<basic name="shortName">
+				<column name="short_name" />
 			</basic>
 
 			<basic name="paramType">
 				<column name="param_type" />
-			</basic>
-
-			<basic name="sourceUnitCode">
-				<column name="source_unit_code" />
 			</basic>
 
 			<basic name="createDate">
@@ -524,6 +520,63 @@
 
 			<many-to-one name="unit">
 				<join-column name="unit_id"/>
+			</many-to-one>
+
+			<many-to-one name="createBy">
+				<join-column name="create_by" />
+			</many-to-one>
+
+			<many-to-one name="lastUpdateBy">
+				<join-column name="last_update_by" />
+			</many-to-one>
+
+			<one-to-many name="confs" mapped-by="param"/>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.ParameterConf">
+		<table name="media_parameter_conf" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_parameter_conf_gen" />
+				<sequence-generator
+						name="media_parameter_conf_gen"
+						sequence-name="apps.media_parameter_conf_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="sourceSystemCode">
+				<column name="source_system_code" />
+			</basic>
+
+			<basic name="sourceParamCode">
+				<column name="source_param_code" />
+			</basic>
+
+			<basic name="sourceUnitCode">
+				<column name="source_unit_code" />
+			</basic>
+
+			<basic name="interval">
+				<column name="interval" />
+			</basic>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<many-to-one name="param">
+				<join-column name="param_id"/>
+			</many-to-one>
+
+			<many-to-one name="sourceUnit">
+				<join-column name="source_unit_id"/>
 			</many-to-one>
 
 			<many-to-one name="createBy">

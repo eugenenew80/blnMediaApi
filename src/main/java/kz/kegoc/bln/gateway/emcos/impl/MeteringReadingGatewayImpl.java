@@ -6,7 +6,6 @@ import kz.kegoc.bln.entity.common.ReceivingMethod;
 import kz.kegoc.bln.entity.common.SourceSystem;
 import kz.kegoc.bln.entity.data.EmcosConfig;
 import kz.kegoc.bln.entity.data.MeteringReadingRaw;
-import kz.kegoc.bln.entity.data.Parameter;
 import kz.kegoc.bln.gateway.emcos.MeteringReadingGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
@@ -122,8 +121,8 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
 
     private String buildNode(MeteringPointCfg point) {
         return ""
-                + "<ROW PPOINT_CODE=\"" + point.getPointCode() + "\" "
-                + "PML_ID=\"" + point.getEmcosParamCode() + "\" "
+                + "<ROW PPOINT_CODE=\"" + point.getSourceMeteringPointCode() + "\" "
+                + "PML_ID=\"" + point.getSourceParamCode() + "\" "
                 + "PBT=\"" + point.getStartTime().format(timeFormatter) + "\" "
                 + "PET=\"" + point.getEndTime().format(timeFormatter) + "\" />";
     }
@@ -151,7 +150,9 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW") {
                     	logger.debug("row: " + (j+1));
-                    	list.add(parseNode(rowData.item(j)));
+                        MeteringReadingRaw node = parseNode(rowData.item(j));
+                        if (node!=null)
+                            list.add(node);
                     }
                 }
             }
@@ -160,7 +161,7 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
 
         logger.debug("find unit codes for list started");
         Map<Pair<String, String>, List<MeteringPointCfg>> map = points.stream()
-            .collect(groupingBy(p -> Pair.of(p.getEmcosParamCode(), p.getUnitCode())));
+            .collect(groupingBy(p -> Pair.of(p.getSourceParamCode(), p.getSourceUnitCode())));
 
         list.forEach(mr -> {
             Pair<String, String> pair = map.keySet().stream()
@@ -191,10 +192,21 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
         LocalDate date = null;
         String dateStr = attributes
             .getNamedItem("PBT")
-            .getNodeValue() ;
+            .getNodeValue();
+        dateStr = dateStr.substring(0, 8);
 
-        if (dateStr!=null) 
-            date = LocalDate.parse(dateStr, dateFormatter);
+        try {
+            if (dateStr != null)
+                date = LocalDate.parse(dateStr, dateFormatter);
+        }
+        catch (Exception e) {
+            logger.error("parse date error :  " + e.getMessage());
+            logger.error("dateStr = " + dateStr);
+            logger.error("sourceParamCode = " + sourceParamCode);
+            logger.error("externalCode = " + externalCode);
+        }
+        if (date==null)
+            return null;
 
         Double val = null;
         String valStr = attributes

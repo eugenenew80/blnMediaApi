@@ -15,7 +15,7 @@ public class EmcosPowerConsumptionImp implements Importer {
 	private static final Logger logger = LoggerFactory.getLogger(EmcosPowerConsumptionImp.class);
 	
 	@ProducerMonitor
-	@Schedule(minute = "30/60", hour = "*", persistent = false)
+	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void runImport() {
 		try {
 			reader.read();

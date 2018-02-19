@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +17,9 @@ import java.util.List;
 public class PowerConsumptionSender implements Sender<PowerConsumption> {
 
     public void send() {
-        String externalCode = "123456789123456789";
-        LocalDateTime startDate = LocalDate.of(2018, 2, 17).atStartOfDay();
-        LocalDateTime endDate = LocalDate.of(2018, 2, 17).atStartOfDay().plusHours(23);
+        String externalCode = "121450213010010007";
+        LocalDateTime startDate = LocalDate.of(2018, Month.FEBRUARY, 18).atStartOfDay();
+        LocalDateTime endDate = LocalDate.of(2018, Month.FEBRUARY, 18).atStartOfDay().plusHours(23);
         List<PowerConsumption> pcList = pcService.findByExternalCode(externalCode, startDate, endDate);
 
         ftpGateway

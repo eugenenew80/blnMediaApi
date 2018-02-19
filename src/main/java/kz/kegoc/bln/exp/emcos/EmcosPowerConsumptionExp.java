@@ -16,7 +16,7 @@ public class EmcosPowerConsumptionExp implements Exporter {
     private static final Logger logger = LoggerFactory.getLogger(EmcosPowerConsumptionExp.class);
 
     @ProducerMonitor
-    @Schedule(minute = "*/5", hour = "*", persistent = false)
+    //@Schedule(minute = "*/5", hour = "*", persistent = false)
     public void runExport() {
         try {
             sender.send();
