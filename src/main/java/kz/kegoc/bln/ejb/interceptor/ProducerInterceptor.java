@@ -1,6 +1,6 @@
 package kz.kegoc.bln.ejb.interceptor;
 
-import kz.kegoc.bln.imp.emcos.AutoMeteringReadingImp;
+import kz.kegoc.bln.imp.emcos.schefule.AutoMeteringReadingImp;
 
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.Interceptor;

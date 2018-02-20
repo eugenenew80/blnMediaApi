@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.emcos;
+package kz.kegoc.bln.imp.emcos.schefule;
 
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
@@ -8,14 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.imp.Importer;
-import kz.kegoc.bln.imp.emcos.auto.Reader;
+import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 
 @Singleton
 public class AutoMeteringReadingImp implements Importer {
 	private static final Logger logger = LoggerFactory.getLogger(AutoMeteringReadingImp.class);
 	
 	@ProducerMonitor
-	@Schedule(minute = "*/30", hour = "*", persistent = false)
+	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void runImport() {
 		try {
 			reader.read();
@@ -27,5 +27,5 @@ public class AutoMeteringReadingImp implements Importer {
     }
 
 	@Inject
-	private Reader<MeteringReadingRaw> reader;
+	private AutoReader<MeteringReadingRaw> reader;
 }

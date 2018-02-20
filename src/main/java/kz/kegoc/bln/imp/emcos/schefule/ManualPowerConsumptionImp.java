@@ -1,8 +1,9 @@
-package kz.kegoc.bln.imp.emcos;
+package kz.kegoc.bln.imp.emcos.schefule;
 
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
+import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
 import kz.kegoc.bln.imp.Importer;
-import kz.kegoc.bln.imp.emcos.manual.PowerConsumptionReader;
+import kz.kegoc.bln.imp.emcos.reader.manual.ManualReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,5 +28,5 @@ public class ManualPowerConsumptionImp implements Importer {
     }
 
 	@Inject
-	private PowerConsumptionReader reader;
+	private ManualReader<PowerConsumptionRaw> reader;
 }

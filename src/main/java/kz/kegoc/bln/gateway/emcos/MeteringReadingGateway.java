@@ -12,5 +12,5 @@ public interface MeteringReadingGateway {
 
     MeteringReadingGateway points(List<MeteringPointCfg> points);
 
-    List<MeteringReadingRaw> request();
+    List<MeteringReadingRaw> request() throws Exception;
 }

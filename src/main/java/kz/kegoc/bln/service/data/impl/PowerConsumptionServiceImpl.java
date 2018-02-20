@@ -4,7 +4,6 @@ import kz.kegoc.bln.entity.data.PowerConsumption;
 import kz.kegoc.bln.repository.data.PowerConsumptionRepository;
 import kz.kegoc.bln.service.common.AbstractEntityService;
 import kz.kegoc.bln.service.data.PowerConsumptionService;
-
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.Validator;
@@ -20,8 +19,8 @@ public class PowerConsumptionServiceImpl extends AbstractEntityService<PowerCons
         this.repository = repository;
     }
 
-    public List<PowerConsumption> findByExternalCode(String externalCode, LocalDateTime meteringDateStart, LocalDateTime meteringDateEnd) {
-        return repository.selectByExternalCode(externalCode, meteringDateStart, meteringDateEnd);
+    public List<PowerConsumption> findByExternalCode(String sourceMeteringPointCode, LocalDateTime meteringDateStart, LocalDateTime meteringDateEnd) {
+        return repository.selectByExternalCode(sourceMeteringPointCode, meteringDateStart, meteringDateEnd);
     }
 
     private PowerConsumptionRepository repository;

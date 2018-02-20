@@ -1,6 +1,7 @@
 package kz.kegoc.bln.gateway.ftp.impl;
 
 import kz.kegoc.bln.entity.data.PowerConsumption;
+import kz.kegoc.bln.gateway.ftp.ExportPoint;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -10,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import javax.ejb.Singleton;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -20,15 +20,10 @@ import java.util.stream.Collectors;
 @Singleton
 public class FtpGatewayImpl implements FtpGateway {
     private static final Logger logger = LoggerFactory.getLogger(FtpGatewayImpl.class);
-    private List<PowerConsumption> pcList;
-    private List<String> mpCodesList;
+    private List<ExportPoint> pcList;
 
-    public FtpGateway pcList(List<PowerConsumption> pcList) {
+    public FtpGateway pcList(List<ExportPoint> pcList) {
         this.pcList = pcList;
-        this.mpCodesList = pcList.stream()
-            .map(d -> d.getMeteringPoint().getExternalCode())
-            .distinct()
-            .collect(Collectors.toList());
         return this;
     }
 
@@ -36,7 +31,7 @@ public class FtpGatewayImpl implements FtpGateway {
         Workbook book = builWorkBook();
 
         try {
-            book.write(new FileOutputStream("qqq.xls"));
+            book.write(new FileOutputStream("export/qqq.xls"));
             book.close();
         }
         catch (IOException e) {
@@ -73,7 +68,7 @@ public class FtpGatewayImpl implements FtpGateway {
         cell.setCellValue("СБРЭ");
 
         int rowNum = 1;
-        for (String pointCode: mpCodesList) {
+        for (ExportPoint point: pcList) {
             rowNum++;
             sheet.createRow(rowNum);
 
@@ -84,7 +79,7 @@ public class FtpGatewayImpl implements FtpGateway {
 
             cell = row.createCell(1);
             cell.setCellStyle(codeStyle);
-            cell.setCellValue(pointCode);
+            cell.setCellValue(point.getSourceMeteringPointCode());
 
             cell = row.createCell(2);
             cell.setCellValue("Дискретность");
@@ -134,10 +129,40 @@ public class FtpGatewayImpl implements FtpGateway {
             cell.setCellStyle(headerStyle);
             cell.setCellValue("Status");
 
-            List<PowerConsumption> list = pcList.stream()
-                .filter(d -> d.getMeteringPoint().getExternalCode().equals(pointCode))
-                .collect(Collectors.toList());
 
+            for (PowerConsumption data : point.getData()) {
+                rowNum++;
+                row = sheet.createRow(rowNum);
+
+                cell = row.createCell(0);
+                DataFormat format = book.createDataFormat();
+                CellStyle dateStyle = book.createCellStyle();
+                dateStyle.setDataFormat(format.getFormat("DD.MM.YYYY HH:MM:SS"));
+                cell.setCellStyle(dateStyle);
+                cell.setCellValue(toDate(data.getMeteringDate()));
+
+                Cell cell1 = row.createCell(1);
+                Cell cell2 = row.createCell(2);
+
+                if (data.getSourceParamCode().equals("709"))
+                    cell1.setCellValue(data.getVal());
+
+                if (data.getSourceParamCode().equals("710"))
+                    cell2.setCellValue(data.getVal());
+
+                cell = row.createCell(3);
+                cell.setCellValue(1);
+
+                cell = row.createCell(4);
+                cell.setCellValue(1);
+            }
+
+            //List<PowerConsumption> list = pcList.stream()
+            //   .filter(d -> d.getMeteringPoint().getExternalCode().equals(point) && d.getSourceParamCode().equals("709"))
+            //    .collect(Collectors.toList());
+
+
+            /*
             LocalDateTime curDate = LocalDate.now().atStartOfDay();
             for (int i=0; i<=23; i++) {
                 rowNum++;
@@ -162,6 +187,7 @@ public class FtpGatewayImpl implements FtpGateway {
                 cell = row.createCell(4);
                 cell.setCellValue(1);
             }
+            */
 
             rowNum++;
             sheet.createRow(rowNum);

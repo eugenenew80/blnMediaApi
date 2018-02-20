@@ -11,5 +11,5 @@ public interface PowerConsumptionGateway {
 
     PowerConsumptionGateway points(List<MeteringPointCfg> points);
 
-    List<PowerConsumptionRaw> request();
+    List<PowerConsumptionRaw> request() throws Exception;
 }

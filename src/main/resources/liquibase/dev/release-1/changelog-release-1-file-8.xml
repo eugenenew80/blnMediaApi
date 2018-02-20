@@ -70,7 +70,7 @@
 	            incrementBy="1"
 	            schemaName="apps"
 	            sequenceName="media_work_list_headers_s"
-	            startValue="2"/>
+	            startValue="11"/>
 	</changeSet>
 
     <changeSet id="media-eug-27" logicalFilePath="path-independent" author="eugene">
@@ -153,6 +153,15 @@
             <column name="direction" type="varchar(100)" value="IMPORT" />
             <column name="config_id" type="number" value="9" />
             <column name="is_active" type="number" value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id" type="number" value="10" />
+            <column name="name" type="varchar(100)" value="Список точек учёта Акм. МЭС для экспорта данных в EMCOS" />
+            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
+            <column name="direction" type="varchar(100)" value="EXPORT" />
+            <column name="config_id" type="number" value="10" />
+            <column name="is_active" type="number" value="1" />
         </insert>
 
         <rollback/>

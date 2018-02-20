@@ -1,10 +1,8 @@
 package kz.kegoc.bln.gateway.ftp;
 
-import kz.kegoc.bln.entity.data.PowerConsumption;
-
 import java.util.List;
 
 public interface FtpGateway {
-    FtpGateway pcList(List<PowerConsumption> pcList);
+    FtpGateway pcList(List<ExportPoint> pcList);
     void send();
 }

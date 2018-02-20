@@ -1,9 +1,9 @@
-package kz.kegoc.bln.imp.emcos;
+package kz.kegoc.bln.imp.emcos.schefule;
 
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
 import kz.kegoc.bln.imp.Importer;
-import kz.kegoc.bln.imp.emcos.auto.Reader;
+import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ejb.Schedule;
@@ -15,7 +15,7 @@ public class AutoPowerConsumptionImp implements Importer {
 	private static final Logger logger = LoggerFactory.getLogger(AutoPowerConsumptionImp.class);
 	
 	@ProducerMonitor
-	@Schedule(minute = "*/5", hour = "*", persistent = false)
+	@Schedule(minute = "*/10", hour = "*", persistent = false)
 	public void runImport() {
 		try {
 			reader.read();
@@ -27,5 +27,5 @@ public class AutoPowerConsumptionImp implements Importer {
     }
 
 	@Inject
-	private Reader<PowerConsumptionRaw> reader;
+	private AutoReader<PowerConsumptionRaw> reader;
 }

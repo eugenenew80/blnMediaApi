@@ -45,7 +45,7 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
         return this;
     }
 
-    public List<MeteringReadingRaw> request() {
+    public List<MeteringReadingRaw> request() throws Exception {
         logger.info("MeteringReadingGatewayImpl.request started");
 
         if (config ==null) {
@@ -78,8 +78,8 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
         }
 
         catch (Exception e) {
-            list = emptyList();
             logger.error("MeteringReadingGatewayImpl.request failed: " + e.toString());
+            throw e;
         }
 
         return list;

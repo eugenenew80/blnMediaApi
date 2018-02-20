@@ -87,6 +87,10 @@
             where
             	    t.sourceMeteringPointCode=:sourceMeteringPointCode
             	and t.meteringDate between :meteringDateStart and :meteringDateEnd
+            order by
+                t.sourceMeteringPointCode,
+                t.meteringDate,
+                t.sourceParamCode
         </query>
     </named-query>
 
@@ -138,6 +142,9 @@
         </query>
     </named-query>
 
-
-
+    <named-query name="UserTaskHeader.findAll">
+        <query>
+            select t from UserTaskHeader t
+        </query>
+    </named-query>
 </entity-mappings>

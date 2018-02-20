@@ -8,5 +8,5 @@ import java.util.List;
 
 @Local
 public interface PowerConsumptionService extends EntityService<PowerConsumption> {
-    List<PowerConsumption> findByExternalCode(String externalCode, LocalDateTime meteringDateStart, LocalDateTime meteringDateEnd);
+    List<PowerConsumption> findByExternalCode(String sourceMeteringPointCode, LocalDateTime meteringDateStart, LocalDateTime meteringDateEnd);
 }

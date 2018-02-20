@@ -44,7 +44,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         return this;
     }
 
-    public List<PowerConsumptionRaw> request() {
+    public List<PowerConsumptionRaw> request() throws Exception {
         logger.info("FtpGatewayImpl.request started");
 
         if (config ==null) {
@@ -78,8 +78,8 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         }
 
         catch (Exception e) {
-            list = emptyList();
             logger.error("FtpGatewayImpl.request failed: " + e.toString());
+            throw e;
         }
 
         return list;

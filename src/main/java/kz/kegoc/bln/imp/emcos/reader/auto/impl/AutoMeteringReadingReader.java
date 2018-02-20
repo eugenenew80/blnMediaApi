@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.emcos.auto.impl;
+package kz.kegoc.bln.imp.emcos.reader.auto.impl;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
@@ -8,7 +8,7 @@ import javax.inject.Inject;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.MeteringReadingGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
-import kz.kegoc.bln.imp.emcos.auto.Reader;
+import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 import kz.kegoc.bln.service.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,17 +18,16 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 
 @Stateless
-public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
-	private static final Logger logger = LoggerFactory.getLogger(MeteringReadingReader.class);
+public class AutoMeteringReadingReader implements AutoReader<MeteringReadingRaw> {
+	private static final Logger logger = LoggerFactory.getLogger(AutoMeteringReadingReader.class);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		logger.info("MeteringReadingReader.read started");
+		logger.info("AutoMeteringReadingReader.read started");
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive() && h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getConfig()!=null)
 			.forEach(header -> {
-				logger.info("Import data started");
 				logger.info("headerId: " + header.getId());
 				logger.info("url: " + header.getConfig().getUrl());
 				logger.info("user: " + header.getConfig().getUserName());
@@ -57,41 +56,40 @@ public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
 						.collect(toList()))
 					.collect(toList());
 
-
 				Long recCount = 0l;
-				for (int i = 0; i < groupsPoints.size(); i++) {
-					List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
-					logger.info("group of points num: " + (i+1));
-					logger.info("group of points size: " + groupPoints.size());
+				try {
+					for (int i = 0; i < groupsPoints.size(); i++) {
+						List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
+						logger.info("group of points num: " + (i + 1));
+						logger.info("group of points size: " + groupPoints.size());
 
-					logger.info("Request data started");
-					List<MeteringReadingRaw> mrList = meteringReadingGateway
-						.config(header.getConfig())
-						.points(groupPoints)
-						.request();
-					logger.info("Request data completed");
+						logger.info("Request data started");
+						List<MeteringReadingRaw> mrList = meteringReadingGateway
+							.config(header.getConfig())
+							.points(groupPoints)
+							.request();
+						logger.info("Request data completed");
 
-					saveData(batch, mrList);
-					recCount = recCount + mrList.size();
+						saveData(batch, mrList);
+						recCount = recCount + mrList.size();
+					}
+
+					lastLoadInfoService.mrUpdateLastDate(batch.getId());
+					lastLoadInfoService.mrLoad(batch.getId());
+					endBatch(header, batch, recCount);
 				}
-
-				logger.info("Update last date");
-				lastLoadInfoService.mrUpdateLastDate(batch.getId());
-
-				logger.info("Transfer data");
-				lastLoadInfoService.mrLoad(batch.getId());
-
-				endBatch(header, batch, recCount);
-				logger.info("Import data completed");
+				catch (Exception e) {
+					logger.error("AutoMeteringReadingReader.read failed: " + e.getMessage());
+					errorBatch(header, batch, e);
+				}
 			});
 
-		logger.info("MeteringReadingReader.read completed");
+		logger.info("AutoMeteringReadingReader.read completed");
     }
 
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private Batch startBatch(WorkListHeader header) {
-		logger.info("Create new batch");
 		Batch batch = new Batch();
 		batch.setWorkListHeader(header);
 		batch.setSourceSystemCode(header.getSourceSystemCode());
@@ -105,13 +103,24 @@ public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch endBatch(WorkListHeader header, Batch batch, Long retCount) {
-		logger.info("Update batch");
 		batch.setStatus("C");
 		batch.setEndDate(LocalDateTime.now());
 		batch.setRecCount(retCount);
 		batchService.update(batch);
 
-		logger.info("Update header");
+		header = workListHeaderService.findById(header.getId());
+		header.setBatch(batch);
+		workListHeaderService.update(header);
+		return batch;
+	}
+
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	private Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
+		batch.setStatus("E");
+		batch.setEndDate(LocalDateTime.now());
+		batch.setErrMsg(e.getMessage());
+		batchService.update(batch);
+
 		header = workListHeaderService.findById(header.getId());
 		header.setBatch(batch);
 		workListHeaderService.update(header);
@@ -120,10 +129,8 @@ public class MeteringReadingReader implements Reader<MeteringReadingRaw> {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private void saveData(Batch batch, List<MeteringReadingRaw> list) {
-		logger.info("Save metering reading data in database started");
 		list.forEach(t -> t.setBatchId(batch.getId()));
 		mrService.saveAll(list);
-		logger.info("Save metering reading data in database completed");
 	}
 
     private LocalDateTime buildRequestedDateTime() {

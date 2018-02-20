@@ -8,5 +8,5 @@ import java.util.List;
 
 @Local
 public interface PowerConsumptionRepository extends Repository<PowerConsumption> {
-    List<PowerConsumption> selectByExternalCode(String externalCode, LocalDateTime meteringDateStart, LocalDateTime meteringDateEnd);
+    List<PowerConsumption> selectByExternalCode(String sourceMeteringPointCode, LocalDateTime meteringDateStart, LocalDateTime meteringDateEnd);
 }

@@ -1,8 +1,9 @@
-package kz.kegoc.bln.imp.emcos.manual;
+package kz.kegoc.bln.imp.emcos.reader.manual.impl;
 
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.gateway.emcos.PowerConsumptionGateway;
+import kz.kegoc.bln.imp.emcos.reader.manual.ManualReader;
 import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.MeteringDataService;
@@ -18,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
-public class PowerConsumptionReader {
-	private static final Logger logger = LoggerFactory.getLogger(PowerConsumptionReader.class);
+public class ManualPowerConsumptionReader implements ManualReader<PowerConsumptionRaw> {
+	private static final Logger logger = LoggerFactory.getLogger(ManualPowerConsumptionReader.class);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		logger.info("PowerConsumptionReader.read started");
+		logger.debug("ManualPowerConsumptionReader.read started");
 
 		userTaskHeaderService.findAll().stream()
 			.filter(h -> h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getStatus().equals("W"))
@@ -46,28 +47,30 @@ public class PowerConsumptionReader {
 
 				Batch batch = startBatch(header);
 
-				logger.info("Request data started");
-				List<PowerConsumptionRaw> pcList = pcGateway
-					.config(header.getConfig())
-					.points(points)
-					.request();
-				logger.info("Request data completed");
+				Long recCount = 0l;
+				try {
+					logger.info("Request data started");
+					List<PowerConsumptionRaw> pcList = pcGateway
+						.config(header.getConfig())
+						.points(points)
+						.request();
+					logger.info("Request data completed");
 
-				saveData(batch, pcList);
+					saveData(batch, pcList);
+					recCount = recCount + pcList.size();
 
-				logger.info("Update last date");
-				lastLoadInfoService.pcUpdateLastDate(batch.getId());
-
-				logger.info("Transfer data");
-				lastLoadInfoService.pcLoad(batch.getId());
-
-				endBatch(header, batch, (long) pcList.size());
-				logger.info("Import data completed");
+					lastLoadInfoService.pcUpdateLastDate(batch.getId());
+					lastLoadInfoService.pcLoad(batch.getId());
+					endBatch(header, batch, recCount);
+				}
+				catch (Exception e) {
+					logger.error("ManualPowerConsumptionReader.read failed: " + e.getMessage());
+					errorBatch(header, batch, e);
+				}
 			});
 
-		logger.info("PowerConsumptionReader.read completed");
+		logger.debug("ManualPowerConsumptionReader.read completed");
 	}
-
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch startBatch(UserTaskHeader header) {
@@ -83,7 +86,6 @@ public class PowerConsumptionReader {
 		return batch;
 	}
 
-
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch endBatch(UserTaskHeader header, Batch batch, Long recCount) {
 		logger.info("Update batch");
@@ -94,11 +96,24 @@ public class PowerConsumptionReader {
 
 		logger.info("Update header");
 		header = userTaskHeaderService.findById(header.getId());
+		header.setStatus("C");
 		header.setBatch(batch);
 		userTaskHeaderService.update(header);
 		return batch;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	private Batch errorBatch(UserTaskHeader header, Batch batch, Exception e) {
+		batch.setStatus("E");
+		batch.setEndDate(LocalDateTime.now());
+		batch.setErrMsg(e.getMessage());
+		batchService.update(batch);
+
+		header = userTaskHeaderService.findById(header.getId());
+		header.setBatch(batch);
+		userTaskHeaderService.update(header);
+		return batch;
+	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private void saveData(Batch batch, List<PowerConsumptionRaw> list) {
@@ -107,7 +122,6 @@ public class PowerConsumptionReader {
 		pcService.saveAll(list);
 		logger.info("Save power consumption data in database completed");
 	}
-
 
 	private List<MeteringPointCfg> buildPoints(List<UserTaskLine> lines) {
 		List<MeteringPointCfg> points = new ArrayList<>();
