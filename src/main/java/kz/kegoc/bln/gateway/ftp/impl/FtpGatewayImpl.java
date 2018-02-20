@@ -129,7 +129,6 @@ public class FtpGatewayImpl implements FtpGateway {
             cell.setCellStyle(headerStyle);
             cell.setCellValue("Status");
 
-
             for (PowerConsumption data : point.getData()) {
                 rowNum++;
                 row = sheet.createRow(rowNum);
@@ -156,38 +155,6 @@ public class FtpGatewayImpl implements FtpGateway {
                 cell = row.createCell(4);
                 cell.setCellValue(1);
             }
-
-            //List<PowerConsumption> list = pcList.stream()
-            //   .filter(d -> d.getMeteringPoint().getExternalCode().equals(point) && d.getSourceParamCode().equals("709"))
-            //    .collect(Collectors.toList());
-
-
-            /*
-            LocalDateTime curDate = LocalDate.now().atStartOfDay();
-            for (int i=0; i<=23; i++) {
-                rowNum++;
-                row = sheet.createRow(rowNum);
-
-                cell = row.createCell(0);
-                DataFormat format = book.createDataFormat();
-                CellStyle dateStyle = book.createCellStyle();
-                dateStyle.setDataFormat(format.getFormat("DD.MM.YYYY HH:MM:SS"));
-                cell.setCellStyle(dateStyle);
-                cell.setCellValue(toDate(curDate.plusHours(i)));
-
-                cell = row.createCell(1);
-                cell.setCellValue(123);
-
-                cell = row.createCell(2);
-                cell.setCellValue(321);
-
-                cell = row.createCell(3);
-                cell.setCellValue(1);
-
-                cell = row.createCell(4);
-                cell.setCellValue(1);
-            }
-            */
 
             rowNum++;
             sheet.createRow(rowNum);
