@@ -129,6 +129,7 @@ public class FtpGatewayImpl implements FtpGateway {
             cell.setCellStyle(headerStyle);
             cell.setCellValue("Status");
 
+            /*
             for (PowerConsumption data : point.getData()) {
                 rowNum++;
                 row = sheet.createRow(rowNum);
@@ -155,6 +156,7 @@ public class FtpGatewayImpl implements FtpGateway {
                 cell = row.createCell(4);
                 cell.setCellValue(1);
             }
+            */
 
             rowNum++;
             sheet.createRow(rowNum);
