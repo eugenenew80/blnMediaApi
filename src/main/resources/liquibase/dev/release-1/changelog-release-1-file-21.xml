@@ -21,9 +21,11 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_work_list_headers"
-                referencedColumnNames="id"
+                referencedTableName="media_directions"
+                referencedColumnNames="code"
         />
     </changeSet>
+
+
 
 </databaseChangeLog>
