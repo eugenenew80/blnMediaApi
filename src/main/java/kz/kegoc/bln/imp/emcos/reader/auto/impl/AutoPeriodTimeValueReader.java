@@ -99,7 +99,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batch.setParamType("PT");
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
-		batchService.create(batch);
+		batch = batchService.create(batch);
 
 		header = workListHeaderService.findById(header.getId());
 		header.setPtBatch(batch);
@@ -117,6 +117,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
+		header.setPtBatch(batch);
 		header.setPtStatus("C");
 		workListHeaderService.update(header);
 		return batch;
@@ -130,6 +131,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
+		header.setPtBatch(batch);
 		header.setPtStatus("E");
 		workListHeaderService.update(header);
 		return batch;

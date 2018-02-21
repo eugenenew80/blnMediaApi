@@ -86,7 +86,7 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		batch.setParamType("AT");
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
-		batchService.create(batch);
+		batch = batchService.create(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
 		header.setAtBatch(batch);
@@ -103,6 +103,7 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
+		header.setAtBatch(batch);
 		header.setAtStatus("C");
 		userTaskHeaderService.update(header);
 		return batch;
@@ -116,6 +117,7 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
+		header.setAtBatch(batch);
 		header.setAtStatus("E");
 		userTaskHeaderService.update(header);
 		return batch;

@@ -85,11 +85,11 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		batch.setParamType("PT");
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
-		batchService.create(batch);
+		batch = batchService.create(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setPtStatus("P");
 		header.setPtBatch(batch);
+		header.setPtStatus("P");
 		userTaskHeaderService.update(header);
 
 		return batch;
@@ -103,6 +103,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
+		header.setPtBatch(batch);
 		header.setPtStatus("C");
 		userTaskHeaderService.update(header);
 		return batch;
@@ -116,6 +117,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
+		header.setPtBatch(batch);
 		header.setPtStatus("E");
 		userTaskHeaderService.update(header);
 		return batch;
