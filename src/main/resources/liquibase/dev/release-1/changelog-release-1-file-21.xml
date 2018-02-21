@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<author>ruslan</author>
+<comment>Изменения полей в основных таблицах на нулевые</comment>
+-->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet id="dict-rus-32" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_headers to media_directions</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_headers"
+                baseColumnNames="direction"
+                constraintName="fk_media_work_list_headers_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_work_list_headers"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+</databaseChangeLog>
