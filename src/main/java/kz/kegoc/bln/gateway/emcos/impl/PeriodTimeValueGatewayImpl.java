@@ -4,9 +4,9 @@ import kz.kegoc.bln.entity.common.DataStatus;
 import kz.kegoc.bln.entity.common.InputMethod;
 import kz.kegoc.bln.entity.common.ReceivingMethod;
 import kz.kegoc.bln.entity.common.SourceSystem;
-import kz.kegoc.bln.entity.data.AtTimeValueRaw;
 import kz.kegoc.bln.entity.data.ConnectionConfig;
-import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
+import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
+import kz.kegoc.bln.gateway.emcos.PeriodTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 import org.apache.commons.codec.binary.Base64;
@@ -16,53 +16,53 @@ import org.slf4j.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
-import javax.ejb.Singleton;
+import javax.ejb.*;
 import javax.inject.Inject;
 import java.io.StringReader;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.*;
-import static java.util.Collections.emptyList;
+import java.util.stream.Collectors;
+import static java.util.Collections.*;
 import static java.util.stream.Collectors.groupingBy;
 
 @Singleton
-public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
-    private static final Logger logger = LoggerFactory.getLogger(MeteringReadingGatewayImpl.class);
+public class PeriodTimeValueGatewayImpl implements PeriodTimeValueGateway {
+    private static final Logger logger = LoggerFactory.getLogger(PeriodTimeValueGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     private List<MeteringPointCfg> points;
     private ConnectionConfig config;
 
-    public AtTimeValueGateway points(List<MeteringPointCfg> points) {
+    public PeriodTimeValueGateway points(List<MeteringPointCfg> points) {
         this.points = points;
         return this;
     }
 
-    public AtTimeValueGateway config(ConnectionConfig config) {
+    public PeriodTimeValueGateway config(ConnectionConfig config) {
         this.config = config;
         return this;
     }
 
-    public List<AtTimeValueRaw> request() throws Exception {
-        logger.info("MeteringReadingGatewayImpl.request started");
+    public List<PeriodTimeValueRaw> request() throws Exception {
+        logger.info("FtpGatewayImpl.request started");
 
         if (config ==null) {
-            logger.warn("Config is empty, MeteringReadingGatewayImpl.request stopped");
+            logger.warn("Config is empty, FtpGatewayImpl.request stopped");
             return emptyList();
         }
 
         if (points ==null || points.isEmpty()) {
-            logger.warn("List of points is empty, MeteringReadingGatewayImpl.request stopped");
+            logger.warn("List of points is empty, FtpGatewayImpl.request stopped");
             return emptyList();
         }
 
-        List<AtTimeValueRaw> list;
+        List<PeriodTimeValueRaw> list;
         try {
+            logger.info("Send http request for metering data...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-                logger.info("Request body is empty, MeteringReadingGatewayImpl.request stopped");
+            	logger.info("Request body is empty, FtpGatewayImpl.request stopped");
                 return emptyList();
             }
 
@@ -74,11 +74,11 @@ public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("MeteringReadingGatewayImpl.request successfully completed");
+            logger.info("FtpGatewayImpl.request competed");
         }
 
         catch (Exception e) {
-            logger.error("MeteringReadingGatewayImpl.request failed: " + e.toString());
+            logger.error("FtpGatewayImpl.request failed: " + e.toString());
             throw e;
         }
 
@@ -86,16 +86,16 @@ public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
     }
 
     private String buildBody() {
-        logger.debug("MeteringReadingGatewayImpl.buildBody started");
+    	logger.debug("FtpGatewayImpl.buildBody started");
 
-        String strPoints = points.stream()
-            .map( p-> buildNode(p))
+    	String strPoints = points.stream()
+            .map( p-> buildPoint(p))
             .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
         logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-            logger.debug("List of points is empty, MeteringReadingGatewayImpl.buildBody stopped");
+        	logger.debug("List of points is empty, FtpGatewayImpl.buildBody stopped");
             return "";
         }
 
@@ -113,13 +113,13 @@ public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
         String body = templateRegistry.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.trace("body for request balances: " + body);
+        logger.trace("body for request metering data: " + body);
 
-        logger.debug("MeteringReadingGatewayImpl.buildBody completed");
+        logger.debug("FtpGatewayImpl.buildBody completed");
         return body;
     }
 
-    private String buildNode(MeteringPointCfg point) {
+    private String buildPoint(MeteringPointCfg point) {
         return ""
                 + "<ROW PPOINT_CODE=\"" + point.getSourceMeteringPointCode() + "\" "
                 + "PML_ID=\"" + point.getSourceParamCode() + "\" "
@@ -127,8 +127,8 @@ public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
                 + "PET=\"" + point.getEndTime().format(timeFormatter) + "\" />";
     }
 
-    private List<AtTimeValueRaw> parseAnswer(String answer) throws Exception {
-        logger.info("MeteringReadingGatewayImpl.parseAnswer started");
+    private List<PeriodTimeValueRaw> parseAnswer(String answer) throws Exception {
+    	logger.info("FtpGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -143,16 +143,14 @@ public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
             .getFirstChild()
             .getChildNodes();
 
-        List<AtTimeValueRaw> list = new ArrayList<>();
+        List<PeriodTimeValueRaw> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW") {
                     	logger.debug("row: " + (j+1));
-                        AtTimeValueRaw node = parseNode(rowData.item(j));
-                        if (node!=null)
-                            list.add(node);
+                        list.add(parseNode(rowData.item(j)));
                     }
                 }
             }
@@ -160,25 +158,36 @@ public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
         logger.debug("convert xml to list completed");
 
         logger.debug("find unit codes for list started");
-        Map<Pair<String, String>, List<MeteringPointCfg>> map = points.stream()
-            .collect(groupingBy(p -> Pair.of(p.getSourceParamCode(), p.getSourceUnitCode())));
+        Map<Pair<String, String>, List<MeteringPointCfg>> map1 = points.stream()
+                .collect(groupingBy(p -> Pair.of(p.getSourceParamCode(), p.getSourceUnitCode())));
+
+        Map<Pair<String, Integer>, List<MeteringPointCfg>> map2 = points.stream()
+                .collect(groupingBy(p -> Pair.of(p.getSourceParamCode(), p.getInterval())));
 
         list.forEach(mr -> {
-            Pair<String, String> pair = map.keySet().stream()
+            Pair<String, String> pair1 = map1.keySet().stream()
                 .filter(p -> p.getLeft().equals(mr.getSourceParamCode()))
                 .findFirst()
                 .orElse(null);
 
-            if (pair!=null)
-                mr.setSourceUnitCode(pair.getRight());
+            Pair<String, Integer> pair2 = map2.keySet().stream()
+                    .filter(p -> p.getLeft().equals(mr.getSourceParamCode()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (pair1!=null)
+                mr.setSourceUnitCode(pair1.getRight());
+
+            if (pair2!=null)
+                mr.setInterval(pair2.getRight());
         });
         logger.debug("find unit codes for list completed");
 
-        logger.info("MeteringReadingGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("FtpGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 
-    private AtTimeValueRaw parseNode(Node node) {
+    private PeriodTimeValueRaw parseNode(Node node) {
         NamedNodeMap attributes = node.getAttributes();
 
         String externalCode = attributes
@@ -189,24 +198,15 @@ public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
             .getNamedItem("PML_ID")
             .getNodeValue() ;
         
-        LocalDate date = null;
-        String dateStr = attributes
+        LocalDateTime time = null;
+        String timeStr = attributes
             .getNamedItem("PBT")
-            .getNodeValue();
-        dateStr = dateStr.substring(0, 8);
+            .getNodeValue() ;
 
-        try {
-            if (dateStr != null)
-                date = LocalDate.parse(dateStr, dateFormatter);
+        if (timeStr!=null) {
+            if (timeStr.indexOf("T")<0) timeStr = timeStr+"T00:00:00000";
+            time = LocalDateTime.parse(timeStr, timeFormatter);
         }
-        catch (Exception e) {
-            logger.error("parse date error :  " + e.getMessage());
-            logger.error("dateStr = " + dateStr);
-            logger.error("sourceParamCode = " + sourceParamCode);
-            logger.error("externalCode = " + externalCode);
-        }
-        if (date==null)
-            return null;
 
         Double val = null;
         String valStr = attributes
@@ -216,17 +216,17 @@ public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        AtTimeValueRaw mr = new AtTimeValueRaw();
-        mr.setSourceMeteringPointCode(externalCode);
-        mr.setMeteringDate(date.atStartOfDay());
-        mr.setSourceSystemCode(SourceSystem.EMCOS);
-        mr.setStatus(DataStatus.TMP);
-        mr.setInputMethod(InputMethod.AUTO);
-        mr.setReceivingMethod(ReceivingMethod.AUTO);
-        mr.setSourceParamCode(sourceParamCode);
-        mr.setVal(val);
-
-        return mr;
+        PeriodTimeValueRaw pc = new PeriodTimeValueRaw();
+        pc.setSourceMeteringPointCode(externalCode);
+        pc.setMeteringDate(time);
+        pc.setSourceSystemCode(SourceSystem.EMCOS);
+        pc.setStatus(DataStatus.TMP);
+        pc.setInputMethod(InputMethod.AUTO);
+        pc.setReceivingMethod(ReceivingMethod.SERVICE);
+        pc.setSourceParamCode(sourceParamCode);
+        pc.setVal(val);
+        
+        return pc;
     }
 
     @Inject

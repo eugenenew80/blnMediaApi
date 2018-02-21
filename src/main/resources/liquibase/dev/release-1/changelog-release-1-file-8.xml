@@ -109,7 +109,7 @@
             <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
             <column name="direction"            type="varchar(100)" value="IMPORT" />
             <column name="config_id"            type="number"       value="2" />
-            <column name="is_active"            type="number"       value="1" />
+            <column name="is_active"            type="number"       value="0" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
@@ -127,7 +127,7 @@
             <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
             <column name="direction"            type="varchar(100)" value="IMPORT" />
             <column name="config_id"            type="number"       value="4" />
-            <column name="is_active"            type="number"       value="1" />
+            <column name="is_active"            type="number"       value="0" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
