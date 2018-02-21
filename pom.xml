@@ -145,7 +145,7 @@
                 <scripts>dev</scripts>
                 <skipTests>true</skipTests>
 
-                <wildfly-server>10.9.44.241</wildfly-server>
+                <wildfly-server>10.9.44.240</wildfly-server>
                 <wildfly-port>9990</wildfly-port>
                 <wildfly-user>admin</wildfly-user>
                 <wildfly-password>1</wildfly-password>
