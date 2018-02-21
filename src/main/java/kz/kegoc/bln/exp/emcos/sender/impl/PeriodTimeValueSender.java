@@ -58,7 +58,7 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
                 }
 
                 Map<String, List<ExportData>> exportData = new HashMap<>();
-                String path = header.getDirection();
+                String path = "/home/bis-user/export";
                 String fileName = "BIS_" + header.getId() + "_" +  LocalDateTime.now().format(timeFormatter);
                 Batch batch = startBatch(header);
 
