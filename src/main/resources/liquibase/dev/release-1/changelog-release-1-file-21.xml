@@ -26,6 +26,41 @@
         />
     </changeSet>
 
+    <changeSet id="dict-rus-33" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_parameters to media_param_types</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_parameters"
+                baseColumnNames="param_type"
+                constraintName="fk_media_parameters_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_param_types"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-34" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_ to media_param_types</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_parameters"
+                baseColumnNames="param_type"
+                constraintName="fk_media_parameters_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_param_types"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
 
 
 </databaseChangeLog>
