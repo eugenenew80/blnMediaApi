@@ -37,6 +37,18 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="status" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="start_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="end_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="create_date" type="TIMESTAMP">
                 <constraints nullable="true"/>
             </column>
@@ -75,93 +87,103 @@
 
     <changeSet id="media-eug-27" logicalFilePath="path-independent" author="eugene">
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="1" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Юж. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="1" />
-            <column name="is_active" type="number" value="1" />
+            <column name="id"                   type="number"       value="1" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Юж. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="1" />
+            <column name="is_active"            type="number"       value="1" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="2" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Акмол. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="2" />
-            <column name="is_active" type="number" value="1" />
+            <column name="id"                   type="number"       value="2" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Акмол. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="2" />
+            <column name="is_active"            type="number"       value="1" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="3" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Алм. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="3" />
-            <column name="is_active" type="number" value="0" />
+            <column name="id"                   type="number"       value="3" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Алм. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="3" />
+            <column name="is_active"            type="number"       value="0" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="4" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Акт. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="4" />
-            <column name="is_active" type="number" value="1" />
+            <column name="id"                   type="number"       value="4" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Акт. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="4" />
+            <column name="is_active"            type="number"       value="1" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="5" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Вост. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="5" />
-            <column name="is_active" type="number" value="0" />
+            <column name="id"                   type="number"       value="5" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Вост. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="5" />
+            <column name="is_active"            type="number"       value="0" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="6" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Сарб. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="6" />
-            <column name="is_active" type="number" value="0" />
+            <column name="id"                   type="number"       value="6" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Сарб. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="6" />
+            <column name="is_active"            type="number"       value="0" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="7" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Центр. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="7" />
-            <column name="is_active" type="number" value="0" />
+            <column name="id"                   type="number"       value="7" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Центр. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="7" />
+            <column name="is_active"            type="number"       value="0" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="8" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Сев. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="8" />
-            <column name="is_active" type="number" value="0" />
+            <column name="id"                   type="number"       value="8" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Сев. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="8" />
+            <column name="is_active"            type="number"       value="0" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="9" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Зап. МЭС для импорта данных из EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="IMPORT" />
-            <column name="config_id" type="number" value="9" />
-            <column name="is_active" type="number" value="0" />
+            <column name="id"                   type="number"       value="9" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Зап. МЭС для импорта данных из EMCOS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="9" />
+            <column name="is_active"            type="number"       value="0" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <insert schemaName="apps"  tableName="media_work_list_headers">
-            <column name="id" type="number" value="10" />
-            <column name="name" type="varchar(100)" value="Список точек учёта Акм. МЭС для экспорта данных в EMCOS" />
-            <column name="source_system_code" type="varchar(20)" value="EMCOS" />
-            <column name="direction" type="varchar(100)" value="EXPORT" />
-            <column name="config_id" type="number" value="10" />
-            <column name="is_active" type="number" value="1" />
+            <column name="id"                   type="number" value="10" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Акм. МЭС для экспорта данных в EMCOS" />
+            <column name="source_system_code"   type="varchar(20)" value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="EXPORT" />
+            <column name="config_id"            type="number" value="10" />
+            <column name="is_active"            type="number" value="1" />
+            <column name="status"               type="varchar(20)"  value="U" />
         </insert>
 
         <rollback/>

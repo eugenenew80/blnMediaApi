@@ -6,50 +6,94 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet id="media-eug-31" logicalFilePath="path-independent" author="eugene">
+    <changeSet id="media-eug-34" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_event_log</comment>
-        <createTable tableName="media_event_log" schemaName="apps">
+        <createTable tableName="media_batches" schemaName="apps">
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="source" type="number">
+            <column name="work_list_header_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="user_task_header_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="source_system_code" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="event_type" type="varchar(10)">
+            <column name="direction" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="code" type="varchar(10)">
+            <column name="param_type" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="text" type="varchar(300)">
+            <column name="start_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="end_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="rec_count" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="status" type="varchar(20)">
                 <constraints nullable="false"/>
+            </column>
+
+            <column name="err_msg" type="varchar(300)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_last_date_update" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="is_load" type="number">
+                <constraints nullable="true"/>
             </column>
 
             <column name="create_date" type="TIMESTAMP">
                 <constraints nullable="true"/>
             </column>
+
+            <column name="last_update_date" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-32" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating primary key for table: media_event_log</comment>
+	<changeSet id="media-eug-35" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating primary key for table: media_batches</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_event_log"
+	            constraintName="pk_media_batches"
 	            schemaName="apps"
-	            tableName="media_event_log"/>
+	            tableName="media_batches"/>
 	</changeSet>
 	
-	<changeSet id="media-eug-33" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating sequence for table: media_event_log</comment>
+	<changeSet id="media-eug-36" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating sequence for table: media_batches</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_event_log_s"
+	            sequenceName="media_batches_s"
 	            startValue="1"/>
 	</changeSet>
 </databaseChangeLog>

@@ -16,8 +16,11 @@ public class WorkListHeader implements HasId {
     private String direction;
     private ConnectionConfig config;
     private Boolean active;
+    private String status;
     private List<WorkListLine> lines;
     private Batch batch;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private User createBy;

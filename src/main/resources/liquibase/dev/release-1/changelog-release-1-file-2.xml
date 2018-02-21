@@ -8,8 +8,8 @@
     
 
     <changeSet id="media-eug-4" logicalFilePath="path-independent" author="eugene">
-        <comment>Creating table: media_metering_reading</comment>
-        <createTable tableName="media_metering_reading" schemaName="apps">
+        <comment>Creating table: media_at_time_values</comment>
+        <createTable tableName="media_at_time_values" schemaName="apps">
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
@@ -93,21 +93,21 @@
     </changeSet>
 
 	<changeSet id="media-eug-5" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating primary key for table: media_metering_reading</comment>
+	    <comment>Creating primary key for table: media_at_time_values</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_metering_reading"
+	            constraintName="pk_media_at_time_values"
 	            schemaName="apps"
-	            tableName="media_metering_reading"/>
+	            tableName="media_at_time_values"/>
 	</changeSet>
 	
 	
 	<changeSet id="media-eug-6" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating sequence for table: media_metering_reading</comment>
+	    <comment>Creating sequence for table: media_at_time_values</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_metering_reading_s"
+	            sequenceName="media_at_time_values_s"
 	            startValue="1"/>
 	</changeSet>
 </databaseChangeLog>

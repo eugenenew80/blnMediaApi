@@ -6,38 +6,30 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet id="media-eug-43" logicalFilePath="path-independent" author="eugene">
-        <comment>Creating table: media_user_task_headers</comment>
-        <createTable tableName="media_user_task_headers" schemaName="apps">
+    <changeSet id="media-eug-46" logicalFilePath="path-independent" author="eugene">
+        <comment>Creating table: media_user_task_lines</comment>
+        <createTable tableName="media_user_task_lines" schemaName="apps">
             <column name="id" type="number">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="name" type="varchar(100)">
-                <constraints nullable="true"/>
-            </column>
-
-            <column name="source_system_code" type="varchar(20)">
+            <column name="user_task_header_id" type="number">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="direction" type="varchar(20)">
+            <column name="metering_point_id" type="number">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="status" type="varchar(10)">
+            <column name="param_id" type="number">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="config_id" type="number">
-                <constraints nullable="true"/>
+            <column name="start_metering_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
             </column>
 
-            <column name="batch_id" type="number">
-                <constraints nullable="true"/>
-            </column>
-
-            <column name="is_active" type="number">
+            <column name="end_metering_date" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
 
@@ -59,21 +51,21 @@
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-44" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating primary key for table: media_user_task_headers</comment>
+	<changeSet id="media-eug-47" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating primary key for table: media_user_task_lines</comment>
 	    <addPrimaryKey 
 	            columnNames="id"
-	            constraintName="pk_media_user_task_headers"
+	            constraintName="pk_media_user_task_lines"
 	            schemaName="apps"
-	            tableName="media_user_task_headers"/>
+	            tableName="media_user_task_lines"/>
 	</changeSet>
 	
-	<changeSet id="media-eug-45" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating sequence for table: media_user_task_headers</comment>
+	<changeSet id="media-eug-48" logicalFilePath="path-independent" author="eugene">
+	    <comment>Creating sequence for table: media_user_task_lines</comment>
 	    <createSequence 
 	            incrementBy="1"
 	            schemaName="apps"
-	            sequenceName="media_user_task_headers_s"
+	            sequenceName="media_user_task_lines_s"
 	            startValue="1"/>
 	</changeSet>
 </databaseChangeLog>

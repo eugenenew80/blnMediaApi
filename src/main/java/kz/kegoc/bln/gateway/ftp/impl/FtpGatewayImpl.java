@@ -1,58 +1,103 @@
 package kz.kegoc.bln.gateway.ftp.impl;
 
-import kz.kegoc.bln.entity.data.PowerConsumption;
-import kz.kegoc.bln.gateway.ftp.ExportPoint;
+import kz.kegoc.bln.entity.data.ConnectionConfig;
+import kz.kegoc.bln.entity.data.ExportData;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.ejb.Singleton;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+
+import java.io.IOException;
+
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
 
 @Singleton
 public class FtpGatewayImpl implements FtpGateway {
     private static final Logger logger = LoggerFactory.getLogger(FtpGatewayImpl.class);
-    private List<ExportPoint> pcList;
+    private Map<String, List<ExportData>> exportData;
+    private String path;
+    private String fileName;
+    private ConnectionConfig config;
 
-    public FtpGateway pcList(List<ExportPoint> pcList) {
-        this.pcList = pcList;
+    public FtpGateway exportData(Map<String, List<ExportData>>  exportData) {
+        this.exportData = exportData;
+        return this;
+    }
+    public FtpGateway config(ConnectionConfig config) {
+        this.config = config;
         return this;
     }
 
-    public void send() {
-        Workbook book = builWorkBook();
+    public FtpGateway path(String path) {
+        this.path = path;
+        return this;
+    }
 
+    public FtpGateway fileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
+
+    public void send() throws IOException {
+        Workbook book = buildWorkBook();
         try {
-            book.write(new FileOutputStream("export/qqq.xls"));
+            String fullFileName = path.toLowerCase() + "/" + fileName + ".xls";
+            book.write(new FileOutputStream(fullFileName));
             book.close();
+            upload(fullFileName, "/");
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
 
+    public void upload(String localFilePath, String remoteFilePath) throws IOException {
+        logger.info("FtpGatewayImpl.upload started");
 
-    private Workbook builWorkBook() {
-        logger.info("FtpGatewayImpl.builWorkBook");
+        int port = 21;
+        FTPClient ftpClient = new FTPClient();
+        try {
+            ftpClient.connect(config.getUrl(), port);
+            ftpClient.login(config.getUserName(), config.getPwd());
+            ftpClient.enterLocalPassiveMode();
+            logger.info("Connected");
+
+            File localFile = new File(localFilePath);
+            InputStream inputStream = new FileInputStream(localFile);
+            try {
+                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                ftpClient.storeFile(remoteFilePath, inputStream);
+                logger.info("Stored");
+            }
+            finally {
+                inputStream.close();
+            }
+
+            ftpClient.logout();
+            ftpClient.disconnect();
+        }
+        catch (IOException e) {
+            logger.info("Failed: " + e.getMessage());
+            throw e;
+        }
+
+        logger.info("FtpGatewayImpl.upload completed");
+    }
+
+    private Workbook buildWorkBook() {
+        logger.info("FtpGatewayImpl.buildWorkBook started");
 
         Workbook book = new HSSFWorkbook();
-
-        CellStyle headerStyle = book.createCellStyle();
-        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-        CellStyle codeStyle = book.createCellStyle();
-        codeStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
-        codeStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
         Sheet sheet = book.createSheet("Лист 1");
 
         Row row = sheet.createRow(0);
@@ -68,7 +113,7 @@ public class FtpGatewayImpl implements FtpGateway {
         cell.setCellValue("СБРЭ");
 
         int rowNum = 1;
-        for (ExportPoint point: pcList) {
+        for (String pointCode: exportData.keySet()) {
             rowNum++;
             sheet.createRow(rowNum);
 
@@ -78,8 +123,7 @@ public class FtpGatewayImpl implements FtpGateway {
             cell.setCellValue("Код ТУ");
 
             cell = row.createCell(1);
-            cell.setCellStyle(codeStyle);
-            cell.setCellValue(point.getSourceMeteringPointCode());
+            cell.setCellValue(pointCode);
 
             cell = row.createCell(2);
             cell.setCellValue("Дискретность");
@@ -90,47 +134,35 @@ public class FtpGatewayImpl implements FtpGateway {
             rowNum++;
             row = sheet.createRow(rowNum);
             cell = row.createCell(0);
-            cell.setCellStyle(headerStyle);
             cell.setCellValue("timestamp");
 
             cell = row.createCell(1);
-            cell.setCellStyle(headerStyle);
             cell.setCellValue(709);
 
             cell = row.createCell(2);
-            cell.setCellStyle(headerStyle);
             cell.setCellValue(710);
 
             cell = row.createCell(3);
-            cell.setCellStyle(headerStyle);
-
             cell = row.createCell(4);
-            cell.setCellStyle(headerStyle);
 
             rowNum++;
             row = sheet.createRow(rowNum);
             cell = row.createCell(0);
-            cell.setCellStyle(headerStyle);
             cell.setCellValue("Время");
 
             cell = row.createCell(1);
-            cell.setCellStyle(headerStyle);
             cell.setCellValue("A+ энергия за час");
 
             cell = row.createCell(2);
-            cell.setCellStyle(headerStyle);
             cell.setCellValue("A- энергия за час");
 
             cell = row.createCell(3);
-            cell.setCellStyle(headerStyle);
             cell.setCellValue("Forced");
 
             cell = row.createCell(4);
-            cell.setCellStyle(headerStyle);
             cell.setCellValue("Status");
 
-            /*
-            for (PowerConsumption data : point.getData()) {
+            for (ExportData exportData : exportData.get(pointCode)) {
                 rowNum++;
                 row = sheet.createRow(rowNum);
 
@@ -139,16 +171,13 @@ public class FtpGatewayImpl implements FtpGateway {
                 CellStyle dateStyle = book.createCellStyle();
                 dateStyle.setDataFormat(format.getFormat("DD.MM.YYYY HH:MM:SS"));
                 cell.setCellStyle(dateStyle);
-                cell.setCellValue(toDate(data.getMeteringDate()));
+                cell.setCellValue(toDate(exportData.getMeteringDate()));
 
-                Cell cell1 = row.createCell(1);
-                Cell cell2 = row.createCell(2);
+                cell = row.createCell(1);
+                cell.setCellValue(exportData.getValAp());
 
-                if (data.getSourceParamCode().equals("709"))
-                    cell1.setCellValue(data.getVal());
-
-                if (data.getSourceParamCode().equals("710"))
-                    cell2.setCellValue(data.getVal());
+                cell = row.createCell(2);
+                cell.setCellValue(exportData.getValAm());
 
                 cell = row.createCell(3);
                 cell.setCellValue(1);
@@ -156,10 +185,6 @@ public class FtpGatewayImpl implements FtpGateway {
                 cell = row.createCell(4);
                 cell.setCellValue(1);
             }
-            */
-
-            rowNum++;
-            sheet.createRow(rowNum);
         }
 
         sheet.autoSizeColumn(0);
@@ -168,7 +193,7 @@ public class FtpGatewayImpl implements FtpGateway {
         sheet.autoSizeColumn(3);
         sheet.autoSizeColumn(4);
 
-        logger.info("FtpGatewayImpl.builWorkBook");
+        logger.info("FtpGatewayImpl.buildWorkBook completed");
         return book;
     }
 

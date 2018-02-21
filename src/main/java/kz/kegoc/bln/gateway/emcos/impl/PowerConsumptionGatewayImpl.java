@@ -5,8 +5,8 @@ import kz.kegoc.bln.entity.common.InputMethod;
 import kz.kegoc.bln.entity.common.ReceivingMethod;
 import kz.kegoc.bln.entity.common.SourceSystem;
 import kz.kegoc.bln.entity.data.ConnectionConfig;
-import kz.kegoc.bln.entity.data.PowerConsumptionRaw;
-import kz.kegoc.bln.gateway.emcos.PowerConsumptionGateway;
+import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
+import kz.kegoc.bln.gateway.emcos.PeriodTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 import org.apache.commons.codec.binary.Base64;
@@ -28,23 +28,23 @@ import static java.util.Collections.*;
 import static java.util.stream.Collectors.groupingBy;
 
 @Singleton
-public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
+public class PowerConsumptionGatewayImpl implements PeriodTimeValueGateway {
     private static final Logger logger = LoggerFactory.getLogger(PowerConsumptionGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
     private List<MeteringPointCfg> points;
     private ConnectionConfig config;
 
-    public PowerConsumptionGateway points(List<MeteringPointCfg> points) {
+    public PeriodTimeValueGateway points(List<MeteringPointCfg> points) {
         this.points = points;
         return this;
     }
 
-    public PowerConsumptionGateway config(ConnectionConfig config) {
+    public PeriodTimeValueGateway config(ConnectionConfig config) {
         this.config = config;
         return this;
     }
 
-    public List<PowerConsumptionRaw> request() throws Exception {
+    public List<PeriodTimeValueRaw> request() throws Exception {
         logger.info("FtpGatewayImpl.request started");
 
         if (config ==null) {
@@ -57,7 +57,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
             return emptyList();
         }
 
-        List<PowerConsumptionRaw> list;
+        List<PeriodTimeValueRaw> list;
         try {
             logger.info("Send http request for metering data...");
             String body = buildBody();
@@ -127,7 +127,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
                 + "PET=\"" + point.getEndTime().format(timeFormatter) + "\" />";
     }
 
-    private List<PowerConsumptionRaw> parseAnswer(String answer) throws Exception {
+    private List<PeriodTimeValueRaw> parseAnswer(String answer) throws Exception {
     	logger.info("FtpGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
@@ -143,7 +143,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
             .getFirstChild()
             .getChildNodes();
 
-        List<PowerConsumptionRaw> list = new ArrayList<>();
+        List<PeriodTimeValueRaw> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
@@ -187,7 +187,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         return list;
     }
 
-    private PowerConsumptionRaw parseNode(Node node) {
+    private PeriodTimeValueRaw parseNode(Node node) {
         NamedNodeMap attributes = node.getAttributes();
 
         String externalCode = attributes
@@ -216,7 +216,7 @@ public class PowerConsumptionGatewayImpl implements PowerConsumptionGateway {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        PowerConsumptionRaw pc = new PowerConsumptionRaw();
+        PeriodTimeValueRaw pc = new PeriodTimeValueRaw();
         pc.setSourceMeteringPointCode(externalCode);
         pc.setMeteringDate(time);
         pc.setSourceSystemCode(SourceSystem.EMCOS);

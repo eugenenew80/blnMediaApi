@@ -13,7 +13,7 @@ public class ConnectionConfig implements HasId {
     private Long id;
     private String name;
     private String sourceSystemCode;
-    private String conType;
+    private String protocol;
     private String url;
     private String userName;
     private String pwd;

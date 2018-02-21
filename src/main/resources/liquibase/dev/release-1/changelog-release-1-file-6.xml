@@ -76,7 +76,7 @@
             <column name="name"         type="varchar(300)" value="Актив приём" />
             <column name="short_name"   type="varchar(100)" value="Актив приём" />
             <column name="unit_id"      type="number"       value="9" />
-            <column name="param_type"   type="number"       value="PC"/>
+            <column name="param_type"   type="number"       value="PT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -85,7 +85,7 @@
             <column name="name"         type="varchar(300)" value="Актив отдача" />
             <column name="short_name"   type="varchar(100)" value="Актив отдача" />
             <column name="unit_id"      type="number"       value="9" />
-            <column name="param_type"   type="number"       value="PC"/>
+            <column name="param_type"   type="number"       value="PT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -94,7 +94,7 @@
             <column name="name"         type="varchar(300)" value="Реактив приём" />
             <column name="short_name"   type="varchar(100)" value="Реактив приём" />
             <column name="unit_id"      type="number"       value="14" />
-            <column name="param_type"   type="number"       value="PC"/>
+            <column name="param_type"   type="number"       value="PT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -103,7 +103,7 @@
             <column name="name"         type="varchar(100)" value="Реактив отдача" />
             <column name="short_name"   type="varchar(100)" value="Реактив отдача" />
             <column name="unit_id"      type="number"       value="14" />
-            <column name="param_type"   type="number"       value="PC"/>
+            <column name="param_type"   type="number"       value="PT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -112,7 +112,7 @@
             <column name="name"         type="varchar(300)" value="Актив приём" />
             <column name="short_name"   type="varchar(100)" value="Актив приём" />
             <column name="unit_id"      type="number"       value="9" />
-            <column name="param_type"   type="number"       value="MR"/>
+            <column name="param_type"   type="number"       value="AT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -121,7 +121,7 @@
             <column name="name"         type="varchar(300)" value="Актив отдача" />
             <column name="short_name"   type="varchar(100)" value="Актив отдача" />
             <column name="unit_id"      type="number"       value="9" />
-            <column name="param_type"   type="number"       value="MR"/>
+            <column name="param_type"   type="number"       value="AT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -130,7 +130,7 @@
             <column name="name"         type="varchar(300)" value="Реактив приём" />
             <column name="short_name"   type="varchar(100)" value="Реактив приём" />
             <column name="unit_id"      type="number"       value="14" />
-            <column name="param_type"   type="number"       value="MR"/>
+            <column name="param_type"   type="number"       value="AT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -139,7 +139,7 @@
             <column name="name"         type="varchar(300)" value="Реактив отдача" />
             <column name="short_name"   type="varchar(100)" value="Реактив отдача" />
             <column name="unit_id"      type="number"       value="14" />
-            <column name="param_type"   type="number"       value="MR"/>
+            <column name="param_type"   type="number"       value="AT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -148,7 +148,7 @@
             <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L1" />
             <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L1" />
             <column name="unit_id"      type="number"       value="4" />
-            <column name="param_type"   type="number"       value="PC"/>
+            <column name="param_type"   type="number"       value="PT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -157,7 +157,7 @@
             <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L2" />
             <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L2" />
             <column name="unit_id"      type="number"       value="4" />
-            <column name="param_type"   type="number"       value="PC"/>
+            <column name="param_type"   type="number"       value="PT"/>
         </insert>
 
         <insert schemaName="apps"  tableName="media_parameters">
@@ -166,7 +166,7 @@
             <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L3" />
             <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L3" />
             <column name="unit_id"      type="number"       value="4" />
-            <column name="param_type"   type="number"       value="PC"/>
+            <column name="param_type"   type="number"       value="PT"/>
         </insert>
 
         <rollback/>

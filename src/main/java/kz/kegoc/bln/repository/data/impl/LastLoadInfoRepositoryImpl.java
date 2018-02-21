@@ -19,28 +19,28 @@ public class LastLoadInfoRepositoryImpl extends AbstractRepository<LastLoadInfo>
 	}
 
 	public void mrUpdateLastDate(Long batchId){
-		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.mr_last_load_info");
+		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.at_last_load_info");
 		query.registerStoredProcedureParameter("p_batch_id", Long.class, ParameterMode.IN);
 		query.setParameter("p_batch_id", batchId);
 		query.execute();
 	}
 
 	public void pcUpdateLastDate(Long batchId){
-		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.pc_last_load_info");
+		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.pt_last_load_info");
 		query.registerStoredProcedureParameter("p_batch_id", Long.class, ParameterMode.IN);
 		query.setParameter("p_batch_id", batchId);
 		query.execute();
 	}
 
 	public void mrLoad(Long batchId){
-		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.mr_proc");
+		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.at_proc");
 		query.registerStoredProcedureParameter("p_batch_id", Long.class, ParameterMode.IN);
 		query.setParameter("p_batch_id", batchId);
 		query.execute();
 	}
 
 	public void pcLoad(Long batchId){
-		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.pc_proc");
+		StoredProcedureQuery query = getEntityManager().createStoredProcedureQuery("media_raw_data_proc.pt_proc");
 		query.registerStoredProcedureParameter("p_batch_id", Long.class, ParameterMode.IN);
 		query.setParameter("p_batch_id", batchId);
 		query.execute();

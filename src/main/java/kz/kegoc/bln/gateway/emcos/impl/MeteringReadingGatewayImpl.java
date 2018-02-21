@@ -4,9 +4,9 @@ import kz.kegoc.bln.entity.common.DataStatus;
 import kz.kegoc.bln.entity.common.InputMethod;
 import kz.kegoc.bln.entity.common.ReceivingMethod;
 import kz.kegoc.bln.entity.common.SourceSystem;
+import kz.kegoc.bln.entity.data.AtTimeValueRaw;
 import kz.kegoc.bln.entity.data.ConnectionConfig;
-import kz.kegoc.bln.entity.data.MeteringReadingRaw;
-import kz.kegoc.bln.gateway.emcos.MeteringReadingGateway;
+import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 import org.apache.commons.codec.binary.Base64;
@@ -28,24 +28,24 @@ import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.groupingBy;
 
 @Singleton
-public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
+public class MeteringReadingGatewayImpl implements AtTimeValueGateway {
     private static final Logger logger = LoggerFactory.getLogger(MeteringReadingGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     private List<MeteringPointCfg> points;
     private ConnectionConfig config;
 
-    public MeteringReadingGateway points(List<MeteringPointCfg> points) {
+    public AtTimeValueGateway points(List<MeteringPointCfg> points) {
         this.points = points;
         return this;
     }
 
-    public MeteringReadingGateway config(ConnectionConfig config) {
+    public AtTimeValueGateway config(ConnectionConfig config) {
         this.config = config;
         return this;
     }
 
-    public List<MeteringReadingRaw> request() throws Exception {
+    public List<AtTimeValueRaw> request() throws Exception {
         logger.info("MeteringReadingGatewayImpl.request started");
 
         if (config ==null) {
@@ -58,7 +58,7 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
             return emptyList();
         }
 
-        List<MeteringReadingRaw> list;
+        List<AtTimeValueRaw> list;
         try {
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
@@ -127,7 +127,7 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
                 + "PET=\"" + point.getEndTime().format(timeFormatter) + "\" />";
     }
 
-    private List<MeteringReadingRaw> parseAnswer(String answer) throws Exception {
+    private List<AtTimeValueRaw> parseAnswer(String answer) throws Exception {
         logger.info("MeteringReadingGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
@@ -143,14 +143,14 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
             .getFirstChild()
             .getChildNodes();
 
-        List<MeteringReadingRaw> list = new ArrayList<>();
+        List<AtTimeValueRaw> list = new ArrayList<>();
         for(int i = 0; i < nodes.getLength(); i++) {
             if (nodes.item(i).getNodeName() == "ROWDATA") {
                 NodeList rowData = nodes.item(i).getChildNodes();
                 for(int j = 0; j < rowData.getLength(); j++) {
                     if (rowData.item(j).getNodeName() == "ROW") {
                     	logger.debug("row: " + (j+1));
-                        MeteringReadingRaw node = parseNode(rowData.item(j));
+                        AtTimeValueRaw node = parseNode(rowData.item(j));
                         if (node!=null)
                             list.add(node);
                     }
@@ -178,7 +178,7 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
         return list;
     }
 
-    private MeteringReadingRaw parseNode(Node node) {
+    private AtTimeValueRaw parseNode(Node node) {
         NamedNodeMap attributes = node.getAttributes();
 
         String externalCode = attributes
@@ -216,7 +216,7 @@ public class MeteringReadingGatewayImpl implements MeteringReadingGateway {
         if (valStr!=null)
             val = Double.parseDouble(valStr);
 
-        MeteringReadingRaw mr = new MeteringReadingRaw();
+        AtTimeValueRaw mr = new AtTimeValueRaw();
         mr.setSourceMeteringPointCode(externalCode);
         mr.setMeteringDate(date.atStartOfDay());
         mr.setSourceSystemCode(SourceSystem.EMCOS);
