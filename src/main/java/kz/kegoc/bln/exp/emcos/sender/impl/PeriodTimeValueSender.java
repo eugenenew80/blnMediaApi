@@ -8,6 +8,7 @@ import kz.kegoc.bln.exp.emcos.sender.Sender;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
 import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
@@ -22,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Stateless
 public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
@@ -29,10 +31,32 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'_'HHmmss");
 
     public void send() {
+        AtomicBoolean flag = new AtomicBoolean(false);
+
         Query query = em.createNamedQuery("ExportData.findExportData", ExportData.class);
         headerService.findAll().stream()
-            .filter(h -> h.getActive() && h.getStatus().equals("W") &&  h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("EXPORT"))
+            .filter(h -> h.getActive()
+                && StringUtils.equals(h.getPtStatus(), "W")
+                && StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
+                && StringUtils.equals(h.getDirection(),"EXPORT")
+                && h.getConfig()!=null
+            )
             .forEach(header -> {
+                if (!flag.get())
+                    logger.warn("PeriodTimeValueSender.send started");
+
+                flag.set(true);
+
+                if (header.getLines().size()==0) {
+                    logger.warn("List of points is empty, import data stopped");
+                    return;
+                }
+
+                if (header.getStartDate()==null || header.getEndDate()==null) {
+                    logger.warn("Period must be specified");
+                    return;
+                }
+
                 Map<String, List<ExportData>> exportData = new HashMap<>();
                 String path = header.getDirection();
                 String fileName = "BIS_" + header.getId() + "_" +  LocalDateTime.now().format(timeFormatter);
@@ -41,6 +65,7 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
                 try {
                     header.getLines().stream()
                         .forEach(line -> {
+                            logger.info("find data for export: " + line.getMeteringPoint().getExternalCode());
                             query.setParameter("sourceMeteringPointCode", line.getMeteringPoint().getExternalCode());
                             query.setParameter("startDate", header.getStartDate());
                             query.setParameter("endDate", header.getEndDate());
@@ -50,6 +75,11 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
                     Long recCount = 0l;
                     for (String key : exportData.keySet())
                         recCount += exportData.get(key).size();
+
+                    if (recCount==0) {
+                        logger.info("No data found, export data stopped");
+                        return;
+                    }
 
                     ftpGateway
                         .config(header.getConfig())
@@ -66,6 +96,9 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
                     errorBatch(header, batch, e);
                 }
             });
+
+        if (flag.get())
+            logger.info("PeriodTimeValueSender.send completed");
     }
 
 
@@ -81,8 +114,8 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         batchService.create(batch);
 
         header = headerService.findById(header.getId());
-        header.setBatch(batch);
-        header.setStatus("P");
+        header.setPtBatch(batch);
+        header.setPtStatus("P");
         headerService.update(header);
         return batch;
     }
@@ -96,7 +129,7 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         batchService.update(batch);
 
         header = headerService.findById(header.getId());
-        header.setStatus("C");
+        header.setPtStatus("C");
         headerService.update(header);
         return batch;
     }
@@ -109,7 +142,7 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         batchService.update(batch);
 
         header = headerService.findById(header.getId());
-        header.setStatus("E");
+        header.setPtStatus("E");
         headerService.update(header);
         return batch;
     }

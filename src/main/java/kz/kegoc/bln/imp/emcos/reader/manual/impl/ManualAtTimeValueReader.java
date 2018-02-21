@@ -8,6 +8,7 @@ import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.MeteringValueService;
 import kz.kegoc.bln.service.data.UserTaskHeaderService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,12 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		logger.debug("ManualAtTimeValueReader.read started");
 
 		userTaskHeaderService.findAll().stream()
-			.filter(h -> h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getStatus().equals("W"))
+			.filter(h -> h.getActive()
+				&& StringUtils.equals(h.getAtStatus(), "W")
+				&& StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
+				&& StringUtils.equals(h.getDirection(),"IMPORT")
+				&& h.getConfig()!=null
+			)
 			.forEach(header -> {
 				logger.info("Import data started");
 				logger.info("headerId: " + header.getId());
@@ -50,12 +56,10 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 
 				Long recCount = 0l;
 				try {
-					logger.info("Request data started");
 					List<AtTimeValueRaw> pcList = mrGateway
 						.config(header.getConfig())
 						.points(points)
 						.request();
-					logger.info("Request data completed");
 
 					saveData(batch, pcList);
 					recCount = recCount + pcList.size();
@@ -85,8 +89,8 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		batchService.create(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setBatch(batch);
-		header.setStatus("P");
+		header.setAtBatch(batch);
+		header.setAtStatus("P");
 		userTaskHeaderService.update(header);
 		return batch;
 	}
@@ -99,7 +103,7 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setStatus("C");
+		header.setAtStatus("C");
 		userTaskHeaderService.update(header);
 		return batch;
 	}
@@ -112,7 +116,7 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setStatus("E");
+		header.setAtStatus("E");
 		userTaskHeaderService.update(header);
 		return batch;
 	}

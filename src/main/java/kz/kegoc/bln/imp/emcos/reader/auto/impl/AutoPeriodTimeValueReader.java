@@ -11,6 +11,7 @@ import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
 import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static java.util.stream.Collectors.groupingBy;
@@ -26,7 +27,11 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		logger.info("AutoPeriodTimeValueReader.read started");
 
 		workListHeaderService.findAll().stream()
-			.filter(h -> h.getActive() && h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getConfig()!=null)
+			.filter(h -> h.getActive()
+				&& StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
+				&& StringUtils.equals(h.getDirection(),"IMPORT")
+				&& h.getConfig()!=null
+			)
 			.forEach(header -> {
 				logger.info("headerId: " + header.getId());
 				logger.info("url: " + header.getConfig().getUrl());
@@ -61,14 +66,11 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 					for (int i = 0; i < groupsPoints.size(); i++) {
 						List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
 						logger.info("group of points num: " + (i + 1));
-						logger.info("group of points size: " + groupPoints.size());
 
-						logger.info("Request data started");
 						List<PeriodTimeValueRaw> pcList = powerConsumptionGateway
 								.config(header.getConfig())
 								.points(groupPoints)
 								.request();
-						logger.info("Request data completed");
 
 						saveData(batch, pcList);
 						recCount = recCount + pcList.size();
@@ -100,8 +102,8 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batchService.create(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setBatch(batch);
-		header.setStatus("P");
+		header.setPtBatch(batch);
+		header.setPtStatus("P");
 		workListHeaderService.update(header);
 
 		return batch;
@@ -115,7 +117,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setStatus("C");
+		header.setPtStatus("C");
 		workListHeaderService.update(header);
 		return batch;
 	}
@@ -128,7 +130,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setStatus("E");
+		header.setPtStatus("E");
 		workListHeaderService.update(header);
 		return batch;
 	}

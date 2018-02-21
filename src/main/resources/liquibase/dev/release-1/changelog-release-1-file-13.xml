@@ -25,15 +25,23 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="status" type="varchar(10)">
-                <constraints nullable="false"/>
+            <column name="pt_status" type="varchar(10)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="at_status" type="varchar(10)">
+                <constraints nullable="true"/>
             </column>
 
             <column name="config_id" type="number">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="batch_id" type="number">
+            <column name="pt_batch_id" type="number">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="at_batch_id" type="number">
                 <constraints nullable="true"/>
             </column>
 

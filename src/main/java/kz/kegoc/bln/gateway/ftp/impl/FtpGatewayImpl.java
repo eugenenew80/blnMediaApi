@@ -48,7 +48,7 @@ public class FtpGatewayImpl implements FtpGateway {
         return this;
     }
 
-    public void send() throws IOException {
+    public void send() throws Exception {
         Workbook book = buildWorkBook();
         try {
             String fullFileName = path.toLowerCase() + "/" + fileName + ".xls";
@@ -56,12 +56,12 @@ public class FtpGatewayImpl implements FtpGateway {
             book.close();
             upload(fullFileName, "/");
         }
-        catch (IOException e) {
+        catch (Exception e) {
             throw e;
         }
     }
 
-    public void upload(String localFilePath, String remoteFilePath) throws IOException {
+    public void upload(String localFilePath, String remoteFilePath) throws Exception {
         logger.info("FtpGatewayImpl.upload started");
 
         int port = 21;
@@ -86,7 +86,7 @@ public class FtpGatewayImpl implements FtpGateway {
             ftpClient.logout();
             ftpClient.disconnect();
         }
-        catch (IOException e) {
+        catch (Exception e) {
             logger.info("Failed: " + e.getMessage());
             throw e;
         }

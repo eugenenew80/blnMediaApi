@@ -15,10 +15,12 @@ public class UserTaskHeader implements HasId {
     private String name;
     private String sourceSystemCode;
     private String direction;
-    private String status;
+    private String atStatus;
+    private String ptStatus;
     private ConnectionConfig config;
     private Boolean active;
-    private Batch batch;
+    private Batch atBatch;
+    private Batch ptBatch;
     private List<UserTaskLine> lines;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;

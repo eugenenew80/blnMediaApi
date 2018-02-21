@@ -10,6 +10,7 @@ import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 import kz.kegoc.bln.service.data.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,11 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		logger.info("AutoAtTimeValueReader.read started");
 
 		workListHeaderService.findAll().stream()
-			.filter(h -> h.getActive() && h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getConfig()!=null)
+			.filter(h -> h.getActive()
+				&& StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
+				&& StringUtils.equals(h.getDirection(),"IMPORT")
+				&& h.getConfig()!=null
+			)
 			.forEach(header -> {
 				logger.info("headerId: " + header.getId());
 				logger.info("url: " + header.getConfig().getUrl());
@@ -61,14 +66,11 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 					for (int i = 0; i < groupsPoints.size(); i++) {
 						List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
 						logger.info("group of points num: " + (i + 1));
-						logger.info("group of points size: " + groupPoints.size());
 
-						logger.info("Request data started");
 						List<AtTimeValueRaw> mrList = meteringReadingGateway
 							.config(header.getConfig())
 							.points(groupPoints)
 							.request();
-						logger.info("Request data completed");
 
 						saveData(batch, mrList);
 						recCount = recCount + mrList.size();
@@ -100,8 +102,8 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		batchService.create(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setBatch(batch);
-		header.setStatus("P");
+		header.setAtBatch(batch);
+		header.setAtStatus("P");
 		workListHeaderService.update(header);
 		return batch;
 	}
@@ -114,7 +116,7 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setStatus("C");
+		header.setAtStatus("C");
 		workListHeaderService.update(header);
 		return batch;
 	}
@@ -127,7 +129,7 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setStatus("E");
+		header.setAtStatus("E");
 		workListHeaderService.update(header);
 		return batch;
 	}

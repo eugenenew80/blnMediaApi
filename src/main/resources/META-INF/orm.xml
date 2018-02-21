@@ -671,11 +671,14 @@
 
 			<basic name="active">
 				<column name="is_active" />
-				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
 			</basic>
 
-			<basic name="status">
-				<column name="status" />
+			<basic name="atStatus">
+				<column name="at_status" />
+			</basic>
+
+			<basic name="ptStatus">
+				<column name="pt_status" />
 			</basic>
 
 			<basic name="startDate">
@@ -694,8 +697,12 @@
 				<column name="last_update_date" />
 			</basic>
 
-			<many-to-one name="batch">
-				<join-column name="batch_id"/>
+			<many-to-one name="atBatch">
+				<join-column name="at_batch_id"/>
+			</many-to-one>
+
+			<many-to-one name="ptBatch">
+				<join-column name="pt_batch_id"/>
 			</many-to-one>
 
 			<many-to-one name="config">
@@ -863,8 +870,12 @@
 				<column name="direction" />
 			</basic>
 
-			<basic name="status">
-				<column name="status" />
+			<basic name="atStatus">
+				<column name="at_status" />
+			</basic>
+
+			<basic name="ptStatus">
+				<column name="pt_status" />
 			</basic>
 
 			<basic name="active">
@@ -880,8 +891,12 @@
 				<column name="last_update_date" />
 			</basic>
 
-			<many-to-one name="batch">
-				<join-column name="batch_id"/>
+			<many-to-one name="atBatch">
+				<join-column name="at_batch_id"/>
+			</many-to-one>
+
+			<many-to-one name="ptBatch">
+				<join-column name="pt_batch_id"/>
 			</many-to-one>
 
 			<many-to-one name="config">

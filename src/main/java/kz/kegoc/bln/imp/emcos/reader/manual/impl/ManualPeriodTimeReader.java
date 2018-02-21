@@ -8,6 +8,7 @@ import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.MeteringValueService;
 import kz.kegoc.bln.service.data.UserTaskHeaderService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
@@ -27,7 +28,12 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		logger.debug("ManualPeriodTimeReader.read started");
 
 		userTaskHeaderService.findAll().stream()
-			.filter(h -> h.getSourceSystemCode().equals("EMCOS") && h.getDirection().equals("IMPORT") && h.getStatus().equals("W"))
+			.filter(h -> h.getActive()
+				&& StringUtils.equals(h.getPtStatus(), "W")
+				&& StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
+				&& StringUtils.equals(h.getDirection(),"IMPORT")
+				&& h.getConfig()!=null
+			)
 			.forEach(header -> {
 				logger.info("Import data started");
 				logger.info("headerId: " + header.getId());
@@ -49,12 +55,10 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 
 				Long recCount = 0l;
 				try {
-					logger.info("Request data started");
 					List<PeriodTimeValueRaw> pcList = pcGateway
 						.config(header.getConfig())
 						.points(points)
 						.request();
-					logger.info("Request data completed");
 
 					saveData(batch, pcList);
 					recCount = recCount + pcList.size();
@@ -74,7 +78,6 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch startBatch(UserTaskHeader header) {
-		logger.info("Create new batch");
 		Batch batch = new Batch();
 		batch.setUserTaskHeader(header);
 		batch.setSourceSystemCode(header.getSourceSystemCode());
@@ -85,8 +88,8 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		batchService.create(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setStatus("P");
-		header.setBatch(batch);
+		header.setPtStatus("P");
+		header.setPtBatch(batch);
 		userTaskHeaderService.update(header);
 
 		return batch;
@@ -100,7 +103,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setStatus("C");
+		header.setPtStatus("C");
 		userTaskHeaderService.update(header);
 		return batch;
 	}
@@ -113,7 +116,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setStatus("E");
+		header.setPtStatus("E");
 		userTaskHeaderService.update(header);
 		return batch;
 	}

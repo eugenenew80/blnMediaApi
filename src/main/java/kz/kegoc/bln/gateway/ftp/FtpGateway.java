@@ -12,5 +12,5 @@ public interface FtpGateway {
     FtpGateway path(String path);
     FtpGateway fileName(String fileName);
     FtpGateway config(ConnectionConfig config);
-    void send() throws IOException;
+    void send() throws Exception;
 }
