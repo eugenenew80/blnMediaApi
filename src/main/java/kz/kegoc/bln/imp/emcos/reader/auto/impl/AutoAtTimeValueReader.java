@@ -116,7 +116,6 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setAtBatch(batch);
 		header.setAtStatus("C");
 		workListHeaderService.update(header);
 		return batch;
@@ -130,7 +129,6 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setAtBatch(batch);
 		header.setAtStatus("E");
 		workListHeaderService.update(header);
 		return batch;

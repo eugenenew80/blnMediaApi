@@ -129,7 +129,6 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         batchService.update(batch);
 
         header = headerService.findById(header.getId());
-        header.setPtBatch(batch);
         header.setPtStatus("C");
         headerService.update(header);
         return batch;
@@ -143,7 +142,6 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         batchService.update(batch);
 
         header = headerService.findById(header.getId());
-        header.setPtBatch(batch);
         header.setPtStatus("E");
         headerService.update(header);
         return batch;

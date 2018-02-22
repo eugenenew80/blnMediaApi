@@ -14,7 +14,7 @@ import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 @Singleton
 public class AutoAtTimeValueImp implements Importer {
 	private static final Logger logger = LoggerFactory.getLogger(AutoAtTimeValueImp.class);
-	
+
 	@ProducerMonitor
 	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void runImport() {
@@ -26,6 +26,7 @@ public class AutoAtTimeValueImp implements Importer {
 			logger.error("AutoAtTimeValueImp.runImport failed: " + e.getMessage());
 		}
     }
+
 
 	@Inject
 	private AutoReader<AtTimeValueRaw> reader;

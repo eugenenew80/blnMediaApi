@@ -4,11 +4,14 @@ import kz.kegoc.bln.entity.adm.User;
 import kz.kegoc.bln.entity.common.HasId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(of= {"id"})
+@DynamicUpdate
 public class WorkListHeader implements HasId {
     private Long id;
     private String name;
