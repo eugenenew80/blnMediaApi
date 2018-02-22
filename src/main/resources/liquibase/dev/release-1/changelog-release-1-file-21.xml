@@ -27,5 +27,725 @@
     </changeSet>
 
 
+    <changeSet id="dict-rus-33" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_parameters to media_param_types</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_parameters"
+                baseColumnNames="param_type"
+                constraintName="fk_media_parameters_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_param_types"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-34" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_period_time_values to dict_data_sources</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_period_time_values"
+                baseColumnNames="source_system_code"
+                constraintName="fk_media_period_time_values_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_data_sources"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-35" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_at_time_values to dict_data_sources</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_at_time_values"
+                baseColumnNames="source_system_code"
+                constraintName="fk_media_at_time_values_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_data_sources"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-36" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_batches to dict_data_sources</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_batches"
+                baseColumnNames="source_system_code"
+                constraintName="fk_media_batches_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_data_sources"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-37" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_last_load_info to dict_data_sources</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_last_load_info"
+                baseColumnNames="source_system_code"
+                constraintName="fk_media_last_load_info_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_data_sources"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-38" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_user_task_headers to dict_data_sources</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_user_task_headers"
+                baseColumnNames="source_system_code"
+                constraintName="fk_media_user_task_headers_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_data_sources"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-39" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_headers to dict_data_sources</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_headers"
+                baseColumnNames="source_system_code"
+                constraintName="fk_media_work_list_headers_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_data_sources"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-40" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_parameter_conf to dict_data_sources</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_parameter_conf"
+                baseColumnNames="source_system_code"
+                constraintName="fk_media_parameter_conf_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_data_sources"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-41" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_user_task_lines to dict_metering_points</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_user_task_lines"
+                baseColumnNames="metering_point_id"
+                constraintName="fk_media_user_task_lines_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_metering_points"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-42" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_lines to dict_metering_points</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_lines"
+                baseColumnNames="metering_point_id"
+                constraintName="fk_media_work_list_lines_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_metering_points"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-43" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_parameters to dict_units</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_parameters"
+                baseColumnNames="unit_id"
+                constraintName="fk_media_parameters_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_units"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-44" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_parameter_conf to dict_units</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_parameter_conf"
+                baseColumnNames="unit_id"
+                constraintName="fk_media_parameter_conf_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_units"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-45" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_period_time_values to dict_units</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_period_time_values"
+                baseColumnNames="unit_id"
+                constraintName="fk_media_period_time_values_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_units"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-46" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_at_time_values to dict_units</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_at_time_values"
+                baseColumnNames="unit_id"
+                constraintName="fk_media_at_time_values_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="dict_units"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-47" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_period_time_values to media_input_methods</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_period_time_values"
+                baseColumnNames="input_method"
+                constraintName="fk_media_period_time_values_3"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_input_methods"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-48" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_at_time_values to media_input_methods</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_at_time_values"
+                baseColumnNames="input_method"
+                constraintName="fk_media_at_time_values_3"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_input_methods"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-49" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_period_time_values to media_processing_statuses</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_period_time_values"
+                baseColumnNames="status"
+                constraintName="fk_media_period_time_values_4"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_processing_statuses"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-50" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_at_time_values to media_processing_statuses</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_at_time_values"
+                baseColumnNames="status"
+                constraintName="fk_media_at_time_values_4"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_processing_statuses"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-51" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_period_time_values to media_receiving_methods</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_period_time_values"
+                baseColumnNames="receiving_method"
+                constraintName="fk_media_period_time_values_5"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_receiving_methods"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-52" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_at_time_values to media_receiving_methods</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_at_time_values"
+                baseColumnNames="receiving_method"
+                constraintName="fk_media_at_time_values_5"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_receiving_methods"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-53" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_batches to media_batch_statuses</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_batches"
+                baseColumnNames="status"
+                constraintName="fk_media_batches_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_batch_statuses"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-54" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_headers to media_batch_statuses</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_headers"
+                baseColumnNames="status"
+                constraintName="fk_media_work_list_headers_3"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_batch_statuses"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-55" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_user_task_headers to media_batch_statuses</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_user_task_headers"
+                baseColumnNames="status"
+                constraintName="fk_media_user_task_headers_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_batch_statuses"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-56" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_headers to media_direction</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_headers"
+                baseColumnNames="direction"
+                constraintName="fk_media_work_list_headers_4"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_direction"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-57" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_user_task_headers to media_direction</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_user_task_headers"
+                baseColumnNames="direction"
+                constraintName="fk_media_user_task_headers_5"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_direction"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-58" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_parameters to media_param_types</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_parameters"
+                baseColumnNames="param_type"
+                constraintName="fk_media_parameters_3"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_param_types"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-59" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_period_time_values to media_batches</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_period_time_values"
+                baseColumnNames="batch_id"
+                constraintName="fk_media_period_time_values_6"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_batches"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-60" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_at_time_values to media_batches</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_at_time_values"
+                baseColumnNames="batch_id"
+                constraintName="fk_media_at_time_values_6"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_batches"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-61" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_last_load_info to media_batches</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_last_load_info"
+                baseColumnNames="last_batch_id"
+                constraintName="fk_media_last_load_info_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_batches"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-62" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_headers to media_connection_config</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_headers"
+                baseColumnNames="config_id"
+                constraintName="fk_media_work_list_headers_5"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_connection_config"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-63" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_user_task_headers to media_connection_config</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_user_task_headers"
+                baseColumnNames="config_id"
+                constraintName="fk_media_user_task_headers_6"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_connection_config"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-64" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_period_time_values to media_parameters</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_period_time_values"
+                baseColumnNames="param_id"
+                constraintName="fk_media_period_time_values_7"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_parameters"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-65" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_at_time_values to media_parameters</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_at_time_values"
+                baseColumnNames="param_id"
+                constraintName="fk_media_at_time_values_7"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_parameters"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-66" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_user_task_lines to media_parameters</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_user_task_lines"
+                baseColumnNames="param_id"
+                constraintName="fk_media_user_task_lines_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_parameters"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-67" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_lines to media_parameters</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_lines"
+                baseColumnNames="param_id"
+                constraintName="fk_media_work_list_lines_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_parameters"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-68" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_parameter_conf to media_parameters</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_parameter_conf"
+                baseColumnNames="param_id"
+                constraintName="fk_media_parameter_conf_3"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_parameters"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-69" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_batches to media_work_list_headers</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_batches"
+                baseColumnNames="work_list_header_id"
+                constraintName="fk_media_batches_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_work_list_headers"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-70" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_lines to media_work_list_headers</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_lines"
+                baseColumnNames="work_list_header_id"
+                constraintName="fk_media_work_list_lines_3"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_work_list_headers"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-71" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_batches to media_user_task_headers</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_batches"
+                baseColumnNames="user_task_header_id"
+                constraintName="fk_media_batches_2"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_user_task_headers"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
+    <changeSet id="dict-rus-72" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_user_task_lines to media_user_task_headers</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_user_task_lines"
+                baseColumnNames="user_task_header_id"
+                constraintName="fk_media_user_task_lines_3"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_user_task_headers"
+                referencedColumnNames="id"
+        />
+    </changeSet>
+
+
 
 </databaseChangeLog>
