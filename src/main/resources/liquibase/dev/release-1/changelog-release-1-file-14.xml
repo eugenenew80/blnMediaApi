@@ -8,44 +8,44 @@
 
     <changeSet id="media-eug-46" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_user_task_lines</comment>
-        <createTable tableName="media_user_task_lines" schemaName="apps">
-            <column name="id" type="number">
+        <createTable tableName="media_user_task_lines" schemaName="apps" remarks="Список точек учета и измеряемых параметров для ручной инициации обмена данными">
+            <column name="id" type="number" remarks="Идентификатор">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="user_task_header_id" type="number">
+            <column name="user_task_header_id" type="number" remarks="Идентификатор списка точек учета для ручной инициации обмена данными">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="metering_point_id" type="number">
+            <column name="metering_point_id" type="number" remarks="Идентификатор точки учета">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="param_id" type="number">
+            <column name="param_id" type="number" remarks="Идентификатор измеряемого параметра">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="start_metering_date" type="TIMESTAMP">
+            <column name="start_metering_date" type="TIMESTAMP" remarks="Дата и время начала порции данных">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="end_metering_date" type="TIMESTAMP">
+            <column name="end_metering_date" type="TIMESTAMP" remarks="Дата и время окончания порции данных">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="create_date" type="TIMESTAMP">
+            <column name="create_date" type="TIMESTAMP" remarks="Дата и время создания записи">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_date" type="TIMESTAMP">
+            <column name="last_update_date" type="TIMESTAMP" remarks="Дата и время изменения записи">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="create_by" type="number">
+            <column name="create_by" type="number" remarks="Автор">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_by" type="number">
+            <column name="last_update_by" type="number" remarks="Автор изменения">
                 <constraints nullable="true"/>
             </column>
         </createTable>

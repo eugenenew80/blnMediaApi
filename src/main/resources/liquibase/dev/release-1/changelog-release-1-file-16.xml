@@ -8,12 +8,12 @@
 
     <changeSet id="media-rus-6" logicalFilePath="path-independent" author="ruslan">
         <comment>Creating table: media_param_types</comment>
-        <createTable tableName="media_param_types" schemaName="apps">
-            <column name="code" type="varchar2(10)">
+        <createTable tableName="media_param_types" schemaName="apps" remarks="Справочник типов параметров">
+            <column name="code" type="varchar2(10)" remarks="Код">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="name" type="varchar2(50)">
+            <column name="name" type="varchar2(50)" remarks="Наименование">
                 <constraints nullable="false"/>
             </column>
 
@@ -32,7 +32,7 @@
 
     <changeSet id="dict-rus-8" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating table: media_param_types_tl</comment>
-        <createTable tableName="media_param_types_tl" schemaName="apps" >
+        <createTable tableName="media_param_types_tl" schemaName="apps" remarks="Справочник типов параметров перевод">
             <column name="code" type="varchar(10)" remarks="Ссылка на родительскую запись">
                 <constraints nullable="false"/>
             </column>

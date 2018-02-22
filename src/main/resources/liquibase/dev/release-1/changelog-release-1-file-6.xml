@@ -8,44 +8,44 @@
 
     <changeSet id="media-eug-16" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_parameters</comment>
-        <createTable tableName="media_parameters" schemaName="apps">
-            <column name="id" type="number">
+        <createTable tableName="media_parameters" schemaName="apps" remarks="Справочник список параметров">
+            <column name="id" type="number" remarks="Идентификатор">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="code" type="varchar(10)">
+            <column name="code" type="varchar(10)" remarks="Код параметра">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="name" type="varchar(300)">
+            <column name="name" type="varchar(300)" remarks="Наименование параметра">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="short_name" type="varchar(100)">
+            <column name="short_name" type="varchar(100)" remarks="Краткое наименование параметра">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="unit_id" type="number">
+            <column name="unit_id" type="number" remarks="Индентификатор единицы измерения">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="param_type" type="varchar(10)">
+            <column name="param_type" type="varchar(10)" remarks="Тип параметра">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="create_date" type="TIMESTAMP">
+            <column name="create_date" type="TIMESTAMP" remarks="Дата и время создания записи">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_date" type="TIMESTAMP">
+            <column name="last_update_date" type="TIMESTAMP" remarks="Дата и время последнего изменения">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="create_by" type="number" remarks="Автор">
+            <column name="create_by" type="number" remarks="Автор" >
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_by" type="number" remarks="Автор последнего обновления">
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления" >
                 <constraints nullable="true"/>
             </column>
         </createTable>
@@ -69,106 +69,5 @@
 	            startValue="13"/>
 	</changeSet>
 
-    <changeSet id="media-eug-19" logicalFilePath="path-independent" author="eugene">
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="1" />
-            <column name="code"         type="varchar(10)"  value="A+" />
-            <column name="name"         type="varchar(300)" value="Актив приём" />
-            <column name="short_name"   type="varchar(100)" value="Актив приём" />
-            <column name="unit_id"      type="number"       value="9" />
-            <column name="param_type"   type="number"       value="PT"/>
-        </insert>
 
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="2" />
-            <column name="code"         type="varchar(10)"  value="A-" />
-            <column name="name"         type="varchar(300)" value="Актив отдача" />
-            <column name="short_name"   type="varchar(100)" value="Актив отдача" />
-            <column name="unit_id"      type="number"       value="9" />
-            <column name="param_type"   type="number"       value="PT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="3" />
-            <column name="code"         type="varchar(10)"  value="R+" />
-            <column name="name"         type="varchar(300)" value="Реактив приём" />
-            <column name="short_name"   type="varchar(100)" value="Реактив приём" />
-            <column name="unit_id"      type="number"       value="14" />
-            <column name="param_type"   type="number"       value="PT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="4" />
-            <column name="code"         type="varchar(10)"  value="R-" />
-            <column name="name"         type="varchar(100)" value="Реактив отдача" />
-            <column name="short_name"   type="varchar(100)" value="Реактив отдача" />
-            <column name="unit_id"      type="number"       value="14" />
-            <column name="param_type"   type="number"       value="PT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="5" />
-            <column name="code"         type="varchar(10)"  value="A+" />
-            <column name="name"         type="varchar(300)" value="Актив приём" />
-            <column name="short_name"   type="varchar(100)" value="Актив приём" />
-            <column name="unit_id"      type="number"       value="9" />
-            <column name="param_type"   type="number"       value="AT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="6" />
-            <column name="code"         type="varchar(10)"  value="A-" />
-            <column name="name"         type="varchar(300)" value="Актив отдача" />
-            <column name="short_name"   type="varchar(100)" value="Актив отдача" />
-            <column name="unit_id"      type="number"       value="9" />
-            <column name="param_type"   type="number"       value="AT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="7" />
-            <column name="code"         type="varchar(10)"  value="R+" />
-            <column name="name"         type="varchar(300)" value="Реактив приём" />
-            <column name="short_name"   type="varchar(100)" value="Реактив приём" />
-            <column name="unit_id"      type="number"       value="14" />
-            <column name="param_type"   type="number"       value="AT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="8" />
-            <column name="code"         type="varchar(10)"  value="R-" />
-            <column name="name"         type="varchar(300)" value="Реактив отдача" />
-            <column name="short_name"   type="varchar(100)" value="Реактив отдача" />
-            <column name="unit_id"      type="number"       value="14" />
-            <column name="param_type"   type="number"       value="AT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="9" />
-            <column name="code"         type="varchar(10)"  value="L1" />
-            <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L1" />
-            <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L1" />
-            <column name="unit_id"      type="number"       value="4" />
-            <column name="param_type"   type="number"       value="PT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="10" />
-            <column name="code"         type="varchar(10)"  value="L2" />
-            <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L2" />
-            <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L2" />
-            <column name="unit_id"      type="number"       value="4" />
-            <column name="param_type"   type="number"       value="PT"/>
-        </insert>
-
-        <insert schemaName="apps"  tableName="media_parameters">
-            <column name="id"           type="number"       value="11" />
-            <column name="code"         type="varchar(10)"  value="L3" />
-            <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L3" />
-            <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L3" />
-            <column name="unit_id"      type="number"       value="4" />
-            <column name="param_type"   type="number"       value="PT"/>
-        </insert>
-
-        <rollback/>
-    </changeSet>
 </databaseChangeLog>

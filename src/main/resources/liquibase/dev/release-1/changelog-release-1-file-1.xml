@@ -8,92 +8,93 @@
     
     <changeSet id="media-eug-1" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_period_time_values</comment>
-        <createTable tableName="media_period_time_values" schemaName="apps">
-            <column name="id" type="number">
+        <createTable tableName="media_period_time_values" schemaName="apps" remarks="Исходные измерения значений за период">
+            <column name="id" type="number" remarks="Идентификатор">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="source_system_code" type="varchar(20)">
+            <column name="source_system_code" type="varchar(20)" remarks="Код внешней точки учета">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="source_metering_point_code" type="varchar(18)">
+            <column name="source_metering_point_code" type="varchar(18)" remarks="Код точки учета во внешней системе">
                 <constraints nullable="true"/>
             </column>
             
-            <column name="source_param_code" type="varchar(4)">
+            <column name="source_param_code" type="varchar(4)" remarks="Код параметра во внешней системе">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="source_unit_code" type="varchar(10)">
+            <column name="source_unit_code" type="varchar(10)" remarks="Единица измерения параметра во внешней системе">
                 <constraints nullable="false"/>
             </column>
                         
-            <column name="metering_date" type="TIMESTAMP">
+            <column name="metering_date" type="TIMESTAMP" remarks="Дата и время измерения">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="val" type="number">
+            <column name="val" type="number" remarks="Измеренное значения">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="status" type="varchar(20)">
+            <column name="status" type="varchar(20)" remarks="Статус обработки">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="param_id" type="number">
+            <column name="param_id" type="number" remarks="Идентификатор параметра">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="unit_id" type="number" >
+            <column name="unit_id" type="number" remarks="Идентификатор еденицы измерения">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="interval" type="number">
+            <column name="interval" type="number" remarks="Интервал измерения">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="input_method" type="varchar(20)">
+            <column name="input_method" type="varchar(20)" remarks="Метод ввода">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="receiving_method" type="varchar(20)">
+            <column name="receiving_method" type="varchar(20)" remarks="Способ получения">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="metering_point_id" type="number" >
+            <column name="metering_point_id" type="number" remarks="Идентификатор точки учета">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="meter_id" type="number">
+            <column name="meter_id" type="number" remarks="Идентификатор счетчика">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="version" type="number">
+
+            <column name="version" type="number" remarks="Версия">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="batch_id" type="number">
+            <column name="batch_id" type="number" remarks="Идентификатор порции данных">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="int_count" type="number">
+            <column name="int_count" type="number" remarks="Количество 15 минутных измерений">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="create_date" type="TIMESTAMP">
+            <column name="create_date" type="TIMESTAMP" remarks="Дата создания">
                 <constraints nullable="true"/>
             </column>
             
-            <column name="last_update_date" type="TIMESTAMP">
+            <column name="last_update_date" type="TIMESTAMP" remarks="Дата изменения">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="create_by" type="number">
+            <column name="create_by" type="number" remarks="Автор">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_by" type="number">
+            <column name="last_update_by" type="number" remarks="Автор изменения">
                 <constraints nullable="true"/>
             </column>
         </createTable>

@@ -225,7 +225,7 @@
     </changeSet>
 
 
-    <changeSet id="dict-rus-44" logicalFilePath="path-independent" author="ruslan" context="dev">
+ <!--   <changeSet id="dict-rus-44" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_parameter_conf to dict_units</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -241,7 +241,7 @@
                 referencedColumnNames="id"
         />
     </changeSet>
-
+-->
 
     <changeSet id="dict-rus-45" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_period_time_values to dict_units</comment>
@@ -363,7 +363,7 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_receiving_methods"
+                referencedTableName="media_receiving_method"
                 referencedColumnNames="code"
         />
     </changeSet>
@@ -381,7 +381,7 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_receiving_methods"
+                referencedTableName="media_receiving_method"
                 referencedColumnNames="code"
         />
     </changeSet>
@@ -410,8 +410,25 @@
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
                 baseTableName="media_work_list_headers"
-                baseColumnNames="status"
+                baseColumnNames="pt_status"
                 constraintName="fk_media_work_list_headers_3"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="RESTRICT"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_batch_statuses"
+                referencedColumnNames="code"
+        />
+    </changeSet>
+
+    <changeSet id="dict-rus-504" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_work_list_headers to media_batch_statuses</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_work_list_headers"
+                baseColumnNames="at_status"
+                constraintName="fk_media_work_list_headers_10"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="RESTRICT"
@@ -428,7 +445,7 @@
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
                 baseTableName="media_user_task_headers"
-                baseColumnNames="status"
+                baseColumnNames="pt_status"
                 constraintName="fk_media_user_task_headers_2"
                 deferrable="true"
                 initiallyDeferred="true"
@@ -441,19 +458,19 @@
     </changeSet>
 
 
-    <changeSet id="dict-rus-56" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_headers to media_direction</comment>
+    <changeSet id="dict-rus-505" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_user_task_headers to media_batch_statuses</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
-                baseTableName="media_work_list_headers"
-                baseColumnNames="direction"
-                constraintName="fk_media_work_list_headers_4"
+                baseTableName="media_user_task_headers"
+                baseColumnNames="at_status"
+                constraintName="fk_media_user_task_headers_10"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_direction"
+                referencedTableName="media_batch_statuses"
                 referencedColumnNames="code"
         />
     </changeSet>
@@ -471,28 +488,11 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_direction"
+                referencedTableName="media_directions"
                 referencedColumnNames="code"
         />
     </changeSet>
 
-
-    <changeSet id="dict-rus-58" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_parameters to media_param_types</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_parameters"
-                baseColumnNames="param_type"
-                constraintName="fk_media_parameters_3"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_param_types"
-                referencedColumnNames="code"
-        />
-    </changeSet>
 
 
     <changeSet id="dict-rus-59" logicalFilePath="path-independent" author="ruslan" context="dev">
@@ -681,7 +681,7 @@
                 baseTableSchemaName="apps"
                 baseTableName="media_batches"
                 baseColumnNames="work_list_header_id"
-                constraintName="fk_media_batches_1"
+                constraintName="fk_media_batches_5"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="RESTRICT"
@@ -717,7 +717,7 @@
                 baseTableSchemaName="apps"
                 baseTableName="media_batches"
                 baseColumnNames="user_task_header_id"
-                constraintName="fk_media_batches_2"
+                constraintName="fk_media_batches_4"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="RESTRICT"

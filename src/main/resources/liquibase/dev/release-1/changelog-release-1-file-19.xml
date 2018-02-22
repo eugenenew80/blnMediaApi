@@ -7,13 +7,13 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
     <changeSet id="media-rus-22" logicalFilePath="path-independent" author="ruslan">
-        <comment>Creating table: media_processing_statues</comment>
-        <createTable tableName="media_processing_statues" schemaName="apps">
-            <column name="code" type="varchar2(20)">
+        <comment>Creating table: media_processing_statuses</comment>
+        <createTable tableName="media_processing_statuses" schemaName="apps" remarks="Справочник статусов обработки полученных значений">
+            <column name="code" type="varchar2(20)" remarks="Код">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="name" type="varchar2(50)">
+            <column name="name" type="varchar2(50)" remarks="Наименование">
                 <constraints nullable="false"/>
             </column>
 
@@ -22,17 +22,17 @@
     </changeSet>
 
 	<changeSet id="media-rus-23" logicalFilePath="path-independent" author="ruslan">
-	    <comment>Creating primary key for table: media_processing_statues</comment>
+	    <comment>Creating primary key for table: media_processing_statuses</comment>
 	    <addPrimaryKey 
 	            columnNames="code"
-	            constraintName="pk_media_processing_statues"
+	            constraintName="pk_media_processing_statuses"
 	            schemaName="apps"
-	            tableName="media_processing_statues"/>
+	            tableName="media_processing_statuses"/>
 	</changeSet>
 
     <changeSet id="dict-rus-24" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating table: media_processing_statues_tl</comment>
-        <createTable tableName="media_processing_statues_tl" schemaName="apps" >
+        <comment>Creating table: media_processing_statuses_tl</comment>
+        <createTable tableName="media_processing_statuses_tl" schemaName="apps" remarks="Справочник статусов обработки полученных значений перевод">
             <column name="code" type="varchar(20)" remarks="Ссылка на родительскую запись">
                 <constraints nullable="false"/>
             </column>
@@ -48,27 +48,27 @@
     </changeSet>
 
     <changeSet id="dict-rus-25" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating primary key for table: media_processing_statues_tl</comment>
+        <comment>Creating primary key for table: media_processing_statuses_tl</comment>
         <addPrimaryKey
                 columnNames="code, lang"
-                constraintName="pk_media_processing_statues_tl"
+                constraintName="pk_media_processing_statuses_tl"
                 schemaName="apps"
-                tableName="media_processing_statues_tl"/>
+                tableName="media_processing_statuses_tl"/>
     </changeSet>
 
     <changeSet id="dict-rus-26" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_processing_statues_tl to media_processing_statues</comment>
+        <comment>Creating foreign constraint: media_processing_statuses_tl to media_processing_statuses</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
-                baseTableName="media_processing_statues_tl"
+                baseTableName="media_processing_statuses_tl"
                 baseColumnNames="code"
-                constraintName="fk_media_processing_statues_tl_1"
+                constraintName="fk_media_processing_statuses_tl_1"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="CASCADE"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_processing_statues"
+                referencedTableName="media_processing_statuses"
                 referencedColumnNames="code"
         />
     </changeSet>

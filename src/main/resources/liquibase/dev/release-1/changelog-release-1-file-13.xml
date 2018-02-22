@@ -8,60 +8,60 @@
 
     <changeSet id="media-eug-43" logicalFilePath="path-independent" author="eugene">
         <comment>Creating table: media_user_task_headers</comment>
-        <createTable tableName="media_user_task_headers" schemaName="apps">
-            <column name="id" type="number">
+        <createTable tableName="media_user_task_headers" schemaName="apps" remarks="Список точек учета для ручной инициации обмена данными">
+            <column name="id" type="number" remarks="Идентификатор">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="name" type="varchar(100)">
+            <column name="name" type="varchar(100)" remarks="Наименование">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="source_system_code" type="varchar(20)">
+            <column name="source_system_code" type="varchar(20)" remarks="Код внешней системы">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="direction" type="varchar(20)">
+            <column name="direction" type="varchar(20)" remarks="Направление обмена данными">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="pt_status" type="varchar(10)">
+            <column name="pt_status" type="varchar(10)" remarks="Статус обработки интервальных значений">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="at_status" type="varchar(10)">
+            <column name="at_status" type="varchar(10)" remarks="Статус обработки мгновенных значений">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="config_id" type="number">
+            <column name="config_id" type="number" remarks="Идентификатор подключения к внешней системе">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="pt_batch_id" type="number">
+            <column name="pt_batch_id" type="number" remarks="Идентификатор порции интервальных значений">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="at_batch_id" type="number">
+            <column name="at_batch_id" type="number" remarks="Идентификатор порции мгновенных значений">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="is_active" type="number">
+            <column name="is_active" type="number" remarks="Активно">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="create_date" type="TIMESTAMP">
+            <column name="create_date" type="TIMESTAMP" remarks="Дата создания">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_date" type="TIMESTAMP">
+            <column name="last_update_date" type="TIMESTAMP" remarks="Дата последнего изменения">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="create_by" type="number">
+            <column name="create_by" type="number" remarks="Автор">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_by" type="number">
+            <column name="last_update_by" type="number" remarks="Автор изменения">
                 <constraints nullable="true"/>
             </column>
         </createTable>
