@@ -10,7 +10,7 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
 
-    <changeSet id="dict-rus-73" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-73" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_directions">
             <column name="code" type="varchar" value="IMPORT"/>
@@ -19,7 +19,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-74" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-74" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_directions">
             <column name="code" type="varchar" value="EXPORT"/>
@@ -28,7 +28,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-75" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-75" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_param_types">
             <column name="code" type="varchar" value="AT"/>
@@ -37,7 +37,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-76" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-76" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_param_types">
             <column name="code" type="varchar" value="PT"/>
@@ -46,7 +46,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-77" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-77" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_batch_statuses">
             <column name="code" type="varchar" value="P"/>
@@ -55,7 +55,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-78" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-78" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_batch_statuses">
             <column name="code" type="varchar" value="С"/>
@@ -64,7 +64,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-79" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-79" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_batch_statuses">
             <column name="code" type="varchar" value="E"/>
@@ -73,7 +73,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-80" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-80" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_batch_statuses">
             <column name="code" type="varchar" value="W"/>
@@ -82,7 +82,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-81" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-81" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_batch_statuses">
             <column name="code" type="varchar" value="U"/>
@@ -91,7 +91,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-82" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-82" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_receiving_method">
             <column name="code" type="varchar" value="SERVICE"/>
@@ -100,7 +100,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-83" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-83" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_receiving_method">
             <column name="code" type="varchar" value="PHONE"/>
@@ -109,7 +109,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-84" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-84" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_receiving_method">
             <column name="code" type="varchar" value="EMAIL"/>
@@ -118,7 +118,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-85" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-85" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_receiving_method">
             <column name="code" type="varchar" value="FORMULA"/>
@@ -127,7 +127,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-86" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-86" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_receiving_method">
             <column name="code" type="varchar" value="OTHER"/>
@@ -136,7 +136,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-87" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-87" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_input_methods">
             <column name="code" type="varchar" value="AUTO"/>
@@ -145,7 +145,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-88" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-88" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_input_methods">
             <column name="code" type="varchar" value="MANUAL"/>
@@ -154,7 +154,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-89" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-89" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_input_methods">
             <column name="code" type="varchar" value="FILE"/>
@@ -163,7 +163,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-90" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-90" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_processing_statuses">
             <column name="code" type="varchar" value="NEW"/>
@@ -172,7 +172,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-91" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-91" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_processing_statuses">
             <column name="code" type="varchar" value="OK"/>
@@ -181,7 +181,7 @@
         <rollback/>
     </changeSet>
 
-    <changeSet id="dict-rus-92" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-92" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_processing_statuses">
             <column name="code" type="varchar" value="ERROR"/>

@@ -30,7 +30,7 @@
 	            tableName="media_input_methods"/>
 	</changeSet>
 
-    <changeSet id="dict-rus-19" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-19" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating table: media_input_methods_tl</comment>
         <createTable tableName="media_input_methods_tl" schemaName="apps" remarks="Справочник ввода данных перевод">
             <column name="code" type="varchar(20)" remarks="Ссылка на родительскую запись">
@@ -47,7 +47,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="dict-rus-20" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-20" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating primary key for table: media_input_methods_tl</comment>
         <addPrimaryKey
                 columnNames="code, lang"
@@ -56,7 +56,7 @@
                 tableName="media_input_methods_tl"/>
     </changeSet>
 
-    <changeSet id="dict-rus-21" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-21" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_input_methods_tl to media_input_methods</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
