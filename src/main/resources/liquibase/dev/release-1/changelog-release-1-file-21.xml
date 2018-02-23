@@ -10,6 +10,18 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
     <changeSet id="media-rus-32" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating unique constraint: dict_data_sources</comment>
+        <addUniqueConstraint columnNames="code"
+                             constraintName="uq_dict_data_sources"
+                             deferrable="true"
+                             disabled="true"
+                             initiallyDeferred="true"
+                             schemaName="apps"
+                             tableName="dict_data_sources"/>
+    </changeSet>
+
+
+    <changeSet id="media-rus-33" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_work_list_headers to media_directions</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -27,7 +39,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-33" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-34" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_parameters to media_param_types</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -45,7 +57,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-34" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-35" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_period_time_values to dict_data_sources</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -63,7 +75,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-35" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-36" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_at_time_values to dict_data_sources</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -81,7 +93,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-36" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-37" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_batches to dict_data_sources</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -99,7 +111,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-37" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-38" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_last_load_info to dict_data_sources</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -117,7 +129,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-38" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-39" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_user_task_headers to dict_data_sources</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -135,7 +147,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-39" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-40" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_work_list_headers to dict_data_sources</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -153,7 +165,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-40" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-41" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_parameter_conf to dict_data_sources</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -171,7 +183,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-41" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-42" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_user_task_lines to dict_metering_points</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -189,7 +201,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-42" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-43" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_work_list_lines to dict_metering_points</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -207,7 +219,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-43" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-44" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_parameters to dict_units</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -404,7 +416,7 @@
         />
     </changeSet>
 
-    <changeSet id="media-rus-504" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-55" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_work_list_headers to media_batch_statuses</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -422,7 +434,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-55" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-56" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_user_task_headers to media_batch_statuses</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -440,7 +452,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-505" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-57" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_user_task_headers to media_batch_statuses</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -458,7 +470,7 @@
     </changeSet>
 
 
-    <changeSet id="media-rus-57" logicalFilePath="path-independent" author="ruslan" context="dev">
+    <changeSet id="media-rus-58" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_user_task_headers to media_direction</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
