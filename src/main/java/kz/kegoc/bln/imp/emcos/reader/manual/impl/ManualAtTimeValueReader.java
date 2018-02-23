@@ -86,7 +86,7 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		batch.setParamType("AT");
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
-		batchService.create(batch);
+		batch = batchService.create(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
 		header.setAtBatch(batch);

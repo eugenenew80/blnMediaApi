@@ -111,7 +111,7 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         batch.setParamType("PT");
         batch.setStatus("P");
         batch.setStartDate(LocalDateTime.now());
-        batchService.create(batch);
+        batch = batchService.create(batch);
 
         header = headerService.findById(header.getId());
         header.setPtBatch(batch);

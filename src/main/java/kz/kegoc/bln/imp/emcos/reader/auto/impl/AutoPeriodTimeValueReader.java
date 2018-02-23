@@ -99,7 +99,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batch.setParamType("PT");
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
-		batchService.create(batch);
+		batch = batchService.create(batch);
 
 		header = workListHeaderService.findById(header.getId());
 		header.setPtBatch(batch);
