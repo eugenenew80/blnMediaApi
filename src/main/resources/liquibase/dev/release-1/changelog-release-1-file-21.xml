@@ -13,9 +13,6 @@
         <comment>Creating unique constraint: dict_data_sources</comment>
         <addUniqueConstraint columnNames="code"
                              constraintName="uq_dict_data_sources"
-                             deferrable="true"
-                             disabled="true"
-                             initiallyDeferred="true"
                              schemaName="apps"
                              tableName="dict_data_sources"/>
     </changeSet>
