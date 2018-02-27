@@ -397,7 +397,7 @@
 
 
     <changeSet id="media-rus-54" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_headers to media_batch_statuses</comment>
+        <comment>Creating foreign constraint: media_work_list_headers to media_batches</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
                 baseTableName="media_work_list_headers"
@@ -408,13 +408,13 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
+                referencedTableName="media_batches"
                 referencedColumnNames="code"
         />
     </changeSet>
 
     <changeSet id="media-rus-55" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_headers to media_batch_statuses</comment>
+        <comment>Creating foreign constraint: media_work_list_headers to media_batches</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
                 baseTableName="media_work_list_headers"
@@ -425,14 +425,14 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
+                referencedTableName="media_batches"
                 referencedColumnNames="code"
         />
     </changeSet>
 
 
     <changeSet id="media-rus-56" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_headers to media_batch_statuses</comment>
+        <comment>Creating foreign constraint: media_user_task_headers to media_batches</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
                 baseTableName="media_user_task_headers"
@@ -443,14 +443,14 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
+                referencedTableName="media_batches"
                 referencedColumnNames="code"
         />
     </changeSet>
 
 
     <changeSet id="media-rus-57" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_headers to media_batch_statuses</comment>
+        <comment>Creating foreign constraint: media_user_task_headers to media_batches</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
                 baseTableName="media_user_task_headers"
@@ -461,7 +461,7 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
+                referencedTableName="media_batches"
                 referencedColumnNames="code"
         />
     </changeSet>
