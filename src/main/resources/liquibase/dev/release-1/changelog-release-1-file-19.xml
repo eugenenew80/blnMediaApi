@@ -17,7 +17,21 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="create_date" type="TIMESTAMP" remarks="Дата и время создания записи">
+                <constraints nullable="true"/>
+            </column>
 
+            <column name="last_update_date" type="TIMESTAMP" remarks="Дата и время последнего изменения">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number" remarks="Автор" >
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления" >
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
 
@@ -44,6 +58,23 @@
             <column name="name" type="varchar(50)" remarks="Наименование">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="create_date" type="TIMESTAMP" remarks="Дата и время создания записи">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_date" type="TIMESTAMP" remarks="Дата и время последнего изменения">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number" remarks="Автор" >
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления" >
+                <constraints nullable="true"/>
+            </column>
+
         </createTable>
     </changeSet>
 
