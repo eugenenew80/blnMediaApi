@@ -395,8 +395,15 @@
         />
     </changeSet>
 
-
     <changeSet id="media-rus-54" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating unique constraint: media_batches</comment>
+        <addUniqueConstraint columnNames="status"
+                             constraintName="uq_media_batches_1"
+                             schemaName="apps"
+                             tableName="media_batches"/>
+    </changeSet>
+
+    <changeSet id="media-rus-54-1" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_work_list_headers to media_batches</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
