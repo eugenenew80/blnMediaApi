@@ -451,7 +451,7 @@
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
                 referencedTableName="media_batches"
-                referencedColumnNames="code"
+                referencedColumnNames="status"
         />
     </changeSet>
 
@@ -469,7 +469,7 @@
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
                 referencedTableName="media_batches"
-                referencedColumnNames="code"
+                referencedColumnNames="status"
         />
     </changeSet>
 
