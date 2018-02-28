@@ -16,7 +16,7 @@ public class AutoAtTimeValueImp implements Importer {
 	private static final Logger logger = LoggerFactory.getLogger(AutoAtTimeValueImp.class);
 
 	@ProducerMonitor
-	@Schedule(minute = "*/3", hour = "*", persistent = false)
+	@Schedule(minute = "*/6", hour = "*", persistent = false)
 	public void runImport() {
 		try {
 			reader.read();
