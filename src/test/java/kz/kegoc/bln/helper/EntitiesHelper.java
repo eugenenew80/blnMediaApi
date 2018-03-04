@@ -1,6 +1,7 @@
-package kz.kegoc.bln.filter;
+package kz.kegoc.bln.helper;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public final class EntitiesHelper {
 	public static Calendar calendarFor(int year, int month, int day) {

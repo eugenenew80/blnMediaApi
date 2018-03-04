@@ -16,7 +16,7 @@ public class Parameter implements HasId {
     private String name;
     private String shortName;
     private Unit unit;
-    private String paramType;
+    private ParamType paramType;
     private List<ParameterConf> confs;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;

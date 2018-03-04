@@ -1,12 +1,12 @@
-package kz.kegoc.bln.filter;
-
-import java.io.File;
-import java.sql.Connection;
+package kz.kegoc.bln.helper;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.xml.FlatXmlDataSetBuilder;
 import org.dbunit.operation.DatabaseOperation;
+
+import java.io.File;
+import java.sql.Connection;
 
 public class DataSetLoader {
 	

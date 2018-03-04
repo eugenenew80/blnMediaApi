@@ -96,7 +96,7 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		batch.setWorkListHeader(header);
 		batch.setSourceSystemCode(header.getSourceSystemCode());
 		batch.setDirection(header.getDirection());
-		batch.setParamType("AT");
+		batch.setParamType(new ParamType("AT"));
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
 		batch = batchService.create(batch);

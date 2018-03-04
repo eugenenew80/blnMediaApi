@@ -68,9 +68,9 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 						logger.info("group of points num: " + (i + 1));
 
 						List<PeriodTimeValueRaw> pcList = powerConsumptionGateway
-								.config(header.getConfig())
-								.points(groupPoints)
-								.request();
+							.config(header.getConfig())
+							.points(groupPoints)
+							.request();
 
 						saveData(batch, pcList);
 						recCount = recCount + pcList.size();
@@ -96,7 +96,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batch.setWorkListHeader(header);
 		batch.setSourceSystemCode(header.getSourceSystemCode());
 		batch.setDirection(header.getDirection());
-		batch.setParamType("PT");
+		batch.setParamType(new ParamType("PT"));
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
 		batch = batchService.create(batch);

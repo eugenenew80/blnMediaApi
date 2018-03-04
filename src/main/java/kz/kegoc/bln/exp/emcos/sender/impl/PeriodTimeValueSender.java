@@ -1,9 +1,6 @@
 package kz.kegoc.bln.exp.emcos.sender.impl;
 
-import kz.kegoc.bln.entity.data.Batch;
-import kz.kegoc.bln.entity.data.ExportData;
-import kz.kegoc.bln.entity.data.PeriodTimeValue;
-import kz.kegoc.bln.entity.data.WorkListHeader;
+import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.exp.emcos.sender.Sender;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
 import kz.kegoc.bln.service.data.BatchService;
@@ -108,7 +105,7 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         batch.setWorkListHeader(header);
         batch.setSourceSystemCode(header.getSourceSystemCode());
         batch.setDirection(header.getDirection());
-        batch.setParamType("PT");
+        batch.setParamType(new ParamType("PT"));
         batch.setStatus("P");
         batch.setStartDate(LocalDateTime.now());
         batch = batchService.create(batch);

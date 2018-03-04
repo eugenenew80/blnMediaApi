@@ -506,10 +506,6 @@
 				<column name="short_name" />
 			</basic>
 
-			<basic name="paramType">
-				<column name="param_type" />
-			</basic>
-
 			<basic name="createDate">
 				<column name="create_date" />
 			</basic>
@@ -517,6 +513,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="paramType">
+				<join-column name="param_type" />
+			</many-to-one>
 
 			<many-to-one name="unit">
 				<join-column name="unit_id"/>
@@ -798,10 +798,6 @@
 				<column name="direction" />
 			</basic>
 
-			<basic name="paramType">
-				<column name="param_type" />
-			</basic>
-
 			<basic name="startDate">
 				<column name="start_date" />
 			</basic>
@@ -829,6 +825,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="paramType">
+				<join-column name="param_type" />
+			</many-to-one>
 
 			<many-to-one name="workListHeader">
 				<join-column name="work_list_header_id"/>
@@ -966,4 +966,12 @@
 		</attributes>
 	</entity>
 
+	<entity class="kz.kegoc.bln.entity.data.ParamType">
+		<table name="media_param_types" schema="apps"/>
+		<attributes>
+			<id name="code">
+				<column name="code" />
+			</id>
+		</attributes>
+	</entity>
 </entity-mappings>

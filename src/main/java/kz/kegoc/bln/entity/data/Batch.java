@@ -14,7 +14,7 @@ public class Batch implements HasId {
     private UserTaskHeader userTaskHeader;
     private String sourceSystemCode;
     private String direction;
-    private String paramType;
+    private ParamType paramType;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Long recCount;

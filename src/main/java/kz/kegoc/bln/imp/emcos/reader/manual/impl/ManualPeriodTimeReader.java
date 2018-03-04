@@ -82,7 +82,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		batch.setUserTaskHeader(header);
 		batch.setSourceSystemCode(header.getSourceSystemCode());
 		batch.setDirection(header.getDirection());
-		batch.setParamType("PT");
+		batch.setParamType(new ParamType("PT"));
 		batch.setStatus("P");
 		batch.setStartDate(LocalDateTime.now());
 		batch = batchService.create(batch);
