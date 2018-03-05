@@ -12,6 +12,7 @@ import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
+import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
 import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 import kz.kegoc.bln.service.data.*;
 import org.slf4j.Logger;
@@ -95,46 +96,17 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private Batch startBatch(WorkListHeader header) {
-		Batch batch = new Batch();
-		batch.setWorkListHeader(header);
-		batch.setSourceSystemCode(header.getSourceSystemCode());
-		batch.setDirection(header.getDirection());
-		batch.setParamType(newInstance(ParamTypeEnum.AT));
-		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.P));
-		batch.setStartDate(LocalDateTime.now());
-		batch = batchService.create(batch);
-
-		header = workListHeaderService.findById(header.getId());
-		header.setAtBatch(batch);
-		header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.P));
-		workListHeaderService.update(header);
-		return batch;
+		return batchHelper.startBatch(header, ParamTypeEnum.AT);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch endBatch(WorkListHeader header, Batch batch, Long retCount) {
-		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
-		batch.setEndDate(LocalDateTime.now());
-		batch.setRecCount(retCount);
-		batchService.update(batch);
-
-		header = workListHeaderService.findById(header.getId());
-		header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.C));
-		workListHeaderService.update(header);
-		return batch;
+		return batchHelper.endBatch(header, batch, retCount);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
-		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.E));
-		batch.setEndDate(LocalDateTime.now());
-		batch.setErrMsg(e.getMessage());
-		batchService.update(batch);
-
-		header = workListHeaderService.findById(header.getId());
-		header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.E));
-		workListHeaderService.update(header);
-		return batch;
+		return batchHelper.errorBatch(header, batch, e);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -143,25 +115,12 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		mrService.saveAll(list);
 	}
 
-    private LocalDateTime buildRequestedDateTime() {
-		return LocalDate.now(ZoneId.of("UTC+1"))
-					.plusDays(1)
-					.atStartOfDay();
-	}
-
-	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
-			return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
-		else
-			return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
-	}
-
 	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
 		List<LastLoadInfo> lastLoadInfoList = lastLoadInfoService.findAll();
 
-		List<MeteringPointCfg> points= new ArrayList<>();
+		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
-			.filter(l -> l.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
+			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
 			.forEach(line -> {
 				ParameterConf parameterConf = line.getParam().getConfs()
 					.stream()
@@ -169,26 +128,30 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 					.findFirst()
 					.orElse(null);
 
-				if (parameterConf!=null) {
-					MeteringPointCfg mpc = new MeteringPointCfg();
-					mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
-					mpc.setParamCode(line.getParam().getCode());
-					mpc.setSourceParamCode(parameterConf.getSourceParamCode());
-					mpc.setInterval(parameterConf.getInterval());
-					mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
+				LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
+					.filter(t -> t.getSourceMeteringPointCode().equals(line.getMeteringPoint().getExternalCode()) && t.getSourceParamCode().equals(parameterConf.getSourceParamCode()))
+					.findFirst()
+					.orElse(null);
 
-					LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-						.filter(t -> t.getSourceMeteringPointCode().equals(mpc.getSourceMeteringPointCode()) && t.getSourceParamCode().equals(mpc.getSourceParamCode()))
-						.findFirst()
-						.orElse(null);
-
-					mpc.setStartTime(buildStartTime(lastLoadInfo));
-					mpc.setEndTime(buildRequestedDateTime());
-					if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-						points.add(mpc);
-				}
+				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, buildStartTime(lastLoadInfo), buildRequestedDateTime());
+				if (mpc!=null)
+					points.add(mpc);
 			});
+
 		return points;
+	}
+
+	private LocalDateTime buildRequestedDateTime() {
+		return LocalDate.now(ZoneId.of("UTC+1"))
+				.plusDays(1)
+				.atStartOfDay();
+	}
+
+	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
+		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
+			return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
+		else
+			return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
 	}
 
 
@@ -202,8 +165,8 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 	private WorkListHeaderService workListHeaderService;
 
 	@Inject
-	private BatchService batchService;
+	private MeteringValueService<AtTimeValueRaw> mrService;
 
 	@Inject
-	private MeteringValueService<AtTimeValueRaw> mrService;
+	private BatchHelper batchHelper;
 }

@@ -5,18 +5,16 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
-
-import kz.kegoc.bln.entity.common.BatchStatusEnum;
 import kz.kegoc.bln.entity.common.DirectionEnum;
 import kz.kegoc.bln.entity.common.ParamTypeEnum;
 import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.*;
 import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
+import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
 import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.*;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static java.util.stream.Collectors.groupingBy;
@@ -48,7 +46,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 					return;
 				}
 
-				List<MeteringPointCfg> points = buidPoints(header.getLines());
+				List<MeteringPointCfg> points = buildPoints(header.getLines());
 				if (points.size()==0) {
 					logger.info("Import data is not required, import data stopped");
 					return;
@@ -98,49 +96,18 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch startBatch(WorkListHeader header) {
-		Batch batch = new Batch();
-		batch.setWorkListHeader(header);
-		batch.setSourceSystemCode(header.getSourceSystemCode());
-		batch.setDirection(header.getDirection());
-		batch.setParamType(newInstance(ParamTypeEnum.PT));
-		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.P));
-		batch.setStartDate(LocalDateTime.now());
-		batch = batchService.create(batch);
-
-		header = workListHeaderService.findById(header.getId());
-		header.setPtBatch(batch);
-		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.P));
-		workListHeaderService.update(header);
-
-		return batch;
+		return batchHelper.startBatch(header, ParamTypeEnum.PT);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch endBatch(WorkListHeader header, Batch batch, Long recCount) {
-		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
-		batch.setEndDate(LocalDateTime.now());
-		batch.setRecCount(recCount);
-		batchService.update(batch);
-
-		header = workListHeaderService.findById(header.getId());
-		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.C));
-		workListHeaderService.update(header);
-		return batch;
+		return batchHelper.endBatch(header, batch, recCount);
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
-		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.E));
-		batch.setEndDate(LocalDateTime.now());
-		batch.setErrMsg(e.getMessage());
-		batchService.update(batch);
-
-		header = workListHeaderService.findById(header.getId());
-		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.E));
-		workListHeaderService.update(header);
-		return batch;
+		return batchHelper.errorBatch(header, batch, e);
 	}
-
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private void saveData(Batch batch, List<PeriodTimeValueRaw> list) {
@@ -148,7 +115,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		pcService.saveAll(list);
 	}
 
-	private List<MeteringPointCfg> buidPoints(List<WorkListLine> lines) {
+	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
 		List<LastLoadInfo> lastLoadInfoList = lastLoadInfoService.findAll();
 
 		List<MeteringPointCfg> points = new ArrayList<>();
@@ -161,29 +128,20 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 					.findFirst()
 					.orElse(null);
 
-				if (parameterConf!=null) {
-					MeteringPointCfg mpc = new MeteringPointCfg();
-					mpc.setSourceParamCode(parameterConf.getSourceParamCode());
-					mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
-					mpc.setInterval(parameterConf.getInterval());
-					mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
-					mpc.setParamCode(line.getParam().getCode());
+				LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
+					.filter(t -> t.getSourceMeteringPointCode().equals(line.getMeteringPoint().getExternalCode()) && t.getSourceParamCode().equals(parameterConf.getSourceParamCode()))
+					.findFirst()
+					.orElse(null);
 
-					LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-						.filter(t -> t.getSourceMeteringPointCode().equals(mpc.getSourceMeteringPointCode()) && t.getSourceParamCode().equals(mpc.getSourceParamCode()))
-						.findFirst()
-						.orElse(null);
-
-					mpc.setStartTime(buildStartTime(lastLoadInfo));
-					mpc.setEndTime(buildRequestedTime());
-					if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-						points.add(mpc);
-				}
+				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, buildStartTime(lastLoadInfo), buildRequestedDateTime());
+				if (mpc!=null)
+					points.add(mpc);
 			});
+
 		return points;
 	}
 
-	private LocalDateTime buildRequestedTime() {
+	private LocalDateTime buildRequestedDateTime() {
 		return LocalDateTime.now(ZoneId.of("UTC+1"))
 				.minusMinutes(15)
 				.truncatedTo(ChronoUnit.HOURS);
@@ -212,8 +170,8 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 	private WorkListHeaderService workListHeaderService;
 
 	@Inject
-	private BatchService batchService;
+	private MeteringValueService<PeriodTimeValueRaw> pcService;
 
 	@Inject
-	private MeteringValueService<PeriodTimeValueRaw> pcService;
+	private BatchHelper batchHelper;
 }
