@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of= {"id"})
 public class PeriodTimeValue implements MeteringValue {
 	private Long id;
-	private SourceSystem sourceSystemCode;
+	private SourceSystemEnum sourceSystemCode;
 	private String sourceMeteringPointCode;
 	private String sourceParamCode;
 	private String sourceUnitCode;
@@ -22,7 +22,7 @@ public class PeriodTimeValue implements MeteringValue {
 	private ReceivingMethod receivingMethod;
 	private InputMethod inputMethod;
 	private Integer interval;
-	private DataStatus status;
+	private ProcessingStatusEnum status;
 	private Double val;
 	private MeteringPoint meteringPoint;
 	private Meter meter;

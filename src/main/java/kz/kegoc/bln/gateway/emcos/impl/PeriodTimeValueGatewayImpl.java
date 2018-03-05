@@ -1,11 +1,13 @@
 package kz.kegoc.bln.gateway.emcos.impl;
 
-import kz.kegoc.bln.entity.common.DataStatus;
-import kz.kegoc.bln.entity.common.InputMethod;
-import kz.kegoc.bln.entity.common.ReceivingMethod;
-import kz.kegoc.bln.entity.common.SourceSystem;
+import kz.kegoc.bln.entity.common.ProcessingStatusEnum;
+import kz.kegoc.bln.entity.common.InputMethodEnum;
+import kz.kegoc.bln.entity.common.ReceivingMethodEnum;
+import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.ConnectionConfig;
+import kz.kegoc.bln.entity.data.InputMethod;
 import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
+import kz.kegoc.bln.entity.data.ReceivingMethod;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
@@ -219,10 +221,10 @@ public class PeriodTimeValueGatewayImpl implements PeriodTimeValueGateway {
         PeriodTimeValueRaw pc = new PeriodTimeValueRaw();
         pc.setSourceMeteringPointCode(externalCode);
         pc.setMeteringDate(time);
-        pc.setSourceSystemCode(SourceSystem.EMCOS);
-        pc.setStatus(DataStatus.TMP);
-        pc.setInputMethod(InputMethod.AUTO);
-        pc.setReceivingMethod(ReceivingMethod.SERVICE);
+        pc.setSourceSystemCode(SourceSystemEnum.EMCOS);
+        pc.setStatus(ProcessingStatusEnum.TMP);
+        pc.setInputMethod(InputMethod.newInstance(InputMethodEnum.AUTO));
+        pc.setReceivingMethod(ReceivingMethod.newInstance(ReceivingMethodEnum.SERVICE));
         pc.setSourceParamCode(sourceParamCode);
         pc.setVal(val);
         

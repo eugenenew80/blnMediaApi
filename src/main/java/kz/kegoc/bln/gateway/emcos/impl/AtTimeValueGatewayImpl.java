@@ -1,11 +1,13 @@
 package kz.kegoc.bln.gateway.emcos.impl;
 
-import kz.kegoc.bln.entity.common.DataStatus;
-import kz.kegoc.bln.entity.common.InputMethod;
-import kz.kegoc.bln.entity.common.ReceivingMethod;
-import kz.kegoc.bln.entity.common.SourceSystem;
+import kz.kegoc.bln.entity.common.ProcessingStatusEnum;
+import kz.kegoc.bln.entity.common.InputMethodEnum;
+import kz.kegoc.bln.entity.common.ReceivingMethodEnum;
+import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.AtTimeValueRaw;
 import kz.kegoc.bln.entity.data.ConnectionConfig;
+import kz.kegoc.bln.entity.data.InputMethod;
+import kz.kegoc.bln.entity.data.ReceivingMethod;
 import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
@@ -219,10 +221,10 @@ public class AtTimeValueGatewayImpl implements AtTimeValueGateway {
         AtTimeValueRaw mr = new AtTimeValueRaw();
         mr.setSourceMeteringPointCode(externalCode);
         mr.setMeteringDate(date.atStartOfDay());
-        mr.setSourceSystemCode(SourceSystem.EMCOS);
-        mr.setStatus(DataStatus.TMP);
-        mr.setInputMethod(InputMethod.AUTO);
-        mr.setReceivingMethod(ReceivingMethod.SERVICE);
+        mr.setSourceSystemCode(SourceSystemEnum.EMCOS);
+        mr.setStatus(ProcessingStatusEnum.TMP);
+        mr.setInputMethod(InputMethod.newInstance(InputMethodEnum.AUTO));
+        mr.setReceivingMethod(ReceivingMethod.newInstance(ReceivingMethodEnum.SERVICE));
         mr.setSourceParamCode(sourceParamCode);
         mr.setVal(val);
 

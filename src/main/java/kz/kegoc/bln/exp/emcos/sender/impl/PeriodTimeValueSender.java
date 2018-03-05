@@ -1,5 +1,9 @@
 package kz.kegoc.bln.exp.emcos.sender.impl;
 
+import kz.kegoc.bln.entity.common.BatchStatusEnum;
+import kz.kegoc.bln.entity.common.DirectionEnum;
+import kz.kegoc.bln.entity.common.ParamTypeEnum;
+import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.exp.emcos.sender.Sender;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
@@ -22,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static kz.kegoc.bln.entity.data.ParamType.newInstance;
+
 @Stateless
 public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
     private static final Logger logger = LoggerFactory.getLogger(PeriodTimeValueSender.class);
@@ -33,9 +39,9 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         Query query = em.createNamedQuery("ExportData.findExportData", ExportData.class);
         headerService.findAll().stream()
             .filter(h -> h.getActive()
-                && StringUtils.equals(h.getPtStatus(), "W")
-                && StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
-                && StringUtils.equals(h.getDirection(),"EXPORT")
+                && (BatchStatus.newInstance(BatchStatusEnum.W).equals(h.getPtStatus()))
+                && SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
+                && Direction.newInstance(DirectionEnum.EXPORT).equals(h.getDirection())
                 && h.getConfig()!=null
             )
             .forEach(header -> {
@@ -105,14 +111,14 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
         batch.setWorkListHeader(header);
         batch.setSourceSystemCode(header.getSourceSystemCode());
         batch.setDirection(header.getDirection());
-        batch.setParamType(new ParamType("PT"));
-        batch.setStatus("P");
+        batch.setParamType(newInstance(ParamTypeEnum.PT));
+        batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.P));
         batch.setStartDate(LocalDateTime.now());
         batch = batchService.create(batch);
 
         header = headerService.findById(header.getId());
         header.setPtBatch(batch);
-        header.setPtStatus("P");
+        header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.P));
         headerService.update(header);
         return batch;
     }
@@ -120,26 +126,26 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private Batch endBatch(WorkListHeader header, Batch batch, Long retCount) {
-        batch.setStatus("C");
+        batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
         batch.setEndDate(LocalDateTime.now());
         batch.setRecCount(retCount);
         batchService.update(batch);
 
         header = headerService.findById(header.getId());
-        header.setPtStatus("C");
+        header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.C));
         headerService.update(header);
         return batch;
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     private Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
-        batch.setStatus("E");
+        batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
         batch.setEndDate(LocalDateTime.now());
         batch.setErrMsg(e.getMessage());
         batchService.update(batch);
 
         header = headerService.findById(header.getId());
-        header.setPtStatus("E");
+        header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.E));
         headerService.update(header);
         return batch;
     }

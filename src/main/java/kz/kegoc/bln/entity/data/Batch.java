@@ -12,13 +12,13 @@ public class Batch implements HasId {
     private Long id;
     private WorkListHeader workListHeader;
     private UserTaskHeader userTaskHeader;
-    private String sourceSystemCode;
-    private String direction;
+    private SourceSystem sourceSystemCode;
+    private Direction direction;
     private ParamType paramType;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Long recCount;
-    private String status;
+    private BatchStatus status;
     private String errMsg;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;

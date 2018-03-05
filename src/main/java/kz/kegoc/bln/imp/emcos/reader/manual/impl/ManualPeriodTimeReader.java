@@ -1,5 +1,9 @@
 package kz.kegoc.bln.imp.emcos.reader.manual.impl;
 
+import kz.kegoc.bln.entity.common.BatchStatusEnum;
+import kz.kegoc.bln.entity.common.DirectionEnum;
+import kz.kegoc.bln.entity.common.ParamTypeEnum;
+import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueGateway;
@@ -19,6 +23,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static kz.kegoc.bln.entity.data.ParamType.newInstance;
+
 @Stateless
 public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(ManualPeriodTimeReader.class);
@@ -29,9 +35,9 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 
 		userTaskHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
-				&& StringUtils.equals(h.getPtStatus(), "W")
-				&& StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
-				&& StringUtils.equals(h.getDirection(),"IMPORT")
+				&& BatchStatus.newInstance(BatchStatusEnum.W).equals(h.getPtStatus())
+				&& SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
+				&& Direction.newInstance(DirectionEnum.IMPORT).equals(h.getDirection())
 				&& h.getConfig()!=null
 			)
 			.forEach(header -> {
@@ -82,14 +88,14 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 		batch.setUserTaskHeader(header);
 		batch.setSourceSystemCode(header.getSourceSystemCode());
 		batch.setDirection(header.getDirection());
-		batch.setParamType(new ParamType("PT"));
-		batch.setStatus("P");
+		batch.setParamType(newInstance(ParamTypeEnum.PT));
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.P));
 		batch.setStartDate(LocalDateTime.now());
 		batch = batchService.create(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
 		header.setPtBatch(batch);
-		header.setPtStatus("P");
+		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.P));
 		userTaskHeaderService.update(header);
 
 		return batch;
@@ -97,44 +103,44 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch endBatch(UserTaskHeader header, Batch batch, Long recCount) {
-		batch.setStatus("C");
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
 		batch.setEndDate(LocalDateTime.now());
 		batch.setRecCount(recCount);
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setPtStatus("C");
+		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.C));
 		userTaskHeaderService.update(header);
 		return batch;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch errorBatch(UserTaskHeader header, Batch batch, Exception e) {
-		batch.setStatus("E");
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.E));
 		batch.setEndDate(LocalDateTime.now());
 		batch.setErrMsg(e.getMessage());
 		batchService.update(batch);
 
 		header = userTaskHeaderService.findById(header.getId());
-		header.setPtStatus("E");
+		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.E));
 		userTaskHeaderService.update(header);
 		return batch;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private void saveData(Batch batch, List<PeriodTimeValueRaw> list) {
-		list.forEach(t -> t.setBatchId(batch.getId()));
+		list.forEach(t -> t.setBatch(batch));
 		pcService.saveAll(list);
 	}
 
 	private List<MeteringPointCfg> buildPoints(List<UserTaskLine> lines) {
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
-			.filter(line -> line.getParam().getParamType().equals("PT"))
+			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.PT)))
 			.forEach(line -> {
 				ParameterConf parameterConf = line.getParam().getConfs()
 					.stream()
-					.filter(c -> c.getSourceSystemCode().equals("EMCOS"))
+					.filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
 					.findFirst()
 					.orElse(null);
 

@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of= {"id"})
 public class PeriodTimeValueRaw implements MeteringValue {
 	private Long id;
-	private SourceSystem sourceSystemCode;
+	private SourceSystemEnum sourceSystemCode;
 	private String sourceMeteringPointCode;
 	private String sourceParamCode;
 	private String sourceUnitCode;
 	private LocalDateTime meteringDate;
 	private ReceivingMethod receivingMethod;
 	private InputMethod inputMethod;
-	private DataStatus status;
+	private ProcessingStatusEnum status;
 	private Integer interval;
 	private Double val;
-	private Long batchId;
+	private Batch batch;
 	private LocalDateTime createDate;
 	private LocalDateTime lastUpdateDate;
 }

@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of= {"id"})
 public class AtTimeValue implements MeteringValue {
 	private Long id;
-	private SourceSystem sourceSystemCode;
+	private SourceSystemEnum sourceSystemCode;
 	private String sourceMeteringPointCode;
 	private String sourceParamCode;
 	private String sourceUnitCode;
@@ -25,7 +25,7 @@ public class AtTimeValue implements MeteringValue {
 	private Double val;
 	private MeteringPoint meteringPoint;
 	private Meter meter;
-	private DataStatus status;
+	private ProcessingStatusEnum status;
 	private Long paramId;
 	private Unit unit;
 	private Batch batch;

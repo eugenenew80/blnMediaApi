@@ -5,18 +5,21 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
+import kz.kegoc.bln.entity.common.BatchStatusEnum;
+import kz.kegoc.bln.entity.common.DirectionEnum;
+import kz.kegoc.bln.entity.common.ParamTypeEnum;
+import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 import kz.kegoc.bln.service.data.*;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
+import static kz.kegoc.bln.entity.data.ParamType.newInstance;
 
 @Stateless
 public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
@@ -28,8 +31,8 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
-				&& StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
-				&& StringUtils.equals(h.getDirection(),"IMPORT")
+				&& SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
+				&& Direction.newInstance(DirectionEnum.IMPORT).equals(h.getDirection())
 				&& h.getConfig()!=null
 			)
 			.forEach(header -> {
@@ -96,47 +99,47 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		batch.setWorkListHeader(header);
 		batch.setSourceSystemCode(header.getSourceSystemCode());
 		batch.setDirection(header.getDirection());
-		batch.setParamType(new ParamType("AT"));
-		batch.setStatus("P");
+		batch.setParamType(newInstance(ParamTypeEnum.AT));
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.P));
 		batch.setStartDate(LocalDateTime.now());
 		batch = batchService.create(batch);
 
 		header = workListHeaderService.findById(header.getId());
 		header.setAtBatch(batch);
-		header.setAtStatus("P");
+		header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.P));
 		workListHeaderService.update(header);
 		return batch;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch endBatch(WorkListHeader header, Batch batch, Long retCount) {
-		batch.setStatus("C");
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
 		batch.setEndDate(LocalDateTime.now());
 		batch.setRecCount(retCount);
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setAtStatus("C");
+		header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.C));
 		workListHeaderService.update(header);
 		return batch;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
-		batch.setStatus("E");
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.E));
 		batch.setEndDate(LocalDateTime.now());
 		batch.setErrMsg(e.getMessage());
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setAtStatus("E");
+		header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.E));
 		workListHeaderService.update(header);
 		return batch;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private void saveData(Batch batch, List<AtTimeValueRaw> list) {
-		list.forEach(t -> t.setBatchId(batch.getId()));
+		list.forEach(t -> t.setBatch(batch));
 		mrService.saveAll(list);
 	}
 
@@ -158,11 +161,11 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 
 		List<MeteringPointCfg> points= new ArrayList<>();
 		lines.stream()
-			.filter(l -> l.getParam().getParamType().equals("AT"))
+			.filter(l -> l.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
 			.forEach(line -> {
 				ParameterConf parameterConf = line.getParam().getConfs()
 					.stream()
-					.filter(c -> c.getSourceSystemCode().equals("EMCOS"))
+					.filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
 					.findFirst()
 					.orElse(null);
 

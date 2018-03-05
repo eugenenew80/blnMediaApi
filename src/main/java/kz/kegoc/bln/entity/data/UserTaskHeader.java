@@ -15,10 +15,10 @@ import java.util.List;
 public class UserTaskHeader implements HasId {
     private Long id;
     private String name;
-    private String sourceSystemCode;
-    private String direction;
-    private String atStatus;
-    private String ptStatus;
+    private SourceSystem sourceSystemCode;
+    private Direction direction;
+    private BatchStatus atStatus;
+    private BatchStatus ptStatus;
     private ConnectionConfig config;
     private Boolean active;
     private Batch atBatch;

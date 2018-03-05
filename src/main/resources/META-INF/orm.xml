@@ -157,16 +157,6 @@
 				<column name="val" />
 			</basic>
 
-			<basic name="receivingMethod">
-				<column name="receiving_method" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="inputMethod">
-				<column name="input_method" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
 			<basic name="interval">
 				<column name="interval" />
 			</basic>
@@ -176,10 +166,6 @@
 				<enumerated>STRING</enumerated>
 			</basic>
 
-			<basic name="batchId">
-				<column name="batch_id" />
-			</basic>
-
 			<basic name="createDate">
 				<column name="create_date" />
 			</basic>
@@ -187,6 +173,18 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="inputMethod">
+				<join-column name="input_method" />
+			</many-to-one>
+
+			<many-to-one name="receivingMethod">
+				<join-column name="receiving_method" />
+			</many-to-one>
+
+			<many-to-one name="batch">
+				<join-column name="batch_id"/>
+			</many-to-one>
 		</attributes>
 	</entity>
 
@@ -228,23 +226,9 @@
 				<column name="val" />
 			</basic>
 
-			<basic name="receivingMethod">
-				<column name="receiving_method" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="inputMethod">
-				<column name="input_method" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
 			<basic name="status">
 				<column name="status" />
 				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="batchId">
-				<column name="batch_id" />
 			</basic>
 
 			<basic name="createDate">
@@ -254,6 +238,14 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="inputMethod">
+				<join-column name="input_method" />
+			</many-to-one>
+
+			<many-to-one name="receivingMethod">
+				<join-column name="receiving_method" />
+			</many-to-one>
 
 			<many-to-one name="batch">
 				<join-column name="batch_id"/>
@@ -300,16 +292,6 @@
 				<column name="val" />
 			</basic>
 
-			<basic name="receivingMethod">
-				<column name="receiving_method" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="inputMethod">
-				<column name="input_method" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
 			<basic name="interval">
 				<column name="interval" />
 			</basic>
@@ -330,6 +312,14 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="inputMethod">
+				<join-column name="input_method" />
+			</many-to-one>
+
+			<many-to-one name="receivingMethod">
+				<join-column name="receiving_method" />
+			</many-to-one>
 
 			<many-to-one name="unit">
 				<join-column name="unit_id"/>
@@ -400,16 +390,6 @@
 				<column name="val" />
 			</basic>
 
-			<basic name="receivingMethod">
-				<column name="receiving_method" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="inputMethod">
-				<column name="input_method" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
 			<basic name="status">
 				<column name="status" />
 				<enumerated>STRING</enumerated>
@@ -422,6 +402,14 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="inputMethod">
+				<join-column name="input_method" />
+			</many-to-one>
+
+			<many-to-one name="receivingMethod">
+				<join-column name="receiving_method" />
+			</many-to-one>
 
 			<many-to-one name="unit">
 				<join-column name="unit_id"/>
@@ -547,10 +535,6 @@
 				/>
 			</id>
 
-			<basic name="sourceSystemCode">
-				<column name="source_system_code" />
-			</basic>
-
 			<basic name="sourceParamCode">
 				<column name="source_param_code" />
 			</basic>
@@ -570,6 +554,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="sourceSystemCode">
+				<join-column name="source_system_code" />
+			</many-to-one>
 
 			<many-to-one name="param">
 				<join-column name="param_id"/>
@@ -606,10 +594,6 @@
 				<column name="name" />
 			</basic>
 
-			<basic name="sourceSystemCode">
-				<column name="source_system_code" />
-			</basic>
-
 			<basic name="protocol">
 				<column name="protocol" />
 			</basic>
@@ -633,6 +617,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="sourceSystemCode">
+				<join-column name="source_system_code" />
+			</many-to-one>
 
 			<many-to-one name="createBy">
 				<join-column name="create_by" />
@@ -661,24 +649,8 @@
 				<column name="name" />
 			</basic>
 
-			<basic name="sourceSystemCode">
-				<column name="source_system_code" />
-			</basic>
-
-			<basic name="direction">
-				<column name="direction" />
-			</basic>
-
 			<basic name="active">
 				<column name="is_active" />
-			</basic>
-
-			<basic name="atStatus">
-				<column name="at_status" />
-			</basic>
-
-			<basic name="ptStatus">
-				<column name="pt_status" />
 			</basic>
 
 			<basic name="startDate">
@@ -696,6 +668,22 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="direction">
+				<join-column name="direction" />
+			</many-to-one>
+
+			<many-to-one name="sourceSystemCode">
+				<join-column name="source_system_code" />
+			</many-to-one>
+
+			<many-to-one name="atStatus">
+				<join-column name="at_status" />
+			</many-to-one>
+
+			<many-to-one name="ptStatus">
+				<join-column name="pt_status" />
+			</many-to-one>
 
 			<many-to-one name="atBatch">
 				<join-column name="at_batch_id"/>
@@ -733,18 +721,6 @@
 						allocation-size="1"
 				/>
 			</id>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-
-			<basic name="sourceSystemCode">
-				<column name="source_system_code" />
-			</basic>
-
-			<basic name="direction">
-				<column name="direction" />
-			</basic>
 
 			<basic name="createDate">
 				<column name="create_date" />
@@ -790,14 +766,6 @@
 				/>
 			</id>
 
-			<basic name="sourceSystemCode">
-				<column name="source_system_code" />
-			</basic>
-
-			<basic name="direction">
-				<column name="direction" />
-			</basic>
-
 			<basic name="startDate">
 				<column name="start_date" />
 			</basic>
@@ -808,10 +776,6 @@
 
 			<basic name="recCount">
 				<column name="rec_count" />
-			</basic>
-
-			<basic name="status">
-				<column name="status" />
 			</basic>
 
 			<basic name="errMsg">
@@ -825,6 +789,18 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="direction">
+				<join-column name="direction" />
+			</many-to-one>
+
+			<many-to-one name="sourceSystemCode">
+				<join-column name="source_system_code" />
+			</many-to-one>
+
+			<many-to-one name="status">
+				<join-column name="status" />
+			</many-to-one>
 
 			<many-to-one name="paramType">
 				<join-column name="param_type" />
@@ -862,22 +838,6 @@
 				/>
 			</id>
 
-			<basic name="sourceSystemCode">
-				<column name="source_system_code" />
-			</basic>
-
-			<basic name="direction">
-				<column name="direction" />
-			</basic>
-
-			<basic name="atStatus">
-				<column name="at_status" />
-			</basic>
-
-			<basic name="ptStatus">
-				<column name="pt_status" />
-			</basic>
-
 			<basic name="active">
 				<column name="is_active" />
 				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
@@ -890,6 +850,22 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="direction">
+				<join-column name="direction" />
+			</many-to-one>
+
+			<many-to-one name="sourceSystemCode">
+				<join-column name="source_system_code" />
+			</many-to-one>
+
+			<many-to-one name="atStatus">
+				<join-column name="at_status" />
+			</many-to-one>
+
+			<many-to-one name="ptStatus">
+				<join-column name="pt_status" />
+			</many-to-one>
 
 			<many-to-one name="atBatch">
 				<join-column name="at_batch_id"/>
@@ -968,6 +944,60 @@
 
 	<entity class="kz.kegoc.bln.entity.data.ParamType">
 		<table name="media_param_types" schema="apps"/>
+		<attributes>
+			<id name="code">
+				<column name="code" />
+			</id>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.BatchStatus">
+		<table name="media_batch_statuses" schema="apps"/>
+		<attributes>
+			<id name="code">
+				<column name="code" />
+			</id>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.ReceivingMethod">
+		<table name="media_receiving_method" schema="apps"/>
+		<attributes>
+			<id name="code">
+				<column name="code" />
+			</id>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.SourceSystem">
+		<table name="dict_data_sources" schema="apps"/>
+		<attributes>
+			<id name="code">
+				<column name="code" />
+			</id>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.Direction">
+		<table name="media_directions" schema="apps"/>
+		<attributes>
+			<id name="code">
+				<column name="code" />
+			</id>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.InputMethod">
+		<table name="media_input_methods" schema="apps"/>
+		<attributes>
+			<id name="code">
+				<column name="code" />
+			</id>
+		</attributes>
+	</entity>
+
+	<entity class="kz.kegoc.bln.entity.data.ProcessingStatus">
+		<table name="media_processing_statuses" schema="apps"/>
 		<attributes>
 			<id name="code">
 				<column name="code" />

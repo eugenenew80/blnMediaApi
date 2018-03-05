@@ -5,6 +5,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
+
+import kz.kegoc.bln.entity.common.BatchStatusEnum;
+import kz.kegoc.bln.entity.common.DirectionEnum;
+import kz.kegoc.bln.entity.common.ParamTypeEnum;
+import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.*;
 import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
@@ -17,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
+import static kz.kegoc.bln.entity.data.ParamType.newInstance;
 
 @Stateless
 public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw> {
@@ -28,8 +34,8 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
-				&& StringUtils.equals(h.getSourceSystemCode(), "EMCOS")
-				&& StringUtils.equals(h.getDirection(),"IMPORT")
+				&& SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
+				&& Direction.newInstance(DirectionEnum.IMPORT).equals(h.getDirection())
 				&& h.getConfig()!=null
 			)
 			.forEach(header -> {
@@ -96,14 +102,14 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		batch.setWorkListHeader(header);
 		batch.setSourceSystemCode(header.getSourceSystemCode());
 		batch.setDirection(header.getDirection());
-		batch.setParamType(new ParamType("PT"));
-		batch.setStatus("P");
+		batch.setParamType(newInstance(ParamTypeEnum.PT));
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.P));
 		batch.setStartDate(LocalDateTime.now());
 		batch = batchService.create(batch);
 
 		header = workListHeaderService.findById(header.getId());
 		header.setPtBatch(batch);
-		header.setPtStatus("P");
+		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.P));
 		workListHeaderService.update(header);
 
 		return batch;
@@ -111,26 +117,26 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch endBatch(WorkListHeader header, Batch batch, Long recCount) {
-		batch.setStatus("C");
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
 		batch.setEndDate(LocalDateTime.now());
 		batch.setRecCount(recCount);
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setPtStatus("C");
+		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.C));
 		workListHeaderService.update(header);
 		return batch;
 	}
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
-		batch.setStatus("E");
+		batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.E));
 		batch.setEndDate(LocalDateTime.now());
 		batch.setErrMsg(e.getMessage());
 		batchService.update(batch);
 
 		header = workListHeaderService.findById(header.getId());
-		header.setPtStatus("E");
+		header.setPtStatus(BatchStatus.newInstance(BatchStatusEnum.E));
 		workListHeaderService.update(header);
 		return batch;
 	}
@@ -138,7 +144,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	private void saveData(Batch batch, List<PeriodTimeValueRaw> list) {
-		list.forEach(t -> t.setBatchId(batch.getId()));
+		list.forEach(t -> t.setBatch(batch));
 		pcService.saveAll(list);
 	}
 
@@ -147,11 +153,11 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
-			.filter(line -> line.getParam().getParamType().equals("PT"))
+			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.PT)))
 			.forEach(line -> {
 				ParameterConf parameterConf = line.getParam().getConfs()
 					.stream()
-					.filter(c -> c.getSourceSystemCode().equals("EMCOS"))
+					.filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
 					.findFirst()
 					.orElse(null);
 

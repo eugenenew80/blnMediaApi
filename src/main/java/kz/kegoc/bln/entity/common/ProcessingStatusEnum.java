@@ -1,6 +1,6 @@
 package kz.kegoc.bln.entity.common;
 
-public enum DataStatus {
+public enum ProcessingStatusEnum {
 	TMP,
 	RAW,
 	OK,

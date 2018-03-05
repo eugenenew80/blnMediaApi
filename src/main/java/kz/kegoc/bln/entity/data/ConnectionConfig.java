@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ConnectionConfig implements HasId {
     private Long id;
     private String name;
-    private String sourceSystemCode;
+    private SourceSystem sourceSystemCode;
     private String protocol;
     private String url;
     private String userName;

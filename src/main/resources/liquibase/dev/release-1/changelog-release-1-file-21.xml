@@ -396,14 +396,6 @@
     </changeSet>
 
     <changeSet id="media-rus-54" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating unique constraint: media_batches</comment>
-        <addUniqueConstraint columnNames="status"
-                             constraintName="uq_media_batches_1"
-                             schemaName="apps"
-                             tableName="media_batches"/>
-    </changeSet>
-
-    <changeSet id="media-rus-54-1" logicalFilePath="path-independent" author="ruslan" context="dev">
         <comment>Creating foreign constraint: media_work_list_headers to media_batches</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
@@ -415,8 +407,8 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_batches"
-                referencedColumnNames="status"
+                referencedTableName="media_batch_statuses"
+                referencedColumnNames="code"
         />
     </changeSet>
 
@@ -426,14 +418,14 @@
                 baseTableSchemaName="apps"
                 baseTableName="media_work_list_headers"
                 baseColumnNames="at_status"
-                constraintName="fk_media_work_list_headers_10"
+                constraintName="fk_media_work_list_headers_4"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_batches"
-                referencedColumnNames="status"
+                referencedTableName="media_batch_statuses"
+                referencedColumnNames="code"
         />
     </changeSet>
 
@@ -450,8 +442,8 @@
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_batches"
-                referencedColumnNames="status"
+                referencedTableName="media_batch_statuses"
+                referencedColumnNames="code"
         />
     </changeSet>
 
@@ -462,14 +454,14 @@
                 baseTableSchemaName="apps"
                 baseTableName="media_user_task_headers"
                 baseColumnNames="at_status"
-                constraintName="fk_media_user_task_headers_10"
+                constraintName="fk_media_user_task_headers_3"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="RESTRICT"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_batches"
-                referencedColumnNames="status"
+                referencedTableName="media_batch_statuses"
+                referencedColumnNames="code"
         />
     </changeSet>
 
@@ -480,7 +472,7 @@
                 baseTableSchemaName="apps"
                 baseTableName="media_user_task_headers"
                 baseColumnNames="direction"
-                constraintName="fk_media_user_task_headers_5"
+                constraintName="fk_media_user_task_headers_4"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="RESTRICT"
@@ -571,7 +563,7 @@
                 baseTableSchemaName="apps"
                 baseTableName="media_user_task_headers"
                 baseColumnNames="config_id"
-                constraintName="fk_media_user_task_headers_6"
+                constraintName="fk_media_user_task_headers_5"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="RESTRICT"

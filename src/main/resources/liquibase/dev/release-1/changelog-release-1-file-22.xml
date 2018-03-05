@@ -58,7 +58,7 @@
     <changeSet id="media-rus-78" logicalFilePath="path-independent" author="ruslan" context="dev">
         <insert schemaName="apps"
                 tableName="media_batch_statuses">
-            <column name="code" type="varchar" value="С"/>
+            <column name="code" type="varchar" value="C"/>
             <column name="name" type="varchar" value="завершен"/>
         </insert>
         <rollback/>

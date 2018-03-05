@@ -1,10 +1,10 @@
 package kz.kegoc.bln.entity.common;
 
-public enum ReceivingMethod {
+public enum ReceivingMethodEnum {
 	NOT_SET,
 	SERVICE,
-	AUTO,
 	PHONE,
 	EMAIL,
-	FORMULA
+	FORMULA,
+	OTHER
 }

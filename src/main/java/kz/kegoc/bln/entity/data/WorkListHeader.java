@@ -15,12 +15,12 @@ import java.util.List;
 public class WorkListHeader implements HasId {
     private Long id;
     private String name;
-    private String sourceSystemCode;
-    private String direction;
+    private SourceSystem sourceSystemCode;
+    private Direction direction;
     private ConnectionConfig config;
     private Boolean active;
-    private String atStatus;
-    private String ptStatus;
+    private BatchStatus atStatus;
+    private BatchStatus ptStatus;
     private List<WorkListLine> lines;
     private Batch atBatch;
     private Batch ptBatch;

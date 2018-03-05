@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of= {"id"})
 public class ParameterConf implements HasId {
     private Long id;
-    private String sourceSystemCode;
+    private SourceSystem sourceSystemCode;
     private String sourceParamCode;
     private String sourceUnitCode;
     private Unit sourceUnit;

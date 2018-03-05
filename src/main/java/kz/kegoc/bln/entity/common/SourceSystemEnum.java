@@ -1,6 +1,6 @@
 package kz.kegoc.bln.entity.common;
 
-public enum SourceSystem {
+public enum SourceSystemEnum {
 	NOT_SET,
 	BIS,
 	EMCOS,
