@@ -6,143 +6,95 @@ import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.service.data.BatchService;
+import kz.kegoc.bln.service.data.MeteringValueService;
 import kz.kegoc.bln.service.data.UserTaskHeaderService;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
-import javax.ejb.Singleton;
+import javax.ejb.*;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
-
-import static kz.kegoc.bln.entity.data.ParamType.newInstance;
+import java.util.List;
+import static javax.ejb.LockType.WRITE;
 
 @Singleton
+@Lock(WRITE)
+@AccessTimeout(value=60000)
 public class BatchHelper {
 
-    public Batch startBatch(WorkListHeader header, ParamTypeEnum paramTypeEnum) {
-        Batch batch = new Batch();
-        batch.setWorkListHeader(header);
-        batch.setSourceSystemCode(header.getSourceSystemCode());
-        batch.setDirection(header.getDirection());
-        batch.setParamType(newInstance(paramTypeEnum));
-        batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.P));
-        batch.setStartDate(LocalDateTime.now());
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Batch createBatch(Batch batch) {
         batch = batchService.create(batch);
-
-        header = workListHeaderService.findById(header.getId());
-        header.setAtBatch(batch);
-        header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.P));
-        workListHeaderService.update(header);
-        return batch;
-    }
-
-    public Batch startBatch(UserTaskHeader header, ParamTypeEnum paramTypeEnum) {
-        Batch batch = new Batch();
-        batch.setUserTaskHeader(header);
-        batch.setSourceSystemCode(header.getSourceSystemCode());
-        batch.setDirection(header.getDirection());
-        batch.setParamType(newInstance(paramTypeEnum));
-        batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.P));
-        batch.setStartDate(LocalDateTime.now());
-        batch = batchService.create(batch);
-
-        header = userTaskHeaderService.findById(header.getId());
-        header.setAtBatch(batch);
-        header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.P));
-        userTaskHeaderService.update(header);
+        updateHeader(batch, batch.getWorkListHeader());
+        updateHeader(batch, batch.getUserTaskHeader());
         return batch;
     }
 
 
-    public Batch endBatch(WorkListHeader header, Batch batch, Long recCount) {
-        batch = setBatchToSuccess(batch, recCount);
-        setHeaderToSuccess(batch, header);
-        return batch;
-    }
-
-    public Batch endBatch(UserTaskHeader header, Batch batch, Long recCount) {
-        batch = setBatchToSuccess(batch, recCount);
-        setHeaderToSuccess(batch, header);
-        return batch;
-    }
-
-
-    public Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
-        batch = setBatchToError(batch, e);
-        setHeaderToError(batch, header);
-        return batch;
-    }
-
-    public Batch errorBatch(UserTaskHeader header, Batch batch, Exception e) {
-        batch = setBatchToError(batch, e);
-        setHeaderToError(batch, header);
-        return batch;
-    }
-
-    private Batch setBatchToError(Batch batch, Exception e) {
-        batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.E));
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Batch updateBatch(Batch batch, Exception e, Long recCount) {
         batch.setEndDate(LocalDateTime.now());
-        batch.setErrMsg(e.getMessage());
-        batchService.update(batch);
-        return batch;
-    }
-
-    private Batch setBatchToSuccess(Batch batch, Long recCount) {
-        batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
-        batch.setEndDate(LocalDateTime.now());
-        batch.setRecCount(recCount);
-        batchService.update(batch);
-        return batch;
-    }
-
-    private WorkListHeader setHeaderToError(Batch batch, WorkListHeader header) {
-        header = workListHeaderService.findById(header.getId());
-        header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.E));
-        workListHeaderService.update(header);
-        return header;
-    }
-
-    private UserTaskHeader setHeaderToError(Batch batch, UserTaskHeader header) {
-        header = userTaskHeaderService.findById(header.getId());
-        header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.E));
-        userTaskHeaderService.update(header);
-        return header;
-    }
-
-    private WorkListHeader setHeaderToSuccess(Batch batch, WorkListHeader header) {
-        header = workListHeaderService.findById(header.getId());
-        header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.C));
-        workListHeaderService.update(header);
-        return header;
-    }
-
-    private UserTaskHeader setHeaderToSuccess(Batch batch, UserTaskHeader header) {
-        header = userTaskHeaderService.findById(header.getId());
-        header.setAtStatus(BatchStatus.newInstance(BatchStatusEnum.C));
-        userTaskHeaderService.update(header);
-        return header;
-    }
-
-
-    public MeteringPointCfg buildPointCfg(UserTaskLine line) {
-        ParameterConf parameterConf = line.getParam().getConfs()
-            .stream()
-            .filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
-            .findFirst()
-            .orElse(null);
-
-        if (parameterConf!=null) {
-            MeteringPointCfg mpc = new MeteringPointCfg();
-            mpc.setSourceParamCode(parameterConf.getSourceParamCode());
-            mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
-            mpc.setInterval(parameterConf.getInterval());
-            mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
-            mpc.setParamCode(line.getParam().getCode());
-            mpc.setStartTime(line.getStartMeteringDate());
-            mpc.setEndTime(line.getEndMeteringDate());
-            if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-                return mpc;
+        if (e!=null) {
+            batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.E));
+            batch.setErrMsg(e.getMessage());
+        }
+        else {
+            batch.setStatus(BatchStatus.newInstance(BatchStatusEnum.C));
+            batch.setRecCount(recCount);
         }
 
-        return null;
+        batch = batchService.update(batch);
+        updateHeader(batch, batch.getWorkListHeader());
+        updateHeader(batch, batch.getUserTaskHeader());
+        return batch;
+    }
+
+
+    private WorkListHeader updateHeader(Batch batch, WorkListHeader header) {
+        if (header==null) return null;
+
+        header = workListHeaderService.findById(header.getId());
+        if (ParamType.newInstance(ParamTypeEnum.AT).equals(batch.getParamType())) {
+            header.setAtBatch(batch);
+            header.setAtStatus(batch.getStatus());
+        }
+
+        if (ParamType.newInstance(ParamTypeEnum.PT).equals(batch.getParamType())) {
+            header.setPtBatch(batch);
+            header.setPtStatus(batch.getStatus());
+        }
+
+        workListHeaderService.update(header);
+        return header;
+    }
+
+    private UserTaskHeader updateHeader(Batch batch, UserTaskHeader header) {
+        if (header==null) return null;
+
+        header = userTaskHeaderService.findById(header.getId());
+        if (ParamType.newInstance(ParamTypeEnum.AT).equals(batch.getParamType())) {
+            header.setAtBatch(batch);
+            header.setAtStatus(batch.getStatus());
+        }
+
+        if (ParamType.newInstance(ParamTypeEnum.PT).equals(batch.getParamType())) {
+            header.setPtBatch(batch);
+            header.setPtStatus(batch.getStatus());
+        }
+
+        userTaskHeaderService.update(header);
+        return header;
+    }
+
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void saveAtData(Batch batch, List<AtTimeValueRaw> list) {
+        list.forEach(t -> t.setBatch(batch));
+        mrService.saveAll(list);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void savePtData(Batch batch, List<PeriodTimeValueRaw> list) {
+        list.forEach(t -> t.setBatch(batch));
+        pcService.saveAll(list);
     }
 
     public MeteringPointCfg buildPointCfg(WorkListLine line, LocalDateTime startDateTime, LocalDateTime endDateTime) {
@@ -177,4 +129,10 @@ public class BatchHelper {
 
     @Inject
     private BatchService batchService;
+
+    @Inject
+    private MeteringValueService<AtTimeValueRaw> mrService;
+
+    @Inject
+    private MeteringValueService<PeriodTimeValueRaw> pcService;
 }

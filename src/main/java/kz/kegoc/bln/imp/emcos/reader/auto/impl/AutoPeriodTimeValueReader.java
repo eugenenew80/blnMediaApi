@@ -52,7 +52,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 					return;
 				}
 
-				Batch batch = startBatch(header);
+				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.PT));
 
 				final List<List<MeteringPointCfg>> groupsPoints = range(0, points.size())
 					.boxed()
@@ -71,49 +71,28 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 						List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
 						logger.info("group of points num: " + (i + 1));
 
-						List<PeriodTimeValueRaw> pcList = powerConsumptionGateway
+						List<PeriodTimeValueRaw> ptList = ptGateway
 							.config(header.getConfig())
 							.points(groupPoints)
 							.request();
 
-						saveData(batch, pcList);
-						recCount = recCount + pcList.size();
+						batchHelper.savePtData(batch, ptList);
+						recCount = recCount + ptList.size();
 					}
 
 					lastLoadInfoService.pcUpdateLastDate(batch.getId());
 					lastLoadInfoService.pcLoad(batch.getId());
-					endBatch(header, batch, recCount);
+					batchHelper.updateBatch(batch, null, recCount);
 				}
 				catch (Exception e) {
 					logger.error("AutoPeriodTimeValueReader.read failed: " + e.getMessage());
-					errorBatch(header, batch, e);
+					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
 		logger.info("AutoPeriodTimeValueReader.read completed");
 	}
 
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch startBatch(WorkListHeader header) {
-		return batchHelper.startBatch(header, ParamTypeEnum.PT);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch endBatch(WorkListHeader header, Batch batch, Long recCount) {
-		return batchHelper.endBatch(header, batch, recCount);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
-		return batchHelper.errorBatch(header, batch, e);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private void saveData(Batch batch, List<PeriodTimeValueRaw> list) {
-		list.forEach(t -> t.setBatch(batch));
-		pcService.saveAll(list);
-	}
 
 	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
 		List<LastLoadInfo> lastLoadInfoList = lastLoadInfoService.findAll();
@@ -164,13 +143,10 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private PeriodTimeValueGateway powerConsumptionGateway;
+	private PeriodTimeValueGateway ptGateway;
 
 	@Inject
 	private WorkListHeaderService workListHeaderService;
-
-	@Inject
-	private MeteringValueService<PeriodTimeValueRaw> pcService;
 
 	@Inject
 	private BatchHelper batchHelper;

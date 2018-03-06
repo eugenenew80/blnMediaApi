@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
-import kz.kegoc.bln.entity.common.BatchStatusEnum;
+
 import kz.kegoc.bln.entity.common.DirectionEnum;
 import kz.kegoc.bln.entity.common.ParamTypeEnum;
 import kz.kegoc.bln.entity.common.SourceSystemEnum;
@@ -52,7 +52,7 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 					return;
 				}
 
-				Batch batch = startBatch(header);
+				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.AT));
 
 				final List<List<MeteringPointCfg>> groupsPoints = range(0, points.size())
 					.boxed()
@@ -71,49 +71,28 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 						List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
 						logger.info("group of points num: " + (i + 1));
 
-						List<AtTimeValueRaw> mrList = meteringReadingGateway
+						List<AtTimeValueRaw> atList = atGateway
 							.config(header.getConfig())
 							.points(groupPoints)
 							.request();
 
-						saveData(batch, mrList);
-						recCount = recCount + mrList.size();
+						batchHelper.saveAtData(batch, atList);
+						recCount = recCount + atList.size();
 					}
 
 					lastLoadInfoService.mrUpdateLastDate(batch.getId());
 					lastLoadInfoService.mrLoad(batch.getId());
-					endBatch(header, batch, recCount);
+					batchHelper.updateBatch(batch, null, recCount);
 				}
 				catch (Exception e) {
 					logger.error("AutoAtTimeValueReader.read failed: " + e.getMessage());
-					errorBatch(header, batch, e);
+					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
 		logger.info("AutoAtTimeValueReader.read completed");
     }
 
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    private Batch startBatch(WorkListHeader header) {
-		return batchHelper.startBatch(header, ParamTypeEnum.AT);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch endBatch(WorkListHeader header, Batch batch, Long retCount) {
-		return batchHelper.endBatch(header, batch, retCount);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch errorBatch(WorkListHeader header, Batch batch, Exception e) {
-		return batchHelper.errorBatch(header, batch, e);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private void saveData(Batch batch, List<AtTimeValueRaw> list) {
-		list.forEach(t -> t.setBatch(batch));
-		mrService.saveAll(list);
-	}
 
 	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
 		List<LastLoadInfo> lastLoadInfoList = lastLoadInfoService.findAll();
@@ -159,13 +138,10 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private AtTimeValueGateway meteringReadingGateway;
+	private AtTimeValueGateway atGateway;
 
 	@Inject
 	private WorkListHeaderService workListHeaderService;
-
-	@Inject
-	private MeteringValueService<AtTimeValueRaw> mrService;
 
 	@Inject
 	private BatchHelper batchHelper;

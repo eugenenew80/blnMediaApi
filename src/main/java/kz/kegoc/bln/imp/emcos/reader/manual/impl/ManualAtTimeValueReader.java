@@ -11,7 +11,6 @@ import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
 import kz.kegoc.bln.imp.emcos.reader.manual.ManualReader;
 import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
-import kz.kegoc.bln.service.data.MeteringValueService;
 import kz.kegoc.bln.service.data.UserTaskHeaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-
 import static kz.kegoc.bln.entity.data.ParamType.newInstance;
 
 @Stateless
@@ -56,58 +54,38 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 					return;
 				}
 
-				Batch batch = startBatch(header);
+				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.AT));
 
 				Long recCount = 0l;
 				try {
-					List<AtTimeValueRaw> pcList = mrGateway
+					List<AtTimeValueRaw> atList = atGateway
 						.config(header.getConfig())
 						.points(points)
 						.request();
 
-					saveData(batch, pcList);
-					recCount = recCount + pcList.size();
+					batchHelper.saveAtData(batch, atList);
+					recCount = recCount + atList.size();
 
 					lastLoadInfoService.mrUpdateLastDate(batch.getId());
 					lastLoadInfoService.mrLoad(batch.getId());
-					endBatch(header, batch, recCount);
+					batchHelper.updateBatch(batch, null, recCount);
 				}
 				catch (Exception e) {
 					logger.error("ManualAtTimeValueReader.read failed: " + e.getMessage());
-					errorBatch(header, batch, e);
+					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
 		logger.debug("ManualAtTimeValueReader.read completed");
 	}
 
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch startBatch(UserTaskHeader header) {
-		return batchHelper.startBatch(header, ParamTypeEnum.AT);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch endBatch(UserTaskHeader header, Batch batch, Long recCount) {
-		return batchHelper.endBatch(header, batch, recCount);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private Batch errorBatch(UserTaskHeader header, Batch batch, Exception e) {
-		return batchHelper.errorBatch(header, batch, e);
-	}
-
-	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-	private void saveData(Batch batch, List<AtTimeValueRaw> list) {
-		list.forEach(t -> t.setBatch(batch));
-		mrService.saveAll(list);
-	}
 
 	private List<MeteringPointCfg> buildPoints(List<UserTaskLine> lines) {
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
 			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
 			.forEach(line -> {
-				MeteringPointCfg mpc = batchHelper.buildPointCfg(line);
+				MeteringPointCfg mpc = buildPointCfg(line);
 				if (mpc!=null)
 					points.add(mpc);
 			});
@@ -116,17 +94,38 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 	}
 
 
+	private MeteringPointCfg buildPointCfg(UserTaskLine line) {
+		ParameterConf parameterConf = line.getParam().getConfs()
+			.stream()
+			.filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
+			.findFirst()
+			.orElse(null);
+
+		if (parameterConf!=null) {
+			MeteringPointCfg mpc = new MeteringPointCfg();
+			mpc.setSourceParamCode(parameterConf.getSourceParamCode());
+			mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
+			mpc.setInterval(parameterConf.getInterval());
+			mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
+			mpc.setParamCode(line.getParam().getCode());
+			mpc.setStartTime(line.getStartMeteringDate());
+			mpc.setEndTime(line.getEndMeteringDate());
+			if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
+				return mpc;
+		}
+
+		return null;
+	}
+
+
 	@Inject
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private AtTimeValueGateway mrGateway;
+	private AtTimeValueGateway atGateway;
 
 	@Inject
 	private BatchService batchService;
-
-	@Inject
-	private MeteringValueService<AtTimeValueRaw> mrService;
 
 	@Inject
 	private UserTaskHeaderService userTaskHeaderService;
