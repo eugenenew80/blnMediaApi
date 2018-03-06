@@ -101,46 +101,18 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 		lines.stream()
 			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.PT)))
 			.forEach(line -> {
-				ParameterConf parameterConf = line.getParam().getConfs()
-					.stream()
-					.filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
-					.findFirst()
-					.orElse(null);
-
-				LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
-					.filter(t -> t.getSourceMeteringPointCode().equals(line.getMeteringPoint().getExternalCode()) && t.getSourceParamCode().equals(parameterConf.getSourceParamCode()))
-					.findFirst()
-					.orElse(null);
-
-				MeteringPointCfg mpc = buildPointCfg(line, parameterConf, lastLoadInfo);
-				if (mpc!=null)
+				LastLoadInfo lastLoadInfo = batchHelper.getLastLoadIfo(lastLoadInfoList, line);
+				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, buildStartTime(lastLoadInfo), buildRequestedDateTime());
+				if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
 					points.add(mpc);
 			});
 
 		return points;
 	}
 
-	private MeteringPointCfg buildPointCfg(WorkListLine line, ParameterConf parameterConf, LastLoadInfo lastLoadInfo) {
-		if (parameterConf!=null) {
-			MeteringPointCfg mpc = new MeteringPointCfg();
-			mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
-			mpc.setSourceParamCode(parameterConf.getSourceParamCode());
-			mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
-			mpc.setInterval(parameterConf.getInterval());
-			mpc.setParamCode(line.getParam().getCode());
-			mpc.setStartTime(buildStartTime(lastLoadInfo));
-			mpc.setEndTime(buildRequestedDateTime());
-			if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-				return mpc;
-		}
-
-		return null;
-	}
 
 	private LocalDateTime buildRequestedDateTime() {
-		return LocalDateTime.now(ZoneId.of("UTC+1"))
-				.minusMinutes(15)
-				.truncatedTo(ChronoUnit.HOURS);
+		return LocalDateTime.now(ZoneId.of("UTC+1")).minusMinutes(15).truncatedTo(ChronoUnit.HOURS);
 	}
 
 	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {

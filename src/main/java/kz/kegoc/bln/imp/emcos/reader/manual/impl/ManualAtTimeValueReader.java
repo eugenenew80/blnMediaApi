@@ -85,36 +85,12 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 		lines.stream()
 			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
 			.forEach(line -> {
-				MeteringPointCfg mpc = buildPointCfg(line);
-				if (mpc!=null)
+				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, line.getStartDate(), line.getEndDate());
+				if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
 					points.add(mpc);
 			});
 
 		return points;
-	}
-
-
-	private MeteringPointCfg buildPointCfg(WorkListLine line) {
-		ParameterConf parameterConf = line.getParam().getConfs()
-			.stream()
-			.filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
-			.findFirst()
-			.orElse(null);
-
-		if (parameterConf!=null) {
-			MeteringPointCfg mpc = new MeteringPointCfg();
-			mpc.setSourceParamCode(parameterConf.getSourceParamCode());
-			mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
-			mpc.setInterval(parameterConf.getInterval());
-			mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
-			mpc.setParamCode(line.getParam().getCode());
-			mpc.setStartTime(line.getStartDate());
-			mpc.setEndTime(line.getEndDate());
-			if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-				return mpc;
-		}
-
-		return null;
 	}
 
 

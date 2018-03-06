@@ -2,7 +2,9 @@ package kz.kegoc.bln.imp.emcos.reader;
 
 import kz.kegoc.bln.entity.common.BatchStatusEnum;
 import kz.kegoc.bln.entity.common.ParamTypeEnum;
+import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.MeteringValueService;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
@@ -69,12 +71,48 @@ public class BatchHelper {
         mrService.saveAll(list);
     }
 
+
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void savePtData(Batch batch, List<PeriodTimeValueRaw> list) {
         list.forEach(t -> t.setBatch(batch));
         pcService.saveAll(list);
     }
 
+
+    public MeteringPointCfg buildPointCfg(WorkListLine line, LocalDateTime startTime, LocalDateTime endTime) {
+        ParameterConf parameterConf = line.getParam().getConfs()
+            .stream()
+            .filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
+            .findFirst()
+            .orElse(null);
+
+        MeteringPointCfg mpc = new MeteringPointCfg();
+        mpc.setSourceParamCode(parameterConf.getSourceParamCode());
+        mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
+        mpc.setInterval(parameterConf.getInterval());
+        mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
+        mpc.setParamCode(line.getParam().getCode());
+        mpc.setStartTime(startTime);
+        mpc.setStartTime(endTime);
+
+        return mpc;
+    }
+
+
+    public LastLoadInfo getLastLoadIfo(List<LastLoadInfo> lastLoadInfoList, WorkListLine line) {
+        ParameterConf parameterConf = line.getParam().getConfs()
+            .stream()
+            .filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
+            .findFirst()
+            .orElse(null);
+
+        LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
+            .filter(t -> t.getSourceMeteringPointCode().equals(line.getMeteringPoint().getExternalCode()) && t.getSourceParamCode().equals(parameterConf.getSourceParamCode()))
+            .findFirst()
+            .orElse(null);
+
+        return lastLoadInfo;
+    }
 
 
     @Inject
