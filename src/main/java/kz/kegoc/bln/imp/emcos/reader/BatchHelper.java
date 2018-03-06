@@ -2,9 +2,7 @@ package kz.kegoc.bln.imp.emcos.reader;
 
 import kz.kegoc.bln.entity.common.BatchStatusEnum;
 import kz.kegoc.bln.entity.common.ParamTypeEnum;
-import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
-import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.MeteringValueService;
 import kz.kegoc.bln.service.data.UserTaskHeaderService;
@@ -97,28 +95,6 @@ public class BatchHelper {
         pcService.saveAll(list);
     }
 
-    public MeteringPointCfg buildPointCfg(WorkListLine line, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        ParameterConf parameterConf = line.getParam().getConfs()
-            .stream()
-            .filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
-            .findFirst()
-            .orElse(null);
-
-        if (parameterConf!=null) {
-            MeteringPointCfg mpc = new MeteringPointCfg();
-            mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
-            mpc.setSourceParamCode(parameterConf.getSourceParamCode());
-            mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
-            mpc.setInterval(parameterConf.getInterval());
-            mpc.setParamCode(line.getParam().getCode());
-            mpc.setStartTime(startDateTime);
-            mpc.setEndTime(endDateTime);
-            if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-                return mpc;
-        }
-
-        return null;
-    }
 
 
     @Inject

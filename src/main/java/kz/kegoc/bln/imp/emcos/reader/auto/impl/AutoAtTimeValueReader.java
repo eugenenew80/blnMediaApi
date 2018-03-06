@@ -112,12 +112,29 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 					.findFirst()
 					.orElse(null);
 
-				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, buildStartTime(lastLoadInfo), buildRequestedDateTime());
+				MeteringPointCfg mpc = buildPointCfg(line, parameterConf, lastLoadInfo);
 				if (mpc!=null)
 					points.add(mpc);
 			});
 
 		return points;
+	}
+
+	private MeteringPointCfg buildPointCfg(WorkListLine line, ParameterConf parameterConf, LastLoadInfo lastLoadInfo) {
+		if (parameterConf!=null) {
+			MeteringPointCfg mpc = new MeteringPointCfg();
+			mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
+			mpc.setSourceParamCode(parameterConf.getSourceParamCode());
+			mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
+			mpc.setInterval(parameterConf.getInterval());
+			mpc.setParamCode(line.getParam().getCode());
+			mpc.setStartTime(buildStartTime(lastLoadInfo));
+			mpc.setEndTime(buildRequestedDateTime());
+			if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
+				return mpc;
+		}
+
+		return null;
 	}
 
 	private LocalDateTime buildRequestedDateTime() {
