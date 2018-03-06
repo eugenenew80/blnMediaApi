@@ -18,9 +18,9 @@ public class WorkListHeader implements HasId {
     private SourceSystem sourceSystemCode;
     private Direction direction;
     private ConnectionConfig config;
-    private Boolean active;
     private BatchStatus atStatus;
     private BatchStatus ptStatus;
+    private Boolean active;
     private List<WorkListLine> lines;
     private Batch atBatch;
     private Batch ptBatch;

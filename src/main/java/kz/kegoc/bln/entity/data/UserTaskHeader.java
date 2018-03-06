@@ -17,13 +17,13 @@ public class UserTaskHeader implements HasId {
     private String name;
     private SourceSystem sourceSystemCode;
     private Direction direction;
+    private ConnectionConfig config;
     private BatchStatus atStatus;
     private BatchStatus ptStatus;
-    private ConnectionConfig config;
     private Boolean active;
+    private List<UserTaskLine> lines;
     private Batch atBatch;
     private Batch ptBatch;
-    private List<UserTaskLine> lines;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private User createBy;
