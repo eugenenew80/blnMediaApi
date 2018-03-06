@@ -14,11 +14,11 @@ import java.util.List;
 import static javax.ejb.LockType.WRITE;
 
 @Singleton
-@Lock(WRITE)
 @AccessTimeout(value=60000)
 public class BatchHelper {
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @Lock(WRITE)
     public Batch createBatch(Batch batch) {
         batch = batchService.create(batch);
         updateHeader(batch, batch.getWorkListHeader());
@@ -28,6 +28,7 @@ public class BatchHelper {
 
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    @Lock(WRITE)
     public Batch updateBatch(Batch batch, Exception e, Long recCount) {
         batch.setEndDate(LocalDateTime.now());
         if (e!=null) {
