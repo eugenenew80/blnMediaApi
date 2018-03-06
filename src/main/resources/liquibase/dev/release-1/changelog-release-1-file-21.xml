@@ -8,734 +8,450 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    <changeSet id="media-eug-100" logicalFilePath="path-independent" author="eugene">
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="1" />
+            <column name="code"         type="varchar(10)"  value="A+" />
+            <column name="name"         type="varchar(300)" value="Актив приём" />
+            <column name="short_name"   type="varchar(100)" value="Актив приём" />
+            <column name="unit_id"      type="number"       value="9" />
+            <column name="param_type"   type="number"       value="PT"/>
+        </insert>
 
-    <changeSet id="media-rus-32" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating unique constraint: dict_data_sources</comment>
-        <addUniqueConstraint columnNames="code"
-                             constraintName="uq_dict_data_sources"
-                             schemaName="apps"
-                             tableName="dict_data_sources"/>
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="2" />
+            <column name="code"         type="varchar(10)"  value="A-" />
+            <column name="name"         type="varchar(300)" value="Актив отдача" />
+            <column name="short_name"   type="varchar(100)" value="Актив отдача" />
+            <column name="unit_id"      type="number"       value="9" />
+            <column name="param_type"   type="number"       value="PT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="3" />
+            <column name="code"         type="varchar(10)"  value="R+" />
+            <column name="name"         type="varchar(300)" value="Реактив приём" />
+            <column name="short_name"   type="varchar(100)" value="Реактив приём" />
+            <column name="unit_id"      type="number"       value="14" />
+            <column name="param_type"   type="number"       value="PT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="4" />
+            <column name="code"         type="varchar(10)"  value="R-" />
+            <column name="name"         type="varchar(100)" value="Реактив отдача" />
+            <column name="short_name"   type="varchar(100)" value="Реактив отдача" />
+            <column name="unit_id"      type="number"       value="14" />
+            <column name="param_type"   type="number"       value="PT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="5" />
+            <column name="code"         type="varchar(10)"  value="A+" />
+            <column name="name"         type="varchar(300)" value="Актив приём" />
+            <column name="short_name"   type="varchar(100)" value="Актив приём" />
+            <column name="unit_id"      type="number"       value="9" />
+            <column name="param_type"   type="number"       value="AT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="6" />
+            <column name="code"         type="varchar(10)"  value="A-" />
+            <column name="name"         type="varchar(300)" value="Актив отдача" />
+            <column name="short_name"   type="varchar(100)" value="Актив отдача" />
+            <column name="unit_id"      type="number"       value="9" />
+            <column name="param_type"   type="number"       value="AT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="7" />
+            <column name="code"         type="varchar(10)"  value="R+" />
+            <column name="name"         type="varchar(300)" value="Реактив приём" />
+            <column name="short_name"   type="varchar(100)" value="Реактив приём" />
+            <column name="unit_id"      type="number"       value="14" />
+            <column name="param_type"   type="number"       value="AT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="8" />
+            <column name="code"         type="varchar(10)"  value="R-" />
+            <column name="name"         type="varchar(300)" value="Реактив отдача" />
+            <column name="short_name"   type="varchar(100)" value="Реактив отдача" />
+            <column name="unit_id"      type="number"       value="14" />
+            <column name="param_type"   type="number"       value="AT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="9" />
+            <column name="code"         type="varchar(10)"  value="L1" />
+            <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L1" />
+            <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L1" />
+            <column name="unit_id"      type="number"       value="4" />
+            <column name="param_type"   type="number"       value="PT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="10" />
+            <column name="code"         type="varchar(10)"  value="L2" />
+            <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L2" />
+            <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L2" />
+            <column name="unit_id"      type="number"       value="4" />
+            <column name="param_type"   type="number"       value="PT"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameters">
+            <column name="id"           type="number"       value="11" />
+            <column name="code"         type="varchar(10)"  value="L3" />
+            <column name="name"         type="varchar(300)" value="Среднее напряжение на фазе L3" />
+            <column name="short_name"   type="varchar(100)" value="Среднее напряжение на фазе L3" />
+            <column name="unit_id"      type="number"       value="4" />
+            <column name="param_type"   type="number"       value="PT"/>
+        </insert>
+
+        <rollback/>
     </changeSet>
 
 
-    <changeSet id="media-rus-33" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_headers to media_directions</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_work_list_headers"
-                baseColumnNames="direction"
-                constraintName="fk_media_work_list_headers_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_directions"
-                referencedColumnNames="code"
-        />
-    </changeSet>
+    <changeSet id="media-eug-101" logicalFilePath="path-independent" author="eugene">
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"           value="1" />
+            <column name="name"                 type="varchar(100)"     value="Сервер EMCOS Юж. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"      value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"      value="SOAP" />
+            <column name="name"                 type="varchar(100)"     value="Сервер EMCOS Юж. МЭС" />
+            <column name="url"                  type="varchar(300)"     value="http://10.8.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"      value="yug" />
+            <column name="pwd"                  type="varchar(20)"      value="" />
+        </insert>
 
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="2" />
+            <column name="name"                 type="varchar(100)" value="Сервер EMCOS Акмол. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="SOAP" />
+            <column name="url"                  type="varchar(300)" value="http://10.9.44.13/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"  value="akmol" />
+            <column name="pwd"                  type="varchar(20)"  value="" />
+        </insert>
 
-    <changeSet id="media-rus-34" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_parameters to media_param_types</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_parameters"
-                baseColumnNames="param_type"
-                constraintName="fk_media_parameters_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_param_types"
-                referencedColumnNames="code"
-        />
-    </changeSet>
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="3" />
+            <column name="name"                 type="varchar(100)" value="Сервер EMCOS Алм. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="SOAP" />
+            <column name="url"                  type="varchar(300)" value="http://10.0.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"  value="almaty" />
+            <column name="pwd"                  type="varchar(20)"  value="" />
+        </insert>
 
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="4" />
+            <column name="name"                 type="varchar(100)" value="Сервер EMCOS Акт. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="SOAP" />
+            <column name="url"                  type="varchar(300)" value="http://10.1.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"  value="aktobe" />
+            <column name="pwd"                  type="varchar(20)"  value="" />
+        </insert>
 
-    <changeSet id="media-rus-35" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_period_time_values to dict_data_sources</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_period_time_values"
-                baseColumnNames="source_system_code"
-                constraintName="fk_media_period_time_values_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_data_sources"
-                referencedColumnNames="code"
-        />
-    </changeSet>
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="5" />
+            <column name="name"                 type="varchar(100)" value="Сервер EMCOS Вост. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="SOAP" />
+            <column name="url"                  type="varchar(300)" value="http://10.3.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"  value="vostok" />
+            <column name="pwd"                  type="varchar(20)"  value="" />
+        </insert>
 
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="6" />
+            <column name="name"                 type="varchar(100)" value="Сервер EMCOS Сарб. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="SOAP" />
+            <column name="url"                  type="varchar(300)" value="http://10.4.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"  value="sarbay" />
+            <column name="pwd"                  type="varchar(20)"  value="" />
+        </insert>
 
-    <changeSet id="media-rus-36" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_at_time_values to dict_data_sources</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_at_time_values"
-                baseColumnNames="source_system_code"
-                constraintName="fk_media_at_time_values_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_data_sources"
-                referencedColumnNames="code"
-        />
-    </changeSet>
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="7" />
+            <column name="name"                 type="varchar(100)" value="Сервер EMCOS Центр. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="SOAP" />
+            <column name="url"                  type="varchar(300)" value="http://10.5.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"  value="central" />
+            <column name="pwd"                  type="varchar(20)"  value="" />
+        </insert>
 
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="8" />
+            <column name="name"                 type="varchar(100)" value="Сервер EMCOS Сев. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="SOAP" />
+            <column name="url"                  type="varchar(300)" value="http://10.6.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"  value="sever" />
+            <column name="pwd"                  type="varchar(20)"  value="" />
+        </insert>
 
-    <changeSet id="media-rus-37" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_batches to dict_data_sources</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_batches"
-                baseColumnNames="source_system_code"
-                constraintName="fk_media_batches_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_data_sources"
-                referencedColumnNames="code"
-        />
-    </changeSet>
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="9" />
+            <column name="name"                 type="varchar(100)" value="Сервер EMCOS Зап. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="SOAP" />
+            <column name="url"                  type="varchar(300)" value="http://10.7.144.11/STWS2/STExchangeWS2.dll/soap/IST_ExchWebService2" />
+            <column name="user_name"            type="varchar(20)"  value="zapad" />
+            <column name="pwd"                  type="varchar(20)"  value="" />
+        </insert>
 
+        <insert schemaName="apps"  tableName="media_connection_config">
+            <column name="id"                   type="number"       value="10" />
+            <column name="name"                 type="varchar(100)" value="Сервер FTP Акм. МЭС" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="protocol"             type="varchar(20)"  value="FTP" />
+            <column name="url"                  type="varchar(300)" value="10.9.44.10" />
+            <column name="user_name"            type="varchar(20)"  value="ftpuser" />
+            <column name="pwd"                  type="varchar(20)"  value="ft2015er" />
+        </insert>
 
-    <changeSet id="media-rus-38" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_last_load_info to dict_data_sources</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_last_load_info"
-                baseColumnNames="source_system_code"
-                constraintName="fk_media_last_load_info_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_data_sources"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-39" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_headers to dict_data_sources</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_user_task_headers"
-                baseColumnNames="source_system_code"
-                constraintName="fk_media_user_task_headers_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_data_sources"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-40" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_headers to dict_data_sources</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_work_list_headers"
-                baseColumnNames="source_system_code"
-                constraintName="fk_media_work_list_headers_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_data_sources"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-41" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_parameter_conf to dict_data_sources</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_parameter_conf"
-                baseColumnNames="source_system_code"
-                constraintName="fk_media_parameter_conf_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_data_sources"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-42" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_lines to dict_metering_points</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_user_task_lines"
-                baseColumnNames="metering_point_id"
-                constraintName="fk_media_user_task_lines_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_metering_points"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-43" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_lines to dict_metering_points</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_work_list_lines"
-                baseColumnNames="metering_point_id"
-                constraintName="fk_media_work_list_lines_1"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_metering_points"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-44" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_parameters to dict_units</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_parameters"
-                baseColumnNames="unit_id"
-                constraintName="fk_media_parameters_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_units"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-45" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_period_time_values to dict_units</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_period_time_values"
-                baseColumnNames="unit_id"
-                constraintName="fk_media_period_time_values_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_units"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-46" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_at_time_values to dict_units</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_at_time_values"
-                baseColumnNames="unit_id"
-                constraintName="fk_media_at_time_values_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="dict_units"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-47" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_period_time_values to media_input_methods</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_period_time_values"
-                baseColumnNames="input_method"
-                constraintName="fk_media_period_time_values_3"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_input_methods"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-48" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_at_time_values to media_input_methods</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_at_time_values"
-                baseColumnNames="input_method"
-                constraintName="fk_media_at_time_values_3"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_input_methods"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-49" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_period_time_values to media_processing_statuses</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_period_time_values"
-                baseColumnNames="status"
-                constraintName="fk_media_period_time_values_4"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_processing_statuses"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-50" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_at_time_values to media_processing_statuses</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_at_time_values"
-                baseColumnNames="status"
-                constraintName="fk_media_at_time_values_4"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_processing_statuses"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-51" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_period_time_values to media_receiving_methods</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_period_time_values"
-                baseColumnNames="receiving_method"
-                constraintName="fk_media_period_time_values_5"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_receiving_method"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-52" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_at_time_values to media_receiving_methods</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_at_time_values"
-                baseColumnNames="receiving_method"
-                constraintName="fk_media_at_time_values_5"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_receiving_method"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-53" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_batches to media_batch_statuses</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_batches"
-                baseColumnNames="status"
-                constraintName="fk_media_batches_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-    <changeSet id="media-rus-54" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_headers to media_batches</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_work_list_headers"
-                baseColumnNames="pt_status"
-                constraintName="fk_media_work_list_headers_3"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-    <changeSet id="media-rus-55" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_headers to media_batches</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_work_list_headers"
-                baseColumnNames="at_status"
-                constraintName="fk_media_work_list_headers_4"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-56" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_headers to media_batches</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_user_task_headers"
-                baseColumnNames="pt_status"
-                constraintName="fk_media_user_task_headers_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-57" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_headers to media_batches</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_user_task_headers"
-                baseColumnNames="at_status"
-                constraintName="fk_media_user_task_headers_3"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_batch_statuses"
-                referencedColumnNames="code"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-58" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_headers to media_direction</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_user_task_headers"
-                baseColumnNames="direction"
-                constraintName="fk_media_user_task_headers_4"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_directions"
-                referencedColumnNames="code"
-        />
+        <rollback/>
     </changeSet>
 
 
 
-    <changeSet id="media-rus-59" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_period_time_values to media_batches</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_period_time_values"
-                baseColumnNames="batch_id"
-                constraintName="fk_media_period_time_values_6"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_batches"
-                referencedColumnNames="id"
-        />
+    <changeSet id="media-eug-102" logicalFilePath="path-independent" author="eugene">
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="1" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Юж. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="1" />
+            <column name="is_active"            type="number"       value="1" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="2" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Акмол. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="2" />
+            <column name="is_active"            type="number"       value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="3" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Алм. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="3" />
+            <column name="is_active"            type="number"       value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="4" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Акт. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="4" />
+            <column name="is_active"            type="number"       value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="5" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Вост. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="5" />
+            <column name="is_active"            type="number"       value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="6" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Сарб. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="6" />
+            <column name="is_active"            type="number"       value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="7" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Центр. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="7" />
+            <column name="is_active"            type="number"       value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="8" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Сев. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="8" />
+            <column name="is_active"            type="number"       value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number"       value="9" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Зап. МЭС для импорта данных из EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="IMPORT" />
+            <column name="config_id"            type="number"       value="9" />
+            <column name="is_active"            type="number"       value="0" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_headers">
+            <column name="id"                   type="number" value="10" />
+            <column name="name"                 type="varchar(100)" value="Список точек учёта Акм. МЭС для экспорта данных в EMCOS" />
+            <column name="work_list_type"       type="varchar(20)"  value="SYS" />
+            <column name="source_system_code"   type="varchar(20)" value="EMCOS" />
+            <column name="direction"            type="varchar(100)" value="EXPORT" />
+            <column name="config_id"            type="number" value="10" />
+            <column name="is_active"            type="number" value="1" />
+        </insert>
+
+        <rollback/>
     </changeSet>
 
 
-    <changeSet id="media-rus-60" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_at_time_values to media_batches</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_at_time_values"
-                baseColumnNames="batch_id"
-                constraintName="fk_media_at_time_values_6"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_batches"
-                referencedColumnNames="id"
-        />
+    <changeSet id="media-eug-103" logicalFilePath="path-independent" author="eugene">
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="1" />
+            <column name="param_id"             type="number"       value="1" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1040" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+            <column name="interval"             type="number"       value="900" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="2" />
+            <column name="param_id"             type="number"       value="2" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1041" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+            <column name="interval"             type="number"       value="900" />
+
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="3" />
+            <column name="param_id"             type="number"       value="3" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1042" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kVarh" />
+            <column name="source_unit_id"       type="number"       value="14" />
+            <column name="interval"             type="number"       value="900" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="4" />
+            <column name="param_id"             type="number"       value="4" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1043" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kVarh" />
+            <column name="source_unit_id"       type="number"       value="14" />
+            <column name="interval"             type="number"       value="900" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="5" />
+            <column name="param_id"             type="number"       value="5" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1498" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="6" />
+            <column name="param_id"             type="number"       value="6" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1499" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="7" />
+            <column name="param_id"             type="number"       value="7" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1500" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kVarh" />
+            <column name="source_unit_id"       type="number"       value="14" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="8" />
+            <column name="param_id"             type="number"       value="8" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="1501" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kVarh" />
+            <column name="source_unit_id"       type="number"       value="14" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="9" />
+            <column name="param_id"             type="number"       value="9" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="5330" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kV" />
+            <column name="source_unit_id"       type="number"       value="4" />
+            <column name="interval"             type="number"       value="180" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="10" />
+            <column name="param_id"             type="number"       value="10" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="5341" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kV" />
+            <column name="source_unit_id"       type="number"       value="4" />
+            <column name="interval"             type="number"       value="180" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="11" />
+            <column name="param_id"             type="number"       value="11" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="5352" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kV" />
+            <column name="source_unit_id"       type="number"       value="4" />
+            <column name="interval"             type="number"       value="180" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="12" />
+            <column name="param_id"             type="number"       value="1" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)"  value="709" />
+            <column name="source_unit_code"     type="varchar(10)"  value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+            <column name="interval"             type="number"       value="3600" />
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_parameter_conf">
+            <column name="id"                   type="number"       value="13" />
+            <column name="param_id"             type="number"       value="2" />
+            <column name="source_system_code"   type="varchar(20)"  value="EMCOS" />
+            <column name="source_param_code"    type="varchar(10)" value="710" />
+            <column name="source_unit_code"     type="varchar(10)" value="kWh" />
+            <column name="source_unit_id"       type="number"       value="9" />
+            <column name="interval"             type="number"       value="3600" />
+        </insert>
+
+        <rollback/>
     </changeSet>
-
-
-    <changeSet id="media-rus-61" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_last_load_info to media_batches</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_last_load_info"
-                baseColumnNames="last_batch_id"
-                constraintName="fk_media_last_load_info_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_batches"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-62" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_headers to media_connection_config</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_work_list_headers"
-                baseColumnNames="config_id"
-                constraintName="fk_media_work_list_headers_5"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_connection_config"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-63" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_headers to media_connection_config</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_user_task_headers"
-                baseColumnNames="config_id"
-                constraintName="fk_media_user_task_headers_5"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_connection_config"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-64" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_period_time_values to media_parameters</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_period_time_values"
-                baseColumnNames="param_id"
-                constraintName="fk_media_period_time_values_7"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_parameters"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-65" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_at_time_values to media_parameters</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_at_time_values"
-                baseColumnNames="param_id"
-                constraintName="fk_media_at_time_values_7"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_parameters"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-66" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_lines to media_parameters</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_user_task_lines"
-                baseColumnNames="param_id"
-                constraintName="fk_media_user_task_lines_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_parameters"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-67" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_lines to media_parameters</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_work_list_lines"
-                baseColumnNames="param_id"
-                constraintName="fk_media_work_list_lines_2"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_parameters"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-68" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_parameter_conf to media_parameters</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_parameter_conf"
-                baseColumnNames="param_id"
-                constraintName="fk_media_parameter_conf_3"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_parameters"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-69" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_batches to media_work_list_headers</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_batches"
-                baseColumnNames="work_list_header_id"
-                constraintName="fk_media_batches_5"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_work_list_headers"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-70" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_work_list_lines to media_work_list_headers</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_work_list_lines"
-                baseColumnNames="work_list_header_id"
-                constraintName="fk_media_work_list_lines_3"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_work_list_headers"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-71" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_batches to media_user_task_headers</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_batches"
-                baseColumnNames="user_task_header_id"
-                constraintName="fk_media_batches_4"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_user_task_headers"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-    <changeSet id="media-rus-72" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_user_task_lines to media_user_task_headers</comment>
-        <addForeignKeyConstraint
-                baseTableSchemaName="apps"
-                baseTableName="media_user_task_lines"
-                baseColumnNames="user_task_header_id"
-                constraintName="fk_media_user_task_lines_3"
-                deferrable="true"
-                initiallyDeferred="true"
-                onDelete="RESTRICT"
-                onUpdate="RESTRICT"
-                referencedTableSchemaName="apps"
-                referencedTableName="media_user_task_headers"
-                referencedColumnNames="id"
-        />
-    </changeSet>
-
-
-
 </databaseChangeLog>

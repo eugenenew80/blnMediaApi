@@ -10,7 +10,7 @@ import kz.kegoc.bln.gateway.emcos.PeriodTimeValueGateway;
 import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
 import kz.kegoc.bln.imp.emcos.reader.manual.ManualReader;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
-import kz.kegoc.bln.service.data.UserTaskHeaderService;
+import kz.kegoc.bln.service.data.WorkListHeaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
@@ -29,7 +29,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 	public void read() {
 		logger.debug("ManualPeriodTimeReader.read started");
 
-		userTaskHeaderService.findAll().stream()
+		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
 				&& BatchStatus.newInstance(BatchStatusEnum.W).equals(h.getPtStatus())
 				&& SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
@@ -79,7 +79,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 	}
 
 
-	private List<MeteringPointCfg> buildPoints(List<UserTaskLine> lines) {
+	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
 			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.PT)))
@@ -93,7 +93,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 	}
 
 
-	private MeteringPointCfg buildPointCfg(UserTaskLine line) {
+	private MeteringPointCfg buildPointCfg(WorkListLine line) {
 		ParameterConf parameterConf = line.getParam().getConfs()
 			.stream()
 			.filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
@@ -107,8 +107,8 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 			mpc.setInterval(parameterConf.getInterval());
 			mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
 			mpc.setParamCode(line.getParam().getCode());
-			mpc.setStartTime(line.getStartMeteringDate());
-			mpc.setEndTime(line.getEndMeteringDate());
+			mpc.setStartTime(line.getStartDate());
+			mpc.setEndTime(line.getEndDate());
 			if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
 				return mpc;
 		}
@@ -124,7 +124,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 	private PeriodTimeValueGateway ptGateway;
 
 	@Inject
-	private UserTaskHeaderService userTaskHeaderService;
+	private WorkListHeaderService workListHeaderService;
 
 	@Inject
 	private BatchHelper batchHelper;

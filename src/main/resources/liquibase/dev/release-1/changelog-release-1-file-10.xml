@@ -17,10 +17,6 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="user_task_header_id" type="number" remarks="Идентификатор списка пользователя">
-                <constraints nullable="true"/>
-            </column>
-
             <column name="source_system_code" type="varchar(20)" remarks="Код внешней системы">
                 <constraints nullable="false"/>
             </column>

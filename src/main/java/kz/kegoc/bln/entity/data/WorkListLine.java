@@ -14,6 +14,8 @@ public class WorkListLine implements HasId {
     private WorkListHeader header;
     private MeteringPoint meteringPoint;
     private Parameter param;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
     private User createBy;

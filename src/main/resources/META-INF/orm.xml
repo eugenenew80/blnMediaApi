@@ -649,6 +649,10 @@
 				<column name="name" />
 			</basic>
 
+			<basic name="workListType">
+				<column name="work_list_type" />
+			</basic>
+
 			<basic name="active">
 				<column name="is_active" />
 			</basic>
@@ -721,6 +725,14 @@
 						allocation-size="1"
 				/>
 			</id>
+
+			<basic name="startDate">
+				<column name="start_date" />
+			</basic>
+
+			<basic name="endDate">
+				<column name="end_date" />
+			</basic>
 
 			<basic name="createDate">
 				<column name="create_date" />
@@ -810,10 +822,6 @@
 				<join-column name="work_list_header_id"/>
 			</many-to-one>
 
-			<many-to-one name="userTaskHeader">
-				<join-column name="user_task_header_id"/>
-			</many-to-one>
-
 			<many-to-one name="createBy">
 				<join-column name="create_by" />
 			</many-to-one>
@@ -825,122 +833,6 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.data.UserTaskHeader">
-		<table name="media_user_task_headers" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_user_task_headers_gen" />
-				<sequence-generator
-						name="media_user_task_headers_gen"
-						sequence-name="apps.media_user_task_headers_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="active">
-				<column name="is_active" />
-				<convert converter="kz.kegoc.bln.ejb.converter.jpa.BooleanToIntConverter" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="direction">
-				<join-column name="direction" />
-			</many-to-one>
-
-			<many-to-one name="sourceSystemCode">
-				<join-column name="source_system_code" />
-			</many-to-one>
-
-			<many-to-one name="atStatus">
-				<join-column name="at_status" />
-			</many-to-one>
-
-			<many-to-one name="ptStatus">
-				<join-column name="pt_status" />
-			</many-to-one>
-
-			<many-to-one name="atBatch">
-				<join-column name="at_batch_id"/>
-			</many-to-one>
-
-			<many-to-one name="ptBatch">
-				<join-column name="pt_batch_id"/>
-			</many-to-one>
-
-			<many-to-one name="config">
-				<join-column name="config_id"/>
-			</many-to-one>
-
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
-
-			<one-to-many name="lines" mapped-by="header" />
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.data.UserTaskLine">
-		<table name="media_user_task_lines" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_user_task_lines_gen" />
-				<sequence-generator
-						name="media_user_task_lines_gen"
-						sequence-name="apps.media_user_task_lines_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="startMeteringDate">
-				<column name="start_metering_date" />
-			</basic>
-
-			<basic name="endMeteringDate">
-				<column name="end_metering_date" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="param">
-				<join-column name="param_id"/>
-			</many-to-one>
-
-			<many-to-one name="header">
-				<join-column name="user_task_header_id"/>
-			</many-to-one>
-
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id"/>
-			</many-to-one>
-
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
-		</attributes>
-	</entity>
 
 	<entity class="kz.kegoc.bln.entity.data.ParamType">
 		<table name="media_param_types" schema="apps"/>

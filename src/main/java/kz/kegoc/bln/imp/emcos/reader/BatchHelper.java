@@ -5,7 +5,6 @@ import kz.kegoc.bln.entity.common.ParamTypeEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.MeteringValueService;
-import kz.kegoc.bln.service.data.UserTaskHeaderService;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -22,7 +21,6 @@ public class BatchHelper {
     public Batch createBatch(Batch batch) {
         batch = batchService.create(batch);
         updateHeader(batch, batch.getWorkListHeader());
-        updateHeader(batch, batch.getUserTaskHeader());
         return batch;
     }
 
@@ -42,7 +40,6 @@ public class BatchHelper {
 
         batch = batchService.update(batch);
         updateHeader(batch, batch.getWorkListHeader());
-        updateHeader(batch, batch.getUserTaskHeader());
         return batch;
     }
 
@@ -65,24 +62,6 @@ public class BatchHelper {
         return header;
     }
 
-    private UserTaskHeader updateHeader(Batch batch, UserTaskHeader header) {
-        if (header==null) return null;
-
-        header = userTaskHeaderService.findById(header.getId());
-        if (ParamType.newInstance(ParamTypeEnum.AT).equals(batch.getParamType())) {
-            header.setAtBatch(batch);
-            header.setAtStatus(batch.getStatus());
-        }
-
-        if (ParamType.newInstance(ParamTypeEnum.PT).equals(batch.getParamType())) {
-            header.setPtBatch(batch);
-            header.setPtStatus(batch.getStatus());
-        }
-
-        userTaskHeaderService.update(header);
-        return header;
-    }
-
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void saveAtData(Batch batch, List<AtTimeValueRaw> list) {
@@ -100,9 +79,6 @@ public class BatchHelper {
 
     @Inject
     private WorkListHeaderService workListHeaderService;
-
-    @Inject
-    private UserTaskHeaderService userTaskHeaderService;
 
     @Inject
     private BatchService batchService;

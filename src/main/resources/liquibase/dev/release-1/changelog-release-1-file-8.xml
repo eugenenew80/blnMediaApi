@@ -17,6 +17,10 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="work_list_type" type="varchar(20)" remarks="Тип списка">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="source_system_code" type="varchar(20)" remarks="Код внешней точки учета">
                 <constraints nullable="false"/>
             </column>
@@ -92,6 +96,4 @@
 	            sequenceName="media_work_list_headers_s"
 	            startValue="11"/>
 	</changeSet>
-
-
 </databaseChangeLog>

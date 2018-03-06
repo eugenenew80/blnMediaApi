@@ -23,18 +23,8 @@ public class Batch implements HasId {
         this.startDate = LocalDateTime.now();
     }
 
-    public Batch(UserTaskHeader header, ParamTypeEnum paramTypeEnum) {
-        this.userTaskHeader = header;
-        this.sourceSystemCode = header.getSourceSystemCode();
-        this.direction = header.getDirection();
-        this.paramType = newInstance(paramTypeEnum);
-        this.status = BatchStatus.newInstance(BatchStatusEnum.P);
-        this.startDate = LocalDateTime.now();
-    }
-
     private Long id;
     private WorkListHeader workListHeader;
-    private UserTaskHeader userTaskHeader;
     private SourceSystem sourceSystemCode;
     private Direction direction;
     private ParamType paramType;

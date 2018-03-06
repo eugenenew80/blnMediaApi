@@ -6,9 +6,9 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet id="media-rus-11" logicalFilePath="path-independent" author="ruslan">
-        <comment>Creating table: media_receiving_method</comment>
-        <createTable tableName="media_receiving_method" schemaName="apps" remarks="Справочник способов получения данных">
+    <changeSet id="media-rus-22" logicalFilePath="path-independent" author="ruslan">
+        <comment>Creating table: media_processing_statuses</comment>
+        <createTable tableName="media_processing_statuses" schemaName="apps" remarks="Справочник статусов обработки полученных значений">
             <column name="code" type="varchar2(20)" remarks="Код">
                 <constraints nullable="false"/>
             </column>
@@ -32,23 +32,21 @@
             <column name="last_update_by" type="number" remarks="Автор последнего обновления" >
                 <constraints nullable="true"/>
             </column>
-
-
         </createTable>
     </changeSet>
 
-	<changeSet id="media-rus-12" logicalFilePath="path-independent" author="ruslan">
-	    <comment>Creating primary key for table: media_receiving_method</comment>
+	<changeSet id="media-rus-23" logicalFilePath="path-independent" author="ruslan">
+	    <comment>Creating primary key for table: media_processing_statuses</comment>
 	    <addPrimaryKey 
 	            columnNames="code"
-	            constraintName="pk_media_receiving_method"
+	            constraintName="pk_media_processing_statuses"
 	            schemaName="apps"
-	            tableName="media_receiving_method"/>
+	            tableName="media_processing_statuses"/>
 	</changeSet>
 
-    <changeSet id="media-rus-13" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating table: media_receiving_method_tl</comment>
-        <createTable tableName="media_receiving_method_tl" schemaName="apps" remarks="Справочник способов получения данных перевод">
+    <changeSet id="media-rus-24" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating table: media_processing_statuses_tl</comment>
+        <createTable tableName="media_processing_statuses_tl" schemaName="apps" remarks="Справочник статусов обработки полученных значений перевод">
             <column name="code" type="varchar(20)" remarks="Ссылка на родительскую запись">
                 <constraints nullable="false"/>
             </column>
@@ -60,7 +58,6 @@
             <column name="name" type="varchar(50)" remarks="Наименование">
                 <constraints nullable="false"/>
             </column>
-
 
             <column name="create_date" type="TIMESTAMP" remarks="Дата и время создания записи">
                 <constraints nullable="true"/>
@@ -81,28 +78,28 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="media-rus-15" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating primary key for table: media_receiving_method_tl</comment>
+    <changeSet id="media-rus-25" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating primary key for table: media_processing_statuses_tl</comment>
         <addPrimaryKey
                 columnNames="code, lang"
-                constraintName="pk_media_receiving_method_tl"
+                constraintName="pk_media_processing_statuses_tl"
                 schemaName="apps"
-                tableName="media_receiving_method_tl"/>
+                tableName="media_processing_statuses_tl"/>
     </changeSet>
 
-    <changeSet id="media-rus-16" logicalFilePath="path-independent" author="ruslan" context="dev">
-        <comment>Creating foreign constraint: media_receiving_method_tl to media_receiving_method</comment>
+    <changeSet id="media-rus-26" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_processing_statuses_tl to media_processing_statuses</comment>
         <addForeignKeyConstraint
                 baseTableSchemaName="apps"
-                baseTableName="media_receiving_method_tl"
+                baseTableName="media_processing_statuses_tl"
                 baseColumnNames="code"
-                constraintName="fk_media_receiving_method_tl_1"
+                constraintName="fk_media_processing_statuses_tl_1"
                 deferrable="true"
                 initiallyDeferred="true"
                 onDelete="CASCADE"
                 onUpdate="RESTRICT"
                 referencedTableSchemaName="apps"
-                referencedTableName="media_receiving_method"
+                referencedTableName="media_processing_statuses"
                 referencedColumnNames="code"
         />
     </changeSet>

@@ -25,6 +25,14 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="start_date" type="TIMESTAMP" remarks="Дата и время начала обмена">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="end_date" type="TIMESTAMP" remarks="Дата и время окончания обмена">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="create_date" type="TIMESTAMP" remarks="Дата создания">
                 <constraints nullable="true"/>
             </column>

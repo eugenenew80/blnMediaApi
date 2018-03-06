@@ -15,6 +15,7 @@ import java.util.List;
 public class WorkListHeader implements HasId {
     private Long id;
     private String name;
+    private String workListType;
     private SourceSystem sourceSystemCode;
     private Direction direction;
     private ConnectionConfig config;

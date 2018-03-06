@@ -6,30 +6,14 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet id="media-eug-46" logicalFilePath="path-independent" author="eugene">
-        <comment>Creating table: media_user_task_lines</comment>
-        <createTable tableName="media_user_task_lines" schemaName="apps" remarks="Список точек учета и измеряемых параметров для ручной инициации обмена данными">
-            <column name="id" type="number" remarks="Идентификатор">
+    <changeSet id="media-rus-6" logicalFilePath="path-independent" author="ruslan">
+        <comment>Creating table: media_param_types</comment>
+        <createTable tableName="media_param_types" schemaName="apps" remarks="Справочник типов параметров">
+            <column name="code" type="varchar2(10)" remarks="Код">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="user_task_header_id" type="number" remarks="Идентификатор списка точек учета для ручной инициации обмена данными">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="metering_point_id" type="number" remarks="Идентификатор точки учета">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="param_id" type="number" remarks="Идентификатор измеряемого параметра">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="start_metering_date" type="TIMESTAMP" remarks="Дата и время начала порции данных">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="end_metering_date" type="TIMESTAMP" remarks="Дата и время окончания порции данных">
+            <column name="name" type="varchar2(50)" remarks="Наименование">
                 <constraints nullable="false"/>
             </column>
 
@@ -37,35 +21,87 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_date" type="TIMESTAMP" remarks="Дата и время изменения записи">
+            <column name="last_update_date" type="TIMESTAMP" remarks="Дата и время последнего изменения">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="create_by" type="number" remarks="Автор">
+            <column name="create_by" type="number" remarks="Автор" >
                 <constraints nullable="true"/>
             </column>
 
-            <column name="last_update_by" type="number" remarks="Автор изменения">
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления" >
                 <constraints nullable="true"/>
             </column>
+
         </createTable>
     </changeSet>
 
-	<changeSet id="media-eug-47" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating primary key for table: media_user_task_lines</comment>
+	<changeSet id="media-rus-7" logicalFilePath="path-independent" author="ruslan">
+	    <comment>Creating primary key for table: media_param_types</comment>
 	    <addPrimaryKey 
-	            columnNames="id"
-	            constraintName="pk_media_user_task_lines"
+	            columnNames="code"
+	            constraintName="pk_media_param_types"
 	            schemaName="apps"
-	            tableName="media_user_task_lines"/>
+	            tableName="media_param_types"/>
 	</changeSet>
-	
-	<changeSet id="media-eug-48" logicalFilePath="path-independent" author="eugene">
-	    <comment>Creating sequence for table: media_user_task_lines</comment>
-	    <createSequence 
-	            incrementBy="1"
-	            schemaName="apps"
-	            sequenceName="media_user_task_lines_s"
-	            startValue="1"/>
-	</changeSet>
+
+    <changeSet id="media-rus-8" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating table: media_param_types_tl</comment>
+        <createTable tableName="media_param_types_tl" schemaName="apps" remarks="Справочник типов параметров перевод">
+            <column name="code" type="varchar(10)" remarks="Ссылка на родительскую запись">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="lang" type="varchar(10)" remarks="Язык">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(50)" remarks="Наименование">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP" remarks="Дата и время создания записи">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_date" type="TIMESTAMP" remarks="Дата и время последнего изменения">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="create_by" type="number" remarks="Автор" >
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="last_update_by" type="number" remarks="Автор последнего обновления" >
+                <constraints nullable="true"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="media-rus-9" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating primary key for table: media_param_types_tl</comment>
+        <addPrimaryKey
+                columnNames="code, lang"
+                constraintName="pk_media_param_types_tl"
+                schemaName="apps"
+                tableName="media_param_types_tl"/>
+    </changeSet>
+
+    <changeSet id="media-rus-10" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating foreign constraint: media_param_types_tl to media_param_types</comment>
+        <addForeignKeyConstraint
+                baseTableSchemaName="apps"
+                baseTableName="media_param_types_tl"
+                baseColumnNames="code"
+                constraintName="fk_media_param_types_tl_1"
+                deferrable="true"
+                initiallyDeferred="true"
+                onDelete="CASCADE"
+                onUpdate="RESTRICT"
+                referencedTableSchemaName="apps"
+                referencedTableName="media_param_types"
+                referencedColumnNames="code"
+        />
+    </changeSet>
 </databaseChangeLog>
