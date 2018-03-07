@@ -121,7 +121,7 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
 			return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
 		else
-			return LocalDate.now(ZoneId.of("UTC+1")).atStartOfDay();
+			return LocalDate.now(ZoneId.of("UTC+1")).minusDays(3).atStartOfDay();
 	}
 
 

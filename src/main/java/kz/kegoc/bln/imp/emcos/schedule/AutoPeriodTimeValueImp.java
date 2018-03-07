@@ -15,7 +15,7 @@ public class AutoPeriodTimeValueImp implements Importer {
 	private static final Logger logger = LoggerFactory.getLogger(AutoPeriodTimeValueImp.class);
 	
 	@ProducerMonitor
-	@Schedule(minute = "*/30", hour = "*", persistent = false)
+	@Schedule(minute = "*/5", hour = "*", persistent = false)
 	public void runImport() {
 		try {
 			reader.read();
