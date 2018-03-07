@@ -70,4 +70,56 @@
                 referencedColumnNames="code"
         />
     </changeSet>
+
+    <changeSet id="media-rus-100" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <insert schemaName="apps" tableName="media_ways_to_start">
+            <column name="code" type="varchar" value="AUTO"/>
+            <column name="name" type="varchar" value="автоматически"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="media-rus-101" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <insert schemaName="apps" tableName="media_ways_to_start">
+            <column name="code" type="varchar" value="MANUAL"/>
+            <column name="name" type="varchar" value="вручную"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="media-rus-102" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <insert schemaName="apps" tableName="media_ways_to_start_tl">
+            <column name="code" type="varchar" value="AUTO"/>
+            <column name="lang" type="varchar" value="RU"/>
+            <column name="name" type="varchar" value="автоматический"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="media-rus-103" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <insert schemaName="apps" tableName="media_ways_to_start_tl">
+            <column name="code" type="varchar" value="MANUAL"/>
+            <column name="lang" type="varchar" value="RU"/>
+            <column name="name" type="varchar" value="вручную"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="media-rus-104" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <insert schemaName="apps" tableName="media_ways_to_start_tl">
+            <column name="code" type="varchar" value="AUTO"/>
+            <column name="lang" type="varchar" value="KZ"/>
+            <column name="name" type="varchar" value="автоматический"/>
+        </insert>
+        <rollback/>
+    </changeSet>
+
+    <changeSet id="media-rus-105" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <insert schemaName="apps" tableName="media_ways_to_start_tl">
+            <column name="code" type="varchar" value="MANUAL"/>
+            <column name="lang" type="varchar" value="KZ"/>
+            <column name="name" type="varchar" value="вручную"/>
+        </insert>
+        <rollback/>
+    </changeSet>
 </databaseChangeLog>
