@@ -118,7 +118,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 	}
 
 	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-		LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).minusDays(3).atStartOfDay();
+		LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).minusDays(1).atStartOfDay();
 		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
 			LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
 			startTime = lastLoadDate.getMinute() < 45
