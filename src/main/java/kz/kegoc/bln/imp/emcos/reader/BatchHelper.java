@@ -8,6 +8,8 @@ import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.MeteringValueService;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.ejb.*;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import static javax.ejb.LockType.WRITE;
 @Singleton
 @AccessTimeout(value=60000)
 public class BatchHelper {
+    private static final Logger logger = LoggerFactory.getLogger(BatchHelper.class);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     @Lock(WRITE)
@@ -86,6 +89,8 @@ public class BatchHelper {
             .findFirst()
             .orElse(null);
 
+        if (parameterConf==null) return null;
+
         MeteringPointCfg mpc = new MeteringPointCfg();
         mpc.setSourceParamCode(parameterConf.getSourceParamCode());
         mpc.setSourceUnitCode(parameterConf.getSourceUnitCode());
@@ -93,7 +98,7 @@ public class BatchHelper {
         mpc.setSourceMeteringPointCode(line.getMeteringPoint().getExternalCode());
         mpc.setParamCode(line.getParam().getCode());
         mpc.setStartTime(startTime);
-        mpc.setStartTime(endTime);
+        mpc.setEndTime(endTime);
 
         return mpc;
     }
@@ -105,6 +110,8 @@ public class BatchHelper {
             .filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
             .findFirst()
             .orElse(null);
+
+        if (parameterConf==null) return null;
 
         LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
             .filter(t -> t.getSourceMeteringPointCode().equals(line.getMeteringPoint().getExternalCode()) && t.getSourceParamCode().equals(parameterConf.getSourceParamCode()))

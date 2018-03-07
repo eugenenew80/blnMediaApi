@@ -142,12 +142,6 @@
         </query>
     </named-query>
 
-    <named-query name="UserTaskHeader.findAll">
-        <query>
-            select t from UserTaskHeader t
-        </query>
-    </named-query>
-
     <named-query name="ExportData.findExportData">
         <query>
             select

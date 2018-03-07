@@ -15,6 +15,7 @@ import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
 import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static java.util.stream.Collectors.groupingBy;
@@ -34,6 +35,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 			.filter(h -> h.getActive()
 				&& SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
 				&& Direction.newInstance(DirectionEnum.IMPORT).equals(h.getDirection())
+				&& StringUtils.equals(h.getWorkListType(), "SYS")
 				&& h.getConfig()!=null
 			)
 			.forEach(header -> {

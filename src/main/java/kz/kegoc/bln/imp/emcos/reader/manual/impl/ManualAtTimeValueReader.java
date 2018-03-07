@@ -12,6 +12,7 @@ import kz.kegoc.bln.imp.emcos.reader.manual.ManualReader;
 import kz.kegoc.bln.service.data.BatchService;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
@@ -35,6 +36,7 @@ public class ManualAtTimeValueReader implements ManualReader<AtTimeValueRaw> {
 				&& BatchStatus.newInstance(BatchStatusEnum.W).equals(h.getAtStatus())
 				&& SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
 				&& Direction.newInstance(DirectionEnum.IMPORT).equals(h.getDirection())
+				&& StringUtils.equals(h.getWorkListType(), "USER")
 				&& h.getConfig()!=null
 			)
 			.forEach(header -> {
