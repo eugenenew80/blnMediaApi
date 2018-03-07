@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.emcos.schefule;
+package kz.kegoc.bln.imp.emcos.schedule;
 
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.entity.data.AtTimeValueRaw;

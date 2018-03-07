@@ -1,9 +1,9 @@
 package kz.kegoc.bln.ejb.interceptor;
 
 import kz.kegoc.bln.exp.emcos.schedule.PeriodTimeValueExp;
-import kz.kegoc.bln.imp.emcos.schefule.AutoAtTimeValueImp;
-import kz.kegoc.bln.imp.emcos.schefule.AutoPeriodTimeValueImp;
-import kz.kegoc.bln.imp.emcos.schefule.ManualPeriodTimeValueImp;
+import kz.kegoc.bln.imp.emcos.schedule.AutoAtTimeValueImp;
+import kz.kegoc.bln.imp.emcos.schedule.AutoPeriodTimeValueImp;
+import kz.kegoc.bln.imp.emcos.schedule.ManualPeriodTimeValueImp;
 
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.Interceptor;

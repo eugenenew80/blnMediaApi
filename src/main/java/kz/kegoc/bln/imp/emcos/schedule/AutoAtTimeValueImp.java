@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.emcos.schefule;
+package kz.kegoc.bln.imp.emcos.schedule;
 
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
