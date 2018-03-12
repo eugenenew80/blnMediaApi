@@ -1,6 +1,6 @@
 package kz.kegoc.bln.ejb.interceptor;
 
-import kz.kegoc.bln.exp.emcos.schedule.PeriodTimeValueExp;
+import kz.kegoc.bln.exp.ftp.schedule.PeriodTimeValueExp;
 import kz.kegoc.bln.imp.emcos.schedule.AutoAtTimeValueImp;
 import kz.kegoc.bln.imp.emcos.schedule.AutoPeriodTimeValueImp;
 import kz.kegoc.bln.imp.emcos.schedule.ManualPeriodTimeValueImp;

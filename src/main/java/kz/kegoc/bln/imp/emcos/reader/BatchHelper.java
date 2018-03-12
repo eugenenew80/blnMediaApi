@@ -14,7 +14,6 @@ import javax.ejb.*;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
 
@@ -24,8 +23,6 @@ public class BatchHelper {
     private static final Logger logger = LoggerFactory.getLogger(BatchHelper.class);
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    @Lock(WRITE)
-    @AccessTimeout(value=60000)
     public Batch createBatch(Batch batch) {
         batch = batchService.create(batch);
         updateHeader(batch, batch.getWorkListHeader());
@@ -34,8 +31,6 @@ public class BatchHelper {
 
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    @Lock(WRITE)
-    @AccessTimeout(value=60000)
     public Batch updateBatch(Batch batch, Exception e, Long recCount) {
         batch.setEndDate(LocalDateTime.now());
         if (e!=null) {
@@ -52,6 +47,9 @@ public class BatchHelper {
         return batch;
     }
 
+
+    @Lock(WRITE)
+    @AccessTimeout(value=60000)
     private WorkListHeader updateHeader(Batch batch, WorkListHeader header) {
         if (header==null) return null;
 
