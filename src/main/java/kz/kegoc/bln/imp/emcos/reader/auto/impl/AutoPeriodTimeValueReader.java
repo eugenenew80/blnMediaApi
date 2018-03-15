@@ -134,7 +134,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private PeriodTimeValueGateway ptGateway;
+	private PeriodTimeValueImpGateway ptGateway;
 
 	@Inject
 	private WorkListHeaderService workListHeaderService;

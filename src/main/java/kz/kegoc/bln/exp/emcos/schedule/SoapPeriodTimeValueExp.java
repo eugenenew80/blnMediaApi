@@ -1,5 +1,6 @@
-package kz.kegoc.bln.exp.ftp.schedule;
+package kz.kegoc.bln.exp.emcos.schedule;
 
+import kz.kegoc.bln.ejb.cdi.annotation.SOAP;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.entity.data.PeriodTimeValue;
 import kz.kegoc.bln.exp.Exporter;
@@ -9,25 +10,24 @@ import org.slf4j.LoggerFactory;
 
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 @Singleton
-public class PeriodTimeValueExp implements Exporter {
-    private static final Logger logger = LoggerFactory.getLogger(PeriodTimeValueExp.class);
+public class SoapPeriodTimeValueExp implements Exporter {
+    private static final Logger logger = LoggerFactory.getLogger(SoapPeriodTimeValueExp.class);
 
-    //@ProducerMonitor
-    //@Schedule(minute = "*/1", hour = "*", persistent = false)
+    @ProducerMonitor
+    @Schedule(minute = "*/1", hour = "*", persistent = false)
     public void runExport() {
         try {
             sender.send();
         }
 
         catch (Exception e) {
-            logger.error("PeriodTimeValueExp.runExport failed: " + e.getMessage());
+            logger.error("SoapPeriodTimeValueExp.runExport failed: " + e.getMessage());
         }
     }
 
-    @Inject @Default
+    @Inject @SOAP
     private Sender<PeriodTimeValue> sender;
 }

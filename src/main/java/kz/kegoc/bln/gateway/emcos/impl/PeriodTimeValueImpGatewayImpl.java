@@ -8,7 +8,7 @@ import kz.kegoc.bln.entity.data.ConnectionConfig;
 import kz.kegoc.bln.entity.data.InputMethod;
 import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
 import kz.kegoc.bln.entity.data.ReceivingMethod;
-import kz.kegoc.bln.gateway.emcos.PeriodTimeValueGateway;
+import kz.kegoc.bln.gateway.emcos.PeriodTimeValueImpGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.registry.emcos.TemplateRegistry;
 import org.apache.commons.codec.binary.Base64;
@@ -30,18 +30,18 @@ import static java.util.Collections.*;
 import static java.util.stream.Collectors.groupingBy;
 
 @Singleton
-public class PeriodTimeValueGatewayImpl implements PeriodTimeValueGateway {
-    private static final Logger logger = LoggerFactory.getLogger(PeriodTimeValueGatewayImpl.class);
+public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway {
+    private static final Logger logger = LoggerFactory.getLogger(PeriodTimeValueImpGatewayImpl.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HH:mm:'00000'");
     private List<MeteringPointCfg> points;
     private ConnectionConfig config;
 
-    public PeriodTimeValueGateway points(List<MeteringPointCfg> points) {
+    public PeriodTimeValueImpGateway points(List<MeteringPointCfg> points) {
         this.points = points;
         return this;
     }
 
-    public PeriodTimeValueGateway config(ConnectionConfig config) {
+    public PeriodTimeValueImpGateway config(ConnectionConfig config) {
         this.config = config;
         return this;
     }

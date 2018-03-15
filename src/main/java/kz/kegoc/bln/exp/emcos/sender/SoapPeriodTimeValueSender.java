@@ -1,15 +1,15 @@
-package kz.kegoc.bln.imp.emcos.reader.manual.impl;
+package kz.kegoc.bln.exp.emcos.sender;
 
+import kz.kegoc.bln.ejb.cdi.annotation.SOAP;
 import kz.kegoc.bln.entity.common.BatchStatusEnum;
 import kz.kegoc.bln.entity.common.DirectionEnum;
 import kz.kegoc.bln.entity.common.ParamTypeEnum;
 import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
+import kz.kegoc.bln.exp.ftp.sender.Sender;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
-import kz.kegoc.bln.gateway.emcos.PeriodTimeValueImpGateway;
+import kz.kegoc.bln.gateway.emcos.PeriodTimeValueExpGateway;
 import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
-import kz.kegoc.bln.imp.emcos.reader.manual.ManualReader;
-import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,28 +18,36 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import static kz.kegoc.bln.entity.data.ParamType.newInstance;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 @Stateless
-public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> {
-	private static final Logger logger = LoggerFactory.getLogger(ManualPeriodTimeReader.class);
+@SOAP
+public class SoapPeriodTimeValueSender implements Sender<PeriodTimeValue> {
+	private static final Logger logger = LoggerFactory.getLogger(SoapPeriodTimeValueSender.class);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-	public void read() {
-		logger.debug("ManualPeriodTimeReader.read started");
+	public void send() {
+		AtomicBoolean flag = new AtomicBoolean(false);
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
-				&& BatchStatus.newInstance(BatchStatusEnum.W).equals(h.getPtStatus())
 				&& SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
-				&& Direction.newInstance(DirectionEnum.IMPORT).equals(h.getDirection())
-				&& StringUtils.equals(h.getWorkListType(), "USER")
+				&& Direction.newInstance(DirectionEnum.EXPORT).equals(h.getDirection())
+				&& (BatchStatus.newInstance(BatchStatusEnum.W).equals(h.getPtStatus()))
+				&& StringUtils.equals(h.getWorkListType(), "SYS")
 				&& h.getConfig()!=null
 			)
 			.forEach(header -> {
-				logger.info("Import data started");
+				if (!flag.get())
+					logger.info("SoapPeriodTimeValueSender.read started");
+
+				flag.set(true);
+
 				logger.info("headerId: " + header.getId());
 				logger.info("url: " + header.getConfig().getUrl());
 				logger.info("user: " + header.getConfig().getUserName());
@@ -56,50 +64,58 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 				}
 
 				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.PT));
-
-				Long recCount = 0l;
 				try {
-					List<PeriodTimeValueRaw> ptList = ptGateway
+					ptGateway
 						.config(header.getConfig())
 						.points(points)
-						.request();
+						.send();
 
-					batchHelper.savePtData(batch, ptList);
-					recCount = recCount + ptList.size();
-
-					lastLoadInfoService.pcUpdateLastDate(batch.getId());
-					lastLoadInfoService.pcLoad(batch.getId());
-					batchHelper.updateBatch(batch, null, recCount);
+					batchHelper.updateBatch(batch, null, (long)points.size());
 				}
 				catch (Exception e) {
-					logger.error("ManualPeriodTimeReader.read failed: " + e.getMessage());
+					logger.error("SoapPeriodTimeValueSender.send failed: " + e.getMessage());
 					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
-		logger.debug("ManualPeriodTimeReader.read completed");
+		if (flag.get())
+			logger.info("SoapPeriodTimeValueSender.send completed");
 	}
 
 
 	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH");
+
 		List<MeteringPointCfg> points = new ArrayList<>();
+		/*
 		lines.stream()
 			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.PT)))
 			.forEach(line -> {
-				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, line.getStartDate(), line.getEndDate());
-				if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
-					points.add(mpc);
+				MeteringPointCfg mpc = new MeteringPointCfg();
+				points.add(mpc);
 			});
+		*/
+
+		MeteringPointCfg mpc = new MeteringPointCfg();
+		mpc.setSourceParamCode("709");
+		mpc.setParamCode("A+");
+		mpc.setInterval(3600);
+		mpc.setVal(123d);
+		mpc.setSourceMeteringPointCode("113440990999999999");
+
+		LocalDateTime startTime = LocalDateTime.parse("12.03.2018 00", timeFormatter);
+		LocalDateTime endTime   = LocalDateTime.parse("12.03.2018 01", timeFormatter);
+
+		mpc.setStartTime(startTime);
+		mpc.setEndTime(endTime);
+		points.add(mpc);
 
 		return points;
 	}
 
 
 	@Inject
-	private LastLoadInfoService lastLoadInfoService;
-
-	@Inject
-	private PeriodTimeValueImpGateway ptGateway;
+	private PeriodTimeValueExpGateway ptGateway;
 
 	@Inject
 	private WorkListHeaderService workListHeaderService;

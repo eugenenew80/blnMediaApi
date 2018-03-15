@@ -14,4 +14,5 @@ public class MeteringPointCfg {
 	private Integer interval;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+	private Double val;
 }

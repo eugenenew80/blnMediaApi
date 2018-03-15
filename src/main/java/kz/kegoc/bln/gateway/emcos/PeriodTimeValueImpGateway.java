@@ -7,10 +7,10 @@ import javax.ejb.Local;
 import java.util.List;
 
 @Local
-public interface PeriodTimeValueGateway {
-    PeriodTimeValueGateway config(ConnectionConfig config);
+public interface PeriodTimeValueImpGateway {
+    PeriodTimeValueImpGateway config(ConnectionConfig config);
 
-    PeriodTimeValueGateway points(List<MeteringPointCfg> points);
+    PeriodTimeValueImpGateway points(List<MeteringPointCfg> points);
 
     List<PeriodTimeValueRaw> request() throws Exception;
 }
