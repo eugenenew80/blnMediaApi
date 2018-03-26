@@ -4,6 +4,7 @@ import kz.kegoc.bln.exp.ftp.schedule.PeriodTimeValueExp;
 import kz.kegoc.bln.imp.emcos.schedule.AutoAtTimeValueImp;
 import kz.kegoc.bln.imp.emcos.schedule.AutoPeriodTimeValueImp;
 import kz.kegoc.bln.imp.emcos.schedule.ManualPeriodTimeValueImp;
+import kz.kegoc.bln.imp.oic.schedule.AutoOicDataImp;
 
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.Interceptor;
@@ -17,6 +18,7 @@ public class ProducerInterceptor {
     private boolean manualAtTimeValueImp = true;
     private boolean manualPeriodTimeValueImp = true;
     private boolean periodTimeValueExp = true;
+    private boolean autoOicDataImp = true;
 
     @AroundTimeout
     public Object monitor(InvocationContext ctx) throws Exception {
@@ -37,6 +39,9 @@ public class ProducerInterceptor {
 
         if (aClass == PeriodTimeValueExp.class)
             flag = periodTimeValueExp;
+
+        if (aClass == AutoOicDataImp.class)
+            flag = autoOicDataImp;
 
         if (flag) return ctx.proceed();
         return null;
