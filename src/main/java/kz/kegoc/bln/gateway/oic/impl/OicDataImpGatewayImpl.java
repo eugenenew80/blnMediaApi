@@ -35,6 +35,6 @@ public class OicDataImpGatewayImpl implements OicDataImpGateway {
         Invocation.Builder invocationBuilder = telemetryWebTarget.request(MediaType.APPLICATION_JSON);
         List<Telemetry> response = invocationBuilder.get((new GenericType<List<Telemetry>>(){}));
 
-        response.stream().forEach(l -> logger.info(l.toString()));
+        //response.stream().forEach(l -> logger.info(l.toString()));
     }
 }
