@@ -58,7 +58,7 @@ public class AutoPeriodTimeValueReader implements AutoReader<PeriodTimeValueRaw>
 
 				final List<List<MeteringPointCfg>> groupsPoints = range(0, points.size())
 					.boxed()
-					.collect(groupingBy(index -> index / 400))
+					.collect(groupingBy(index -> index / 100))
 					.values()
 					.stream()
 					.map(indices -> indices

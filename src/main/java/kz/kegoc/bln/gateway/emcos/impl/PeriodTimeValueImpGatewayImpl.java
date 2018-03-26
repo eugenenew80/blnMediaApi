@@ -47,15 +47,15 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
     }
 
     public List<PeriodTimeValueRaw> request() throws Exception {
-        logger.info("FtpGatewayImpl.request started");
+        logger.info("PeriodTimeValueImpGatewayImpl.request started");
 
         if (config ==null) {
-            logger.warn("Config is empty, FtpGatewayImpl.request stopped");
+            logger.warn("Config is empty, PeriodTimeValueImpGatewayImpl.request stopped");
             return emptyList();
         }
 
         if (points ==null || points.isEmpty()) {
-            logger.warn("List of points is empty, FtpGatewayImpl.request stopped");
+            logger.warn("List of points is empty, PeriodTimeValueImpGatewayImpl.request stopped");
             return emptyList();
         }
 
@@ -64,7 +64,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
             logger.info("Send http request for metering data...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, FtpGatewayImpl.request stopped");
+            	logger.info("Request body is empty, PeriodTimeValueImpGatewayImpl.request stopped");
                 return emptyList();
             }
 
@@ -76,11 +76,11 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("FtpGatewayImpl.request competed");
+            logger.info("PeriodTimeValueImpGatewayImpl.request competed");
         }
 
         catch (Exception e) {
-            logger.error("FtpGatewayImpl.request failed: " + e.toString());
+            logger.error("PeriodTimeValueImpGatewayImpl.request failed: " + e.toString());
             throw e;
         }
 
@@ -88,7 +88,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
     }
 
     private String buildBody() {
-    	logger.debug("FtpGatewayImpl.buildBody started");
+    	logger.debug("PeriodTimeValueImpGatewayImpl.buildBody started");
 
     	String strPoints = points.stream()
             .map( p-> buildPoint(p))
@@ -97,7 +97,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
         logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, FtpGatewayImpl.buildBody stopped");
+        	logger.debug("List of points is empty, PeriodTimeValueImpGatewayImpl.buildBody stopped");
             return "";
         }
 
@@ -117,7 +117,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
         	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
         logger.trace("body for request metering data: " + body);
 
-        logger.debug("FtpGatewayImpl.buildBody completed");
+        logger.debug("PeriodTimeValueImpGatewayImpl.buildBody completed");
         return body;
     }
 
@@ -130,7 +130,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
     }
 
     private List<PeriodTimeValueRaw> parseAnswer(String answer) throws Exception {
-    	logger.info("FtpGatewayImpl.parseAnswer started");
+    	logger.info("PeriodTimeValueImpGatewayImpl.parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -185,7 +185,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
         });
         logger.debug("find unit codes for list completed");
 
-        logger.info("FtpGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("PeriodTimeValueImpGatewayImpl.parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 
