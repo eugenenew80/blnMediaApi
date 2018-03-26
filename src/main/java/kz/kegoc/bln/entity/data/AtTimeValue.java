@@ -14,13 +14,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of= {"id"})
 public class AtTimeValue implements MeteringValue {
 	private Long id;
-	private SourceSystemEnum sourceSystemCode;
+	private SourceType sourceType;
 	private String sourceMeteringPointCode;
 	private String sourceParamCode;
 	private String sourceUnitCode;
 	private LocalDateTime meteringDate;
-	private ReceivingMethod receivingMethod;
-	private InputMethod inputMethod;
 	private Integer interval;
 	private Double val;
 	private MeteringPoint meteringPoint;

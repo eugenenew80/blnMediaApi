@@ -267,11 +267,6 @@
 				/>
 			</id>
 
-			<basic name="sourceSystemCode">
-				<column name="source_system_code" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
 			<basic name="sourceMeteringPointCode">
 				<column name="source_metering_point_code" />
 			</basic>
@@ -313,12 +308,8 @@
 				<column name="last_update_date" />
 			</basic>
 
-			<many-to-one name="inputMethod">
-				<join-column name="input_method" />
-			</many-to-one>
-
-			<many-to-one name="receivingMethod">
-				<join-column name="receiving_method" />
+			<many-to-one name="sourceType">
+				<join-column name="source_type_id"/>
 			</many-to-one>
 
 			<many-to-one name="unit">
@@ -361,11 +352,6 @@
 				/>
 			</id>
 
-			<basic name="sourceSystemCode">
-				<column name="source_system_code" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
 			<basic name="sourceMeteringPointCode">
 				<column name="source_metering_point_code" />
 			</basic>
@@ -403,12 +389,8 @@
 				<column name="last_update_date" />
 			</basic>
 
-			<many-to-one name="inputMethod">
-				<join-column name="input_method" />
-			</many-to-one>
-
-			<many-to-one name="receivingMethod">
-				<join-column name="receiving_method" />
+			<many-to-one name="sourceType">
+				<join-column name="source_type_id"/>
 			</many-to-one>
 
 			<many-to-one name="unit">
@@ -894,6 +876,51 @@
 			<id name="code">
 				<column name="code" />
 			</id>
+		</attributes>
+	</entity>
+
+
+	<entity class="kz.kegoc.bln.entity.data.SourceType">
+		<table name="media_source_types" schema="apps"/>
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="SEQUENCE" generator="media_source_types_gen" />
+				<sequence-generator
+						name="media_source_types_gen"
+						sequence-name="apps.media_source_types_s"
+						allocation-size="1"
+				/>
+			</id>
+
+			<basic name="createDate">
+				<column name="create_date" />
+			</basic>
+
+			<basic name="lastUpdateDate">
+				<column name="last_update_date" />
+			</basic>
+
+			<basic name="sourceSystemCode">
+				<column name="source_system_code" />
+				<enumerated>STRING</enumerated>
+			</basic>
+
+			<many-to-one name="inputMethod">
+				<join-column name="input_method" />
+			</many-to-one>
+
+			<many-to-one name="receivingMethod">
+				<join-column name="receiving_method" />
+			</many-to-one>
+
+			<many-to-one name="createBy" fetch="LAZY">
+				<join-column name="create_by" />
+			</many-to-one>
+
+			<many-to-one name="lastUpdateBy" fetch="LAZY">
+				<join-column name="last_update_by" />
+			</many-to-one>
 		</attributes>
 	</entity>
 </entity-mappings>

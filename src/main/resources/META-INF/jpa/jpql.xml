@@ -71,7 +71,7 @@
             where
             	    t.sourceMeteringPointCode=:sourceMeteringPointCode
             	and t.meteringDate=:meteringDate
-            	and t.sourceSystemCode=:sourceSystemCode
+                and t.sourceType.sourceSystemCode=:sourceSystemCode
             	and t.status=:status
             	and t.sourceUnitCode=:sourceUnitCode
             	and t.sourceParamCode=:sourceParamCode
@@ -123,7 +123,7 @@
             where
             	    t.sourceMeteringPointCode=:sourceMeteringPointCode
             	and t.meteringDate=:meteringDate
-            	and t.sourceSystemCode=:sourceSystemCode
+                and t.sourceType.sourceSystemCode=:sourceSystemCode
             	and t.status=:status
             	and t.sourceUnitCode=:sourceUnitCode
             	and t.sourceParamCode=:sourceParamCode

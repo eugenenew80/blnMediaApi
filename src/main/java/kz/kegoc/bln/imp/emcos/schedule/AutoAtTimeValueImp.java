@@ -27,7 +27,6 @@ public class AutoAtTimeValueImp implements Importer {
 		}
     }
 
-
 	@Inject
 	private AutoReader<AtTimeValueRaw> reader;
 }
