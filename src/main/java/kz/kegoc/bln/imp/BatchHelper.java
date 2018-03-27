@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.emcos.reader;
+package kz.kegoc.bln.imp;
 
 import kz.kegoc.bln.entity.common.BatchStatusEnum;
 import kz.kegoc.bln.entity.common.ParamTypeEnum;

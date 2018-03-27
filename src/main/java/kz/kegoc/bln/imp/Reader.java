@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.emcos.reader;
+package kz.kegoc.bln.imp;
 
 import javax.ejb.Local;
 

@@ -9,7 +9,7 @@ import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.exp.ftp.sender.Sender;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueExpGateway;
-import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
+import kz.kegoc.bln.imp.BatchHelper;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

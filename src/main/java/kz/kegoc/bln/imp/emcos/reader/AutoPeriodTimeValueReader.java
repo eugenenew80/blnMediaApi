@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.emcos.reader.auto.impl;
+package kz.kegoc.bln.imp.emcos.reader;
 
 import java.time.*;
 import java.time.temporal.ChronoUnit;
@@ -6,14 +6,17 @@ import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
 
+import kz.kegoc.bln.ejb.cdi.annotation.Auto;
+import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
 import kz.kegoc.bln.entity.common.DirectionEnum;
 import kz.kegoc.bln.entity.common.ParamTypeEnum;
 import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
-import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
-import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
-import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
-import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
+import kz.kegoc.bln.gateway.emcos.*;
+import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
+import kz.kegoc.bln.imp.BatchHelper;
+import kz.kegoc.bln.imp.Reader;
+import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,12 +27,13 @@ import static java.util.stream.IntStream.range;
 import static kz.kegoc.bln.entity.data.ParamType.newInstance;
 
 @Stateless
-public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
-	private static final Logger logger = LoggerFactory.getLogger(AutoAtTimeValueReader.class);
+@Emcos @Auto
+public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
+	private static final Logger logger = LoggerFactory.getLogger(AutoPeriodTimeValueReader.class);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		logger.info("AutoAtTimeValueReader.read started");
+		logger.info("AutoPeriodTimeValueReader.read started");
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
@@ -54,11 +58,11 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 					return;
 				}
 
-				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.AT));
+				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.PT));
 
 				final List<List<MeteringPointCfg>> groupsPoints = range(0, points.size())
 					.boxed()
-					.collect(groupingBy(index -> index / 400))
+					.collect(groupingBy(index -> index / 100))
 					.values()
 					.stream()
 					.map(indices -> indices
@@ -73,27 +77,27 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 						List<MeteringPointCfg> groupPoints = groupsPoints.get(i);
 						logger.info("group of points num: " + (i + 1));
 
-						List<AtTimeValueRaw> atList = atGateway
+						List<PeriodTimeValueRaw> ptList = ptGateway
 							.config(header.getConfig())
 							.points(groupPoints)
 							.request();
 
-						batchHelper.saveAtData(batch, atList);
-						recCount = recCount + atList.size();
+						batchHelper.savePtData(batch, ptList);
+						recCount = recCount + ptList.size();
 					}
 
-					lastLoadInfoService.mrUpdateLastDate(batch.getId());
-					lastLoadInfoService.mrLoad(batch.getId());
+					lastLoadInfoService.pcUpdateLastDate(batch.getId());
+					lastLoadInfoService.pcLoad(batch.getId());
 					batchHelper.updateBatch(batch, null, recCount);
 				}
 				catch (Exception e) {
-					logger.error("AutoAtTimeValueReader.read failed: " + e.getMessage());
+					logger.error("AutoPeriodTimeValueReader.read failed: " + e.getMessage());
 					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
-		logger.info("AutoAtTimeValueReader.read completed");
-    }
+		logger.info("AutoPeriodTimeValueReader.read completed");
+	}
 
 
 	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
@@ -101,11 +105,11 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
-			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
+			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.PT)))
 			.forEach(line -> {
 				LastLoadInfo lastLoadInfo = batchHelper.getLastLoadIfo(lastLoadInfoList, line);
 				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, buildStartTime(lastLoadInfo), buildRequestedDateTime());
-				if (mpc!=null && mpc.getStartTime().isBefore(mpc.getEndTime()))
+				if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
 					points.add(mpc);
 			});
 
@@ -114,14 +118,19 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 
 
 	private LocalDateTime buildRequestedDateTime() {
-		return LocalDate.now(ZoneId.of("UTC+1")).plusDays(1).atStartOfDay();
+		return LocalDateTime.now(ZoneId.of("UTC+1")).minusMinutes(15).truncatedTo(ChronoUnit.HOURS);
 	}
 
 	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)
-			return lastLoadInfo.getLastLoadDate().plusDays(1).truncatedTo(ChronoUnit.DAYS);
-		else
-			return LocalDate.now(ZoneId.of("UTC+1")).minusDays(1).atStartOfDay();
+		LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).minusDays(1).atStartOfDay();
+		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
+			LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
+			startTime = lastLoadDate.getMinute() < 45
+					? lastLoadDate.truncatedTo(ChronoUnit.HOURS)
+					: lastLoadDate.plusMinutes(15);
+		}
+
+		return startTime;
 	}
 
 
@@ -129,7 +138,7 @@ public class AutoAtTimeValueReader implements AutoReader<AtTimeValueRaw> {
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private AtTimeValueGateway atGateway;
+	private PeriodTimeValueImpGateway ptGateway;
 
 	@Inject
 	private WorkListHeaderService workListHeaderService;

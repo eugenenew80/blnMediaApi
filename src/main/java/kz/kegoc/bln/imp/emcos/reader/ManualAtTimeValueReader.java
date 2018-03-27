@@ -1,14 +1,16 @@
-package kz.kegoc.bln.imp.emcos.reader.manual.impl;
+package kz.kegoc.bln.imp.emcos.reader;
 
+import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
+import kz.kegoc.bln.ejb.cdi.annotation.Manual;
 import kz.kegoc.bln.entity.common.BatchStatusEnum;
 import kz.kegoc.bln.entity.common.DirectionEnum;
 import kz.kegoc.bln.entity.common.ParamTypeEnum;
 import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
-import kz.kegoc.bln.gateway.emcos.PeriodTimeValueImpGateway;
-import kz.kegoc.bln.imp.emcos.reader.BatchHelper;
-import kz.kegoc.bln.imp.emcos.reader.manual.ManualReader;
+import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
+import kz.kegoc.bln.imp.BatchHelper;
+import kz.kegoc.bln.imp.Reader;
 import kz.kegoc.bln.service.data.LastLoadInfoService;
 import kz.kegoc.bln.service.data.WorkListHeaderService;
 import org.apache.commons.lang3.StringUtils;
@@ -23,16 +25,17 @@ import java.util.List;
 import static kz.kegoc.bln.entity.data.ParamType.newInstance;
 
 @Stateless
-public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> {
-	private static final Logger logger = LoggerFactory.getLogger(ManualPeriodTimeReader.class);
+@Emcos @Manual
+public class ManualAtTimeValueReader implements Reader<AtTimeValueRaw> {
+	private static final Logger logger = LoggerFactory.getLogger(ManualAtTimeValueReader.class);
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		logger.debug("ManualPeriodTimeReader.read started");
+		logger.debug("ManualAtTimeValueReader.read started");
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
-				&& BatchStatus.newInstance(BatchStatusEnum.W).equals(h.getPtStatus())
+				&& BatchStatus.newInstance(BatchStatusEnum.W).equals(h.getAtStatus())
 				&& SourceSystem.newInstance(SourceSystemEnum.EMCOS).equals(h.getSourceSystemCode())
 				&& Direction.newInstance(DirectionEnum.IMPORT).equals(h.getDirection())
 				&& StringUtils.equals(h.getWorkListType(), "USER")
@@ -55,36 +58,36 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 					return;
 				}
 
-				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.PT));
+				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.AT));
 
 				Long recCount = 0l;
 				try {
-					List<PeriodTimeValueRaw> ptList = ptGateway
+					List<AtTimeValueRaw> atList = atGateway
 						.config(header.getConfig())
 						.points(points)
 						.request();
 
-					batchHelper.savePtData(batch, ptList);
-					recCount = recCount + ptList.size();
+					batchHelper.saveAtData(batch, atList);
+					recCount = recCount + atList.size();
 
-					lastLoadInfoService.pcUpdateLastDate(batch.getId());
-					lastLoadInfoService.pcLoad(batch.getId());
+					lastLoadInfoService.mrUpdateLastDate(batch.getId());
+					lastLoadInfoService.mrLoad(batch.getId());
 					batchHelper.updateBatch(batch, null, recCount);
 				}
 				catch (Exception e) {
-					logger.error("ManualPeriodTimeReader.read failed: " + e.getMessage());
+					logger.error("ManualAtTimeValueReader.read failed: " + e.getMessage());
 					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
-		logger.debug("ManualPeriodTimeReader.read completed");
+		logger.debug("ManualAtTimeValueReader.read completed");
 	}
 
 
 	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
-			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.PT)))
+			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
 			.forEach(line -> {
 				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, line.getStartDate(), line.getEndDate());
 				if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
@@ -99,7 +102,7 @@ public class ManualPeriodTimeReader implements ManualReader<PeriodTimeValueRaw> 
 	private LastLoadInfoService lastLoadInfoService;
 
 	@Inject
-	private PeriodTimeValueImpGateway ptGateway;
+	private AtTimeValueGateway atGateway;
 
 	@Inject
 	private WorkListHeaderService workListHeaderService;

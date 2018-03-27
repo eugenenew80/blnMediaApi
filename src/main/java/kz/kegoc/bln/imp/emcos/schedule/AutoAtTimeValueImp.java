@@ -4,29 +4,32 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 
+import kz.kegoc.bln.ejb.cdi.annotation.Auto;
+import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
 import kz.kegoc.bln.entity.data.AtTimeValueRaw;
+import kz.kegoc.bln.imp.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.imp.Importer;
-import kz.kegoc.bln.imp.emcos.reader.auto.AutoReader;
+import kz.kegoc.bln.imp.ImportRunner;
 
 @Singleton
-public class AutoAtTimeValueImp implements Importer {
+public class AutoAtTimeValueImp implements ImportRunner {
 	private static final Logger logger = LoggerFactory.getLogger(AutoAtTimeValueImp.class);
 
 	@ProducerMonitor
 	@Schedule(minute = "*/30", hour = "*", persistent = false)
-	public void runImport() {
+	public void run() {
 		try {
 			reader.read();
 		}
 		
 		catch (Exception e) {
-			logger.error("AutoAtTimeValueImp.runImport failed: " + e.getMessage());
+			logger.error("AutoAtTimeValueImp.run failed: " + e.getMessage());
 		}
     }
 
 	@Inject
-	private AutoReader<AtTimeValueRaw> reader;
+	@Emcos @Auto
+	private Reader<AtTimeValueRaw> reader;
 }
