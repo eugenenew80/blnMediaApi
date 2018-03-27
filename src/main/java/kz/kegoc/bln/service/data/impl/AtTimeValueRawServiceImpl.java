@@ -1,6 +1,6 @@
 package kz.kegoc.bln.service.data.impl;
 
-import kz.kegoc.bln.entity.data.AtTimeValueRaw;
+import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.repository.data.MeteringValueRepository;
 import kz.kegoc.bln.service.data.AbstractMeteringValueService;
 import kz.kegoc.bln.service.data.MeteringValueService;

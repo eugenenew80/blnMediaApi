@@ -16,6 +16,7 @@ import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.imp.BatchHelper;
 import kz.kegoc.bln.imp.Reader;
+import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.service.data.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

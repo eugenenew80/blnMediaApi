@@ -3,7 +3,7 @@ package kz.kegoc.bln.imp.emcos.schedule;
 import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
 import kz.kegoc.bln.ejb.cdi.annotation.Manual;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.entity.data.AtTimeValueRaw;
+import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.imp.ImportRunner;
 import kz.kegoc.bln.imp.Reader;
 import org.slf4j.Logger;

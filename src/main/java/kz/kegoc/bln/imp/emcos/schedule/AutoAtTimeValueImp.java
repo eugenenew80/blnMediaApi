@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import kz.kegoc.bln.ejb.cdi.annotation.Auto;
 import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
-import kz.kegoc.bln.entity.data.AtTimeValueRaw;
+import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.imp.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -13,7 +13,7 @@ import kz.kegoc.bln.entity.common.ParamTypeEnum;
 import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.*;
 import kz.kegoc.bln.gateway.emcos.*;
-import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
+import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.imp.BatchHelper;
 import kz.kegoc.bln.imp.Reader;
 import kz.kegoc.bln.service.data.LastLoadInfoService;

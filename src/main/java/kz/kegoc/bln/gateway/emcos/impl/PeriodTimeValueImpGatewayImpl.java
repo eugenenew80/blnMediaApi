@@ -6,7 +6,7 @@ import kz.kegoc.bln.entity.common.ReceivingMethodEnum;
 import kz.kegoc.bln.entity.common.SourceSystemEnum;
 import kz.kegoc.bln.entity.data.ConnectionConfig;
 import kz.kegoc.bln.entity.data.InputMethod;
-import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
+import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.entity.data.ReceivingMethod;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueImpGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;

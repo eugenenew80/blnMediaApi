@@ -119,7 +119,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.data.PeriodTimeValueRaw">
+	<entity class="kz.kegoc.bln.imp.raw.PeriodTimeValueRaw">
 		<table name="media_period_time_values_raw" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -188,7 +188,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.AtTimeValueRaw">
+	<entity class="kz.kegoc.bln.imp.raw.AtTimeValueRaw">
 		<table name="media_at_time_values_raw" schema="apps"/>
 		<attributes>
 			<id name="id">

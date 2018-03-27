@@ -1,11 +1,11 @@
 package kz.kegoc.bln.gateway.oic.impl;
 
-import kz.kegoc.bln.entity.data.Telemetry;
+import kz.kegoc.bln.imp.raw.TelemetryRaw;
 import kz.kegoc.bln.gateway.oic.OicDataImpGateway;
-import kz.kegoc.bln.imp.emcos.schedule.AutoAtTimeValueImp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ejb.Singleton;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -16,25 +16,26 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Singleton
 public class OicDataImpGatewayImpl implements OicDataImpGateway {
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     private static final Logger logger = LoggerFactory.getLogger(OicDataImpGatewayImpl.class);
 
     @Override
-    public void request() throws Exception {
+    public List<TelemetryRaw> request() throws Exception {
         LocalDateTime start = LocalDateTime.of(2018, 3, 20, 15, 0, 0);
         LocalDateTime end = LocalDateTime.of(2018, 3, 20, 15, 5, 0);
 
         Client client = ClientBuilder.newClient();
 
         WebTarget webTarget = client.target("http://localhost:8081");
-        WebTarget telemetryWebTarget = webTarget.path("telemetry")
+        WebTarget telemetryWebTarget = webTarget.path("exp/telemetry")
             .queryParam("start", start.format(timeFormatter))
             .queryParam("end", end.format(timeFormatter));
 
         Invocation.Builder invocationBuilder = telemetryWebTarget.request(MediaType.APPLICATION_JSON);
-        List<Telemetry> response = invocationBuilder.get((new GenericType<List<Telemetry>>(){}));
+        List<TelemetryRaw> response = invocationBuilder.get((new GenericType<List<TelemetryRaw>>(){}));
 
-        //response.stream().forEach(l -> logger.info(l.toString()));
+        return response;
     }
 }

@@ -4,7 +4,7 @@ import kz.kegoc.bln.entity.common.ProcessingStatusEnum;
 import kz.kegoc.bln.entity.common.InputMethodEnum;
 import kz.kegoc.bln.entity.common.ReceivingMethodEnum;
 import kz.kegoc.bln.entity.common.SourceSystemEnum;
-import kz.kegoc.bln.entity.data.AtTimeValueRaw;
+import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.entity.data.ConnectionConfig;
 import kz.kegoc.bln.entity.data.InputMethod;
 import kz.kegoc.bln.entity.data.ReceivingMethod;

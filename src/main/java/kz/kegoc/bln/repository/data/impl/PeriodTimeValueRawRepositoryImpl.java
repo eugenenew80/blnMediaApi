@@ -1,6 +1,6 @@
 package kz.kegoc.bln.repository.data.impl;
 
-import kz.kegoc.bln.entity.data.PeriodTimeValueRaw;
+import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.repository.common.AbstractRepository;
 import kz.kegoc.bln.repository.data.MeteringValueRepository;
 import org.slf4j.Logger;

@@ -1,6 +1,9 @@
-package kz.kegoc.bln.entity.data;
+package kz.kegoc.bln.imp.raw;
 
 import kz.kegoc.bln.entity.common.*;
+import kz.kegoc.bln.entity.data.Batch;
+import kz.kegoc.bln.entity.data.InputMethod;
+import kz.kegoc.bln.entity.data.ReceivingMethod;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
