@@ -4,6 +4,7 @@ import kz.kegoc.bln.ejb.cdi.annotation.Auto;
 import kz.kegoc.bln.ejb.cdi.annotation.Oic;
 import kz.kegoc.bln.entity.common.*;
 import kz.kegoc.bln.entity.data.*;
+import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.gateway.oic.OicDataImpGateway;
 import kz.kegoc.bln.imp.BatchHelper;
 import kz.kegoc.bln.imp.Reader;
@@ -20,9 +21,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static kz.kegoc.bln.entity.data.ParamType.newInstance;
 
 @Stateless
 @Oic @Auto
@@ -46,12 +49,14 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 				logger.info("url: " + header.getConfig().getUrl());
 				logger.info("user: " + header.getConfig().getUserName());
 
+				buildPoints(header.getLines());
+
 				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.PT));
 				try {
 					List<PeriodTimeValueRaw> ptList = oicDataImpGateway.request().stream()
 						.map(t -> {
 							PeriodTimeValueRaw pt = new PeriodTimeValueRaw();
-							pt.setInterval(5);
+							pt.setInterval(180);
 							pt.setSourceParamCode(t.getParamCode());
 							pt.setSourceMeteringPointCode(t.getLogPoint().toString());
 							pt.setSourceUnitCode(t.getUnitCode());
@@ -68,6 +73,7 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 					Long retCount = (long)ptList.size();
 
 					batchHelper.savePtData(batch, ptList);
+					lastLoadInfoService.pcUpdateLastDate(batch.getId());
 					lastLoadInfoService.pcLoad(batch.getId());
 					batchHelper.updateBatch(batch, null, retCount);
 				}
@@ -79,6 +85,15 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 
 		logger.info("AutoOicDataReader.read completed");
     }
+
+	private void buildPoints(List<WorkListLine> lines) {
+		lastLoadInfoService.findAll().stream()
+			.filter(l -> l.getSourceParamCode().equals("OIC"))
+			.forEach(l -> {
+				logger.info("sourceMeteringPointCode: " + l.getSourceMeteringPointCode());
+			});
+	}
+
 
 	@Inject
 	private OicDataImpGateway oicDataImpGateway;

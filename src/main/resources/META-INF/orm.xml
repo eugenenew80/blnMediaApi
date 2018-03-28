@@ -432,6 +432,9 @@
         		/>				
 			</id>
 
+			<basic name="sourceSystemCode">
+				<column name="source_system_code" />
+			</basic>
 			<basic name="sourceMeteringPointCode">
 				<column name="source_metering_point_code" />
 			</basic>
