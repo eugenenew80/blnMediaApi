@@ -88,7 +88,7 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 
 	private void buildPoints(List<WorkListLine> lines) {
 		lastLoadInfoService.findAll().stream()
-			.filter(l -> l.getSourceParamCode().equals("OIC"))
+			.filter(l -> l.getSourceSystemCode().equals("OIC"))
 			.forEach(l -> {
 				logger.info("sourceMeteringPointCode: " + l.getSourceMeteringPointCode());
 			});
