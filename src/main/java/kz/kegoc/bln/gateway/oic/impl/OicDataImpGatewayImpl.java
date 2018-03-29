@@ -1,5 +1,12 @@
 package kz.kegoc.bln.gateway.oic.impl;
 
+import kz.kegoc.bln.entity.common.InputMethodEnum;
+import kz.kegoc.bln.entity.common.ProcessingStatusEnum;
+import kz.kegoc.bln.entity.common.ReceivingMethodEnum;
+import kz.kegoc.bln.entity.common.SourceSystemEnum;
+import kz.kegoc.bln.entity.data.InputMethod;
+import kz.kegoc.bln.entity.data.ReceivingMethod;
+import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.imp.raw.TelemetryRaw;
 import kz.kegoc.bln.gateway.oic.OicDataImpGateway;
 import org.slf4j.Logger;
@@ -16,26 +23,78 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Singleton
 public class OicDataImpGatewayImpl implements OicDataImpGateway {
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     private static final Logger logger = LoggerFactory.getLogger(OicDataImpGatewayImpl.class);
 
     @Override
-    public List<TelemetryRaw> request() throws Exception {
-        LocalDateTime start = LocalDateTime.of(2018, 3, 28, 0, 0, 0);
-        LocalDateTime end = LocalDateTime.of(2018, 4, 20, 0, 5, 0);
+    public OicDataImpGateway points(List<String> points) {
+        this.points = points;
+        return this;
+    }
+
+    @Override
+    public OicDataImpGateway startDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+        return this;
+    }
+
+    @Override
+    public OicDataImpGateway endDateTime(LocalDateTime endDateTime) {
+        this.endDateTime = endDateTime;
+        return this;
+    }
+
+    @Override
+    public OicDataImpGateway arcType(String arcType) {
+        this.arcType = arcType;
+        return this;
+    }
+
+    @Override
+    public List<PeriodTimeValueRaw> request() throws Exception {
+        logger.info(startDateTime.toString());
+        logger.info(endDateTime.toString());
 
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target("http://10.8.0.76:8081");
         WebTarget telemetryWebTarget = webTarget.path("exp/telemetry")
-            .queryParam("start", start.format(timeFormatter))
-            .queryParam("end", end.format(timeFormatter))
-            .queryParam("arcType", "MIN-3");
+            .queryParam("start", startDateTime.format(timeFormatter))
+            .queryParam("end", endDateTime.format(timeFormatter))
+            .queryParam("arcType", arcType);
 
-        Invocation.Builder invocationBuilder = telemetryWebTarget.request(MediaType.APPLICATION_JSON);
-        List<TelemetryRaw> response = invocationBuilder.get((new GenericType<List<TelemetryRaw>>(){}));
+        List<TelemetryRaw> response =
+            telemetryWebTarget.request(MediaType.APPLICATION_JSON)
+            .get((new GenericType<List<TelemetryRaw>>(){}));
 
-        return response;
+        return mapToPeriodTimeValue(response);
     }
+
+
+    private List<PeriodTimeValueRaw> mapToPeriodTimeValue(List<TelemetryRaw> teleiemetries) {
+        return teleiemetries.stream()
+            .map(t -> {
+                PeriodTimeValueRaw pt = new PeriodTimeValueRaw();
+                pt.setInterval(180);
+                pt.setSourceParamCode(t.getParamCode());
+                pt.setSourceMeteringPointCode(t.getLogPoint().toString());
+                pt.setSourceUnitCode(t.getUnitCode());
+                pt.setMeteringDate(LocalDateTime.parse(t.getDateTime(), timeFormatter));
+                pt.setVal(t.getVal());
+                pt.setSourceSystemCode(SourceSystemEnum.OIC);
+                pt.setStatus(ProcessingStatusEnum.TMP);
+                pt.setInputMethod(InputMethod.newInstance(InputMethodEnum.AUTO));
+                pt.setReceivingMethod(ReceivingMethod.newInstance(ReceivingMethodEnum.SERVICE));
+                return pt;
+            })
+            .collect(toList());
+    }
+
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private String arcType;
+    private List<String> points;
 }
