@@ -65,6 +65,7 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 						.points(buildPoints(header.getLines()))
 						.startDateTime(startDateTime)
 						.endDateTime(endDateTime)
+						.arcType("MIN-3")
 						.request();
 
 					batchHelper.savePtData(batch, ptList);
