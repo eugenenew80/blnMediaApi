@@ -3,7 +3,7 @@ package kz.kegoc.bln.exp.emcos.schedule;
 import kz.kegoc.bln.ejb.annotation.SOAP;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.exp.ExportRunner;
-import kz.kegoc.bln.exp.ftp.sender.Sender;
+import kz.kegoc.bln.exp.Sender;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

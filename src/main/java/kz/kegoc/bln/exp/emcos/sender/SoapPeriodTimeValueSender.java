@@ -6,7 +6,7 @@ import kz.kegoc.bln.common.enums.DirectionEnum;
 import kz.kegoc.bln.common.enums.ParamTypeEnum;
 import kz.kegoc.bln.common.enums.SourceSystemEnum;
 import kz.kegoc.bln.entity.media.*;
-import kz.kegoc.bln.exp.ftp.sender.Sender;
+import kz.kegoc.bln.exp.Sender;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueExpGateway;
 import kz.kegoc.bln.imp.BatchHelper;

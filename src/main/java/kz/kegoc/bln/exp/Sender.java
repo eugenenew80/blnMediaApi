@@ -1,4 +1,4 @@
-package kz.kegoc.bln.exp.ftp.sender;
+package kz.kegoc.bln.exp;
 
 import javax.ejb.Local;
 

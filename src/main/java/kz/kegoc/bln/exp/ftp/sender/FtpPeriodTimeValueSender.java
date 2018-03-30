@@ -1,11 +1,11 @@
-package kz.kegoc.bln.exp.ftp.sender.impl;
+package kz.kegoc.bln.exp.ftp.sender;
 
 import kz.kegoc.bln.common.enums.BatchStatusEnum;
 import kz.kegoc.bln.common.enums.DirectionEnum;
 import kz.kegoc.bln.common.enums.ParamTypeEnum;
 import kz.kegoc.bln.common.enums.SourceSystemEnum;
 import kz.kegoc.bln.entity.media.*;
-import kz.kegoc.bln.exp.ftp.sender.Sender;
+import kz.kegoc.bln.exp.Sender;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.service.BatchService;
@@ -31,8 +31,8 @@ import static kz.kegoc.bln.entity.media.ParamType.newInstance;
 
 @Stateless
 @Default
-public class PeriodTimeValueSender implements Sender<PeriodTimeValueRaw> {
-    private static final Logger logger = LoggerFactory.getLogger(PeriodTimeValueSender.class);
+public class FtpPeriodTimeValueSender implements Sender<PeriodTimeValueRaw> {
+    private static final Logger logger = LoggerFactory.getLogger(FtpPeriodTimeValueSender.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'_'HHmmss");
 
     public void send() {
