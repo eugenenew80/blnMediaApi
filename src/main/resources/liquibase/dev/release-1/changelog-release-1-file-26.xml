@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    
+    <changeSet id="media-rus-110" logicalFilePath="path-independent" author="ruslan">
+        <comment>Creating table: media_work_list_types</comment>
+        <createTable tableName="media_work_list_types" schemaName="apps" remarks="Справочник тип списков">
+            <column name="code" type="varchar(15)" remarks="Код">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar2(100)" remarks="Наименование">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+	<changeSet id="media-rus-111" logicalFilePath="path-independent" author="ruslan">
+	    <comment>Creating primary key for table: media_work_list_types</comment>
+	    <addPrimaryKey 
+	            columnNames="code"
+	            constraintName="pk_media_work_list_types"
+	            schemaName="apps"
+	            tableName="media_work_list_types"/>
+	</changeSet>
+
+	<changeSet id="media-rus-112" logicalFilePath="path-independent" author="ruslan">
+	    <comment>inserting records into table: media_work_list_types</comment>
+        <insert schemaName="apps"  tableName="media_work_list_types">
+            <column name="code"   type="varchar2(15)"       value="SYS" />
+            <column name="name"   type="varchar(20)"  value="Системные"/>
+        </insert>
+
+        <insert schemaName="apps"  tableName="media_work_list_types">
+            <column name="code"   type="varchar2(15)"       value="USER" />
+            <column name="name"   type="varchar2(100)"  value="Вручную пользователем" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>
