@@ -1,9 +1,9 @@
 package kz.kegoc.bln.gateway.emcos.impl;
 
-import kz.kegoc.bln.entity.data.ConnectionConfig;
+import kz.kegoc.bln.entity.media.ConnectionConfig;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueExpGateway;
-import kz.kegoc.bln.registry.emcos.TemplateRegistry;
+import kz.kegoc.bln.registry.TemplateRegistry;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -36,23 +36,23 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
     }
 
     public void send() throws Exception {
-        logger.info("PeriodTimeValueExpGatewayImpl.send started");
+        logger.info("send started");
 
         if (config ==null) {
-            logger.warn("Config is empty, PeriodTimeValueExpGatewayImpl.send stopped");
+            logger.warn("Config is empty, send stopped");
             return;
         }
 
         if (points ==null || points.isEmpty()) {
-            logger.warn("List of points is empty, PeriodTimeValueExpGatewayImpl.send stopped");
+            logger.warn("List of points is empty, send stopped");
             return;
         }
 
         try {
-            logger.info("Send http request for metering data...");
+            logger.info("Send http request for metering media...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, PeriodTimeValueExpGatewayImpl.send stopped");
+            	logger.info("Request body is empty, send stopped");
                 return;
             }
 
@@ -72,17 +72,17 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
                 e.printStackTrace();
             }
 
-            logger.info("PeriodTimeValueExpGatewayImpl.send competed");
+            logger.info("send competed");
         }
 
         catch (Exception e) {
-            logger.error("PeriodTimeValueExpGatewayImpl.send failed: " + e.toString());
+            logger.error("send failed: " + e.toString());
             throw e;
         }
     }
 
     private String buildBody() {
-    	logger.debug("PeriodTimeValueExpGatewayImpl.buildBody started");
+    	logger.debug("buildBody started");
 
     	String strPoints = points.stream()
             .map( p-> buildPoint(p))
@@ -91,13 +91,13 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
         logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, PeriodTimeValueExpGatewayImpl.buildBody stopped");
+        	logger.debug("List of points is empty, buildBody stopped");
             return "";
         }
 
         String data = templateRegistry.getTemplate("EMCOS_EEML_DATA")
         	.replace("#points#", strPoints);
-        logger.trace("data: " + data);
+        logger.trace("media: " + data);
 
         String property = templateRegistry.getTemplate("EMCOS_EEML_PROPERTY")
         	.replace("#user#", config.getUserName())
@@ -108,8 +108,8 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
 
         String body = templateRegistry.getTemplate("EMCOS_EEML_BODY")
         	.replace("#property#", property)
-        	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.trace("body for request metering data: " + body);
+        	.replace("#media#", Base64.encodeBase64String(data.getBytes()));
+        logger.trace("body for request metering media: " + body);
 
 
         try (PrintWriter out = new PrintWriter("body.xml")) {
@@ -126,7 +126,7 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
             e.printStackTrace();
         }
 
-        logger.debug("PeriodTimeValueExpGatewayImpl.buildBody completed");
+        logger.debug("buildBody completed");
         return body;
     }
 

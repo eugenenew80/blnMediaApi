@@ -1,14 +1,15 @@
 package kz.kegoc.bln.exp.ftp.sender.impl;
 
-import kz.kegoc.bln.entity.common.BatchStatusEnum;
-import kz.kegoc.bln.entity.common.DirectionEnum;
-import kz.kegoc.bln.entity.common.ParamTypeEnum;
-import kz.kegoc.bln.entity.common.SourceSystemEnum;
-import kz.kegoc.bln.entity.data.*;
+import kz.kegoc.bln.common.enums.BatchStatusEnum;
+import kz.kegoc.bln.common.enums.DirectionEnum;
+import kz.kegoc.bln.common.enums.ParamTypeEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
+import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.exp.ftp.sender.Sender;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
-import kz.kegoc.bln.service.data.BatchService;
-import kz.kegoc.bln.service.data.WorkListHeaderService;
+import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
+import kz.kegoc.bln.service.BatchService;
+import kz.kegoc.bln.service.WorkListHeaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ejb.Stateless;
@@ -26,11 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static kz.kegoc.bln.entity.data.ParamType.newInstance;
+import static kz.kegoc.bln.entity.media.ParamType.newInstance;
 
 @Stateless
 @Default
-public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
+public class PeriodTimeValueSender implements Sender<PeriodTimeValueRaw> {
     private static final Logger logger = LoggerFactory.getLogger(PeriodTimeValueSender.class);
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd'_'HHmmss");
 
@@ -47,12 +48,12 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
             )
             .forEach(header -> {
                 if (!flag.get())
-                    logger.warn("PeriodTimeValueSender.send started");
+                    logger.warn("send started");
 
                 flag.set(true);
 
                 if (header.getLines().size()==0) {
-                    logger.warn("List of points is empty, import data stopped");
+                    logger.warn("List of points is empty, import media stopped");
                     return;
                 }
 
@@ -69,7 +70,7 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
                 try {
                     header.getLines().stream()
                         .forEach(line -> {
-                            logger.info("find data for export: " + line.getMeteringPoint().getExternalCode());
+                            logger.info("find media for export: " + line.getMeteringPoint().getExternalCode());
                             query.setParameter("sourceMeteringPointCode", line.getMeteringPoint().getExternalCode());
                             query.setParameter("startDate", header.getStartDate());
                             query.setParameter("endDate", header.getEndDate());
@@ -81,7 +82,7 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
                         recCount += exportData.get(key).size();
 
                     if (recCount==0) {
-                        logger.info("No data found, export data stopped");
+                        logger.info("No media found, export media stopped");
                         return;
                     }
 
@@ -96,13 +97,13 @@ public class PeriodTimeValueSender implements Sender<PeriodTimeValue> {
                 }
 
                 catch (Exception e) {
-                    logger.error("PeriodTimeValueSender.send failed: " + e.getMessage());
+                    logger.error("send failed: " + e.getMessage());
                     errorBatch(header, batch, e);
                 }
             });
 
         if (flag.get())
-            logger.info("PeriodTimeValueSender.send completed");
+            logger.info("send completed");
     }
 
 

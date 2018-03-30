@@ -4,8 +4,8 @@ import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 
-import kz.kegoc.bln.ejb.cdi.annotation.Auto;
-import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
+import kz.kegoc.bln.ejb.annotation.Auto;
+import kz.kegoc.bln.ejb.annotation.Emcos;
 import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.imp.Reader;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class AutoAtTimeValueImp implements ImportRunner {
 		}
 		
 		catch (Exception e) {
-			logger.error("AutoAtTimeValueImp.run failed: " + e.getMessage());
+			logger.error("run failed: " + e.getMessage());
 		}
     }
 

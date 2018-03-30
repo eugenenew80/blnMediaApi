@@ -1,6 +1,6 @@
 package kz.kegoc.bln.helper.data;
 
-import kz.kegoc.bln.entity.data.Batch;
+import kz.kegoc.bln.entity.media.Batch;
 import org.json.JSONException;
 import org.json.JSONObject;
 

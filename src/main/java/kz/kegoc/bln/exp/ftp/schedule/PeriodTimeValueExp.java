@@ -1,13 +1,10 @@
 package kz.kegoc.bln.exp.ftp.schedule;
 
-import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
-import kz.kegoc.bln.entity.data.PeriodTimeValue;
 import kz.kegoc.bln.exp.Exporter;
 import kz.kegoc.bln.exp.ftp.sender.Sender;
+import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
@@ -24,10 +21,10 @@ public class PeriodTimeValueExp implements Exporter {
         }
 
         catch (Exception e) {
-            logger.error("PeriodTimeValueExp.runExport failed: " + e.getMessage());
+            logger.error("runExport failed: " + e.getMessage());
         }
     }
 
     @Inject @Default
-    private Sender<PeriodTimeValue> sender;
+    private Sender<PeriodTimeValueRaw> sender;
 }

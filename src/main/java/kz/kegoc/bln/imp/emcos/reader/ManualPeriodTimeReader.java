@@ -1,19 +1,19 @@
 package kz.kegoc.bln.imp.emcos.reader;
 
-import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
-import kz.kegoc.bln.ejb.cdi.annotation.Manual;
-import kz.kegoc.bln.entity.common.BatchStatusEnum;
-import kz.kegoc.bln.entity.common.DirectionEnum;
-import kz.kegoc.bln.entity.common.ParamTypeEnum;
-import kz.kegoc.bln.entity.common.SourceSystemEnum;
-import kz.kegoc.bln.entity.data.*;
+import kz.kegoc.bln.ejb.annotation.Emcos;
+import kz.kegoc.bln.ejb.annotation.Manual;
+import kz.kegoc.bln.common.enums.BatchStatusEnum;
+import kz.kegoc.bln.common.enums.DirectionEnum;
+import kz.kegoc.bln.common.enums.ParamTypeEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
+import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueImpGateway;
 import kz.kegoc.bln.imp.BatchHelper;
 import kz.kegoc.bln.imp.Reader;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
-import kz.kegoc.bln.service.data.LastLoadInfoService;
-import kz.kegoc.bln.service.data.WorkListHeaderService;
+import kz.kegoc.bln.service.LastLoadInfoService;
+import kz.kegoc.bln.service.WorkListHeaderService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import static kz.kegoc.bln.entity.data.ParamType.newInstance;
+import static kz.kegoc.bln.entity.media.ParamType.newInstance;
 
 @Stateless
 @Emcos @Manual
@@ -32,7 +32,7 @@ public class ManualPeriodTimeReader implements Reader<PeriodTimeValueRaw> {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		logger.debug("ManualPeriodTimeReader.read started");
+		logger.debug("read started");
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
@@ -43,19 +43,19 @@ public class ManualPeriodTimeReader implements Reader<PeriodTimeValueRaw> {
 				&& h.getConfig()!=null
 			)
 			.forEach(header -> {
-				logger.info("Import data started");
+				logger.info("Import media started");
 				logger.info("headerId: " + header.getId());
 				logger.info("url: " + header.getConfig().getUrl());
 				logger.info("user: " + header.getConfig().getUserName());
 
 				if (header.getLines().size()==0) {
-					logger.info("List of points is empty, import data stopped");
+					logger.info("List of points is empty, import media stopped");
 					return;
 				}
 
 				List<MeteringPointCfg> points = buildPoints(header.getLines());
 				if (points.size()==0) {
-					logger.info("Import data is not required, import data stopped");
+					logger.info("Import media is not required, import media stopped");
 					return;
 				}
 
@@ -72,16 +72,16 @@ public class ManualPeriodTimeReader implements Reader<PeriodTimeValueRaw> {
 					recCount = recCount + ptList.size();
 
 					batchHelper.updateBatch(batch, null, recCount);
-					lastLoadInfoService.pcUpdateLastDate(batch.getId());
-					lastLoadInfoService.pcLoad(batch.getId());
+					lastLoadInfoService.ptUpdateLastDate(batch.getId());
+					lastLoadInfoService.ptLoad(batch.getId());
 				}
 				catch (Exception e) {
-					logger.error("ManualPeriodTimeReader.read failed: " + e.getMessage());
+					logger.error("read failed: " + e.getMessage());
 					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
-		logger.debug("ManualPeriodTimeReader.read completed");
+		logger.debug("read completed");
 	}
 
 

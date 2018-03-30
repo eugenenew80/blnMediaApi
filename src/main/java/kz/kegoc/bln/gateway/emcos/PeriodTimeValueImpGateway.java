@@ -1,6 +1,6 @@
 package kz.kegoc.bln.gateway.emcos;
 
-import kz.kegoc.bln.entity.data.ConnectionConfig;
+import kz.kegoc.bln.entity.media.ConnectionConfig;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 
 import javax.ejb.Local;

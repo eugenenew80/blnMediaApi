@@ -1,8 +1,6 @@
 package kz.kegoc.bln.entity.dict;
 
-import java.util.List;
-
-import kz.kegoc.bln.entity.common.*;
+import kz.kegoc.bln.common.interfaces.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,6 +11,4 @@ public class MeteringPoint implements HasId, HasCode, HasName {
     private String name;
     private String code;
     private String externalCode;
-    private MeteringPointType meteringPointType;
-    private List<MeteringPointMeter> meters;
 }

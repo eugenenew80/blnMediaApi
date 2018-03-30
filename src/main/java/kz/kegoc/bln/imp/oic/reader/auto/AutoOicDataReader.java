@@ -1,16 +1,18 @@
 package kz.kegoc.bln.imp.oic.reader.auto;
 
-import kz.kegoc.bln.ejb.cdi.annotation.Auto;
-import kz.kegoc.bln.ejb.cdi.annotation.Oic;
-import kz.kegoc.bln.entity.common.*;
-import kz.kegoc.bln.entity.data.*;
+import kz.kegoc.bln.ejb.annotation.Auto;
+import kz.kegoc.bln.ejb.annotation.Oic;
+import kz.kegoc.bln.entity.media.*;
+import kz.kegoc.bln.common.enums.DirectionEnum;
+import kz.kegoc.bln.common.enums.ParamTypeEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
 import kz.kegoc.bln.gateway.oic.OicDataImpGateway;
 import kz.kegoc.bln.imp.BatchHelper;
 import kz.kegoc.bln.imp.Reader;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.imp.raw.TelemetryRaw;
-import kz.kegoc.bln.service.data.LastLoadInfoService;
-import kz.kegoc.bln.service.data.WorkListHeaderService;
+import kz.kegoc.bln.service.LastLoadInfoService;
+import kz.kegoc.bln.service.WorkListHeaderService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +35,7 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		logger.info("AutoOicDataReader.read started");
+		logger.info("read started");
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
@@ -48,14 +50,14 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 				logger.info("user: " + header.getConfig().getUserName());
 
 				if (header.getLines().size()==0) {
-					logger.info("List of points is empty, import data stopped");
+					logger.info("List of points is empty, import media stopped");
 					return;
 				}
 
 				LocalDateTime startDateTime = buildStartTime();
 				LocalDateTime endDateTime = buildEndDateTime();
 				if (startDateTime.isAfter(endDateTime)){
-					logger.info("Import data is not required, import data stopped");
+					logger.info("Import media is not required, import media stopped");
 					return;
 				}
 
@@ -70,16 +72,16 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 
 					batchHelper.savePtData(batch, ptList);
 					batchHelper.updateBatch(batch, null, (long) ptList.size() );
-					lastLoadInfoService.pcUpdateLastDate(batch.getId());
-					lastLoadInfoService.pcLoad(batch.getId());
+					lastLoadInfoService.ptUpdateLastDate(batch.getId());
+					lastLoadInfoService.ptLoad(batch.getId());
 				}
 				catch (Exception e) {
-					logger.error("AutoOicDataReader.read failed: " + e.getMessage());
+					logger.error("read failed: " + e.getMessage());
 					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
-		logger.info("AutoOicDataReader.read completed");
+		logger.info("read completed");
     }
 
 	private List<String> buildPoints(List<WorkListLine> lines) {

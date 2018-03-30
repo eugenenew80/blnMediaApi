@@ -6,25 +6,25 @@ import java.util.*;
 import javax.ejb.*;
 import javax.inject.Inject;
 
-import kz.kegoc.bln.ejb.cdi.annotation.Auto;
-import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
-import kz.kegoc.bln.entity.common.DirectionEnum;
-import kz.kegoc.bln.entity.common.ParamTypeEnum;
-import kz.kegoc.bln.entity.common.SourceSystemEnum;
-import kz.kegoc.bln.entity.data.*;
+import kz.kegoc.bln.ejb.annotation.Auto;
+import kz.kegoc.bln.ejb.annotation.Emcos;
+import kz.kegoc.bln.common.enums.DirectionEnum;
+import kz.kegoc.bln.common.enums.ParamTypeEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
+import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.gateway.emcos.*;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.imp.BatchHelper;
 import kz.kegoc.bln.imp.Reader;
-import kz.kegoc.bln.service.data.LastLoadInfoService;
-import kz.kegoc.bln.service.data.*;
+import kz.kegoc.bln.service.LastLoadInfoService;
+import kz.kegoc.bln.service.WorkListHeaderService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
-import static kz.kegoc.bln.entity.data.ParamType.newInstance;
+import static kz.kegoc.bln.entity.media.ParamType.newInstance;
 
 @Stateless
 @Emcos @Auto
@@ -33,7 +33,7 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 
 	@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 	public void read() {
-		logger.info("AutoPeriodTimeValueReader.read started");
+		logger.info("read started");
 
 		workListHeaderService.findAll().stream()
 			.filter(h -> h.getActive()
@@ -48,13 +48,13 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 				logger.info("user: " + header.getConfig().getUserName());
 
 				if (header.getLines().size()==0) {
-					logger.info("List of points is empty, import data stopped");
+					logger.info("List of points is empty, import media stopped");
 					return;
 				}
 
 				List<MeteringPointCfg> points = buildPoints(header.getLines());
 				if (points.size()==0) {
-					logger.info("Import data is not required, import data stopped");
+					logger.info("Import media is not required, import media stopped");
 					return;
 				}
 
@@ -87,16 +87,16 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 					}
 
 					batchHelper.updateBatch(batch, null, recCount);
-					lastLoadInfoService.pcUpdateLastDate(batch.getId());
-					lastLoadInfoService.pcLoad(batch.getId());
+					lastLoadInfoService.ptUpdateLastDate(batch.getId());
+					lastLoadInfoService.ptLoad(batch.getId());
 				}
 				catch (Exception e) {
-					logger.error("AutoPeriodTimeValueReader.read failed: " + e.getMessage());
+					logger.error("read failed: " + e.getMessage());
 					batchHelper.updateBatch(batch, e, null);
 				}
 			});
 
-		logger.info("AutoPeriodTimeValueReader.read completed");
+		logger.info("read completed");
 	}
 
 

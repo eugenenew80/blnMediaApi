@@ -1,21 +1,19 @@
 package kz.kegoc.bln.gateway.oic.impl;
 
-import kz.kegoc.bln.entity.common.InputMethodEnum;
-import kz.kegoc.bln.entity.common.ProcessingStatusEnum;
-import kz.kegoc.bln.entity.common.ReceivingMethodEnum;
-import kz.kegoc.bln.entity.common.SourceSystemEnum;
-import kz.kegoc.bln.entity.data.InputMethod;
-import kz.kegoc.bln.entity.data.ReceivingMethod;
+import kz.kegoc.bln.common.enums.InputMethodEnum;
+import kz.kegoc.bln.common.enums.ProcessingStatusEnum;
+import kz.kegoc.bln.common.enums.ReceivingMethodEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
+import kz.kegoc.bln.entity.media.InputMethod;
+import kz.kegoc.bln.entity.media.ReceivingMethod;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.imp.raw.TelemetryRaw;
 import kz.kegoc.bln.gateway.oic.OicDataImpGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.ejb.Singleton;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -61,7 +59,7 @@ public class OicDataImpGatewayImpl implements OicDataImpGateway {
 
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target("http://10.8.0.76:8081");
-        WebTarget telemetryWebTarget = webTarget.path("exp/telemetry")
+        WebTarget telemetryWebTarget = webTarget.path("rest/exp/telemetry")
             .queryParam("start", startDateTime.format(timeFormatter))
             .queryParam("end", endDateTime.format(timeFormatter))
             .queryParam("arcType", arcType);

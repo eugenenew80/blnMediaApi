@@ -1,16 +1,16 @@
 package kz.kegoc.bln.gateway.emcos.impl;
 
-import kz.kegoc.bln.entity.common.ProcessingStatusEnum;
-import kz.kegoc.bln.entity.common.InputMethodEnum;
-import kz.kegoc.bln.entity.common.ReceivingMethodEnum;
-import kz.kegoc.bln.entity.common.SourceSystemEnum;
+import kz.kegoc.bln.common.enums.ProcessingStatusEnum;
+import kz.kegoc.bln.common.enums.InputMethodEnum;
+import kz.kegoc.bln.common.enums.ReceivingMethodEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
 import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
-import kz.kegoc.bln.entity.data.ConnectionConfig;
-import kz.kegoc.bln.entity.data.InputMethod;
-import kz.kegoc.bln.entity.data.ReceivingMethod;
+import kz.kegoc.bln.entity.media.ConnectionConfig;
+import kz.kegoc.bln.entity.media.InputMethod;
+import kz.kegoc.bln.entity.media.ReceivingMethod;
 import kz.kegoc.bln.gateway.emcos.AtTimeValueGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
-import kz.kegoc.bln.registry.emcos.TemplateRegistry;
+import kz.kegoc.bln.registry.TemplateRegistry;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -48,7 +48,7 @@ public class AtTimeValueGatewayImpl implements AtTimeValueGateway {
     }
 
     public List<AtTimeValueRaw> request() throws Exception {
-        logger.info("AtTimeValueGatewayImpl.request started");
+        logger.info("request started");
 
         if (config ==null) {
             logger.warn("Config is empty, AtTimeValueGatewayImpl.request stopped");
@@ -76,11 +76,11 @@ public class AtTimeValueGatewayImpl implements AtTimeValueGateway {
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("AtTimeValueGatewayImpl.request successfully completed");
+            logger.info("request successfully completed");
         }
 
         catch (Exception e) {
-            logger.error("AtTimeValueGatewayImpl.request failed: " + e.toString());
+            logger.error("request failed: " + e.toString());
             throw e;
         }
 
@@ -88,7 +88,7 @@ public class AtTimeValueGatewayImpl implements AtTimeValueGateway {
     }
 
     private String buildBody() {
-        logger.debug("AtTimeValueGatewayImpl.buildBody started");
+        logger.debug("buildBody started");
 
         String strPoints = points.stream()
             .map( p-> buildNode(p))
@@ -103,7 +103,7 @@ public class AtTimeValueGatewayImpl implements AtTimeValueGateway {
 
         String data = templateRegistry.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
-        logger.trace("data: " + data);
+        logger.trace("media: " + data);
 
         String property = templateRegistry.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUserName())
@@ -114,10 +114,10 @@ public class AtTimeValueGatewayImpl implements AtTimeValueGateway {
 
         String body = templateRegistry.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
-        	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
+        	.replace("#media#", Base64.encodeBase64String(data.getBytes()));
         logger.trace("body for request balances: " + body);
 
-        logger.debug("AtTimeValueGatewayImpl.buildBody completed");
+        logger.debug("buildBody completed");
         return body;
     }
 
@@ -130,7 +130,7 @@ public class AtTimeValueGatewayImpl implements AtTimeValueGateway {
     }
 
     private List<AtTimeValueRaw> parseAnswer(String answer) throws Exception {
-        logger.info("AtTimeValueGatewayImpl.parseAnswer started");
+        logger.info("parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -176,7 +176,7 @@ public class AtTimeValueGatewayImpl implements AtTimeValueGateway {
         });
         logger.debug("find unit codes for list completed");
 
-        logger.info("AtTimeValueGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 

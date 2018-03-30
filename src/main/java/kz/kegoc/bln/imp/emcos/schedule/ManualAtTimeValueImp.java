@@ -1,7 +1,7 @@
 package kz.kegoc.bln.imp.emcos.schedule;
 
-import kz.kegoc.bln.ejb.cdi.annotation.Emcos;
-import kz.kegoc.bln.ejb.cdi.annotation.Manual;
+import kz.kegoc.bln.ejb.annotation.Emcos;
+import kz.kegoc.bln.ejb.annotation.Manual;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.imp.ImportRunner;
@@ -24,7 +24,7 @@ public class ManualAtTimeValueImp implements ImportRunner {
 		}
 		
 		catch (Exception e) {
-			logger.error("ManualAtTimeValueImp.run failed: " + e.getMessage());
+			logger.error("run failed: " + e.getMessage());
 		}
     }
 

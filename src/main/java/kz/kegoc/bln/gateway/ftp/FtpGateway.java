@@ -1,9 +1,8 @@
 package kz.kegoc.bln.gateway.ftp;
 
-import kz.kegoc.bln.entity.data.ConnectionConfig;
-import kz.kegoc.bln.entity.data.ExportData;
+import kz.kegoc.bln.entity.media.ConnectionConfig;
+import kz.kegoc.bln.entity.media.ExportData;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 

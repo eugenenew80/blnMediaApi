@@ -1,15 +1,15 @@
 package kz.kegoc.bln.imp;
 
-import kz.kegoc.bln.entity.common.BatchStatusEnum;
-import kz.kegoc.bln.entity.common.ParamTypeEnum;
-import kz.kegoc.bln.entity.common.SourceSystemEnum;
-import kz.kegoc.bln.entity.data.*;
+import kz.kegoc.bln.common.enums.BatchStatusEnum;
+import kz.kegoc.bln.common.enums.ParamTypeEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
+import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
-import kz.kegoc.bln.service.data.BatchService;
-import kz.kegoc.bln.service.data.MeteringValueService;
-import kz.kegoc.bln.service.data.WorkListHeaderService;
+import kz.kegoc.bln.service.BatchService;
+import kz.kegoc.bln.service.MeteringValueService;
+import kz.kegoc.bln.service.WorkListHeaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.ejb.*;

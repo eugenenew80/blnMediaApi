@@ -1,7 +1,7 @@
 package kz.kegoc.bln.imp.oic.schedule;
 
-import kz.kegoc.bln.ejb.cdi.annotation.Auto;
-import kz.kegoc.bln.ejb.cdi.annotation.Oic;
+import kz.kegoc.bln.ejb.annotation.Auto;
+import kz.kegoc.bln.ejb.annotation.Oic;
 import kz.kegoc.bln.ejb.interceptor.ProducerMonitor;
 import kz.kegoc.bln.imp.ImportRunner;
 import kz.kegoc.bln.imp.Reader;
@@ -24,7 +24,7 @@ public class AutoOicDataImp implements ImportRunner {
 		}
 
 		catch (Exception e) {
-			logger.error("AutoOicDataImp.run failed: " + e.getMessage());
+			logger.error("run failed: " + e.getMessage());
 		}
 	}
 

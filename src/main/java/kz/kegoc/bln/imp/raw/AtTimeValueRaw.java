@@ -1,12 +1,13 @@
 package kz.kegoc.bln.imp.raw;
 
-import kz.kegoc.bln.entity.common.*;
-import kz.kegoc.bln.entity.data.Batch;
-import kz.kegoc.bln.entity.data.InputMethod;
-import kz.kegoc.bln.entity.data.ReceivingMethod;
+import kz.kegoc.bln.common.interfaces.MeteringValue;
+import kz.kegoc.bln.entity.media.Batch;
+import kz.kegoc.bln.entity.media.InputMethod;
+import kz.kegoc.bln.entity.media.ReceivingMethod;
+import kz.kegoc.bln.common.enums.ProcessingStatusEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import java.time.LocalDateTime;
 
 @Data

@@ -1,16 +1,16 @@
 package kz.kegoc.bln.gateway.emcos.impl;
 
-import kz.kegoc.bln.entity.common.ProcessingStatusEnum;
-import kz.kegoc.bln.entity.common.InputMethodEnum;
-import kz.kegoc.bln.entity.common.ReceivingMethodEnum;
-import kz.kegoc.bln.entity.common.SourceSystemEnum;
-import kz.kegoc.bln.entity.data.ConnectionConfig;
-import kz.kegoc.bln.entity.data.InputMethod;
+import kz.kegoc.bln.common.enums.ProcessingStatusEnum;
+import kz.kegoc.bln.common.enums.InputMethodEnum;
+import kz.kegoc.bln.common.enums.ReceivingMethodEnum;
+import kz.kegoc.bln.common.enums.SourceSystemEnum;
+import kz.kegoc.bln.entity.media.ConnectionConfig;
+import kz.kegoc.bln.entity.media.InputMethod;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
-import kz.kegoc.bln.entity.data.ReceivingMethod;
+import kz.kegoc.bln.entity.media.ReceivingMethod;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueImpGateway;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
-import kz.kegoc.bln.registry.emcos.TemplateRegistry;
+import kz.kegoc.bln.registry.TemplateRegistry;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,24 +47,24 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
     }
 
     public List<PeriodTimeValueRaw> request() throws Exception {
-        logger.info("PeriodTimeValueImpGatewayImpl.request started");
+        logger.info("request started");
 
         if (config ==null) {
-            logger.warn("Config is empty, PeriodTimeValueImpGatewayImpl.request stopped");
+            logger.warn("Config is empty, request stopped");
             return emptyList();
         }
 
         if (points ==null || points.isEmpty()) {
-            logger.warn("List of points is empty, PeriodTimeValueImpGatewayImpl.request stopped");
+            logger.warn("List of points is empty, request stopped");
             return emptyList();
         }
 
         List<PeriodTimeValueRaw> list;
         try {
-            logger.info("Send http request for metering data...");
+            logger.info("Send http request for metering media...");
             String body = buildBody();
             if (StringUtils.isEmpty(body)) {
-            	logger.info("Request body is empty, PeriodTimeValueImpGatewayImpl.request stopped");
+            	logger.info("Request body is empty, request stopped");
                 return emptyList();
             }
 
@@ -76,11 +76,11 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
                 .doRequest();
 
             list = parseAnswer(answer);
-            logger.info("PeriodTimeValueImpGatewayImpl.request competed");
+            logger.info("request competed");
         }
 
         catch (Exception e) {
-            logger.error("PeriodTimeValueImpGatewayImpl.request failed: " + e.toString());
+            logger.error("request failed: " + e.toString());
             throw e;
         }
 
@@ -88,7 +88,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
     }
 
     private String buildBody() {
-    	logger.debug("PeriodTimeValueImpGatewayImpl.buildBody started");
+    	logger.debug("buildBody started");
 
     	String strPoints = points.stream()
             .map( p-> buildPoint(p))
@@ -97,13 +97,13 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
         logger.trace("points: " + strPoints);
 
         if (StringUtils.isEmpty(strPoints)) {
-        	logger.debug("List of points is empty, PeriodTimeValueImpGatewayImpl.buildBody stopped");
+        	logger.debug("List of points is empty, buildBody stopped");
             return "";
         }
 
         String data = templateRegistry.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
-        logger.trace("data: " + data);
+        logger.trace("media: " + data);
 
         String property = templateRegistry.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUserName())
@@ -114,10 +114,10 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
 
         String body = templateRegistry.getTemplate("EMCOS_REQML_BODY")
         	.replace("#property#", property)
-        	.replace("#data#", Base64.encodeBase64String(data.getBytes()));
-        logger.trace("body for request metering data: " + body);
+        	.replace("#media#", Base64.encodeBase64String(data.getBytes()));
+        logger.trace("body for request metering media: " + body);
 
-        logger.debug("PeriodTimeValueImpGatewayImpl.buildBody completed");
+        logger.debug("buildBody completed");
         return body;
     }
 
@@ -130,7 +130,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
     }
 
     private List<PeriodTimeValueRaw> parseAnswer(String answer) throws Exception {
-    	logger.info("PeriodTimeValueImpGatewayImpl.parseAnswer started");
+    	logger.info("parseAnswer started");
         logger.trace("answer: " + new String(Base64.decodeBase64(answer), "Cp1251"));
 
         logger.debug("parsing xml started");
@@ -185,7 +185,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
         });
         logger.debug("find unit codes for list completed");
 
-        logger.info("PeriodTimeValueImpGatewayImpl.parseAnswer completed, count of rows: " + list.size());
+        logger.info("parseAnswer completed, count of rows: " + list.size());
         return list;
     }
 

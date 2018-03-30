@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://www.oracle.com/webfolder/technetwork/jsc/xml/ns/persistence/orm_2_1.xsd">
-	<entity class="kz.kegoc.bln.entity.adm.User">
-		<table name="adm_users" schema="apps" />
-		<attributes>
-			<id name="id">
-				<column name="id" />
-			</id>
-
-			<basic name="code">
-				<column name="code" />
-			</basic>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-		</attributes>
-	</entity>
 
 	<entity class="kz.kegoc.bln.entity.dict.MeteringPoint">
 		<table name="dict_metering_points" schema="apps"/>
@@ -35,32 +19,9 @@
 			<basic name="externalCode">
 				<column name="external_code" />
 			</basic>
-
-			<many-to-one name="meteringPointType">
-				<join-column name="metering_point_type_id"/>
-			</many-to-one>
-
-			<one-to-many name="meters" mapped-by="meteringPoint"/>
 		</attributes>
 	</entity>
 
-
-	<entity class="kz.kegoc.bln.entity.dict.MeteringPointType">
-		<table name="dict_metering_point_types" schema="apps" />
-		<attributes>
-			<id name="id">
-				<column name="id" />
-			</id>
-
-			<basic name="code">
-				<column name="code" />
-			</basic>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-		</attributes>
-	</entity>
 
 	<entity class="kz.kegoc.bln.entity.dict.Unit">
 		<table name="dict_units" schema="apps" />
@@ -80,41 +41,6 @@
 			<basic name="shortName">
 				<column name="short_name" />
 			</basic>
-		</attributes>
-	</entity>
-
-
-	<entity class="kz.kegoc.bln.entity.dict.Meter">
-		<table name="dict_meters" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-			</id>
-
-			<basic name="name">
-				<column name="name" />
-			</basic>
-
-			<basic name="serialNumber">
-				<column name="serial_number" />
-			</basic>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.dict.MeteringPointMeter">
-		<table name="dict_metering_point_meters" schema="apps" />
-		<attributes>
-			<id name="id">
-				<column name="id" />
-			</id>
-      		
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id" />	
-			</many-to-one>  
-
-			<many-to-one name="meter">
-				<join-column name="meter_id"/>
-			</many-to-one>
 		</attributes>
 	</entity>
 
@@ -253,173 +179,7 @@
 		</attributes>
 	</entity>
 
-
-	<entity class="kz.kegoc.bln.entity.data.PeriodTimeValue">
-		<table name="media_period_time_values" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_period_time_values_gen" />
-				<sequence-generator
-						name="media_period_time_values_gen"
-						sequence-name="apps.media_period_time_values_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="sourceMeteringPointCode">
-				<column name="source_metering_point_code" />
-			</basic>
-
-			<basic name="sourceParamCode">
-				<column name="source_param_code" />
-			</basic>
-
-			<basic name="sourceUnitCode">
-				<column name="source_unit_code" />
-			</basic>
-
-			<basic name="meteringDate">
-				<column name="metering_date" />
-			</basic>
-
-			<basic name="val">
-				<column name="val" />
-			</basic>
-
-			<basic name="interval">
-				<column name="interval" />
-			</basic>
-
-			<basic name="status">
-				<column name="status" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="paramId">
-				<column name="param_id" />
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="sourceType">
-				<join-column name="source_type_id"/>
-			</many-to-one>
-
-			<many-to-one name="unit">
-				<join-column name="unit_id"/>
-			</many-to-one>
-
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id"/>
-			</many-to-one>
-
-			<many-to-one name="meter">
-				<join-column name="meter_id"/>
-			</many-to-one>
-
-			<many-to-one name="batch">
-				<join-column name="batch_id"/>
-			</many-to-one>
-
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
-		</attributes>
-	</entity>
-
-
-	<entity class="kz.kegoc.bln.entity.data.AtTimeValue">
-		<table name="media_at_time_values" schema="apps"/>
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="SEQUENCE" generator="media_media_at_time_values_gen" />
-				<sequence-generator
-						name="media_media_at_time_values_gen"
-						sequence-name="apps.media_at_time_values_s"
-						allocation-size="1"
-				/>
-			</id>
-
-			<basic name="sourceMeteringPointCode">
-				<column name="source_metering_point_code" />
-			</basic>
-
-			<basic name="sourceUnitCode">
-				<column name="source_unit_code" />
-			</basic>
-
-			<basic name="sourceParamCode">
-				<column name="source_param_code" />
-			</basic>
-
-			<basic name="paramId">
-				<column name="param_id" />
-			</basic>
-
-			<basic name="meteringDate">
-				<column name="metering_date" />
-			</basic>
-
-			<basic name="val">
-				<column name="val" />
-			</basic>
-
-			<basic name="status">
-				<column name="status" />
-				<enumerated>STRING</enumerated>
-			</basic>
-
-			<basic name="createDate">
-				<column name="create_date" />
-			</basic>
-
-			<basic name="lastUpdateDate">
-				<column name="last_update_date" />
-			</basic>
-
-			<many-to-one name="sourceType">
-				<join-column name="source_type_id"/>
-			</many-to-one>
-
-			<many-to-one name="unit">
-				<join-column name="unit_id"/>
-			</many-to-one>
-
-			<many-to-one name="meteringPoint">
-				<join-column name="metering_point_id"/>
-			</many-to-one>
-
-			<many-to-one name="meter">
-				<join-column name="meter_id"/>
-			</many-to-one>
-
-			<many-to-one name="batch">
-				<join-column name="batch_id"/>
-			</many-to-one>
-
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
-		</attributes>
-	</entity>
-
-	<entity class="kz.kegoc.bln.entity.data.LastLoadInfo">
+	<entity class="kz.kegoc.bln.entity.media.LastLoadInfo">
 		<table name="media_last_load_info" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -454,7 +214,7 @@
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.data.Parameter">
+	<entity class="kz.kegoc.bln.entity.media.Parameter">
 		<table name="media_parameters" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -495,19 +255,11 @@
 				<join-column name="unit_id"/>
 			</many-to-one>
 
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
-
 			<one-to-many name="confs" mapped-by="param"/>
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.ParameterConf">
+	<entity class="kz.kegoc.bln.entity.media.ParameterConf">
 		<table name="media_parameter_conf" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -551,18 +303,10 @@
 			<many-to-one name="sourceUnit">
 				<join-column name="source_unit_id"/>
 			</many-to-one>
-
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.ConnectionConfig">
+	<entity class="kz.kegoc.bln.entity.media.ConnectionConfig">
 		<table name="media_connection_config" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -606,18 +350,10 @@
 			<many-to-one name="sourceSystemCode">
 				<join-column name="source_system_code" />
 			</many-to-one>
-
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.WorkListHeader">
+	<entity class="kz.kegoc.bln.entity.media.WorkListHeader">
 		<table name="media_work_list_headers" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -686,19 +422,11 @@
 				<join-column name="config_id"/>
 			</many-to-one>
 
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
-
 			<one-to-many name="lines" mapped-by="header" />
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.WorkListLine">
+	<entity class="kz.kegoc.bln.entity.media.WorkListLine">
 		<table name="media_work_list_lines" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -738,19 +466,11 @@
 			<many-to-one name="meteringPoint">
 				<join-column name="metering_point_id"/>
 			</many-to-one>
-
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
 		</attributes>
 	</entity>
 
 
-	<entity class="kz.kegoc.bln.entity.data.Batch">
+	<entity class="kz.kegoc.bln.entity.media.Batch">
 		<table name="media_batches" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -806,20 +526,12 @@
 			<many-to-one name="workListHeader">
 				<join-column name="work_list_header_id"/>
 			</many-to-one>
-
-			<many-to-one name="createBy">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy">
-				<join-column name="last_update_by" />
-			</many-to-one>
 		</attributes>
 	</entity>
 
 
 
-	<entity class="kz.kegoc.bln.entity.data.ParamType">
+	<entity class="kz.kegoc.bln.entity.media.ParamType">
 		<table name="media_param_types" schema="apps"/>
 		<attributes>
 			<id name="code">
@@ -828,7 +540,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.BatchStatus">
+	<entity class="kz.kegoc.bln.entity.media.BatchStatus">
 		<table name="media_batch_statuses" schema="apps"/>
 		<attributes>
 			<id name="code">
@@ -837,7 +549,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.ReceivingMethod">
+	<entity class="kz.kegoc.bln.entity.media.ReceivingMethod">
 		<table name="media_receiving_method" schema="apps"/>
 		<attributes>
 			<id name="code">
@@ -846,7 +558,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.SourceSystem">
+	<entity class="kz.kegoc.bln.entity.media.SourceSystem">
 		<table name="dict_data_sources" schema="apps"/>
 		<attributes>
 			<id name="code">
@@ -855,7 +567,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.Direction">
+	<entity class="kz.kegoc.bln.entity.media.Direction">
 		<table name="media_directions" schema="apps"/>
 		<attributes>
 			<id name="code">
@@ -864,7 +576,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.InputMethod">
+	<entity class="kz.kegoc.bln.entity.media.InputMethod">
 		<table name="media_input_methods" schema="apps"/>
 		<attributes>
 			<id name="code">
@@ -873,7 +585,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="kz.kegoc.bln.entity.data.ProcessingStatus">
+	<entity class="kz.kegoc.bln.entity.media.ProcessingStatus">
 		<table name="media_processing_statuses" schema="apps"/>
 		<attributes>
 			<id name="code">
@@ -882,8 +594,7 @@
 		</attributes>
 	</entity>
 
-
-	<entity class="kz.kegoc.bln.entity.data.SourceType">
+	<entity class="kz.kegoc.bln.entity.media.SourceType">
 		<table name="media_source_types" schema="apps"/>
 		<attributes>
 			<id name="id">
@@ -915,14 +626,6 @@
 
 			<many-to-one name="receivingMethod">
 				<join-column name="receiving_method" />
-			</many-to-one>
-
-			<many-to-one name="createBy" fetch="LAZY">
-				<join-column name="create_by" />
-			</many-to-one>
-
-			<many-to-one name="lastUpdateBy" fetch="LAZY">
-				<join-column name="last_update_by" />
 			</many-to-one>
 		</attributes>
 	</entity>

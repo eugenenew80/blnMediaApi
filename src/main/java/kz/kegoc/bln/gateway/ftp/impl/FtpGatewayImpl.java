@@ -1,7 +1,7 @@
 package kz.kegoc.bln.gateway.ftp.impl;
 
-import kz.kegoc.bln.entity.data.ConnectionConfig;
-import kz.kegoc.bln.entity.data.ExportData;
+import kz.kegoc.bln.entity.media.ConnectionConfig;
+import kz.kegoc.bln.entity.media.ExportData;
 import kz.kegoc.bln.gateway.ftp.FtpGateway;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
@@ -14,8 +14,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import java.io.IOException;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -62,7 +60,7 @@ public class FtpGatewayImpl implements FtpGateway {
     }
 
     public void upload(String localFilePath, String remoteFilePath) throws Exception {
-        logger.info("FtpGatewayImpl.upload started");
+        logger.info("upload started");
 
         int port = 21;
         FTPClient ftpClient = new FTPClient();
@@ -91,11 +89,11 @@ public class FtpGatewayImpl implements FtpGateway {
             throw e;
         }
 
-        logger.info("FtpGatewayImpl.upload completed");
+        logger.info("upload completed");
     }
 
     private Workbook buildWorkBook() {
-        logger.info("FtpGatewayImpl.buildWorkBook started");
+        logger.info("buildWorkBook started");
 
         Workbook book = new HSSFWorkbook();
         Sheet sheet = book.createSheet("Лист 1");
@@ -193,7 +191,7 @@ public class FtpGatewayImpl implements FtpGateway {
         sheet.autoSizeColumn(3);
         sheet.autoSizeColumn(4);
 
-        logger.info("FtpGatewayImpl.buildWorkBook completed");
+        logger.info("buildWorkBook completed");
         return book;
     }
 

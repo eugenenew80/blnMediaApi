@@ -1,6 +1,6 @@
 package kz.kegoc.bln.entity.dict;
 
-import kz.kegoc.bln.entity.common.*;
+import kz.kegoc.bln.common.interfaces.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import javax.validation.constraints.NotNull;
