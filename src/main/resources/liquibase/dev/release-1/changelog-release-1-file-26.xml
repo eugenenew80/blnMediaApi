@@ -6,7 +6,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
     
-    <changeSet id="media-rus-110" logicalFilePath="path-independent" author="ruslan">
+    <changeSet id="media-rus-121" logicalFilePath="path-independent" author="ruslan">
         <comment>Creating table: media_work_list_types</comment>
         <createTable tableName="media_work_list_types" schemaName="apps" remarks="Справочник тип списков">
             <column name="code" type="varchar(15)" remarks="Код">
@@ -19,7 +19,7 @@
         </createTable>
     </changeSet>
 
-	<changeSet id="media-rus-111" logicalFilePath="path-independent" author="ruslan">
+	<changeSet id="media-rus-122" logicalFilePath="path-independent" author="ruslan">
 	    <comment>Creating primary key for table: media_work_list_types</comment>
 	    <addPrimaryKey 
 	            columnNames="code"
@@ -28,7 +28,7 @@
 	            tableName="media_work_list_types"/>
 	</changeSet>
 
-	<changeSet id="media-rus-112" logicalFilePath="path-independent" author="ruslan">
+	<changeSet id="media-rus-123" logicalFilePath="path-independent" author="ruslan">
 	    <comment>inserting records into table: media_work_list_types</comment>
         <insert schemaName="apps"  tableName="media_work_list_types">
             <column name="code"   type="varchar2(15)"       value="SYS" />
