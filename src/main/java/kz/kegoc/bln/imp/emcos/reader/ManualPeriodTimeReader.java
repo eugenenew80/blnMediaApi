@@ -71,9 +71,9 @@ public class ManualPeriodTimeReader implements Reader<PeriodTimeValueRaw> {
 					batchHelper.savePtData(batch, ptList);
 					recCount = recCount + ptList.size();
 
+					batchHelper.updateBatch(batch, null, recCount);
 					lastLoadInfoService.pcUpdateLastDate(batch.getId());
 					lastLoadInfoService.pcLoad(batch.getId());
-					batchHelper.updateBatch(batch, null, recCount);
 				}
 				catch (Exception e) {
 					logger.error("ManualPeriodTimeReader.read failed: " + e.getMessage());

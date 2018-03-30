@@ -4,7 +4,6 @@ import kz.kegoc.bln.ejb.cdi.annotation.Auto;
 import kz.kegoc.bln.ejb.cdi.annotation.Oic;
 import kz.kegoc.bln.entity.common.*;
 import kz.kegoc.bln.entity.data.*;
-import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.gateway.oic.OicDataImpGateway;
 import kz.kegoc.bln.imp.BatchHelper;
 import kz.kegoc.bln.imp.Reader;
@@ -21,11 +20,10 @@ import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-import static kz.kegoc.bln.entity.data.ParamType.newInstance;
 
 @Stateless
 @Oic @Auto
@@ -49,33 +47,31 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 				logger.info("url: " + header.getConfig().getUrl());
 				logger.info("user: " + header.getConfig().getUserName());
 
-				buildPoints(header.getLines());
+				if (header.getLines().size()==0) {
+					logger.info("List of points is empty, import data stopped");
+					return;
+				}
+
+				LocalDateTime startDateTime = buildStartTime();
+				LocalDateTime endDateTime = buildEndDateTime();
+				if (startDateTime.isAfter(endDateTime)){
+					logger.info("Import data is not required, import data stopped");
+					return;
+				}
 
 				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.PT));
 				try {
-					List<PeriodTimeValueRaw> ptList = oicDataImpGateway.request().stream()
-						.map(t -> {
-							PeriodTimeValueRaw pt = new PeriodTimeValueRaw();
-							pt.setInterval(180);
-							pt.setSourceParamCode(t.getParamCode());
-							pt.setSourceMeteringPointCode(t.getLogPoint().toString());
-							pt.setSourceUnitCode(t.getUnitCode());
-							pt.setMeteringDate(LocalDateTime.parse(t.getDateTime(), timeFormatter));
-							pt.setVal(t.getVal());
-							pt.setSourceSystemCode(SourceSystemEnum.OIC);
-							pt.setStatus(ProcessingStatusEnum.TMP);
-							pt.setInputMethod(InputMethod.newInstance(InputMethodEnum.AUTO));
-							pt.setReceivingMethod(ReceivingMethod.newInstance(ReceivingMethodEnum.SERVICE));
-							pt.setBatch(batch);
-							return pt;
-						})
-						.collect(toList());
-					Long retCount = (long)ptList.size();
+					List<PeriodTimeValueRaw> ptList = oicDataImpGateway
+						.points(buildPoints(header.getLines()))
+						.startDateTime(startDateTime)
+						.endDateTime(endDateTime)
+						.arcType("MIN-3")
+						.request();
 
 					batchHelper.savePtData(batch, ptList);
+					batchHelper.updateBatch(batch, null, (long) ptList.size() );
 					lastLoadInfoService.pcUpdateLastDate(batch.getId());
 					lastLoadInfoService.pcLoad(batch.getId());
-					batchHelper.updateBatch(batch, null, retCount);
 				}
 				catch (Exception e) {
 					logger.error("AutoOicDataReader.read failed: " + e.getMessage());
@@ -86,12 +82,37 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 		logger.info("AutoOicDataReader.read completed");
     }
 
-	private void buildPoints(List<WorkListLine> lines) {
-		lastLoadInfoService.findAll().stream()
+	private List<String> buildPoints(List<WorkListLine> lines) {
+		return Arrays.asList("1", "2");
+	}
+
+	private LocalDateTime buildStartTime() {
+		LocalDateTime startDateTime = lastLoadInfoService.findAll().stream()
 			.filter(l -> l.getSourceSystemCode().equals("OIC"))
-			.forEach(l -> {
-				logger.info("sourceMeteringPointCode: " + l.getSourceMeteringPointCode());
-			});
+			.map(l -> l.getLastLoadDate())
+			.max(LocalDateTime::compareTo)
+			.orElseGet(null);
+
+		if (startDateTime==null)
+			return buildEndDateTime().minusHours(1);
+
+		long step = 180l;
+		startDateTime = startDateTime
+			.minusSeconds(startDateTime.getMinute()*60 - Math.round(startDateTime.getMinute()*60 / step) * step)
+			.plusSeconds(step);
+
+		return startDateTime;
+	}
+
+	private LocalDateTime buildEndDateTime() {
+		LocalDateTime endDateTime = LocalDateTime.now()
+			.truncatedTo(ChronoUnit.MINUTES);
+
+		long step = 180l;
+		endDateTime = endDateTime
+			.minusSeconds(endDateTime.getMinute()*60 - Math.round(endDateTime.getMinute()*60 / step) * step);
+
+		return endDateTime;
 	}
 
 

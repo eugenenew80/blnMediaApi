@@ -86,9 +86,9 @@ public class AutoAtTimeValueReader implements Reader<AtTimeValueRaw> {
 						recCount = recCount + atList.size();
 					}
 
+					batchHelper.updateBatch(batch, null, recCount);
 					lastLoadInfoService.mrUpdateLastDate(batch.getId());
 					lastLoadInfoService.mrLoad(batch.getId());
-					batchHelper.updateBatch(batch, null, recCount);
 				}
 				catch (Exception e) {
 					logger.error("AutoAtTimeValueReader.read failed: " + e.getMessage());

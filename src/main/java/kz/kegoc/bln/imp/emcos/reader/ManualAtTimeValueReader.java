@@ -71,9 +71,9 @@ public class ManualAtTimeValueReader implements Reader<AtTimeValueRaw> {
 					batchHelper.saveAtData(batch, atList);
 					recCount = recCount + atList.size();
 
+					batchHelper.updateBatch(batch, null, recCount);
 					lastLoadInfoService.mrUpdateLastDate(batch.getId());
 					lastLoadInfoService.mrLoad(batch.getId());
-					batchHelper.updateBatch(batch, null, recCount);
 				}
 				catch (Exception e) {
 					logger.error("ManualAtTimeValueReader.read failed: " + e.getMessage());
