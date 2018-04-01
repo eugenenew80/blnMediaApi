@@ -1,4 +1,4 @@
-package kz.kegoc.bln.imp.oic.reader.auto;
+package kz.kegoc.bln.imp.oic.reader;
 
 import kz.kegoc.bln.ejb.annotation.Auto;
 import kz.kegoc.bln.ejb.annotation.Oic;
