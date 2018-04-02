@@ -40,4 +40,57 @@
             <column name="name"   type="varchar2(100)"  value="Вручную пользователем" />
         </insert>
     </changeSet>
+
+    <changeSet id="media-rus-113" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>Creating primary key for table: media_connection_protocol</comment>
+        <addPrimaryKey
+                columnNames="code"
+                constraintName="pk_media_connection_protocol"
+                schemaName="apps"
+                tableName="media_connection_protocol"/>
+    </changeSet>
+
+    <changeSet id="media-rus-114" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>add column in table: media_connection_protocol</comment>
+        <addColumn schemaName="apps"
+                   tableName="media_connection_protocol">
+            <column name="name" type="varchar2(100)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="media-rus-115" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>add column in table: media_connection_protocol</comment>
+        <update schemaName="apps"
+                tableName="media_connection_protocol">
+            <column name="name" type="varchar2" value="Simple Mail Transfer Protocol"/>
+            <where>code='SMTP'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="media-rus-116" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>add column in table: media_connection_protocol</comment>
+        <update schemaName="apps"
+                tableName="media_connection_protocol">
+            <column name="name" type="varchar2" value="Simple Mail Transfer Protocol"/>
+            <where>code='SMTP'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="media-rus-117" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>add column in table: media_connection_protocol</comment>
+        <update schemaName="apps"
+                tableName="media_connection_protocol">
+            <column name="name" type="varchar2" value="File Transfer Protocol"/>
+            <where>code='FTP'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="media-rus-118" logicalFilePath="path-independent" author="ruslan" context="dev">
+        <comment>add column in table: media_connection_protocol</comment>
+        <delete schemaName="apps"
+                tableName="media_connection_protocol">
+            <where>code='РК'</where>
+        </delete>
+    </changeSet>
+
 </databaseChangeLog>
