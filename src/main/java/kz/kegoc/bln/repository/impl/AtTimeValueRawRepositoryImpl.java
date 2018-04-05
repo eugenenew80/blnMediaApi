@@ -2,7 +2,7 @@ package kz.kegoc.bln.repository.impl;
 
 import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.common.repository.AbstractRepository;
-import kz.kegoc.bln.repository.MeteringValueRepository;
+import kz.kegoc.bln.repository.AtTimeValueRawRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
-public class AtTimeValueRawRepositoryImpl extends AbstractRepository<AtTimeValueRaw> implements MeteringValueRepository<AtTimeValueRaw> {
+public class AtTimeValueRawRepositoryImpl extends AbstractRepository<AtTimeValueRaw> implements AtTimeValueRawRepository {
 	private static final Logger logger = LoggerFactory.getLogger(AtTimeValueRawRepositoryImpl.class);
 
 	@Override

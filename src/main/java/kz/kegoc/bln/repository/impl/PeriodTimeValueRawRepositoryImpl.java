@@ -2,7 +2,7 @@ package kz.kegoc.bln.repository.impl;
 
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.common.repository.AbstractRepository;
-import kz.kegoc.bln.repository.MeteringValueRepository;
+import kz.kegoc.bln.repository.PeriodTimeValueRawRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Stateless
-public class PeriodTimeValueRawRepositoryImpl extends AbstractRepository<PeriodTimeValueRaw> implements MeteringValueRepository<PeriodTimeValueRaw> {
+public class PeriodTimeValueRawRepositoryImpl extends AbstractRepository<PeriodTimeValueRaw> implements PeriodTimeValueRawRepository {
 	private static final Logger logger = LoggerFactory.getLogger(PeriodTimeValueRawRepositoryImpl.class);
 
 	@Override

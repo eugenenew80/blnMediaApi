@@ -7,8 +7,9 @@ import kz.kegoc.bln.entity.media.*;
 import kz.kegoc.bln.gateway.emcos.MeteringPointCfg;
 import kz.kegoc.bln.imp.raw.AtTimeValueRaw;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
+import kz.kegoc.bln.service.AtTimeValueRawService;
 import kz.kegoc.bln.service.BatchService;
-import kz.kegoc.bln.service.MeteringValueService;
+import kz.kegoc.bln.service.PeriodTimeValueRawService;
 import kz.kegoc.bln.service.WorkListHeaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,8 +133,8 @@ public class BatchHelper {
     private BatchService batchService;
 
     @Inject
-    private MeteringValueService<AtTimeValueRaw> mrService;
+    private AtTimeValueRawService mrService;
 
     @Inject
-    private MeteringValueService<PeriodTimeValueRaw> pcService;
+    private PeriodTimeValueRawService pcService;
 }
