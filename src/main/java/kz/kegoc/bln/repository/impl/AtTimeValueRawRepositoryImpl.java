@@ -14,43 +14,25 @@ import java.util.List;
 public class AtTimeValueRawRepositoryImpl extends AbstractRepository<AtTimeValueRaw> implements MeteringValueRepository<AtTimeValueRaw> {
 	private static final Logger logger = LoggerFactory.getLogger(AtTimeValueRawRepositoryImpl.class);
 
-	public AtTimeValueRaw selectByEntity(AtTimeValueRaw entity) {
-		return
-			getEntityManager().createNamedQuery("AtTimeValueRaw.findByEntity", AtTimeValueRaw.class)
-				.setParameter("sourceMeteringPointCode", entity.getSourceMeteringPointCode())
-				.setParameter("meteringDate", 			entity.getMeteringDate())
-				.setParameter("sourceUnitCode", 			entity.getSourceUnitCode())
-				.setParameter("sourceSystemCode", 		entity.getSourceSystemCode())
-				.setParameter("sourceParamCode", 		entity.getSourceParamCode())
-			.getResultList()
-				.stream()
-				.findFirst()
-				.orElse(null);
-	}
-
 	@Override
 	public void saveAll(List<AtTimeValueRaw> list) {
 		long count=0;
+		LocalDateTime now = LocalDateTime.now();
 		for (AtTimeValueRaw m : list) {
-			AtTimeValueRaw data = selectByEntity(m);
-			if (data == null) {
-				m.setCreateDate(LocalDateTime.now());
-				insert(m);
-			} else {
-				m.setId(data.getId());
-				m.setCreateDate(data.getCreateDate());
-				m.setLastUpdateDate(LocalDateTime.now());
-				update(m);
-			}
+			m.setCreateDate(now);
+
 			count++;
 			if (count % 1000 == 0) {
-				getEntityManager().flush();
-				getEntityManager().clear();
+				flushAndClear();
 				logger.info("Saved records: " + count);
 			}
 		}
+		flushAndClear();
+		logger.info("Saved records: " + count);
+	}
+
+	private void flushAndClear() {
 		getEntityManager().flush();
 		getEntityManager().clear();
-		logger.info("Saved records: " + count);
 	}
 }

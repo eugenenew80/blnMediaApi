@@ -8,6 +8,5 @@ import java.util.List;
 
 @Local
 public interface MeteringValueRepository<T extends MeteringValue>  extends Repository<T> {
-    T selectByEntity(T entity);
     void saveAll(List<T> list);
 }
