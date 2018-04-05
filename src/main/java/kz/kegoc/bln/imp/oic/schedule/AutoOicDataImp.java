@@ -17,7 +17,7 @@ public class AutoOicDataImp implements ImportRunner {
 	private static final Logger logger = LoggerFactory.getLogger(AutoOicDataImp.class);
 
 	@ProducerMonitor
-	@Schedule(minute = "*/5", hour = "*", persistent = false)
+	@Schedule(minute = "*/15", hour = "*", persistent = false)
 	public void run() {
 		try {
 			reader.read();

@@ -30,7 +30,7 @@ public class AtTimeValueRawRepositoryImpl extends AbstractRepository<AtTimeValue
 
 	@Override
 	public void saveAll(List<AtTimeValueRaw> list) {
-		long couunt=0;
+		long count=0;
 		for (AtTimeValueRaw m : list) {
 			AtTimeValueRaw data = selectByEntity(m);
 			if (data == null) {
@@ -42,15 +42,15 @@ public class AtTimeValueRawRepositoryImpl extends AbstractRepository<AtTimeValue
 				m.setLastUpdateDate(LocalDateTime.now());
 				update(m);
 			}
-			couunt++;
-			if (couunt % 1000 == 0) {
+			count++;
+			if (count % 1000 == 0) {
 				getEntityManager().flush();
 				getEntityManager().clear();
-				logger.info("Saved records: " + couunt);
+				logger.info("Saved records: " + count);
 			}
 		}
 		getEntityManager().flush();
 		getEntityManager().clear();
-		logger.info("Saved records: " + couunt);
+		logger.info("Saved records: " + count);
 	}
 }

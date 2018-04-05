@@ -4,5 +4,5 @@ import javax.ejb.Local;
 
 @Local
 public interface HttpGateway {
-    String doRequest() throws Exception;
+    byte[] doRequest() throws Exception;
 }

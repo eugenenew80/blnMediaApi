@@ -59,19 +59,9 @@ public class AutoAtTimeValueReader implements Reader<AtTimeValueRaw> {
 					return;
 				}
 
+				final List<List<MeteringPointCfg>> groupsPoints = splitPoints(points);
+
 				Batch batch = batchHelper.createBatch(new Batch(header, ParamTypeEnum.AT));
-
-				final List<List<MeteringPointCfg>> groupsPoints = range(0, points.size())
-					.boxed()
-					.collect(groupingBy(index -> index / 400))
-					.values()
-					.stream()
-					.map(indices -> indices
-						.stream()
-						.map(points::get)
-						.collect(toList()))
-					.collect(toList());
-
 				Long recCount = 0l;
 				try {
 					for (int i = 0; i < groupsPoints.size(); i++) {
@@ -99,6 +89,19 @@ public class AutoAtTimeValueReader implements Reader<AtTimeValueRaw> {
 
 		logger.info("read completed");
     }
+
+	private List<List<MeteringPointCfg>> splitPoints(List<MeteringPointCfg> points) {
+		return range(0, points.size())
+			.boxed()
+			.collect(groupingBy(index -> index / 400))
+			.values()
+			.stream()
+			.map(indices -> indices
+				.stream()
+				.map(points::get)
+				.collect(toList()))
+			.collect(toList());
+	}
 
 
 	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {

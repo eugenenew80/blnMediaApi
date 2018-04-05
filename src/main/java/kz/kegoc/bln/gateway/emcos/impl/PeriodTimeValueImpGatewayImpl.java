@@ -6,6 +6,7 @@ import kz.kegoc.bln.common.enums.ReceivingMethodEnum;
 import kz.kegoc.bln.common.enums.SourceSystemEnum;
 import kz.kegoc.bln.entity.media.ConnectionConfig;
 import kz.kegoc.bln.entity.media.InputMethod;
+import kz.kegoc.bln.gateway.CompressService;
 import kz.kegoc.bln.imp.raw.PeriodTimeValueRaw;
 import kz.kegoc.bln.entity.media.ReceivingMethod;
 import kz.kegoc.bln.gateway.emcos.PeriodTimeValueImpGateway;
@@ -20,6 +21,8 @@ import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import javax.ejb.*;
 import javax.inject.Inject;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.StringReader;
 import java.net.URL;
 import java.time.*;
@@ -62,18 +65,24 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
         List<PeriodTimeValueRaw> list;
         try {
             logger.info("Send http request for metering media...");
-            String body = buildBody();
-            if (StringUtils.isEmpty(body)) {
+            byte[] body = buildBody();
+            if (body==null || body.length==0) {
             	logger.info("Request body is empty, request stopped");
                 return emptyList();
             }
 
-            String answer = new HttpGatewayImpl.Builder()
+            byte[] byteAnswer = new HttpGatewayImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
                 .body(body)
                 .build()
                 .doRequest();
+
+            String answer = new String(byteAnswer, "UTF-8");
+            int n1 = answer.indexOf("<AnswerData>");
+            int n2 = answer.indexOf("</AnswerData>");
+            if (n2>n1)
+                answer = answer.substring(n1+12, n2);
 
             list = parseAnswer(answer);
             logger.info("request competed");
@@ -87,10 +96,11 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
         return list;
     }
 
-    private String buildBody() {
+    private byte[] buildBody() {
     	logger.debug("buildBody started");
 
     	String strPoints = points.stream()
+            .filter(p -> !p.getStartTime().isAfter(p.getEndTime()))
             .map( p-> buildPoint(p))
             .filter(p -> StringUtils.isNotEmpty(p))
             .collect(Collectors.joining());
@@ -98,12 +108,12 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
 
         if (StringUtils.isEmpty(strPoints)) {
         	logger.debug("List of points is empty, buildBody stopped");
-            return "";
+            return new byte[0];
         }
 
-        String data = templateRegistry.getTemplate("EMCOS_REQML_DATA")
+        String aData = templateRegistry.getTemplate("EMCOS_REQML_DATA")
         	.replace("#points#", strPoints);
-        logger.trace("media: " + data);
+        logger.trace("media: " + aData);
 
         String property = templateRegistry.getTemplate("EMCOS_REQML_PROPERTY")
         	.replace("#user#", config.getUserName())
@@ -112,13 +122,32 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
         	.replace("#attType#", "1");
         logger.trace("property: " + property);
 
-        String body = templateRegistry.getTemplate("EMCOS_REQML_BODY")
-        	.replace("#property#", property)
-        	.replace("#media#", Base64.encodeBase64String(data.getBytes()));
-        logger.trace("body for request metering media: " + body);
+        String body1 = templateRegistry.getTemplate("EMCOS_REQML_BODY_1")
+        	.replace("#property#", property);
+
+        String body2 = templateRegistry.getTemplate("EMCOS_REQML_BODY_2")
+        	.replace("#property#", property);
+
+        logger.trace("body part 1 for request metering data: " + body1);
+        logger.trace("body part 2 for request metering data: " + body2);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            baos.write(body1.getBytes());
+            baos.write(Base64.encodeBase64(aData.getBytes()));
+            baos.write(body2.getBytes());
+            baos.flush();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            try { baos.close(); }
+            catch (IOException e) { }
+        }
 
         logger.debug("buildBody completed");
-        return body;
+        return baos.toByteArray();
     }
 
     private String buildPoint(MeteringPointCfg point) {
@@ -233,4 +262,7 @@ public class PeriodTimeValueImpGatewayImpl implements PeriodTimeValueImpGateway 
 
     @Inject
     private TemplateRegistry templateRegistry;
+
+    @Inject
+    private CompressService compressService;
 }

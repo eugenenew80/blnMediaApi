@@ -50,20 +50,25 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
 
         try {
             logger.info("Send http request for metering media...");
-            String body = buildBody();
-            if (StringUtils.isEmpty(body)) {
+            byte[] body = buildBody();
+            if (body==null || body.length==0) {
             	logger.info("Request body is empty, send stopped");
                 return;
             }
 
-            String answer = new HttpGatewayImpl.Builder()
+            byte[] byteAnswer = new HttpGatewayImpl.Builder()
                 .url(new URL(config.getUrl()))
                 .method("POST")
                 .body(body)
                 .build()
                 .doRequest();
 
-            logger.trace(answer);
+            String answer = new String(byteAnswer, "UTF-8");
+            int n1 = answer.indexOf("<AnswerData>");
+            int n2 = answer.indexOf("</AnswerData>");
+            if (n2>n1)
+                answer = answer.substring(n1+12, n2);
+
 
             try (PrintWriter out = new PrintWriter("answer.xml")) {
                 out.println(answer);
@@ -81,7 +86,7 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
         }
     }
 
-    private String buildBody() {
+    private byte[] buildBody() {
     	logger.debug("buildBody started");
 
     	String strPoints = points.stream()
@@ -92,7 +97,7 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
 
         if (StringUtils.isEmpty(strPoints)) {
         	logger.debug("List of points is empty, buildBody stopped");
-            return "";
+            return new byte[0];
         }
 
         String data = templateRegistry.getTemplate("EMCOS_EEML_DATA")
@@ -127,7 +132,7 @@ public class PeriodTimeValueExpGatewayImpl implements PeriodTimeValueExpGateway 
         }
 
         logger.debug("buildBody completed");
-        return body;
+        return body.getBytes();
     }
 
     private String buildPoint(MeteringPointCfg point) {

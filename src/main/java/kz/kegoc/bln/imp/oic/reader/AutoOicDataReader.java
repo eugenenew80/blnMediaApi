@@ -93,7 +93,7 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 			.filter(l -> l.getSourceSystemCode().equals("OIC"))
 			.map(l -> l.getLastLoadDate())
 			.max(LocalDateTime::compareTo)
-			.orElseGet(null);
+			.orElse(null);
 
 		if (startDateTime==null)
 			return buildEndDateTime().minusHours(1);

@@ -16,7 +16,7 @@ public class HttpGatewayImpl implements HttpGateway {
 	private static Logger logger = LoggerFactory.getLogger(HttpGatewayImpl.class);
 	private final URL url;
 	private final String method;
-	private final String body;
+	private final byte[] body;
 	
 	private HttpGatewayImpl(Builder builder) {
 		this.url = builder.url;
@@ -24,7 +24,7 @@ public class HttpGatewayImpl implements HttpGateway {
 		this.body = builder.body;
 	}
 	
-    public String doRequest() throws IOException {
+    public byte[] doRequest() throws IOException {
 		logger.info("doRequest started");
 		logger.info("url: " + url);
 		logger.info("method: " + method);
@@ -41,7 +41,7 @@ public class HttpGatewayImpl implements HttpGateway {
 			con.setReadTimeout(99999999);
 
 			try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-				wr.writeBytes(body);
+				wr.write(body);
 				wr.flush();
 			}
 
@@ -63,7 +63,11 @@ public class HttpGatewayImpl implements HttpGateway {
 			if (con!=null) con.disconnect();
 		}
 
+		return response.toString().getBytes();
+
+		/*
 		String rawData = response.toString();
+		logger.info(rawData);
 
 		String answerData;
 		int n1 = rawData.indexOf("<AnswerData>");
@@ -80,12 +84,13 @@ public class HttpGatewayImpl implements HttpGateway {
 		}
 
         return answerData;
+        */
 	}
 
     public static class Builder {
     	private URL url;
     	private String method;
-    	private String body;
+    	private byte[] body;
     	
     	public Builder url(final URL url) {
     		this.url = url;
@@ -97,7 +102,7 @@ public class HttpGatewayImpl implements HttpGateway {
     		return this;
     	}    	
 
-    	public Builder body(final String body) {
+    	public Builder body(final byte[] body) {
     		this.body = body;
     		return this;
     	}        

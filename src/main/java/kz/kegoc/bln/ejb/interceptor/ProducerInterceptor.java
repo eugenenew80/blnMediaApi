@@ -13,12 +13,12 @@ import javax.interceptor.InvocationContext;
 @ProducerMonitor
 @Interceptor
 public class ProducerInterceptor {
-    private boolean autoAtTimeValueImp = true;
+    private boolean autoAtTimeValueImp = false;
     private boolean autoPeriodTimeValueImp = true;
-    private boolean manualAtTimeValueImp = true;
-    private boolean manualPeriodTimeValueImp = true;
-    private boolean periodTimeValueExp = true;
-    private boolean autoOicDataImp = true;
+    private boolean manualAtTimeValueImp = false;
+    private boolean manualPeriodTimeValueImp = false;
+    private boolean periodTimeValueExp = false;
+    private boolean autoOicDataImp = false;
 
     @AroundTimeout
     public Object monitor(InvocationContext ctx) throws Exception {

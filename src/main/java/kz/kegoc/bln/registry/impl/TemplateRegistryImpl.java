@@ -15,7 +15,7 @@ public class TemplateRegistryImpl implements TemplateRegistry {
 		//REQML
 		
 		String template = ""
-                + "<?xml version=\"1.0\" encoding=\"windows-1251\"?>"
+                + "<?xml version=\"1.0\" standalone=\"yes\"?>"
                 + "<DATAPACKET Version=\"2.0\">"
 					+ "<METADATA>"
 						+ "<FIELDS>"
@@ -47,21 +47,41 @@ public class TemplateRegistryImpl implements TemplateRegistry {
                 + "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
 					+ "<SOAP-ENV:Body>"
 						+ "<TransferEMCOSData xmlns=\"http://www.sigmatelas.lt/webservices\">"
-						+ "<parameters>"
-							+ "<aDProperty>"
-								+ "#property#"
-							+ "</aDProperty>"
-							+ "<aData>"
-								+ "#media#"
-							+ "</aData>"
-						+ "</parameters>"
+							+ "<parameters>"
+								+ "<aDProperty>"
+									+ "#property#"
+								+ "</aDProperty>"
+								+ "<aData>"
+									+ "#data#"
+								+ "</aData>"
+							+ "</parameters>"
 						+ "</TransferEMCOSData>"
 					+ "</SOAP-ENV:Body>"
                 + "</SOAP-ENV:Envelope>";
         registerTemplate("EMCOS_REQML_BODY", template);
-        
 
-        
+        template = ""
+                + "<?xml version=\"1.0\"?>"
+                + "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">"
+					+ "<SOAP-ENV:Body>"
+						+ "<TransferEMCOSData xmlns=\"http://www.sigmatelas.lt/webservices\">"
+							+ "<parameters>"
+								+ "<aDProperty>"
+									+ "#property#"
+								+ "</aDProperty>"
+								+ "<aData>";
+        registerTemplate("EMCOS_REQML_BODY_1", template);
+
+        template = ""
+								+ "</aData>"
+							+ "</parameters>"
+						+ "</TransferEMCOSData>"
+					+ "</SOAP-ENV:Body>"
+                + "</SOAP-ENV:Envelope>";
+        registerTemplate("EMCOS_REQML_BODY_2", template);
+
+
+
         //REQCFG
         
         template = ""
