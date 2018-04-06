@@ -75,14 +75,14 @@ public class BatchHelper {
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void saveAtData(Batch batch, List<AtTimeValueRaw> list) {
         list.forEach(t -> t.setBatch(batch));
-        mrService.saveAll(list);
+        atService.saveAll(list);
     }
 
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void savePtData(Batch batch, List<PeriodTimeValueRaw> list) {
         list.forEach(t -> t.setBatch(batch));
-        pcService.saveAll(list);
+        ptService.saveAll(list);
     }
 
 
@@ -133,8 +133,8 @@ public class BatchHelper {
     private BatchService batchService;
 
     @Inject
-    private AtTimeValueRawService mrService;
+    private AtTimeValueRawService atService;
 
     @Inject
-    private PeriodTimeValueRawService pcService;
+    private PeriodTimeValueRawService ptService;
 }

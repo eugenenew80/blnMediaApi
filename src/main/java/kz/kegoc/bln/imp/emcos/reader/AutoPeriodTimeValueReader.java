@@ -48,7 +48,6 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 				logger.info("user: " + header.getConfig().getUserName());
 
 				LocalDateTime endDateTime = buildEndDateTime();
-
 				List<MeteringPointCfg> points = buildPoints(header.getLines(), endDateTime);
 				if (points.size()==0) {
 					logger.info("List of points is empty, import data stopped");
@@ -84,15 +83,15 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 							batchHelper.savePtData(batch, ptList);
 							recCount = recCount + ptList.size();
 						}
+
+						batchHelper.updateBatch(batch, null, recCount);
+						onBatchCompleted(batch);
 					}
 					catch (Exception e) {
 						logger.error("read failed: " + e.getMessage());
 						batchHelper.updateBatch(batch, e, null);
 						break;
 					}
-
-					batchHelper.updateBatch(batch, null, recCount);
-					onBatchCompleted(batch);
 
 					if (requestedDateTime.isEqual(endDateTime))
 						break;
@@ -109,7 +108,7 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 	private List<List<MeteringPointCfg>> splitPoints(List<MeteringPointCfg> points) {
 		return range(0, points.size())
 			.boxed()
-			.collect(groupingBy(index -> index / 1200))
+			.collect(groupingBy(index -> index / 500))
 			.values()
 			.stream()
 			.map(indices -> indices
@@ -137,15 +136,18 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 			.forEach(line -> {
 				LastLoadInfo lastLoadInfo = batchHelper.getLastLoadIfo(lastLoadInfoList, line);
 				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, buildStartTime(lastLoadInfo), endDateTime);
-				if (mpc!=null && mpc.getStartTime().isBefore(mpc.getEndTime()))
-					points.add(mpc);
+				if (mpc!=null) points.add(mpc);
 			});
 
 		return points;
 	}
 
 	private LocalDateTime buildStartTime(LastLoadInfo lastLoadInfo) {
-		LocalDateTime startTime = LocalDate.now(ZoneId.of("UTC+1")).minusDays(3).atStartOfDay();
+		LocalDate now = LocalDate.now(ZoneId.of("UTC+1"));
+		LocalDateTime startTime = now
+			.minusDays(now.getDayOfMonth()-1)
+			.atStartOfDay();
+
 		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {
 			LocalDateTime lastLoadDate = lastLoadInfo.getLastLoadDate();
 			startTime = lastLoadDate.getMinute() < 45

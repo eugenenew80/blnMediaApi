@@ -13,7 +13,7 @@ import javax.interceptor.InvocationContext;
 @ProducerMonitor
 @Interceptor
 public class ProducerInterceptor {
-    private boolean autoAtTimeValueImp = false;
+    private boolean autoAtTimeValueImp = true;
     private boolean autoPeriodTimeValueImp = true;
     private boolean manualAtTimeValueImp = false;
     private boolean manualPeriodTimeValueImp = false;

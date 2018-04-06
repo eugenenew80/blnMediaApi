@@ -18,8 +18,9 @@ public class AtTimeValueRawRepositoryImpl extends AbstractRepository<AtTimeValue
 	public void saveAll(List<AtTimeValueRaw> list) {
 		long count=0;
 		LocalDateTime now = LocalDateTime.now();
-		for (AtTimeValueRaw m : list) {
-			m.setCreateDate(now);
+		for (AtTimeValueRaw at : list) {
+			at.setCreateDate(now);
+			insert(at);
 
 			count++;
 			if (count % 1000 == 0) {

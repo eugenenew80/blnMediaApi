@@ -18,8 +18,9 @@ public class PeriodTimeValueRawRepositoryImpl extends AbstractRepository<PeriodT
 	public void saveAll(List<PeriodTimeValueRaw> list) {
 		long count=0;
 		LocalDateTime now = LocalDateTime.now();
-		for (PeriodTimeValueRaw m : list) {
-			m.setCreateDate(now);
+		for (PeriodTimeValueRaw pt : list) {
+			pt.setCreateDate(now);
+			insert(pt);
 
 			count++;
 			if (count % 1000 == 0) {
