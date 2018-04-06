@@ -12,9 +12,10 @@
     <mapping-file>META-INF/jpa/jpql.xml</mapping-file>
 
     <properties>
-      <property name="hibernate.show_sql" value="false" />
-      <property name="hibernate.format_sql" value="false" />
-      <property name="hibernate.enable_lazy_load_no_trans" value="true" />
+        <property name="hibernate.show_sql" value="false" />
+        <property name="hibernate.format_sql" value="false" />
+        <property name="hibernate.enable_lazy_load_no_trans" value="true" />
+        <property name="hibernate.jdbc.batch_size" value="1000" />
      </properties>
   </persistence-unit>
 
