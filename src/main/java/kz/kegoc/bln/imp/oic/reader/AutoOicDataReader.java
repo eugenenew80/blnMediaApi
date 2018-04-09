@@ -96,7 +96,7 @@ public class AutoOicDataReader implements Reader<TelemetryRaw> {
 			.orElse(null);
 
 		if (startDateTime==null)
-			return buildEndDateTime().minusHours(1);
+			return buildEndDateTime().minusMonths(1);
 
 		long step = 180l;
 		startDateTime = startDateTime
