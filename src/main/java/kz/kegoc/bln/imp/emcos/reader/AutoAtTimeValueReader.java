@@ -132,10 +132,22 @@ public class AutoAtTimeValueReader implements Reader<AtTimeValueRaw> {
 
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
-			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
+			.filter(line -> line.getParam().getIsAt())
 			.forEach(line -> {
-				LastLoadInfo lastLoadInfo = batchHelper.getLastLoadIfo(lastLoadInfoList, line);
-				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, buildStartTime(lastLoadInfo), endDateTime);
+				LastLoadInfo lastLoadInfo = batchHelper.getLastLoadIfo(
+					lastLoadInfoList,
+					line,
+					ParamTypeEnum.AT,
+					null
+				);
+
+				MeteringPointCfg mpc = batchHelper.buildPointCfg(
+					line,
+					buildStartTime(lastLoadInfo),
+					endDateTime,
+					ParamTypeEnum.AT,
+					null
+				);
 				if (mpc!=null) points.add(mpc);
 			});
 
@@ -146,6 +158,7 @@ public class AutoAtTimeValueReader implements Reader<AtTimeValueRaw> {
 		LocalDate now = LocalDate.now(ZoneId.of("UTC+1"));
 		LocalDateTime startDateTime =  now
 			.minusDays(now.getDayOfMonth())
+			.minusMonths(1)
 			.atStartOfDay();
 
 		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate()!=null)

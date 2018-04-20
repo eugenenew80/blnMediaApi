@@ -3,6 +3,8 @@ package kz.kegoc.bln.common.repository;
 import java.util.List;
 import kz.kegoc.bln.common.interfaces.HasId;
 
+import javax.persistence.EntityManager;
+
 public interface Repository <T extends HasId> {
     List<T> selectAll();
 
@@ -13,4 +15,6 @@ public interface Repository <T extends HasId> {
     T update(T entity);
 
     boolean delete(Long entityId);
+
+    EntityManager getEntityManager();
 }

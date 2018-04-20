@@ -239,6 +239,16 @@
 				<column name="short_name" />
 			</basic>
 
+			<basic name="isAt">
+				<column name="is_at"/>
+				<convert converter="kz.kegoc.bln.ejb.jpa.BooleanToIntConverter" />
+			</basic>
+
+			<basic name="isPt">
+				<column name="is_pt"/>
+				<convert converter="kz.kegoc.bln.ejb.jpa.BooleanToIntConverter" />
+			</basic>
+
 			<basic name="createDate">
 				<column name="create_date" />
 			</basic>
@@ -246,10 +256,6 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
-
-			<many-to-one name="paramType">
-				<join-column name="param_type" />
-			</many-to-one>
 
 			<many-to-one name="unit">
 				<join-column name="unit_id"/>
@@ -291,6 +297,10 @@
 			<basic name="lastUpdateDate">
 				<column name="last_update_date" />
 			</basic>
+
+			<many-to-one name="paramType">
+				<join-column name="param_type" />
+			</many-to-one>
 
 			<many-to-one name="sourceSystemCode">
 				<join-column name="source_system_code" />

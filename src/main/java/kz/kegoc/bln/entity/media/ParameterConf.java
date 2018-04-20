@@ -16,6 +16,7 @@ public class ParameterConf implements HasId {
     private Unit sourceUnit;
     private Parameter param;
     private Integer interval;
+    private ParamType paramType;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
 }

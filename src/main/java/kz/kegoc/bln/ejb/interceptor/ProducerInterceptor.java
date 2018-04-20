@@ -18,7 +18,7 @@ public class ProducerInterceptor {
     private boolean manualAtTimeValueImp = false;
     private boolean manualPeriodTimeValueImp = false;
     private boolean periodTimeValueExp = false;
-    private boolean autoOicDataImp = true;
+    private boolean autoOicDataImp = false;
 
     @AroundTimeout
     public Object monitor(InvocationContext ctx) throws Exception {

@@ -108,7 +108,7 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 	private List<List<MeteringPointCfg>> splitPoints(List<MeteringPointCfg> points) {
 		return range(0, points.size())
 			.boxed()
-			.collect(groupingBy(index -> index / 500))
+			.collect(groupingBy(index -> index / 100))
 			.values()
 			.stream()
 			.map(indices -> indices
@@ -132,10 +132,23 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
-			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.PT)))
+			.filter(line -> line.getParam().getIsPt())
 			.forEach(line -> {
-				LastLoadInfo lastLoadInfo = batchHelper.getLastLoadIfo(lastLoadInfoList, line);
-				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, buildStartTime(lastLoadInfo), endDateTime);
+				LastLoadInfo lastLoadInfo = batchHelper.getLastLoadIfo(
+					lastLoadInfoList,
+					line,
+					ParamTypeEnum.PT,
+					900
+				);
+
+				MeteringPointCfg mpc = batchHelper.buildPointCfg(
+					line,
+					buildStartTime(lastLoadInfo),
+					endDateTime,
+					ParamTypeEnum.PT,
+					900
+				);
+
 				if (mpc!=null) points.add(mpc);
 			});
 
@@ -146,6 +159,7 @@ public class AutoPeriodTimeValueReader implements Reader<PeriodTimeValueRaw> {
 		LocalDate now = LocalDate.now(ZoneId.of("UTC+1"));
 		LocalDateTime startTime = now
 			.minusDays(now.getDayOfMonth()-1)
+			.minusMonths(1)
 			.atStartOfDay();
 
 		if (lastLoadInfo!=null && lastLoadInfo.getLastLoadDate() !=null) {

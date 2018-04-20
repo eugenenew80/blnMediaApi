@@ -86,10 +86,12 @@ public class BatchHelper {
     }
 
 
-    public MeteringPointCfg buildPointCfg(WorkListLine line, LocalDateTime startTime, LocalDateTime endTime) {
+    public MeteringPointCfg buildPointCfg(WorkListLine line, LocalDateTime startTime, LocalDateTime endTime, ParamTypeEnum paramType, Integer interval) {
         ParameterConf parameterConf = line.getParam().getConfs()
             .stream()
             .filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
+            .filter(c -> c.getParamType().equals(ParamType.newInstance(paramType)))
+            .filter(c -> (c.getInterval()==null && interval==null) || c.getInterval().equals(interval))
             .findFirst()
             .orElse(null);
 
@@ -108,14 +110,20 @@ public class BatchHelper {
     }
 
 
-    public LastLoadInfo getLastLoadIfo(List<LastLoadInfo> lastLoadInfoList, WorkListLine line) {
+    public LastLoadInfo getLastLoadIfo(List<LastLoadInfo> lastLoadInfoList, WorkListLine line, ParamTypeEnum paramType, Integer interval) {
         ParameterConf parameterConf = line.getParam().getConfs()
             .stream()
             .filter(c -> c.getSourceSystemCode().equals(SourceSystem.newInstance(SourceSystemEnum.EMCOS)))
+            .filter(c -> c.getParamType().equals( ParamType.newInstance(paramType)) )
+            .filter(c ->  (c.getInterval()==null && interval==null) || c.getInterval().equals(interval))
             .findFirst()
             .orElse(null);
 
-        if (parameterConf==null) return null;
+        if (parameterConf==null) {
+            System.out.println(interval);
+            System.out.println(paramType);
+            return null;
+        }
 
         LastLoadInfo lastLoadInfo = lastLoadInfoList.stream()
             .filter(t -> t.getSourceMeteringPointCode().equals(line.getMeteringPoint().getExternalCode()) && t.getSourceParamCode().equals(parameterConf.getSourceParamCode()))

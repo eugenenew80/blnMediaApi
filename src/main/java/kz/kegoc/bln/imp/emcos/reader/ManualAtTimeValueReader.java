@@ -88,9 +88,16 @@ public class ManualAtTimeValueReader implements Reader<AtTimeValueRaw> {
 	private List<MeteringPointCfg> buildPoints(List<WorkListLine> lines) {
 		List<MeteringPointCfg> points = new ArrayList<>();
 		lines.stream()
-			.filter(line -> line.getParam().getParamType().equals(newInstance(ParamTypeEnum.AT)))
+			.filter(line -> line.getParam().getIsAt())
 			.forEach(line -> {
-				MeteringPointCfg mpc = batchHelper.buildPointCfg(line, line.getStartDate(), line.getEndDate());
+				MeteringPointCfg mpc = batchHelper.buildPointCfg(
+					line,
+					line.getStartDate(),
+					line.getEndDate(),
+					ParamTypeEnum.AT,
+					null
+				);
+
 				if (!(mpc.getStartTime().isEqual(mpc.getEndTime()) || mpc.getStartTime().isAfter(mpc.getEndTime())))
 					points.add(mpc);
 			});
